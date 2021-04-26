@@ -1,0 +1,97 @@
+version: "2.0"
+
+stories:
+
+- story: welcome
+  steps:
+  - intent: start
+  - action: utter_welcome
+  - intent: ask_os
+  - action: utter_ask_os
+  - intent: say_os
+    entities:
+    - os
+  - action: utter_ask_pl
+  - intent: say_pl
+    entities:
+    - pl
+  - action: utter_ask_func
+    
+- story: guided_QA
+  steps:
+  - intent: guided_QA
+  #- action: utter_ask_os
+  #- intent: say_os
+  #  entities:
+  #  - os
+  #- action: utter_ask_pl
+  #- intent: say_pl
+  #  entities:
+  #  - pl
+  - action: utter_ask_question
+  - intent: say_message
+    entities:
+    - message
+  - action: utter_CORS_problem_answer
+  - checkpoint: check_continue_search
+  
+- story: error_message
+  steps:
+  - intent: error_message
+  #- action: utter_ask_os
+  #- intent: say_os
+  #  entities:
+  #  - os
+  #- action: utter_ask_pl
+  #- intent: say_pl
+  #  entities:
+  #  - pl
+  - action: utter_ask_message
+  - intent: say_message
+    entities:
+    - message
+  - action: utter_CORS_problem_answer
+  - checkpoint: check_continue_search
+#  - action: utter_check_message
+
+- story: affirm
+  steps:
+  - checkpoint: check_continue_search
+  - intent: affirm
+  - action: utter_CORS_problem_answer
+  - checkpoint: check_continue_search
+
+- story: deny
+  steps:
+  - checkpoint: check_continue_search
+  - intent: deny
+  - action: utter_ask_satisfied
+  - or:
+    - intent: say_satisfied
+    - intent: say_not_satisfied
+  - action: utter_finish
+
+
+#- story: my_example
+#  steps:
+#  - intent: say_name
+#    entities:
+#    - name
+#  - action: utter_ask_country_val
+#  - intent: say_country
+#    entities:
+#    - country
+#  - action: utter_response
+
+#- story: test_my_action
+#  steps:
+#  - intent: action_test
+#  - action: ActionHelloWorld
+  
+# 美金換算(使用者說要換的台幣，機器人輸出美金)
+#- story: test_exchange
+#  steps:
+#  - intent: ask_NT
+#    entities:
+#    - NT
+#  - action: exchange

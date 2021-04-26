@@ -1,0 +1,112 @@
+version: "2.0"
+
+intents:
+  - say_country
+  - say_name
+  - action_test
+  - ask_NT
+  - greet
+  - start
+  - say_os
+  - say_pl
+  - say_message
+  - affirm
+  - deny
+  - say_satisfied
+  - guided_QA
+  - error_message
+  - discuss_together
+  - ask_os
+  - say_not_satisfied
+  
+entities:
+  - message
+  - function
+  - os
+  - pl
+  - country
+  - name
+  - NT
+  
+slots:
+  function:
+    type: text
+  os:
+    type: text
+  pl:
+    type: text
+  message:
+    type: text
+  country:
+    type: text
+  name:
+    type: text
+  NT:
+    type: text
+
+actions:
+  - ActionHelloWorld
+  - exchange
+
+responses:
+  utter_ask_func:
+  - text: "請問你想選擇哪個功能呢？"
+  
+  utter_welcome:
+  - text: "我們能提供的功能有<br>1. 錯誤訊息解答（直接複製錯誤訊息即可）<br>2. 引導式問答（用文字描述您遇到的問題）<br>若未能解決問題也可以使用共同討論功能<br><br>"
+  
+  utter_ask_os:
+  - text: "請問您使用的是什麼作業系統？"
+  
+  utter_ask_pl:
+  - text: "請問您使用的是什麼程式語言？"
+  
+  utter_ask_message:
+  - text: "好的，請貼上您的錯誤訊息"
+  
+  utter_check_message:
+  - text: "功能：{function}, 作業系統：{os}, 程式語言：{pl}\n錯誤訊息：{message}"
+  
+  utter_CORS_problem_answer:
+  - text: "謝謝您的等待，以下為搜尋結果的資料摘要：<br>1. <a href=\"https://stackoverflow.com/questions/48714769/python-flask-cors-importerror-no-module-named-flask-cors-raspberry-pi\">Flask-CORS not working for POST, but working for GET</a><br>2. <a href=\"https://stackoverflow.com/questions/25594893/how-to-enable-cors-in-flask\">Solve Cross Origin Resource Sharing with Flask</a><br>3. <a href=\"https://stackoverflow.com/questions/39550920/flask-cors-not-working-for-post-but-working-for-get\">Flask CORS stopped allowing access to resources</a><br>點選摘要連結可顯示內容。<br><br>是否要繼續搜尋？"
+  
+  utter_ask_question:
+  - text: "好的，請描述您遇到的問題"
+  
+  utter_ask_satisfied:
+  - text: "是否滿意本次體驗？"
+  
+  utter_finish:
+  - text: "感謝回饋，歡迎下次光臨！"
+  
+  utter_ask_name_val:
+  - text: "What's your name?"
+  
+  utter_ask_country_val:
+  - text: "Where are you from?"
+  
+  utter_response:
+  - text: "{name} is from {country}."
+  
+  utter_goodbye:
+  - text: "Bye"
+  
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+  
+#session_config:
+#  session_expiration_time: 60
+#  carry_over_slots_to_new_session: true

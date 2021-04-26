@@ -1,0 +1,106 @@
+version: "2.0"
+
+nlu:
+
+#- lookup: function
+#  examples: |
+#   - guided_QA
+#   - error_message
+#   - discuss_together
+   
+- lookup: os
+  examples: |
+   - mac OS
+   - windows
+   - linux
+   
+- lookup: pl
+  examples: |
+   - python
+   - java
+   - c
+   
+- regex: message
+  examples: |
+   - error .+
+
+- lookup: name
+  examples: |
+   - 慈
+   - 湘
+
+- lookup: country
+  examples: |
+    - Taiwan
+    - Japan
+    - Korea
+    - China
+
+- regex: NT
+  examples: |
+   - [0-9]+
+
+- intent: start
+  examples: |
+   - start
+  
+- intent: ask_os
+  examples: |
+   - ask_os
+   
+- intent: guided_QA
+  examples: |
+    - guided_QA
+    
+- intent: error_message
+  examples: |
+    - error_message
+    
+- intent: discuss_together
+  examples: |
+    - discuss_together
+
+- intent: say_os
+  examples: |
+    - I'm use [mac OS](os)
+
+- intent: say_pl
+  examples: |
+    - I'm use [python](pl)
+    
+- intent: say_message
+  examples: |
+    - [my error message is: ...](message)
+    
+- intent: affirm
+  examples: |
+    - continue search
+
+- intent: deny
+  examples: |
+    - not continue search
+    
+- intent: say_satisfied
+  examples: |
+    - satisfied
+    
+- intent: say_not_satisfied
+  examples: |
+    - not satisfied
+
+- intent: action_test
+  examples: |
+    - Hello
+   
+- intent: say_country
+  examples: |
+    - I'm from [Taiwan](country)
+    
+- intent: say_name
+  examples: |
+    - My name is [慈](name)
+    - [慈](name)
+
+- intent: ask_NT
+  examples: |
+    - NT is [100](NT)
