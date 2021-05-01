@@ -6,20 +6,7 @@ stories:
   steps:
   - intent: start
   - action: utter_welcome
-  - intent: ask_os
-  - action: utter_ask_os
-  - intent: say_os
-    entities:
-    - os
-  - action: utter_ask_pl
-  - intent: say_pl
-    entities:
-    - pl
-  - action: utter_ask_func
-    
-- story: guided_QA
-  steps:
-  - intent: guided_QA
+  #- intent: ask_os
   #- action: utter_ask_os
   #- intent: say_os
   #  entities:
@@ -28,6 +15,20 @@ stories:
   #- intent: say_pl
   #  entities:
   #  - pl
+  - action: utter_ask_func
+    
+- story: guided_QA
+  steps:
+  - intent: guided_QA
+  - action: utter_ask_os
+  - intent: say_os
+    entities:
+    - os
+  - action: utter_ask_pl
+  - intent: say_pl
+    entities:
+    - pl
+  
   - action: utter_ask_question
   - intent: say_message
     entities:
@@ -38,21 +39,22 @@ stories:
 - story: error_message
   steps:
   - intent: error_message
-  #- action: utter_ask_os
-  #- intent: say_os
-  #  entities:
-  #  - os
-  #- action: utter_ask_pl
-  #- intent: say_pl
-  #  entities:
-  #  - pl
+  - action: utter_ask_os
+  - intent: say_os
+    entities:
+    - os
+  - action: utter_ask_pl
+  - intent: say_pl
+    entities:
+    - pl
+  
   - action: utter_ask_message
   - intent: say_message
     entities:
     - message
   - action: utter_CORS_problem_answer
   - checkpoint: check_continue_search
-#  - action: utter_check_message
+
 
 - story: affirm
   steps:
