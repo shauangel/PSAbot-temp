@@ -2,11 +2,12 @@ version: "2.0"
 
 nlu:
 
-#- lookup: function
-#  examples: |
-#   - guided_QA
-#   - error_message
-#   - discuss_together
+# 用slot filling 來記住使用者選擇的功能
+- lookup: function
+  examples: |
+   - guided_QA
+   - error_message
+   - discuss_together
    
 - lookup: os
   examples: |
@@ -48,17 +49,23 @@ nlu:
   examples: |
    - ask_os
    
-- intent: guided_QA
+# 會讓story亂跳的寫法 開始
+#- intent: guided_QA
+#  examples: |
+#    - guided_QA
+#
+#- intent: error_message
+#  examples: |
+#    - error_message
+#
+#- intent: discuss_together
+#  examples: |
+#    - discuss_together
+# 會讓story亂跳的寫法 結束
+
+- intent: say_function
   examples: |
-    - guided_QA
-    
-- intent: error_message
-  examples: |
-    - error_message
-    
-- intent: discuss_together
-  examples: |
-    - discuss_together
+    - [guided_QA](function)
 
 - intent: say_os
   examples: |

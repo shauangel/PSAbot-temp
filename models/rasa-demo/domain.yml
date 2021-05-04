@@ -18,6 +18,7 @@ intents:
   - discuss_together
   - ask_os
   - say_not_satisfied
+  - say_function
   
 entities:
   - message
@@ -47,8 +48,12 @@ slots:
 actions:
   - ActionHelloWorld
   - exchange
+  - ask_question_or_message
 
 responses:
+  utter_check_function:
+  - text: "您選擇的功能為{function}"
+  
   utter_ask_func:
   - text: "請問你想選擇哪個功能呢？"
   

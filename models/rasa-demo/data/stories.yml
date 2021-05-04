@@ -2,11 +2,25 @@ version: "2.0"
 
 stories:
 
+########## 輸入start開始整個流程
 - story: welcome
   steps:
   - intent: start
   - action: utter_welcome
-  - intent: ask_os
+  #- intent: ask_os
+  #- action: utter_ask_os
+  #- intent: say_os
+  #  entities:
+  #  - os
+  #- action: utter_ask_pl
+  #- intent: say_pl
+  #  entities:
+  #  - pl
+  - action: utter_ask_func
+  - intent: say_function
+    entities:
+    - function
+#  - action: utter_check_function
   - action: utter_ask_os
   - intent: say_os
     entities:
@@ -15,44 +29,51 @@ stories:
   - intent: say_pl
     entities:
     - pl
-  - action: utter_ask_func
-    
-- story: guided_QA
-  steps:
-  - intent: guided_QA
-  #- action: utter_ask_os
-  #- intent: say_os
-  #  entities:
-  #  - os
-  #- action: utter_ask_pl
-  #- intent: say_pl
-  #  entities:
-  #  - pl
-  - action: utter_ask_question
+  - action: ask_question_or_message
   - intent: say_message
     entities:
     - message
   - action: utter_CORS_problem_answer
   - checkpoint: check_continue_search
-  
-- story: error_message
-  steps:
-  - intent: error_message
-  #- action: utter_ask_os
-  #- intent: say_os
-  #  entities:
-  #  - os
-  #- action: utter_ask_pl
-  #- intent: say_pl
-  #  entities:
-  #  - pl
-  - action: utter_ask_message
-  - intent: say_message
-    entities:
-    - message
-  - action: utter_CORS_problem_answer
-  - checkpoint: check_continue_search
-#  - action: utter_check_message
+
+# 有問題會亂跳 開始
+#- story: guided_QA
+#  steps:
+#  - intent: guided_QA
+#  - action: utter_ask_os
+#  - intent: say_os
+#    entities:
+#    - os
+#  - action: utter_ask_pl
+#  - intent: say_pl
+#    entities:
+#    - pl
+#  - action: utter_ask_question
+#  - intent: say_message
+#    entities:
+#    - message
+#  - action: utter_CORS_problem_answer
+#  - checkpoint: check_continue_search
+#
+#- story: error_message
+#  steps:
+#  - intent: error_message
+#  - action: utter_ask_os
+#  - intent: say_os
+#    entities:
+#    - os
+#  - action: utter_ask_pl
+#  - intent: say_pl
+#    entities:
+#    - pl
+#
+#  - action: utter_ask_message
+#  - intent: say_message
+#    entities:
+#    - message
+#  - action: utter_CORS_problem_answer
+#  - checkpoint: check_continue_search
+# 有問題會亂跳 結束
 
 - story: affirm
   steps:

@@ -33,3 +33,20 @@ class exchange(Action):
             json_message = {"res_after": NT, "res_before": tracker.get_slot("NT")}
         )
         return []
+        
+class ask_question_or_message(Action):
+    # return 要放 action的名稱 「一定要一模一樣」
+    def name(self) -> Text:
+        return "ask_question_or_message"
+
+    def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
+        chosen = tracker.get_slot("function")
+        if chosen=="error_message":
+            reply = "請貼上您的錯誤訊息"
+        elif chosen=="guided_QA":
+            reply = "請描述您遇到的問題"
+        else:
+            reply = "你的function抓不到"
+        
+        dispatcher.utter_message(text=reply)
+        return []
