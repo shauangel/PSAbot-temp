@@ -5,9 +5,11 @@ nlu:
 # 用slot filling 來記住使用者選擇的功能
 - lookup: function
   examples: |
+   - 引導式問答
    - guided_QA
+   - 錯誤訊息解答
    - error_message
-   - discuss_together
+   - 共同討論
    
 - lookup: os
   examples: |
@@ -82,18 +84,22 @@ nlu:
 - intent: affirm
   examples: |
     - continue search
+    - 繼續
 
 - intent: deny
   examples: |
     - not continue search
+    - 停止
     
 - intent: say_satisfied
   examples: |
     - satisfied
+    - 滿意
     
 - intent: say_not_satisfied
   examples: |
     - not satisfied
+    - 不滿意
 
 - intent: action_test
   examples: |
@@ -111,3 +117,17 @@ nlu:
 - intent: ask_NT
   examples: |
     - NT is [100](NT)
+
+### 用來測試若intent裡有相同的句子 會觸發哪個intent START
+#- intent: test_satisfied
+#  examples: |
+#    - 好
+#    - 是
+#    - 滿意
+#
+#- intent: test_search
+#  examples: |
+#    - 好
+#    - 是
+#    - 繼續搜尋
+### 用來測試若intent裡有相同的句子 會觸發哪個intent END

@@ -19,6 +19,10 @@ intents:
   - ask_os
   - say_not_satisfied
   - say_function
+  ### 用來測試若intent裡有相同的句子 START
+  - test_search
+  - test_satisfied
+  ### 用來測試若intent裡有相同的句子 END
   
 entities:
   - message
@@ -111,6 +115,14 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+  
+  ### 用來測試若intent裡有相同的句子 START
+  utter_test_search:
+  - text: "觸發的是test_search這個intent"
+  
+  utter_test_satisfied:
+  - text: "觸發的是test_satisfied這個intent"
+  ### 用來測試若intent裡有相同的句子 END
   
 #session_config:
 #  session_expiration_time: 60

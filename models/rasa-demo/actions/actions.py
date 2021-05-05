@@ -41,9 +41,9 @@ class ask_question_or_message(Action):
 
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         chosen = tracker.get_slot("function")
-        if chosen=="error_message":
+        if chosen=="error_message" or chosen=="錯誤訊息解答":
             reply = "請貼上您的錯誤訊息"
-        elif chosen=="guided_QA":
+        elif chosen=="guided_QA" or chosen=="引導式問答":
             reply = "請描述您遇到的問題"
         else:
             reply = "你的function抓不到"
