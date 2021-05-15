@@ -2,91 +2,6 @@
 <html>
     <head>
 
-        <script>
-            function start(){
-            var myURL = "http://127.0.0.1:5000/welcome";
-            $.ajax({
-                    url: myURL,
-                    type: "GET",
-                    dataType: "json",
-                    contentType: 'application/json; charset=utf-8',
-                    success: function(response){
-                        console.log("response: "+response);
-                        console.log(response.text);
-                        document.getElementById("content").innerHTML += '<font color="black">'+response.text+'</font><br>';
-                    },
-                    error: function(){
-                        console.log("error");
-                    }
-                });
-                
-            var myURL = "http://127.0.0.1:5000/ask_os";
-            $.ajax({
-                    url: myURL,
-                    type: "GET",
-                    dataType: "json",
-                    contentType: 'application/json; charset=utf-8',
-                    success: function(response){
-                        console.log("response: "+response);
-                        console.log(response.text);
-                        document.getElementById("content").innerHTML += '<font color="black">'+response.text+'</font><br>';
-                    },
-                    error: function(){
-                        console.log("error");
-                    }
-                });
-            }
-
-            function send_to_bot(){
-                
-
-                document.getElementById("content").innerHTML += '<font color="blue">'+$("#user_input").val()+'</font><br>';
-                
-                
-//                if($("#user_input").val() == "錯誤訊息解答"){
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message=error_message";
-//                }
-//                else if($("#user_input").val() == "引導式問答"){
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message=guided_QA";
-//                }
-//                else if($("#user_input").val() == "共同討論"){
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message=discuss_together";
-//                }
-//                else if($("#user_input").val() == "是"){
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message=continue search";
-//                }
-//                else if($("#user_input").val() == "否"){
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message=not continue search";
-//                }
-//                else if($("#user_input").val() == "滿意"){
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message=satisfied";
-//                }
-//                else if($("#user_input").val() == "不滿意"){
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message=not%20satisfied";
-//                    console.log("not satisfied");
-//                }
-//                else{
-//                    var myURL = "http://127.0.0.1:5000/base_flow_rasa?message="+$("#user_input").val();
-//                }
-                var myURL = "http://127.0.0.1:5000/base_flow_rasa?message="+$("#user_input").val();
-                
-                console.log("myURL: "+myURL);
-                $.ajax({
-                        url: myURL,
-                        type: "GET",
-                        dataType: "json",
-                        contentType: 'application/json; charset=utf-8',
-                        success: function(response){
-                            console.log(response.text); document.getElementById("content").innerHTML += '<font color="black">'+response.text+'</font><br>'
-                        },
-                        error: function(){
-                            console.log("error");
-                        }
-                    });
-            }
-
-            window.addEventListener("load", start, false);
-        </script>
     </head>
     
     <body>
@@ -101,7 +16,9 @@
         </form>
         
           <!-- jQuery CDN - Slim version (=without AJAX) -->
-        <script src="../static/assets/js/jquery-3.5.1.js"></script>
+<!--        <script src="../static/assets/js/jquery-3.5.1.js"></script>-->
+        <script src="../static/assets/js/jquery-2.2.4.min.js"></script>
+        <script src="../static/assets/js/base_flow.js"></script>
         <!-- Popper.JS -->
         <!--<script src="../static/assets/js/popper.min.js"></script>-->
         <!-- Bootstrap JS -->
