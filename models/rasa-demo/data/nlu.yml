@@ -72,10 +72,14 @@ nlu:
 - intent: say_os
   examples: |
     - I'm use [mac OS](os)
+    - 我是用[mac os](os)
+    - [mac os](os)
 
 - intent: say_pl
   examples: |
     - I'm use [python](pl)
+    - 我是用[python](pl)
+    - [python](pl)
     
 - intent: say_message
   examples: |
@@ -85,11 +89,32 @@ nlu:
   examples: |
     - continue search
     - 繼續
+    - satisfied
+    - 滿意
+    - 好
+    - 是
+    - 要
+    - ok
+    - 可以
+    - 對
+    - 確定
+    - 有
 
 - intent: deny
   examples: |
     - not continue search
     - 停止
+    - not satisfied
+    - 不滿意
+    - 不要
+    - 不好
+    - not ok
+    - 不可以
+    - 不對
+    - no
+    - 不確定
+    - 沒
+    - 別
     
 - intent: say_satisfied
   examples: |

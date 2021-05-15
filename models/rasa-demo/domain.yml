@@ -48,6 +48,13 @@ slots:
     type: text
   NT:
     type: text
+    
+#forms:
+#  needed_form:
+#    required_slots:
+#        function:
+#          - type: from_entity
+#            entit
 
 actions:
   - ActionHelloWorld
@@ -55,6 +62,12 @@ actions:
   - ask_question_or_message
 
 responses:
+  utter_affirm_satisfied:
+  - text: "你現在很滿意"
+  
+  utter_affirm_notsatisfied:
+  - text: "你現在「不」滿意"
+  
   utter_check_function:
   - text: "您選擇的功能為{function}"
   

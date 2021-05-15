@@ -20,7 +20,6 @@ stories:
   - intent: say_function
     entities:
     - function
-#  - action: utter_check_function
   - action: utter_ask_os
   - intent: say_os
     entities:
@@ -33,64 +32,40 @@ stories:
   - intent: say_message
     entities:
     - message
+  - action: utter_check_message
   - action: utter_CORS_problem_answer
   - checkpoint: check_continue_search
 
-# 有問題會亂跳 開始
-#- story: guided_QA
-#  steps:
-#  - intent: guided_QA
-#  - action: utter_ask_os
-#  - intent: say_os
-#    entities:
-#    - os
-#  - action: utter_ask_pl
-#  - intent: say_pl
-#    entities:
-#    - pl
-#  - action: utter_ask_question
-#  - intent: say_message
-#    entities:
-#    - message
-#  - action: utter_CORS_problem_answer
-#  - checkpoint: check_continue_search
-#
-#- story: error_message
-#  steps:
-#  - intent: error_message
-#  - action: utter_ask_os
-#  - intent: say_os
-#    entities:
-#    - os
-#  - action: utter_ask_pl
-#  - intent: say_pl
-#    entities:
-#    - pl
-#
-#  - action: utter_ask_message
-#  - intent: say_message
-#    entities:
-#    - message
-#  - action: utter_CORS_problem_answer
-#  - checkpoint: check_continue_search
-# 有問題會亂跳 結束
 
-- story: affirm
+- story: search_affirm
   steps:
   - checkpoint: check_continue_search
   - intent: affirm
   - action: utter_CORS_problem_answer
   - checkpoint: check_continue_search
 
-- story: deny
+- story: search_deny
   steps:
   - checkpoint: check_continue_search
   - intent: deny
   - action: utter_ask_satisfied
-  - or:
-    - intent: say_satisfied
-    - intent: say_not_satisfied
+  - checkpoint: check_satisfied
+  
+- story: satisfied_affirm
+  steps:
+  - checkpoint: check_satisfied
+  - intent: affirm
+  - action: utter_affirm_satisfied
   - action: utter_finish
+  
+
+- story: satisfied_deny
+  steps:
+  - checkpoint: check_satisfied
+  - intent: deny
+  - action: utter_affirm_notsatisfied
+  - action: utter_finish
+  
 
 
 #- story: my_example
@@ -116,15 +91,3 @@ stories:
 #    entities:
 #    - NT
 #  - action: exchange
-
-### 用來測試若intent裡有相同的句子 會觸發哪個intent START
-#- story: test_intent_1
-#  steps:
-#  - intent: test_search
-#  - action: utter_test_search
-#  
-#- story: test_intent_2
-#  steps:
-#  - intent: test_satisfied
-#  - action: utter_test_satisfied
-### 用來測試若intent裡有相同的句子 會觸發哪個intent END
