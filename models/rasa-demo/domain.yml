@@ -18,6 +18,11 @@ intents:
   - discuss_together
   - ask_os
   - say_not_satisfied
+  - say_function
+  ### 用來測試若intent裡有相同的句子 START
+  - test_search
+  - test_satisfied
+  ### 用來測試若intent裡有相同的句子 END
   
 entities:
   - message
@@ -43,12 +48,29 @@ slots:
     type: text
   NT:
     type: text
+    
+#forms:
+#  needed_form:
+#    required_slots:
+#        function:
+#          - type: from_entity
+#            entit
 
 actions:
   - ActionHelloWorld
   - exchange
+  - ask_question_or_message
 
 responses:
+  utter_affirm_satisfied:
+  - text: "你現在很滿意"
+  
+  utter_affirm_notsatisfied:
+  - text: "你現在「不」滿意"
+  
+  utter_check_function:
+  - text: "您選擇的功能為{function}"
+  
   utter_ask_func:
   - text: "請問你想選擇哪個功能呢？"
   
@@ -106,6 +128,14 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+  
+  ### 用來測試若intent裡有相同的句子 START
+  utter_test_search:
+  - text: "觸發的是test_search這個intent"
+  
+  utter_test_satisfied:
+  - text: "觸發的是test_satisfied這個intent"
+  ### 用來測試若intent裡有相同的句子 END
   
 #session_config:
 #  session_expiration_time: 60

@@ -2,6 +2,7 @@ version: "2.0"
 
 stories:
 
+########## 輸入start開始整個流程
 - story: welcome
   steps:
   - intent: start
@@ -16,10 +17,9 @@ stories:
   #  entities:
   #  - pl
   - action: utter_ask_func
-    
-- story: guided_QA
-  steps:
-  - intent: guided_QA
+  - intent: say_function
+    entities:
+    - function
   - action: utter_ask_os
   - intent: say_os
     entities:
@@ -28,50 +28,44 @@ stories:
   - intent: say_pl
     entities:
     - pl
-  
-  - action: utter_ask_question
+  - action: ask_question_or_message
   - intent: say_message
     entities:
     - message
-  - action: utter_CORS_problem_answer
-  - checkpoint: check_continue_search
-  
-- story: error_message
-  steps:
-  - intent: error_message
-  - action: utter_ask_os
-  - intent: say_os
-    entities:
-    - os
-  - action: utter_ask_pl
-  - intent: say_pl
-    entities:
-    - pl
-  
-  - action: utter_ask_message
-  - intent: say_message
-    entities:
-    - message
+  - action: utter_check_message
   - action: utter_CORS_problem_answer
   - checkpoint: check_continue_search
 
 
-- story: affirm
+- story: search_affirm
   steps:
   - checkpoint: check_continue_search
   - intent: affirm
   - action: utter_CORS_problem_answer
   - checkpoint: check_continue_search
 
-- story: deny
+- story: search_deny
   steps:
   - checkpoint: check_continue_search
   - intent: deny
   - action: utter_ask_satisfied
-  - or:
-    - intent: say_satisfied
-    - intent: say_not_satisfied
+  - checkpoint: check_satisfied
+  
+- story: satisfied_affirm
+  steps:
+  - checkpoint: check_satisfied
+  - intent: affirm
+  - action: utter_affirm_satisfied
   - action: utter_finish
+  
+
+- story: satisfied_deny
+  steps:
+  - checkpoint: check_satisfied
+  - intent: deny
+  - action: utter_affirm_notsatisfied
+  - action: utter_finish
+  
 
 
 #- story: my_example

@@ -2,11 +2,14 @@ version: "2.0"
 
 nlu:
 
-#- lookup: function
-#  examples: |
-#   - guided_QA
-#   - error_message
-#   - discuss_together
+# 用slot filling 來記住使用者選擇的功能
+- lookup: function
+  examples: |
+   - 引導式問答
+   - guided_QA
+   - 錯誤訊息解答
+   - error_message
+   - 共同討論
    
 - lookup: os
   examples: |
@@ -48,25 +51,35 @@ nlu:
   examples: |
    - ask_os
    
-- intent: guided_QA
+# 會讓story亂跳的寫法 開始
+#- intent: guided_QA
+#  examples: |
+#    - guided_QA
+#
+#- intent: error_message
+#  examples: |
+#    - error_message
+#
+#- intent: discuss_together
+#  examples: |
+#    - discuss_together
+# 會讓story亂跳的寫法 結束
+
+- intent: say_function
   examples: |
-    - guided_QA
-    
-- intent: error_message
-  examples: |
-    - error_message
-    
-- intent: discuss_together
-  examples: |
-    - discuss_together
+    - [guided_QA](function)
 
 - intent: say_os
   examples: |
     - I'm use [mac OS](os)
+    - 我是用[mac os](os)
+    - [mac os](os)
 
 - intent: say_pl
   examples: |
     - I'm use [python](pl)
+    - 我是用[python](pl)
+    - [python](pl)
     
 - intent: say_message
   examples: |
@@ -75,18 +88,43 @@ nlu:
 - intent: affirm
   examples: |
     - continue search
+    - 繼續
+    - satisfied
+    - 滿意
+    - 好
+    - 是
+    - 要
+    - ok
+    - 可以
+    - 對
+    - 確定
+    - 有
 
 - intent: deny
   examples: |
     - not continue search
+    - 停止
+    - not satisfied
+    - 不滿意
+    - 不要
+    - 不好
+    - not ok
+    - 不可以
+    - 不對
+    - no
+    - 不確定
+    - 沒
+    - 別
     
 - intent: say_satisfied
   examples: |
     - satisfied
+    - 滿意
     
 - intent: say_not_satisfied
   examples: |
     - not satisfied
+    - 不滿意
 
 - intent: action_test
   examples: |
@@ -104,3 +142,17 @@ nlu:
 - intent: ask_NT
   examples: |
     - NT is [100](NT)
+
+### 用來測試若intent裡有相同的句子 會觸發哪個intent START
+#- intent: test_satisfied
+#  examples: |
+#    - 好
+#    - 是
+#    - 滿意
+#
+#- intent: test_search
+#  examples: |
+#    - 好
+#    - 是
+#    - 繼續搜尋
+### 用來測試若intent裡有相同的句子 會觸發哪個intent END
