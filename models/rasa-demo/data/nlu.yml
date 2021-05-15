@@ -3,13 +3,23 @@ version: "2.0"
 nlu:
 
 # 用slot filling 來記住使用者選擇的功能
-- lookup: function
+#- lookup: function
+#  examples: |
+#   - 引導式問答
+#   - guided_QA
+#   - 錯誤訊息解答
+#   - error_message
+#   - 共同討論
+
+- regex: function
   examples: |
-   - 引導式問答
-   - guided_QA
-   - 錯誤訊息解答
-   - error_message
-   - 共同討論
+   - \b引導式\b
+   - .*引導式.*
+   - \b錯誤訊息\b
+   - .*錯誤訊息.*
+   - \b共同討論\b
+   - .*共同討論.*
+
    
 - lookup: os
   examples: |
@@ -25,7 +35,7 @@ nlu:
    
 - regex: message
   examples: |
-   - error .+
+   - error.*
 
 - lookup: name
   examples: |
@@ -50,24 +60,10 @@ nlu:
 - intent: ask_os
   examples: |
    - ask_os
-   
-# 會讓story亂跳的寫法 開始
-#- intent: guided_QA
-#  examples: |
-#    - guided_QA
-#
-#- intent: error_message
-#  examples: |
-#    - error_message
-#
-#- intent: discuss_together
-#  examples: |
-#    - discuss_together
-# 會讓story亂跳的寫法 結束
 
 - intent: say_function
   examples: |
-    - [guided_QA](function)
+    - [引導式](function)
 
 - intent: say_os
   examples: |
