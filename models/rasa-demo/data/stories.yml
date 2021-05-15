@@ -7,16 +7,12 @@ stories:
   steps:
   - intent: start
   - action: utter_welcome
-  #- intent: ask_os
-  #- action: utter_ask_os
-  #- intent: say_os
-  #  entities:
-  #  - os
-  #- action: utter_ask_pl
-  #- intent: say_pl
-  #  entities:
-  #  - pl
   - action: utter_ask_func
+#  - checkpoint: check_user_func
+#
+#- story: after_func
+#  steps:
+#  - checkpoint: check_user_func
   - intent: say_function
     entities:
     - function
