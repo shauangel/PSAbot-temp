@@ -19,22 +19,6 @@ function start(){
             console.log("error");
         }
     });
-
-    var myURL = head_url + "ask_os";
-    $.ajax({
-            url: myURL,
-            type: "GET",
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function(response){
-                console.log("response: "+response);
-                console.log(response.text);
-                document.getElementById("content").innerHTML += '<font color="black">'+response.text+'</font><br>';
-            },
-            error: function(){
-                console.log("error");
-            }
-        });
 }
 
 //send資料給rasa
@@ -51,6 +35,7 @@ function send_to_bot(){
         success: function(response){
             console.log(response.text);
             document.getElementById("content").innerHTML += '<font color="black">'+response.text+'</font><br>';
+            $("#user_input").val("");
         },
         error: function(){
             console.log("error");
