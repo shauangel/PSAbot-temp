@@ -11,9 +11,9 @@ import json
 import flask
 from flask import request, Blueprint, jsonify
 
-
-welcome_api=Blueprint('welcome_api', __name__)
-@welcome_api.route('welcome')
+#為了主動觸發custom action
+rasa_api=Blueprint('rasa_api', __name__)
+@rasa_api.route('welcome')
 def welcome():
     sender_id=request.values.get('sender_id')
     print('sender_id'+sender_id)
@@ -26,7 +26,8 @@ def welcome():
     else:
         return r.json()[0]
 
-@welcome_api.route('session_start')
+#為了主動觸發custom action
+@rasa_api.route('session_start')
 def session_start():
     sender_id=request.values.get('sender_id')
     print('sender_id'+sender_id)
@@ -36,6 +37,17 @@ def session_start():
     print(r.json())
     return jsonify({"message":"session_start success"})
     
+@rasa_api.route('keywords')
+def keywords():
+    sender_id=request.values.get('sender_id')
+    keywords=request.values.get('keywords')
+    print('sender_id'+sender_id)
+    payload = {'sender': sender_id, 'message': keywords}
+    headers = {'content-type': 'application/json'}
+    r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload, headers=headers)
+    print(r.json())
+    return jsonify({"message":"get_keywords success"})
+    
 #ask_os_api=Blueprint('ask_os_api', __name__)
 #@ask_os_api.route('ask_os')
 #def ask_os():
@@ -44,3 +56,4 @@ def session_start():
 #    r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload, headers=headers)
 #    print(r.json())
 #    return r.json()[0]
+
