@@ -10,43 +10,108 @@
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
+import random
 
-class ActionHelloWorld(Action):
+#加入文字分析模組&外部搜尋模組
+from .TextAnalyze import TextAnalyze
+from .OuterSearch import outerSearch
+#摘要
+from .StackData import StackData
+
+#將整句話(問題描述、錯誤訊息)填入slot
+class fill_slot(Action):
     def name(self) -> Text:
-        return "ActionHelloWorld"
+        return "fill_slot"
 
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="hello test")
-        return []
-
-class exchange(Action):
-    # return 要放 action的名稱 「一定要一模一樣」
-    def name(self) -> Text:
-        return "exchange"
-
-    def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
-        NT = int(tracker.get_slot("NT"))
-        NT = NT*0.035
-        dispatcher.utter_message(
-            text="美金是"+str(NT),
-            json_message = {"res_after": NT, "res_before": tracker.get_slot("NT")}
-        )
-        return []
+        function = tracker.get_slot("function")
+        os = tracker.get_slot("os")
+        pl = tracker.get_slot("pl")
         
-class ask_question_or_message(Action):
-    # return 要放 action的名稱 「一定要一模一樣」
-    def name(self) -> Text:
-        return "ask_question_or_message"
-
-    def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
-        chosen = tracker.get_slot("function")
-        if "錯誤訊息" in chosen:
-            reply = "請貼上您的錯誤訊息"
-        elif "引導式" in chosen:
-            reply = "請描述您遇到的問題"
+        if os!=None and pl!=None:
+            if "錯誤訊息" in function:
+                reply = "請貼上您的錯誤訊息"
+            elif "引導式" in function:
+                reply = "請描述您遇到的問題"
+            else:
+                reply = "你的function抓不到"
+        elif os == None:
+            reply = "請問您使用的是什麼作業系統？<br>若之後要修改，請輸入「我要更改作業系統」"
         else:
-            reply = "你的function抓不到"
+            reply = "請問您使用的是什麼程式語言？<br>若之後要修改，請輸入「我要更改程式語言」"
         
+        dispatcher.utter_message(text=reply)
+        return []
+
+#給user選關鍵字
+class analyze_and_select_keyword(Action):
+    def name(self) -> Text:
+        return "analyze_and_select_keyword"
+    def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
+        #拿到所需訊息及最後一句使用者輸入
+        question_or_error_message = tracker.latest_message.get('text')
+        question_or_error_message = question_or_error_message.split(' ',1)[1]
+        print(question_or_error_message)
+        
+        function = tracker.get_slot("function")
+        os = tracker.get_slot("os")
+        pl = tracker.get_slot("pl")
+        #宣告文字分析器
+        textAnalyzer = TextAnalyze()
+        #擷取使用者問題的關鍵字
+        qkey = textAnalyzer.keywordExtration(question_or_error_message)[0]
+        #加上作業系統與程式語言作為關鍵字
+        qkey.append(os)
+        qkey.append(pl)
+
+        reply = '新增/刪除用來搜尋的關鍵字<br><div id="keywords'
+        reply += '">'
+        id = 0
+        for i in qkey:
+            reply += '<label id="'
+            reply += str(id)
+            reply += '" class="badge badge-default purpleLabel">'
+            reply += str(i)
+            reply += '<button class="labelXBtn" onclick="cancleKeyWords(\''
+            reply += str(id)
+            reply += '\')">x</button></label>'
+            id += 1
+        reply += '</div><br><input id="addBtn" class="btn btn-primary purpleBtnInChatroom" value="新增" onclick="wantAddKeyWord()"><input id="doneBtn"class="btn btn-primary purpleBtnInChatroom" value="完成" onclick="doneKeyWord()">'
+        
+        dispatcher.utter_message(text=reply)
+        return []
+
+class outer_search(Action):
+    def name(self) -> Text:
+        return "outer_search"
+    def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
+        #拿到所需訊息及最後一句使用者輸入
+        keywords = tracker.latest_message.get('text')
+        keywords = keywords.split(' ',1)[1]
+        print(keywords)
+        
+        qkey = keywords.split(' ')
+        #外部搜尋結果（URL）
+        resultpage = outerSearch(qkey, 10, 1)
+
+        for url in resultpage:
+            print(url)
+
+        stack_items = [StackData(url) for url in resultpage]
+        result_title = []
+        for items in stack_items:
+            #showData回傳的資料即是傳送到前端的json格式
+            display = items.showData()
+            result_title.append(display['question']['title'])
+        
+        
+        reply = "謝謝您的等待，以下為搜尋結果的資料摘要："
+        for i in range(0, len(resultpage)):
+            reply += ("<br>" + str(i+1) + ".<a href=\"" + resultpage[i] + "\">"+ result_title[i] + "</a>")
+        reply += "<br>點選摘要連結可顯示內容。<br><br>是否要繼續搜尋？"
+        
+        reply += "<a href=\"#\" onclick=\"summary('all')\">點我查看所有答案排名</a>"
         dispatcher.utter_message(text=reply)
         return []
