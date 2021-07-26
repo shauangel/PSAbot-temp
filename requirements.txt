@@ -35,6 +35,8 @@ docopt==0.6.2
 en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.1.0/en_core_web_lg-3.1.0-py3-none-any.whl
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.1.0/en_core_web_sm-3.1.0-py3-none-any.whl
 fbmessenger==6.0.0
+Flask==2.0.1
+Flask-Cors==3.0.10
 future==0.18.2
 gast==0.3.3
 gensim==4.0.1
@@ -57,6 +59,7 @@ httpx==0.15.4
 humanfriendly==9.2
 idna==2.10
 iniconfig==1.1.1
+itsdangerous==2.0.1
 Jinja2==3.0.1
 jmespath==0.10.0
 joblib==0.15.1
