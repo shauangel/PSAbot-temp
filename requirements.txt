@@ -32,8 +32,8 @@ decorator==4.4.2
 dm-tree==0.1.6
 dnspython==1.16.0
 docopt==0.6.2
-en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.1.0/en_core_web_lg-3.1.0-py3-none-any.whl
-en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.1.0/en_core_web_sm-3.1.0-py3-none-any.whl
+en-core-web-lg==3.1.0
+en-core-web-sm==3.1.0
 fbmessenger==6.0.0
 future==0.18.2
 gast==0.3.3
@@ -82,6 +82,8 @@ packaging==20.9
 pamqp==2.3.0
 pathy==0.6.0
 Pillow==8.3.1
+pip==21.2.1
+pkg_resources==0.0.0
 plac==1.1.3
 pluggy==0.13.1
 preshed==3.0.5
@@ -128,6 +130,7 @@ Sanic-Plugins-Framework==0.9.5
 scikit-learn==0.24.2
 scipy==1.7.0
 sentry-sdk==0.19.5
+setuptools==57.4.0
 six==1.16.0
 sklearn-crfsuite==0.3.6
 slackclient==2.9.3
@@ -171,6 +174,7 @@ wcwidth==0.2.5
 webexteamssdk==1.6
 websockets==8.1
 Werkzeug==2.0.1
+wheel==0.36.2
 wrapt==1.12.1
 yarl==1.5.1
-zh-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.1.0/zh_core_web_sm-3.1.0-py3-none-any.whl
+zh-core-web-sm==3.1.0
