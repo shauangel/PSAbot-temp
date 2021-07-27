@@ -232,12 +232,13 @@ function cancle(id, page){
     }
 }
 
+
 function save(){
     // id
     var id = localStorage.getItem("sessionID");
     // 姓名
     var myURL = head_url + "query_user_profile";
-    var temp = {"_id": id};
+    var temp = {_id: id};
     var name = "";
     $.ajax({
         url: myURL,
@@ -254,6 +255,7 @@ function save(){
             console.log("失敗: 拿姓名（query_user_profile）");
         }
     });
+    
     // 標題
     var title = $("#postTitle").val();
     // 內容

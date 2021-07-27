@@ -40,7 +40,13 @@ def query_user_post_list():
     data = request.get_json()
     user_dict = user.query_user(data['_id'])
     try:
-        user_posts = user_dict['record']['posts']
+        user_record = user_dict['record']['posts']
+        page_size = data['page_size']
+        page_number = data['page_number']
+        user_posts = {
+            "post_count": len(user_record),
+            "post_list": user_record[page_size * (page_number - 1) : page_size * (page_number - 1) + page_size]
+        }
     except Exception as e :
         user_posts = {"error" : e.__class__.__name__ + ":" +e.args[0]}
         print(e)
@@ -52,7 +58,13 @@ def query_user_response_list():
     data = request.get_json()
     user_dict = user.query_user(data['_id'])
     try:
-        user_posts = user_dict['record']['responses']
+        user_record = user_dict['record']['responses']
+        page_size = data['page_size']
+        page_number = data['page_number']
+        user_posts = {
+            "post_count": len(user_record),
+            "post_list": user_record[page_size * (page_number - 1) : page_size * (page_number - 1) + page_size]
+        }
     except Exception as e :
         user_posts = {"error" : e.__class__.__name__ + ":" +e.args[0]}
         print(e)
@@ -140,13 +152,13 @@ def read_image():
     
     #define an image object with the location.
     #file = "/Users/linxiangling/Documents/GitHub/PQAbot/static/images/user_img/"+user_id+".png"
-    #file = "/Users/cihcih/Documents/GitHub/PQAbot/static/images/user_img/"+user_id+".png"
+#    file = "/Users/cihcih/Documents/GitHub/PQAbot/static/images/user_img/"+user_id+".png"
     file = "/home/bach-proj-vm/PQAbot/static/images/user_img/"+user_id+".png"
     #file = "../images/"+book_id+".png"
     #Open the image in read-only format.
     if path.exists(file) == False:
         #file = "/Users/linxiangling/Documents/GitHub/PQAbot/static/images/user_img/defaultPic.png"
-        #file = "/Users/cihcih/Documents/GitHub/PQAbot/static/images/user_img/defaultPic.png"
+#        file = "/Users/cihcih/Documents/GitHub/PQAbot/static/images/user_img/defaultPic.png"
         file = "/home/bach-proj-vm/PQAbot/static/images/user_img/defaultPic.png"
         #file = "../static/images/user_img/defaultPic.png"
     with open(file, 'rb') as f:

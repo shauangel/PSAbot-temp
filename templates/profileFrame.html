@@ -67,18 +67,16 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="card-header-left">
-                                                <h5>貼文紀錄</h5>
+                                                <div class="title">貼文紀錄</div>
                                              </div>
                                               <div class="card-header-right">
                                                   <i class="icofont icofont-spinner-alt-5"></i>
                                               </div>
                                             <!-- 翻頁 start-->
-<!--
-                                            <div class="pagination">
-                                                <a href="#">❮</a>
-                                                <a href="#">❯</a>
+                                            <div class="pagination card-header-right" style="float: right;">
+                                                <button href="#" id="backwardPagePost" onclick="editPageNum('-1', 'backwardPagePost')">❮</button>
+                                                <button href="#" id="forwardPagePost" onclick="editPageNum('1', 'forwardPagePost')">❯</button>
                                             </div>
--->
                                             <!-- 翻頁 end-->
                                         </div>
                                         <div class="card-block">
@@ -126,15 +124,15 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="card-header-left">
-                                                <h5>回覆紀錄</h5>
+                                                <div class="title">回覆紀錄</div>
                                             </div>
                                             <div class="card-header-right">
                                                   <i class="icofont icofont-spinner-alt-5"></i>
                                             </div>
                                             <!-- 翻頁 start-->
-                                            <div class="pagination">
-                                                <a href="#">❮</a>
-                                                <a href="#">❯</a>
+                                            <div class="pagination card-header-right" style="float: right;">
+                                                <button href="#" id="backwardPageAnswer" onclick="editPageNum('-1', 'backwardPagePost')">❮</button>
+                                                <button href="#" id="forwardPageAnswer" onclick="editPageNum('1', 'forwardPagePost')">❯</button>
                                             </div>
                                             <!-- 翻頁 end-->
                                         </div>

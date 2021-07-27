@@ -101,6 +101,7 @@ function user(string){
     history.scrollTop = history.scrollHeight;
 }
 
+// 關鍵字們 START
 function wantAddKeyWord(){
     
     var textArea = document.getElementById("message");
@@ -197,8 +198,11 @@ function doneKeyWord(){
     console.log("keyWordsBtn");
     console.log(keyWordsBtn);
     
+    document.getElementById("keywords").removeAttribute("id");
+    
     console.log("送出字串: "+sendKeyWords);
     
+    var content = "";
     // outerSearch START
     // 傳給rasa START
     var sessionId = localStorage.getItem("sessionID");
@@ -211,9 +215,9 @@ function doneKeyWord(){
         async:false,
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("outerSearch");
             console.log("response: ");
             console.log(response);
-//            bot(response.text);
         },
         error: function(){
             console.log("error");
@@ -244,6 +248,7 @@ function doneKeyWord(){
         success: function(response){
             console.log("成功: 內部貼文搜尋（query_inner_search）");
             console.log(response);
+            content = innerSearch(response, content);
         },
         error: function(response){
             console.log("失敗: 內部貼文搜尋（query_inner_search）");
@@ -251,17 +256,59 @@ function doneKeyWord(){
         }
     });
     //innerSearch END
+    bot(content);
+}
+// 關鍵字們 END
+
+// innerSearch START
+function innerSearch(response, content){
+    for(var i=0; i<response.inner_search_result.length; i++){
+        var data = {_id: response.inner_search_result[i]};
+        console.log(data);
+
+        var myURL = head_url + "query_inner_post";
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("成功: 內部貼文（query_inner_post）");
+                console.log(response);
+                content += '<a href="#" onclick="clickChatroomInnerSearch(\'';
+                content += response._id;
+                content += '\')">';
+                content += response.title;
+                content += '</a><br>';
+            },
+            error: function(response){
+                console.log("失敗: 內部貼文（query_inner_post）");
+                console.log(response);
+            }
+        });
+    }
+    return content;
 }
 
+function clickChatroomInnerSearch(postId){
+    localStorage.setItem("singlePostId", postId);
+    setPage('mySinglePostFrame');
+}
+// innerSearch END
 
 ////////////////// 聊天室 END ////////////////////
 
 ////////////////// 初始化 START////////////////////
 function start(){
-    // 測試用 START
-//    bot("您的關鍵字如下");
-    // 測試用 END
+    localStorage.clear();
+    //這個是管理者
+//    localStorage.setItem("role", "manager");
+//    localStorage.setItem("sessionID", 4444);
     
+    // 這個是一般使用者
+    localStorage.setItem("role", "generalUser");
     localStorage.setItem("sessionID", 123);
     var session_id = localStorage.getItem("sessionID");
     
@@ -280,10 +327,13 @@ function start(){
     // ---------- 同個頁面監聽localStorage END ---------- //
     
     
-    
+    setMenuBar();
     // ---------- 個人資料 START ---------- //
+    showIdentity();
     getUserHeadshotAndName();
-    getUserInterestTags();
+    if(localStorage.getItem("role")=="generalUser"){
+        getUserInterestTags();
+    }
     // ---------- 個人資料 END ---------- //
     
     
@@ -301,7 +351,6 @@ function start(){
     
     //傳session_start
     var myURL = head_url + "session_start?sender_id="+session_id;
-//    var myURL = head_url + "session_start?sender_id=123";
     console.log("myURL: "+myURL);
     $.ajax({
         url: myURL,
@@ -311,7 +360,7 @@ function start(){
         contentType: 'application/json; charset=utf-8',
         success: function(response){
             console.log("response: "+response);
-            console.log(response.message);
+            console.log(response);
         },
         error: function(){
             console.log("error");
@@ -328,8 +377,8 @@ function start(){
         async:false,
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("response: "+response);
-            console.log(response.text);
+            console.log("");
+            console.log(response);
             bot(response.text)
         },
         error: function(){
@@ -337,7 +386,56 @@ function start(){
         }
     });
     // ---------- PSABot聊天室 END ---------- //
+    
 }
+
+function setMenuBar(){
+    var role = localStorage.getItem("role"), start, end;
+    var leftManuBarPagesContent = "";
+    var setPage = ["home", "profileFrame", "postQuestionFrame", "postRowFrame", "home", "postRowFrame", "manageFAQsFrame", "manageDataFrame"];
+    var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench"];
+    var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "首頁", "管理內部貼文", "管理FAQs資料", "管理資料更新數據"];
+    
+    if(role == "generalUser"){
+        start = 0;
+        end = 4;
+    }
+    else if(role == "manager"){
+        start = 4;
+        end = 8;
+        document.getElementById("interestingTags").innerHTML = "";
+    }
+    
+    for(var i=start; i<end; i++){
+        leftManuBarPagesContent += '<li>';
+            leftManuBarPagesContent += '<a href="#" onclick="setPage(\'';
+            leftManuBarPagesContent += setPage[i];
+            leftManuBarPagesContent += '\')">';
+                leftManuBarPagesContent += '<span class="pcoded-micon"><i class="';
+                leftManuBarPagesContent += pageIcon[i];
+                leftManuBarPagesContent += '" aria-hidden="true"></i></span>';
+                leftManuBarPagesContent += '<span class="pcoded-mtext" data-i18n="nav.dash.main">';
+                leftManuBarPagesContent += pageName[i];
+                leftManuBarPagesContent += '</span>';
+                leftManuBarPagesContent += '<span class="pcoded-mcaret"></span>';
+            leftManuBarPagesContent += '</a>';
+        leftManuBarPagesContent += '</li>';
+    }
+    
+    // 登出Button
+    leftManuBarPagesContent += '<li style="position: fixed; bottom: 10px; display: block;">';
+        leftManuBarPagesContent += '<a href="#" onclick="logOut()">';
+            leftManuBarPagesContent += '<button class="btn btn-outline" style="width: 230px; background-color: #5D478B;">';
+                leftManuBarPagesContent += '<i class="fa fa-sign-out" aria-hidden="true" style="color: white;"></i>';
+                leftManuBarPagesContent += '<span data-i18n="nav.dash.main" style="color: white;">登出</span>';
+            leftManuBarPagesContent += '</button>';
+        leftManuBarPagesContent += '</a>';
+    leftManuBarPagesContent += '</li>';
+
+    
+    document.getElementById("leftMenuBarPages").innerHTML = leftManuBarPagesContent;
+}
+
 ////////////////// 初始化 END////////////////////
 
 function getUserInterestTags(){
@@ -440,6 +538,20 @@ function open_close(){
 //編輯個人資訊 START
 
 //////////////////照片＆姓名 START////////////////////
+
+function showIdentity(){
+    var role = localStorage.getItem("role");
+    if(role == "generalUser"){
+        document.getElementById("userRoleMenubar").innerHTML = "一般使用者";
+    }
+    else if(role == "manager"){
+        document.getElementById("userRoleMenubar").innerHTML = "管理者";
+    }
+    else{
+        document.getElementById("userRoleMenubar").innerHTML = "未知";
+    }
+}
+
 var userHeadshotURL = "";
 
 $("#headshotBtn").change(function(){
@@ -699,6 +811,11 @@ function getLanguageTag(){
 
 // 顯示「語言」tag的content
 function showLanguageTag(){
+    // 不會有上一頁的按鈕 START
+    var titleContent = "";
+    document.getElementById("forwardPage").innerHTML = titleContent;
+    // 不會有上一頁的按鈕 END
+    
     localStorage.setItem("chooseTags", 0);
     var content = "";
     for(var i=0; i<language.length; i++){
