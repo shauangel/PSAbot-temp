@@ -18,14 +18,35 @@ function changePage(){
 ////////////////// 聊天室 START ////////////////////
 
 var keyWords = {};
+var needToClearBotMessage = false;
 
 function bot(string){
     console.log("bot送訊息");
+    console.log("needToClearBotMessage: "+needToClearBotMessage);
     keyWords = {};
+    
+    if(needToClearBotMessage){
+        console.log("有進來清");
+        var obj = document.getElementById("willBeClear");
+        obj.innerHTML = "";
+        var objParent = obj.parentNode;
+        objParent.removeChild(obj);
+        needToClearBotMessage = false;
+        console.log("object: ");
+        console.log(obj);
+    }
     
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
-    content += '<div class="d-flex justify-content-start mb-4">';
+    
+    
+    content += '<div ';
+    if(string == "正在輸入訊息..."){
+        needToClearBotMessage = true;
+        content += 'id="willBeClear" ';
+        console.log("下一次要清掉");
+    }
+    content += 'class="d-flex justify-content-start mb-4">';
     content += '<div class="img_cont_msg">';
     content += '<img src="../static/images/baymaxChat.png" class="chatImg">';
     content += '</div>';
@@ -99,6 +120,8 @@ function user(string){
     
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
+    
+    bot("正在輸入訊息...");
 }
 
 // 關鍵字們 START
@@ -163,6 +186,7 @@ function cancleKeyWords(keyWordId){
     console.log(keyWords);
 }
 
+var postNumber;
 function doneKeyWord(){
     
     // 恢復原廠設定 START
@@ -186,7 +210,7 @@ function doneKeyWord(){
     
     var sendKeyWords = "keywords";
     for(var id in keyWords){
-        sendKeyWords += " ";
+        sendKeyWords += ",";
         sendKeyWords += keyWords[id];
         document.getElementById(id).setAttribute("style", "background-color: gray;");
         document.getElementById(id).removeAttribute("id");
@@ -203,6 +227,7 @@ function doneKeyWord(){
     console.log("送出字串: "+sendKeyWords);
     
     var content = "";
+    postNumber = 1;
     // outerSearch START
     // 傳給rasa START
     var sessionId = localStorage.getItem("sessionID");
@@ -231,7 +256,7 @@ function doneKeyWord(){
     console.log("myURL: "+myURL);
     var tempKeywords = []
     for(var id in keyWords){
-        sendKeyWords += " ";
+        sendKeyWords += ",";
         tempKeywords.push(keyWords[id]);
     }
     var data = {keywords: tempKeywords};
@@ -277,11 +302,13 @@ function innerSearch(response, content){
             success: function(response){
                 console.log("成功: 內部貼文（query_inner_post）");
                 console.log(response);
-                content += '<a href="#" onclick="clickChatroomInnerSearch(\'';
+                content += postNumber;
+                content += '. <a href="#" onclick="clickChatroomInnerSearch(\'';
                 content += response._id;
                 content += '\')">';
                 content += response.title;
                 content += '</a><br>';
+                postNumber += 1;
             },
             error: function(response){
                 console.log("失敗: 內部貼文（query_inner_post）");
