@@ -19,12 +19,12 @@ from .user_api import user_api
 from .post_api import post_api
 # from .post_web import post_web
 
-blueprint_prefix = [(exchange_api, "api"), (exchange_web, ""),
-                    (rasa_api, "api"), (base_flow_web, ""),
-                    (base_flow_rasa_api, "api"), (tag_api, "api"),
-                    (login_api, "api"),(login_web, ""),
-                    (user_api,"api"),
-                    (post_api,"api")]
+blueprint_prefix = [(exchange_api, "/api"), (exchange_web, ""),
+                    (rasa_api, "/api"), (base_flow_web, ""),
+                    (base_flow_rasa_api, "/api"), (tag_api, "/api"),
+                    (login_api, "/api"),(login_web, ""),
+                    (user_api,"/api"),
+                    (post_api,"/api")]
 
 def register_blueprint(app):
     for blueprint, prefix in blueprint_prefix:
