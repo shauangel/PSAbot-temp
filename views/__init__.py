@@ -19,10 +19,10 @@ from .user_api import user_api
 from .post_api import post_api
 # from .post_web import post_web
 
-blueprint_prefix = [(exchange_api, "/api"), (exchange_web, ""),
-                    (rasa_api, "/api"), (base_flow_web, ""),
+blueprint_prefix = [(exchange_api, "/api"), (exchange_web, "/site"),
+                    (rasa_api, "/api"), (base_flow_web, "/site"),
                     (base_flow_rasa_api, "/api"), (tag_api, "/api"),
-                    (login_api, "/api"),(login_web, ""),
+                    (login_api, "/api"),(login_web, "/site"),
                     (user_api,"/api"),
                     (post_api,"/api")]
 
