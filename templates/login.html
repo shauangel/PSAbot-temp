@@ -95,7 +95,7 @@
               <!--Google Sign in button-->
               <div style="height: 70%;">
                 <div id="gSignInWrapper">
-                  <button id="google-login-btn" class="customGPlusSignIn" onclick="onLoadGoogleCallback()">
+                  <button id="google-login-btn" class="customGPlusSignIn">
                     <input type="image" src="../static/images/google.png" style="width: 13%; float: left;" />
                     <span class="buttonText">Sign in with Google</span>
                   </button>
@@ -108,6 +108,9 @@
                     <span class="buttonText">Sign in with Facebook</span>
                   </button>
                 </div>
+                <!--Test Logout button-->
+                <a href="#" onclick="googleSignOut()">Sign out Google account</a>
+                <a href="#" onclick="facebookLogout()">Logout Facebook account</a>
               </div>
               <hr />
               <div class="row">
@@ -153,6 +156,8 @@
   <script src="https://apis.google.com/js/platform.js?onload=onLoadGoogleCallback" async defer></script>
   <!-- My script -->
   <script src="../static/assets/js/pages/loginJS/login.js"></script>
+  <!-- 要登出才能測試其他登入 -->
+  <script src="../static/assets/js/pages/loginJS/logout.js"></script>
 
 </body>
 
