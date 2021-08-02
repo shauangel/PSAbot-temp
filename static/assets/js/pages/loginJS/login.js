@@ -1,5 +1,6 @@
 /* ================ Facebook Login ================= */
 // 設定 Facebook JavaScript SDK
+var head_url = "https://soselab.asuscomm.com:55002/api/";
 window.fbAsyncInit = function () {
     FB.init({
       appId: '1018939978932508',
@@ -40,7 +41,7 @@ function checkLoginState() {
             // 取得使用者資料丟到後端
             $.ajax({
                 type: "POST",
-                url: '/facebook_sign_in',
+                url: head_url + 'facebook_sign_in',
                 data: JSON.stringify(response),
                 success: function () {
                 console.log('Facebook login success')
@@ -69,7 +70,7 @@ function onLoadGoogleCallback(){
         var profile = googleUser.getBasicProfile();
         $.ajax({
           type: "POST",
-          url: '/google_sign_in',
+          url: head_url + 'google_sign_in',
           data: JSON.stringify({
             'id_token': googleUser.getAuthResponse().id_token
           }),
