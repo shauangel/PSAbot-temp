@@ -65,7 +65,6 @@ function onLoadGoogleCallback(){
       cookiepolicy: 'single_host_origin',
       scope: 'profile'
     });
-    googleSignOut();
     attachSignin(document.getElementById('google-login-btn'));
   });
 }
