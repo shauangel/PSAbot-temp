@@ -40,11 +40,12 @@ def google_sign_in():
             "record" : {
                 "posts" : [],
                 "responses" : []
-            }
+            },
+            "notification":[]
         }
         user.insert_user(user_dict)
         user_dict = user.query_user(id_info['sub'])
-    return jsonify(user_dict),200
+    return jsonify(user_dict)
 
 @login_api.route('/facebook_sign_in', methods=['POST'])
 def facebook_sign_in():
@@ -60,8 +61,9 @@ def facebook_sign_in():
             "record" : {
                 "posts" : [],
                 "responses" : []
-            }
+            },
+            "notification":[]
         }
         user.insert_user(user_dict)
         user_dict = user.query_user(data['id'])
-    return jsonify(user_dict),200
+    return jsonify(user_dict)
