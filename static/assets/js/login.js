@@ -41,7 +41,7 @@ function checkLoginState() {
             // 取得使用者資料丟到後端
             $.ajax({
                 type: "POST",
-                url: head_url + '/facebook_sign_in',
+                url: head_url + 'facebook_sign_in',
                 data: JSON.stringify(response),
                 success: function () {
                 console.log('Facebook login success')
@@ -70,7 +70,7 @@ function onLoadGoogleCallback(){
         var profile = googleUser.getBasicProfile();
         $.ajax({
           type: "POST",
-          url: head_url + '/google_sign_in',
+          url: head_url + 'google_sign_in',
           data: JSON.stringify({
             'id_token': googleUser.getAuthResponse().id_token
           }),
