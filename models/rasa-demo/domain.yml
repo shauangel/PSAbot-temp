@@ -27,7 +27,6 @@ entities:
   - function
   - os
   - pl
-  - rawdata
   
 slots:
   function:
@@ -39,8 +38,6 @@ slots:
   question_or_error_message:
     type: text
   keywords:
-    type: text
-  rawdata:
     type: text
 
 actions:

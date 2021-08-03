@@ -144,6 +144,7 @@ class analyze_and_search(Action):
 #print(result)
             temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
             block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+
             print(temp_data_id_list.text)
             print(block_rank_id.text)
             t_data_list = json.loads(temp_data_id_list.text)
@@ -164,11 +165,13 @@ class analyze_and_search(Action):
             
             # 慈 START
     #        reply += "<br><br>是否繼續搜尋？"
-            dispatcher.utter_message(text=reply)
+#dispatcher.utter_message(text=reply)
             # 慈 END
-            
+
+            more_keywords = textAnalyzer.keywordExtraction(raw_data)
+            qkey = qkey + more_keywords
             #！！！將關鍵字及更多關鍵字存入slot
-            return [SlotSet("keywords", ','.join(qkey)), SlotSet("rawdata", str(raw_data))]
+            return [SlotSet("keywords", ','.join(qkey))]
             
             
             
@@ -184,11 +187,8 @@ class select_keyword(Action):
         qkey = qkey.split(',')
         
         #------------test------------#
-        textAnalyzer = TextAnalyze.TextAnalyze()
-        raw_data = tracker.get_slot("rawdata")
-        print(raw_data)
-        more_keywords = textAnalyzer.keywordExtraction(eval(raw_data))
-        print(more_keywords)
+        #textAnalyzer = TextAnalyze.TextAnalyze()
+        #more_keywords = textAnalyzer.keywordExtraction(eval(raw_data))
         #----------------------------#
         
         reply = '新增/刪除用來搜尋的關鍵字<br><div id="keywords'

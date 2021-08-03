@@ -10,9 +10,6 @@ nlu:
 #   - 錯誤訊息解答
 #   - error_message
 #   - 共同討論
-- regex: rawdata
-  examples: |
-   - rawdata .*
 
 - regex: keywords
   examples: |
