@@ -168,7 +168,7 @@ class analyze_and_search(Action):
             # 慈 END
             
             #！！！將關鍵字及更多關鍵字存入slot
-            return [SlotSet("keywords", ','.join(qkey)), SlotSet("raw_data", raw_data)]
+            return [SlotSet("keywords", ','.join(qkey)), SlotSet("rawdata", raw_data)]
             
             
             
@@ -185,8 +185,8 @@ class select_keyword(Action):
         
         #------------test------------#
         textAnalyzer = TextAnalyze.TextAnalyze()
-        raw_data = tracker.get_slot("raw_data")
-        print("raw_data")
+        raw_data = tracker.get_slot("rawdata")
+        print(raw_data)
         more_keywords = textAnalyzer.keywordExtraction(raw_data)
         print(more_keywords)
         #----------------------------#
@@ -227,28 +227,32 @@ class outer_search(Action):
         resultpage = outerSearch(qkey, 10, 0)
         for url in resultpage:
             print(url)
+        #外部搜尋
         #stackoverflow物件
         #stack_items = StackData.parseStackData(resultpage)
-        #假資料～～～～～～
+        #假資料～～～～～
         with open("DATA_test.json", "r", encoding="utf-8") as f:
             stack_items = json.load(f)
+        raw_data = [ " ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
         #取得block排名
         result = TextAnalyze.blockRanking(stack_items, qkey)
-        #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
-        result_title = []
-        for items in stack_items:
-            #showData回傳的資料即是傳送到前端的json格式
-            display = items.showData()
-            result_title.append(display['question']['title'])
+        #print(result)
+        temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
+        block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+        print(temp_data_id_list.text)
+        print(block_rank_id.text)
+        t_data_list = json.loads(temp_data_id_list.text)
+        blocks = json.loads(block_rank_id.text)
         
+        #每篇title
+        result_title = [item['question']['title'] for item in stack_items]
         
-        reply = "謝謝您的等待，以下為搜尋結果的資料摘要："
-        for i in range(0, len(resultpage)):
-            reply += ("<br>" + str(i+1) + ".<a href=\"" + resultpage[i] + "\">"+ result_title[i] + "</a>")
-        reply += "<br>點選摘要連結可顯示內容。<br><br>是否要繼續搜尋？"
-        
-        reply += "<a href=\"#\" onclick=\"summary('all')\">點我查看所有答案排名</a>"
-##簡介需要的db id
+        reply += "謝謝您的等待，以下為搜尋結果的資料摘要："
+        for i in range(0, len(t_data_list)):
+            reply += ("<br>" + str(i+1) + ".<a href=\"#\" onclick=\"summary('" + t_data_list[i] + "')\">" + result_title[i] + "</a>")
+        reply += "<br>點選摘要連結可顯示內容。<br>"
+        reply += "<a href=\"#\" onclick=\"rank('" + blocks[0] + "')\">點我查看所有答案排名</a>"
+        reply += "<br><br>是否要繼續搜尋？"
         dispatcher.utter_message(text=reply)
        
         return []
