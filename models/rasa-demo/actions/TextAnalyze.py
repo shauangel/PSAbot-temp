@@ -50,7 +50,7 @@ class TextAnalyze:
         ###Step 4. reduce stopwords & puncuation
         flitered_token = [ word for word in lemma if not nlp.vocab[word].is_stop ]
         
-    return flitered_token, doc
+        return flitered_token, doc
     
     #取得文章摘要 - extractive summarization
     def textSummarization(self, text):
