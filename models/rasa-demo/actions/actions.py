@@ -135,7 +135,7 @@ class analyze_and_search(Action):
 
             #外部搜尋
             #stackoverflow物件
-            stack_items = [StackData(resultpage[idx]).showData() for idx in range(0,10)]
+            stack_items = [StackData(resultpage[idx]).showData() for idx in range(0,5)]
             raw_data = [ " ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
             #取得block排名
             result = TextAnalyze.blockRanking(stack_items, qkey)
