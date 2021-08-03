@@ -65,11 +65,11 @@ function onLoadGoogleCallback(){
       cookiepolicy: 'single_host_origin',
       scope: 'profile'
     });
+    //強制登出
+    auth2.signOut().then(function () {
+      console.log('Google User signed out.');
+    });
     attachSignin(document.getElementById('google-login-btn'));
-  });
-  //強制登出
-  auth2.signOut().then(function () {
-    console.log('Google User signed out.');
   });
   function attachSignin(element) {
     console.log(element.id);
