@@ -31,7 +31,6 @@ def query_cache_by_id():
 @outersearch_cache_api.route('/insert_cache', methods=['POST'])
 def insert_cache():
     data = request.get_json()
-    print(data)
     try:
         result = outer_data_cache.insert_cache(data['data'], data['type'])
         return jsonify(result)
