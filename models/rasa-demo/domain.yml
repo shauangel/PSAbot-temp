@@ -41,7 +41,7 @@ slots:
   keywords:
     type: text
   rawdata:
-    type: list
+    type: text
 
 actions:
   - fill_slot
