@@ -67,7 +67,7 @@ function onLoadGoogleCallback(){
       scope: 'profile'
     });
     attachSignin(document.getElementById('google-login-btn'));
-    console.log('check status: ' + gapi.auth2.getAuthInstance().isSignedIn.get())
+    console.log('check login status: ' + gapi.auth2.getAuthInstance().isSignedIn.get())
   });
   function attachSignin(element) {
     console.log(element.id);
@@ -93,7 +93,7 @@ function onLoadGoogleCallback(){
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        
+        console.log('check login status: ' + gapi.auth2.getAuthInstance().isSignedIn.get())
       }, 
       function(error) 
       {
