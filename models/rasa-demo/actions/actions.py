@@ -144,8 +144,8 @@ class analyze_and_search(Action):
 #print(result)
             temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
             block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
-            t_data_list = temp_data_id_list.json()
-            blocks = block_rank_id.json()
+            t_data_list = json.loads(temp_data_id_list.text)
+            blocks = json.loads(block_rank_id.text)
 
             #每篇title
             result_title = [item['question']['title'] for item in stack_items]
