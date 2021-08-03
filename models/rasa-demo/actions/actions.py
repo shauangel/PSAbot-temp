@@ -16,7 +16,7 @@ import random
 import requests
 import json
 #加入文字分析模組&外部搜尋模組
-from .TextAnalyze import TextAnalyze
+import TextAnalyze
 from .OuterSearch import outerSearch
 ##摘要
 from .StackData import StackData
@@ -92,10 +92,10 @@ class analyze_and_search(Action):
             print(question_or_error_message)
             
             #宣告文字分析器
-            textAnalyzer = TextAnalyze()
+            textAnalyzer = TextAnalyze.TextAnalyze()
             #擷取使用者問題的關鍵字
     #        qkey = ['flask']
-            qkey = textAnalyzer.keywordExtration(question_or_error_message)[0]
+            qkey = textAnalyzer.contentPreProcess(question_or_error_message)[0]
             #加上作業系統與程式語言作為關鍵字
             qkey.append(os)
             qkey.append(pl)
@@ -103,7 +103,13 @@ class analyze_and_search(Action):
             #內部搜尋
             response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
     #        print("內部搜尋的結果: ", response.text)
-            
+    
+            #外部搜尋
+            #stackoverflow物件
+            stack_items = [StackData(url) for url in resultpage]
+            #取得block排名
+            result = TextAnalyze.blockRanking(stack_items, qkey)
+                #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
             
             # 慈 START
             postNumber = 1
@@ -209,9 +215,12 @@ class outer_search(Action):
 
         for url in resultpage:
             print(url)
-
+        #stackoverflow物件
         stack_items = [StackData(url) for url in resultpage]
-        result_title = []
+        #取得block排名
+        result = TextAnalyze.blockRanking(stack_items, qkey)
+        #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
+
         for items in stack_items:
             #showData回傳的資料即是傳送到前端的json格式
             display = items.showData()
@@ -224,6 +233,7 @@ class outer_search(Action):
         reply += "<br>點選摘要連結可顯示內容。<br><br>是否要繼續搜尋？"
         
         reply += "<a href=\"#\" onclick=\"summary('all')\">點我查看所有答案排名</a>"
+##簡介需要的db id
         dispatcher.utter_message(text=reply)
        
         return []
