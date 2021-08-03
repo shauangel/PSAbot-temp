@@ -19,7 +19,7 @@ import json
 from . import TextAnalyze
 from .OuterSearch import outerSearch
 ##摘要
-from .StackData import StackData
+from . import StackData
 
 #head_url='http://localhost:55001/api/'
 head_url='https://soselab.asuscomm.com:55002/api/'
@@ -129,30 +129,29 @@ class analyze_and_search(Action):
             
             #外部搜尋結果（URL）
             resultpage = outerSearch(qkey, 10, 0)
-
             for url in resultpage:
                 print(url)
 
             #外部搜尋
             #stackoverflow物件
-            stack_items = [StackData(resultpage[idx]).showData() for idx in range(0,5)]
+            stack_items = StackData.parseStackData(resultpage)
             raw_data = [ " ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
             #取得block排名
             result = TextAnalyze.blockRanking(stack_items, qkey)
 #print(result)
             temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
             block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+            t_data_list = temp_data_id_list.json()
+            blocks = block_rank_id.json()
 
-            print(temp_data_id_list.json())
-            print(block_rank_id.json())
             #每篇title
             result_title = [item['question']['title'] for item in stack_items]
 
             reply += "謝謝您的等待，以下為搜尋結果的資料摘要："
-            for i in range(0, len(temp_data_id_list)):
+            for i in range(0, len(t_data_list)):
                 reply += ("<br>" + str(i+1) + ".<a href=\"#\" onclick=\"summary('" + temp_data_id_list[i] + "')\">" + result_title[i] + "</a>")
             reply += "<br>點選摘要連結可顯示內容。<br>"
-            reply += "<a href=\"#\" onclick=\"rank('" + block_rank_id[0] + "')\">點我查看所有答案排名</a>"
+            reply += "<a href=\"#\" onclick=\"rank('" + blocks[0] + "')\">點我查看所有答案排名</a>"
             reply += "<br><br>是否要繼續搜尋？"
             dispatcher.utter_message(text=reply)
             
@@ -224,7 +223,7 @@ class outer_search(Action):
         for url in resultpage:
             print(url)
         #stackoverflow物件
-        stack_items = [StackData(url).showData() for url in resultpage]
+        stack_items = StackData.parseStackData(resultpage)
         #取得block排名
         result = TextAnalyze.blockRanking(stack_items, qkey)
         #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
