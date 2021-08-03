@@ -12,7 +12,8 @@ window.fbAsyncInit = function () {
     });
 
     FB.AppEvents.logPageView();
-
+    
+    console.log('Facebook JavaScript SDK prepared.')
 };
 
 (function (d, s, id) {
@@ -39,19 +40,20 @@ function checkLoginState() {
             "fields": "id,name,email"
             },
             function (response) {
-            console.log(response)
-            // 取得使用者資料丟到後端
-            $.ajax({
-                type: "POST",
-                url: head_url + 'facebook_sign_in',
-                data: JSON.stringify(response),
-                success: function () {
-                console.log('Facebook login success')
-                },
-                dataType: 'application/json',
-                contentType: "application/json",
-            });
-            });
+              console.log(response)
+              // 取得使用者資料丟到後端
+              $.ajax({
+                  type: "POST",
+                  url: head_url + 'facebook_sign_in',
+                  data: JSON.stringify(response),
+                  success: function () {
+                  console.log('Facebook login success')
+                  },
+                  dataType: 'application/json',
+                  contentType: "application/json",
+              });
+            }
+          );
         }
     });
 }
