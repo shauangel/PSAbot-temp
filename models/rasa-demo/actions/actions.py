@@ -219,6 +219,7 @@ class outer_search(Action):
         stack_items = [StackData(url) for url in resultpage]
         #取得block排名
         result = TextAnalyze.blockRanking(stack_items, qkey)
+        print("block ranking: " + result)
         #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
 
         for items in stack_items:
