@@ -27,6 +27,7 @@ entities:
   - function
   - os
   - pl
+  - rawdata
   
 slots:
   function:
