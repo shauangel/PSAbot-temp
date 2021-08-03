@@ -2,7 +2,6 @@
 // 設定 Facebook JavaScript SDK
 var head_url = "https://soselab.asuscomm.com:55002/api/"
 // var head_url = "https://1d9bba825e73.ngrok.io/api/"
-var auth2;
 
 window.fbAsyncInit = function () {
     FB.init({
@@ -60,26 +59,15 @@ function checkLoginState() {
 /* ================================================= */
 
 /* ================ Google Sign in ================= */
-
-
-
-
-
-
-window.onLoadCallback = function(){
-  gapi.load('auth2', function () {
+function onLoadGoogleCallback(){
+  gapi.load('auth2', function(){
     auth2 = gapi.auth2.init({
       client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
       cookiepolicy: 'single_host_origin',
       scope: 'profile'
     });
-
-    google_login()
-  })
-}
-
-var google_login = function(){
-  attachSignin(document.getElementById('google-login-btn'));
+    attachSignin(document.getElementById('google-login-btn'));
+  });
   function attachSignin(element) {
     console.log(element.id);
     auth2.attachClickHandler(element, {},
