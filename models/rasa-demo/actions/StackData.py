@@ -60,7 +60,7 @@ class StackData:
             except:
                 continue
     
-    return str(soup)
+        return str(soup)
 
     def showData(self):
         display = {
