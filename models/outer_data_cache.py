@@ -33,6 +33,8 @@ cache_format = {
         "time" : "",
         "view_count" : 0
         }
+
+#利用自訂id查詢資料
 def query_by_id(id_list):
     query = {"_id" : { "$in" : id_list }}
     return _db.OUTER_DATA_CACHE_COLLECTION.find(query)
@@ -120,6 +122,7 @@ if __name__ == "__main__":
     #result = insert_cache(data, "temp_data")
     print(result)
     #result = query_by_id(['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'])
+    #['b_000006']
     #for r in result:
     #    print(r['link'])
     #    print("------")
