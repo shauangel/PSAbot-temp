@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr 26 19:07:59 2021
-
-@author: shauangel
-"""
 import numpy as np
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS  ##停用詞
@@ -15,6 +8,8 @@ from heapq import nlargest
 ###LDA model
 from gensim.corpora.dictionary import Dictionary
 from gensim.models import LdaModel
+from itertools import chain
+
 
 #文字分析模組 - stackoverflow外部資料 & PQAbot系統內部資料
 class TextAnalyze:
@@ -25,7 +20,7 @@ class TextAnalyze:
     #_type: inner data or outer data
     def __init__(self):
         return
-        
+    
     #語言辨識
     def checkLanguage(self, text):
         nlp = spacy.load('en_core_web_sm')
@@ -85,9 +80,9 @@ class TextAnalyze:
         summarized_sen = nlargest(3, sentence_w, key=sentence_w.get)
         
         return summarized_sen
-        
     
-        #利用LDA topic modeling取出關鍵字
+    
+    #利用LDA topic modeling取出關鍵字
     def keywordExtraction():
         
         return 0
@@ -96,11 +91,11 @@ class TextAnalyze:
     ##data -> 2維陣列[[keywords], [keywords], [keywords], ...[]]
     ##topic_num = 欲分割成多少數量
     ##keyword_num = 取前n關鍵字
-    def LDATopicModeling(data, topic_num, keyword_num):
-        dictionary = Dictionary(data)
-        corpus = [dictionary.doc2bow(text) for text in data]
-        lda_model = LdaModel(corpus, num_topics=7, id2word=dictionary)
-        return 0
+    #def LDATopicModeling(data, topic_num, keyword_num):
+    #    dictionary = Dictionary(data)
+    #    corpus = [dictionary.doc2bow(text) for text in data]
+    #    lda_model = LdaModel(corpus, num_topics=7, id2word=dictionary)
+    #   return 0
     
     #關聯度評分
     ##input(question kewords, pure word of posts' question)
@@ -130,34 +125,22 @@ class TextAnalyze:
         print(np.array([ top3pred_sim[i] * top3_prob[i] for i in range(3) ]))
         score_result = np.sum(np.array([ top3pred_sim[i] * top3_prob[i] for i in range(3) ]), axis=0)
         return score_result
-                              
 
-     
-if __name__ == "__main__": 
-    """
-    q = "flask render_template with relative path"
+
+
+def blockRanking(stack_items, qkey):
     analyzer = TextAnalyze()
-    k_list, k_doc = analyzer.keywordExtration(q)
-    print(k_list)
-    result = analyzer.similarityRanking(k_list, ["test test hi hello check checking run ran runner"])
-    print(result)
-    """
-    c1 = "You can do if you want to return a JSON data in the response along with the error code. You can read about responses here and here for make_response API details"
-    c2 = "You have a variety of options: The most basic: If you want to access the headers, you can grab the response object: Or you can make it more explicit, and not just return a number, but return a status code object You can read more about the first two here: About Responses (Flask quickstart) And the third here: Status codes (Flask API Guide)"
-    c3 = " As lacks suggested send status code in return statement and if you are storing it in some variable like  and using than time make sure its type is int not str. as I faced this small issue also here is list of status code followed globally http://www.w3.org/Protocols/HTTP/HTRESP.html Hope it helps."
-    content = "Flask-Restful provides an abort function, it's can raise an HTTPException with special HTTP code and message back to the client. So, you can try to change the code like below: then, the client will receive 403 and a valid JSON string like below: The last, the client should deal with the error message properly."
+    ans = [items['answers'] for items in stack_items]
     
-    analyzer = TextAnalyze()
-    k_list, k_doc = analyzer.keywordExtration(c3)
-    print(k_list)
+    #data pre-process
+    all_content = [[{"id" : sing_ans["id"], "content" : sing_ans['abstract']} for sing_ans in q_ans_list] for q_ans_list in ans ]
+    all_content_flat = list(chain.from_iterable(all_content))
+    raw = [t["content"] for t in all_content_flat]
     
-        
-"""
-q_bow = dictionary.doc2bow(question_key)
-q_topic = sorted(lda_model.get_document_topics(q_bow), key=lambda x:x[1], reverse=True)[0][0]
-q_topic_keywords = " ".join([w[0] for w in lda_model.show_topics(formatted=False, num_words=5)[q_topic][1]])
-q_vec = nlp(q_topic_keywords)
-score_result = [q_vec.similarity(nlp(" ".join(comp))) for comp in comp_preproc_list]
-return score_result
-"""
+    ##similarity ranking
+    temp_result = analyzer.similarityRanking(qkey, raw)
+    for i in range(len(all_content_flat)):
+        all_content_flat[i]["score"] = temp_result[i]
+    rank = sorted(all_content_flat, key=lambda data:data["score"], reverse=True)
+    return rank
     
