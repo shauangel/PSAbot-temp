@@ -35,8 +35,8 @@ cache_format = {
         }
 
 #利用自訂id查詢資料
-def query_by_id(id_list):
-    query = {"_id" : { "$in" : id_list }}
+def query_by_id(idx):
+    query = {"_id" : idx }
     return _db.OUTER_DATA_CACHE_COLLECTION.find(query)
     
 

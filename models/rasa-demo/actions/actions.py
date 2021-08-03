@@ -135,24 +135,25 @@ class analyze_and_search(Action):
 
             #外部搜尋
             #stackoverflow物件
-            stack_items = [StackData(url).showData() for url in resultpage]
+            stack_items = [StackData(resultpage[idx]).showData() for idx in range(0,10)]
+            raw_data = [ " ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
             #取得block排名
             result = TextAnalyze.blockRanking(stack_items, qkey)
-            print(result)
-            #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
+#print(result)
+            temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
+            block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+            cache_id_list = temp_data_id_list + block_rank_id
 
-            result_title = []
-            for items in stack_items:
-                #showData回傳的資料即是傳送到前端的json格式
-                result_title.append(items['question']['title'])
-
+            print(temp_data_id_list + block_rank_id)
+            #每篇title
+            result_title = [item['question']['title'] for item in stack_items]
 
             reply += "謝謝您的等待，以下為搜尋結果的資料摘要："
-            for i in range(0, len(resultpage)):
-                reply += ("<br>" + str(i+1) + ".<a href=\"" + resultpage[i] + "\">"+ result_title[i] + "</a>")
-            reply += "<br>點選摘要連結可顯示內容。<br><br>是否要繼續搜尋？"
-
-            reply += "<a href=\"#\" onclick=\"summary('all')\">點我查看所有答案排名</a>"
+            for i in range(0, len(temp_data_id_list)):
+                reply += ("<br>" + str(i+1) + ".<a href=\"#\" onclick=\"summary('" + temp_data_id_list[i] + "')\">" + result_title[i] + "</a>")
+            reply += "<br>點選摘要連結可顯示內容。<br>"
+            reply += "<a href=\"#\" onclick=\"rank('" + block_rank_id[0] + "')\">點我查看所有答案排名</a>"
+            reply += "<br><br>是否要繼續搜尋？"
             dispatcher.utter_message(text=reply)
             
     #        dispatcher.utter_message(text="是否繼續搜尋？")
@@ -163,7 +164,7 @@ class analyze_and_search(Action):
             # 慈 END
             
             #！！！將關鍵字及更多關鍵字存入slot
-            return [SlotSet("keywords", ','.join(qkey))]
+            return [SlotSet("keywords", ','.join(qkey)), SlotSet("raw_data", raw_data)]
             
             
             
@@ -177,7 +178,15 @@ class select_keyword(Action):
         qkey = tracker.get_slot("keywords")
         print(qkey)
         qkey = qkey.split(',')
-
+        
+        #------------test------------#
+        textAnalyzer = TextAnalyze.TextAnalyze()
+        raw_data = tracker.get_slot("raw_data")
+        print("raw_data")
+        more_keywords = textAnalyzer.keywordExtraction(raw_data)
+        print(more_keywords)
+        #----------------------------#
+        
         reply = '新增/刪除用來搜尋的關鍵字<br><div id="keywords'
         #reply += keywordsTime
         reply += '">'
@@ -212,14 +221,12 @@ class outer_search(Action):
         qkey = keywords.split(',')
         #外部搜尋結果（URL）
         resultpage = outerSearch(qkey, 10, 0)
-
         for url in resultpage:
             print(url)
         #stackoverflow物件
         stack_items = [StackData(url).showData() for url in resultpage]
         #取得block排名
         result = TextAnalyze.blockRanking(stack_items, qkey)
-        print("block ranking: " + result)
         #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
         result_title = []
         for items in stack_items:

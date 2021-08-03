@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS  ##停用詞
@@ -10,14 +11,12 @@ from gensim.corpora.dictionary import Dictionary
 from gensim.models import LdaModel
 from itertools import chain
 
-
 #文字分析模組 - stackoverflow外部資料 & PQAbot系統內部資料
 class TextAnalyze:
     
     STOPWORDS = list(STOP_WORDS)               ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
     POS_TAG = ['PROPN', 'ADJ', 'NOUN', 'VERB'] ##欲留下的詞類
     
-    #_type: inner data or outer data
     def __init__(self):
         return
     
@@ -33,10 +32,7 @@ class TextAnalyze:
     def contentPreProcess(self, text):
         #translator = Translate(text)
         #en_text = translator.getTranslate()
-        
-        #keyword = []
         nlp = spacy.load('en_core_web_sm')
-        #nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
         ###Step 1. lowercase & tokenizing
         doc = nlp(text.lower())
         ###Step 2. reduce punctuation
@@ -52,22 +48,20 @@ class TextAnalyze:
         lemma = list(dict.fromkeys(lemma))    #reduce duplicate words
         
         ###Step 4. reduce stopwords & puncuation
-        fliter_stop = [ word for word in lemma if not nlp.vocab[word].is_stop ]
-        print(fliter_stop)
+        flitered_token = [ word for word in lemma if not nlp.vocab[word].is_stop ]
         
-        #return keyword, doc
-        return fliter_stop, doc
+    return flitered_token, doc
     
     #取得文章摘要 - extractive summarization
     def textSummarization(self, text):
-        ###Step 2.過濾必要token
+        ###Step 1.過濾必要token
         keyword, doc = self.contentPreProcess(text)##保留詞
         freq_word = Counter(keyword)               #計算關鍵詞的出現次數
-        ###Step 3.正規化
+        ###Step 2.正規化
         max_freq_word = Counter(keyword).most_common(1)[0][1]  #取得最常出現單詞次數
         for word in freq_word.keys():
             freq_word[word] = freq_word[word]/max_freq_word    #正規化處理
-        ###Step 4.sentence加權
+        ###Step 3.sentence加權
         sentence_w = {}
         for sen in doc.sents:
             for word in sen:
@@ -76,26 +70,32 @@ class TextAnalyze:
                         sentence_w[sen] += freq_word[word.text]
                     else:
                         sentence_w[sen] = freq_word[word.text]
-        ###Step 5.nlargest(句子數量, 可迭代之資料(句子&權重), 分別須滿足的條件)
+        ###Step 4.nlargest(句子數量, 可迭代之資料(句子&權重), 分別須滿足的條件)
         summarized_sen = nlargest(3, sentence_w, key=sentence_w.get)
         
         return summarized_sen
     
     
     #利用LDA topic modeling取出關鍵字
-    def keywordExtraction():
-        
-        return 0
+    def keywordExtraction(self, data_list):
+        comp_preproc_list = [self.contentPreProcess(data)[0] for data in data_list]
+        keywords = []
+        lda_model, dictionary = self.LDATopicModeling(comp_preproc_list, 5)
+        for i in range(0,5):
+            keywords.append([w[0] for w in lda_model.show_topics(formatted=False, num_words=3)[i][1]])
+        keywords = list(chain.from_iterable(keywords))
+        keywords = list(dict.fromkeys(keywords))
+        return keywords
     
     #LDA topic modeling
     ##data -> 2維陣列[[keywords], [keywords], [keywords], ...[]]
     ##topic_num = 欲分割成多少數量
     ##keyword_num = 取前n關鍵字
-    #def LDATopicModeling(data, topic_num, keyword_num):
-    #    dictionary = Dictionary(data)
-    #    corpus = [dictionary.doc2bow(text) for text in data]
-    #    lda_model = LdaModel(corpus, num_topics=7, id2word=dictionary)
-    #   return 0
+    def LDATopicModeling(self, data, topic_num):
+        dictionary = Dictionary(data)
+        corpus = [dictionary.doc2bow(text) for text in data]
+        lda_model = LdaModel(corpus, num_topics=topic_num, id2word=dictionary, per_word_topics=True)
+        return lda_model, dictionary
     
     #關聯度評分
     ##input(question kewords, pure word of posts' question)
@@ -104,9 +104,7 @@ class TextAnalyze:
         ### pre-process text
         comp_preproc_list = [ self.contentPreProcess(content)[0] for content in compare_list ]
         ##LDA topic modeling
-        dictionary = Dictionary(comp_preproc_list)
-        corpus = [dictionary.doc2bow(text) for text in comp_preproc_list]
-        lda_model = LdaModel(corpus, num_topics=7, id2word=dictionary)
+        lda_model, dictionary = self.LDATopicModeling(comp_preproc_list, 5)
         
         ##topic prediction
         q_bow = dictionary.doc2bow(question_key)
@@ -114,7 +112,7 @@ class TextAnalyze:
         
         ##choose top 3 prediction
         top3_topic_pred = [ q_topics[i][0] for i in range(3) ]            #top3 topic
-        print(top3_topic_pred)
+        #print(top3_topic_pred)
         top3_prob = [q_topics[i][1] for i in range(3)]                    #top3 topic prediction probability
         print(top3_prob)
         top3_topic_keywords = [" ".join([w[0] for w in lda_model.show_topics(formatted=False, num_words=5)[pred_t][1]]) for pred_t in top3_topic_pred ]
@@ -143,4 +141,3 @@ def blockRanking(stack_items, qkey):
         all_content_flat[i]["score"] = temp_result[i]
     rank = sorted(all_content_flat, key=lambda data:data["score"], reverse=True)
     return rank
-    
