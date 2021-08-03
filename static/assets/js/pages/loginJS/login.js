@@ -67,6 +67,10 @@ function onLoadGoogleCallback(){
     });
     attachSignin(document.getElementById('google-login-btn'));
   });
+  //強制登出
+  auth2.signOut().then(function () {
+    console.log('Google User signed out.');
+  });
   function attachSignin(element) {
     console.log(element.id);
     auth2.attachClickHandler(element, {},
@@ -91,8 +95,6 @@ function onLoadGoogleCallback(){
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        console.log('user_id:'+ sessionStorage.getItem('user_id'));
-        console.log('user_role:'+ sessionStorage.getItem('role'));
         
       }, 
       function(error) 
