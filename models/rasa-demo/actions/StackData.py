@@ -12,10 +12,6 @@ class StackData:
         #取得問題id
         self.id = question['question_id']
         self.link = question['link']
-        #設定stackAPI工具
-        self.site = StackAPI('stackoverflow')
-        self.site.page_size = 10
-        self.site.max_pages = 1
         self.question, self.bestAnsID = self.__getQuestion(question)
         self.answers = self.__getAnswers(answers)
     
@@ -100,5 +96,12 @@ def parseStackData(url_list):
             ctg_ans[ans['question_id']].append(ans)
         else:
             ctg_ans[ans['question_id']] = [ans]
-    stack_items = [StackData(q, ctg_ans[q['question_id']]) for q in question]
+    stack_items = [StackData(q, ctg_ans[q['question_id']]).showData() for q in question]
     return stack_items
+
+
+
+
+
+
+
