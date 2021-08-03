@@ -11,7 +11,7 @@ from spacy.lang.en.stop_words import STOP_WORDS  ##停用詞
 from spacy_langdetect import LanguageDetector
 from collections import Counter
 from heapq import nlargest
-from Translate import Translate
+#from Translate import Translate
 ###LDA model
 from gensim.corpora.dictionary import Dictionary
 from gensim.models import LdaModel
