@@ -168,7 +168,7 @@ class analyze_and_search(Action):
             # 慈 END
             
             #！！！將關鍵字及更多關鍵字存入slot
-            return [SlotSet("keywords", ','.join(qkey)), SlotSet("rawdata", raw_data)]
+            return [SlotSet("keywords", ','.join(qkey)), SlotSet("rawdata", str(raw_data))]
             
             
             
@@ -187,7 +187,7 @@ class select_keyword(Action):
         textAnalyzer = TextAnalyze.TextAnalyze()
         raw_data = tracker.get_slot("rawdata")
         print(raw_data)
-        more_keywords = textAnalyzer.keywordExtraction(raw_data)
+        more_keywords = textAnalyzer.keywordExtraction(eval(raw_data))
         print(more_keywords)
         #----------------------------#
         
