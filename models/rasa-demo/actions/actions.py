@@ -144,6 +144,8 @@ class analyze_and_search(Action):
 #print(result)
             temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
             block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+            print(temp_data_id_list.text)
+            print(block_rank_id.text)
             t_data_list = json.loads(temp_data_id_list.text)
             blocks = json.loads(block_rank_id.text)
 
@@ -152,9 +154,9 @@ class analyze_and_search(Action):
 
             reply += "謝謝您的等待，以下為搜尋結果的資料摘要："
             for i in range(0, len(t_data_list)):
-                reply += ("<br>" + str(i+1) + ".<a href=\"#\" onclick=\"summary('" + t_data_list[i] + "')\">" + result_title[i] + "</a>")
+                reply += ("<br>" + str(i+1) + ".<a href=\"#\" onclick=\"summary('" + t_data_list[i].text + "')\">" + result_title[i] + "</a>")
             reply += "<br>點選摘要連結可顯示內容。<br>"
-            reply += "<a href=\"#\" onclick=\"rank('" + blocks[0] + "')\">點我查看所有答案排名</a>"
+            reply += "<a href=\"#\" onclick=\"rank('" + blocks[0].text + "')\">點我查看所有答案排名</a>"
             reply += "<br><br>是否要繼續搜尋？"
             dispatcher.utter_message(text=reply)
             
