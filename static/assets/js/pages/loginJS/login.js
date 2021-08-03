@@ -66,6 +66,10 @@ function onLoadGoogleCallback(){
       cookiepolicy: 'single_host_origin',
       scope: 'profile'
     });
+    var auth2Instance = gapi.auth2.getAuthInstance();
+    auth2Instance.signOut().then(function () {
+        console.log('Google User signed out.');
+    });
     attachSignin(document.getElementById('google-login-btn'));
   });
   function attachSignin(element) {
