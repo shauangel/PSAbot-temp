@@ -65,6 +65,7 @@ class analyze_and_search(Action):
             qkey = question_or_error_message.split(' ')
             qkey.append(os)
             qkey.append(pl)
+            
             #外部搜尋結果（URL）
             resultpage = outerSearch(qkey, 10, 0)
             
@@ -134,16 +135,16 @@ class analyze_and_search(Action):
 
             #外部搜尋
             #stackoverflow物件
-            stack_items = [StackData(url) for url in resultpage]
+            stack_items = [StackData(url).showData() for url in resultpage]
             #取得block排名
             result = TextAnalyze.blockRanking(stack_items, qkey)
+            print(result)
             #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
 
             result_title = []
             for items in stack_items:
                 #showData回傳的資料即是傳送到前端的json格式
-                display = items.showData()
-                result_title.append(display['question']['title'])
+                result_title.append(items['question']['title'])
 
 
             reply += "謝謝您的等待，以下為搜尋結果的資料摘要："
@@ -215,12 +216,12 @@ class outer_search(Action):
         for url in resultpage:
             print(url)
         #stackoverflow物件
-        stack_items = [StackData(url) for url in resultpage]
+        stack_items = [StackData(url).showData() for url in resultpage]
         #取得block排名
         result = TextAnalyze.blockRanking(stack_items, qkey)
         print("block ranking: " + result)
         #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
-
+        result_title = []
         for items in stack_items:
             #showData回傳的資料即是傳送到前端的json格式
             display = items.showData()
