@@ -62,16 +62,14 @@ class StackData:
     
     return str(soup)
 
-def showData(self):
-    display = {
-        "link" : self.link,
-            "question" : self.question,
+    def showData(self):
+        display = {
+            "link" : self.link,
+                "question" : self.question,
                 "answers" : self.answers
             }
         return display
-    
-    def insertDB(self):
-        return
+
 
 def parseStackData(url_list):
     site = StackAPI('stackoverflow')
