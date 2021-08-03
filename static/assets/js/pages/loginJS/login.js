@@ -71,6 +71,7 @@ function onLoadGoogleCallback(){
         console.log('Google User signed out.');
     });
     attachSignin(document.getElementById('google-login-btn'));
+    console.log('check status: ' + gapi.auth2.getAuthInstance().isSignedIn.get())
   });
   function attachSignin(element) {
     console.log(element.id);
@@ -106,4 +107,5 @@ function onLoadGoogleCallback(){
     );
   }
 }
+
 /* ================================================= */
