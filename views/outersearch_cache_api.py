@@ -32,7 +32,7 @@ def query_cache_by_id():
 def insert_cache():
     data = request.get_json()
     try:
-        result = insert_cache(data['data'], data['type'])
+        result = outer_data_cache.insert_cache(data['data'], data['type'])
         return jsonify(result)
     except Exception as e :
         setting_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
