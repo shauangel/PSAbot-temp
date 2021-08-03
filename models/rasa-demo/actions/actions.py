@@ -99,18 +99,11 @@ class analyze_and_search(Action):
             #加上作業系統與程式語言作為關鍵字
             qkey.append(os)
             qkey.append(pl)
-            
+            resultpage = outerSearch(qkey, 10, 0)
             #內部搜尋
             response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
     #        print("內部搜尋的結果: ", response.text)
     
-            #外部搜尋
-            #stackoverflow物件
-            stack_items = [StackData(url) for url in resultpage]
-            #取得block排名
-            result = TextAnalyze.blockRanking(stack_items, qkey)
-                #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
-            
             # 慈 START
             postNumber = 1
             reply = "謝謝您的等待，以下為搜尋結果：<br>"
@@ -139,7 +132,13 @@ class analyze_and_search(Action):
             for url in resultpage:
                 print(url)
 
+            #外部搜尋
+            #stackoverflow物件
             stack_items = [StackData(url) for url in resultpage]
+            #取得block排名
+            result = TextAnalyze.blockRanking(stack_items, qkey)
+            #response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
+
             result_title = []
             for items in stack_items:
                 #showData回傳的資料即是傳送到前端的json格式
