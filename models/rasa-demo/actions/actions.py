@@ -16,7 +16,7 @@ import random
 import requests
 import json
 #加入文字分析模組&外部搜尋模組
-import TextAnalyze
+import .TextAnalyze
 from .OuterSearch import outerSearch
 ##摘要
 from .StackData import StackData
