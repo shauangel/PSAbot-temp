@@ -2,6 +2,8 @@
 // 設定 Facebook JavaScript SDK
 var head_url = "https://soselab.asuscomm.com:55002/api/"
 // var head_url = "https://1d9bba825e73.ngrok.io/api/"
+var auth2;
+
 window.fbAsyncInit = function () {
     FB.init({
       appId: '1018939978932508',
@@ -58,54 +60,49 @@ function checkLoginState() {
 /* ================================================= */
 
 /* ================ Google Sign in ================= */
-function onLoadGoogleCallback(){
-  gapi.load('auth2', function(){
+window.onLoadCallback = function(){
+  gapi.load('auth2', function () {
     auth2 = gapi.auth2.init({
       client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
       cookiepolicy: 'single_host_origin',
       scope: 'profile'
     });
-    //強制登出
-    auth2.signOut().then(function () {
-      console.log('Google User signed out.');
-    });
+
     attachSignin(document.getElementById('google-login-btn'));
-  });
-  function attachSignin(element) {
-    console.log(element.id);
-    auth2.attachClickHandler(element, {},
-      function(googleUser) 
-      {
-        // 登入成功
-        var profile = googleUser.getBasicProfile();
-        //傳送access token至後端驗證
-        $.ajax({
-          type: "POST",
-          url: head_url + 'google_sign_in',
-          data: JSON.stringify({
-            'id_token': googleUser.getAuthResponse().id_token
-          }),
-          success: function () {
-            console.log('google login success')
-          },
-          dataType: 'application/json',
-          contentType: "application/json",
-        });
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-        
-      }, 
-      function(error) 
-      {
-        //登入失敗
-        console.log('Sign-in error', error);
-      }
-    );
-  }
+
+    function attachSignin(element) {
+      console.log(element.id);
+      auth2.attachClickHandler(element, {},
+        function(googleUser) 
+        {
+          // 登入成功
+          var profile = googleUser.getBasicProfile();
+          //傳送access token至後端驗證
+          $.ajax({
+            type: "POST",
+            url: head_url + 'google_sign_in',
+            data: JSON.stringify({
+              'id_token': googleUser.getAuthResponse().id_token
+            }),
+            success: function () {
+              console.log('google login success')
+            },
+            dataType: 'application/json',
+            contentType: "application/json",
+          });
+          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+          console.log('Name: ' + profile.getName());
+          console.log('Image URL: ' + profile.getImageUrl());
+          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+          
+        }, 
+        function(error) 
+        {
+          //登入失敗
+          console.log('Sign-in error', error);
+        }
+      );
+    }
+  })
 }
-
-
-
 /* ================================================= */
