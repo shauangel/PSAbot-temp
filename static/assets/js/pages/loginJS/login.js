@@ -60,6 +60,12 @@ function checkLoginState() {
 /* ================================================= */
 
 /* ================ Google Sign in ================= */
+
+
+
+
+
+
 window.onLoadCallback = function(){
   gapi.load('auth2', function () {
     auth2 = gapi.auth2.init({
@@ -68,41 +74,44 @@ window.onLoadCallback = function(){
       scope: 'profile'
     });
 
-    attachSignin(document.getElementById('google-login-btn'));
-
-    function attachSignin(element) {
-      console.log(element.id);
-      auth2.attachClickHandler(element, {},
-        function(googleUser) 
-        {
-          // 登入成功
-          var profile = googleUser.getBasicProfile();
-          //傳送access token至後端驗證
-          $.ajax({
-            type: "POST",
-            url: head_url + 'google_sign_in',
-            data: JSON.stringify({
-              'id_token': googleUser.getAuthResponse().id_token
-            }),
-            success: function () {
-              console.log('google login success')
-            },
-            dataType: 'application/json',
-            contentType: "application/json",
-          });
-          console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-          console.log('Name: ' + profile.getName());
-          console.log('Image URL: ' + profile.getImageUrl());
-          console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-          
-        }, 
-        function(error) 
-        {
-          //登入失敗
-          console.log('Sign-in error', error);
-        }
-      );
-    }
+    google_login()
   })
+}
+
+var google_login = function(){
+  attachSignin(document.getElementById('google-login-btn'));
+  function attachSignin(element) {
+    console.log(element.id);
+    auth2.attachClickHandler(element, {},
+      function(googleUser) 
+      {
+        // 登入成功
+        var profile = googleUser.getBasicProfile();
+        //傳送access token至後端驗證
+        $.ajax({
+          type: "POST",
+          url: head_url + 'google_sign_in',
+          data: JSON.stringify({
+            'id_token': googleUser.getAuthResponse().id_token
+          }),
+          success: function () {
+            console.log('google login success')
+          },
+          dataType: 'application/json',
+          contentType: "application/json",
+        });
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        
+      }, 
+      function(error) 
+      {
+        //登入失敗
+        console.log('Sign-in error', error);
+      }
+    );
+  }
 }
 /* ================================================= */
