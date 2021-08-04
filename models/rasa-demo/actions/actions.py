@@ -139,8 +139,7 @@ class analyze_and_search(Action):
             
             #with open("DATA_test.json", "r", encoding="utf-8") as f:
             #    stack_items = json.load(f)
-            
-            raw_data = [ " ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
+            raw_data = [" ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
             #取得block排名
             result = TextAnalyze.blockRanking(stack_items, qkey)
 #print(result)
