@@ -87,7 +87,7 @@ def parseStackData(url_list):
             break
     question = site.fetch('questions', filter='withbody', ids=query_ids)['items']
     answers = site.fetch('questions/{ids}/answers', filter='withbody', ids=query_ids, sort='votes', order='desc')['items']
-    print(answers[0])
+    print(question[0])
     ctg_ans = {}
     for ans in answers:
         if ans['question_id'] in ctg_ans:
