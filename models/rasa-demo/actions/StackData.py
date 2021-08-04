@@ -94,7 +94,13 @@ def parseStackData(url_list):
             ctg_ans[ans['question_id']].append(ans)
         else:
             ctg_ans[ans['question_id']] = [ans]
-    stack_items = [StackData(q, ctg_ans[q['question_id']]).showData() for q in question]
+    stack_items = []
+    for q in question:
+        try:
+            temp = StackData(q, ctg_ans[q['question_id']]).showData()
+            stack_items.append(temp)
+        except:
+            continue
     return stack_items
 
 
