@@ -69,14 +69,14 @@ class analyze_and_search(Action):
             #外部搜尋結果（URL）
             resultpage = outerSearch(qkey, 10, 0)
             
-#            stack_items = [StackData(url) for url in resultpage]
+            stack_items = [StackData(url) for url in resultpage]
             result_title = []
-            for i in resultpage:
-#            for items in stack_items:
+#            for i in resultpage:
+            for items in stack_items:
                 #showData回傳的資料即是傳送到前端的json格式
-#                display = items.showData()
-#                result_title.append(display['question']['title'])
-                result_title.append(i)
+                display = items.showData()
+                result_title.append(display['question']['title'])
+#                result_title.append(i)
     
             reply = "謝謝您的等待，以下為搜尋結果的資料摘要："
             for i in range(0, len(resultpage)):
