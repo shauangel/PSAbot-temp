@@ -408,10 +408,11 @@ def query_inner_search(keywords):
             i['output_order'] = i['normalized_matches'] * 5 + i['normalized_scoreTotal'] * 3 + i['normaliznormalized_view_counted_scoreTotal'] * 2 + i['normalized_maxTotalAnsScore']
         sorted_top_ten_post_dict_array = sorted(top_ten_post_dict_array, key=lambda k: (k['output_order'], k['_id']), reverse=True)
         """  """
-        
+        print("query_inner_search:")
         print(sorted_top_ten_post_dict_array)
         return [i['_id'] for i in sorted_top_ten_post_dict_array]
     else:
+        print("query_inner_search:")
         print([])
         return []
 '''香的'''
