@@ -34,9 +34,9 @@ class fill_slot(Action):
         os = tracker.get_slot("os")
         pl = tracker.get_slot("pl")
         if os != None:
-            os = os[0:-4]
+            os = os[0:-7]
         if pl != None:
-            pl = pl[0:-4]
+            pl = pl[0:-7]
         if os!=None and pl!=None:
             if "錯誤訊息" in function:
                 reply = "請貼上您的錯誤訊息"
@@ -59,9 +59,9 @@ class analyze_and_search(Action):
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         print('in analyze_and_search')
         function = tracker.get_slot("function")
-        print("pl(programming language):"+tracker.get_slot("os"))
-        os = tracker.get_slot("os")[0:-4]
-        pl = tracker.get_slot("pl")[0:-4]
+        print("pl(programming language):"+tracker.get_slot("pl"))
+        os = tracker.get_slot("os")[0:-7]
+        pl = tracker.get_slot("pl")[0:-7]
         print("pl(programming language):"+pl)
         if "錯誤訊息" in function:
             #拿到所需訊息及最後一句使用者輸入
