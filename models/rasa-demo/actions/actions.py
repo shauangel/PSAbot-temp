@@ -58,6 +58,7 @@ class analyze_and_search(Action):
         function = tracker.get_slot("function")
         os = tracker.get_slot("os")
         pl = tracker.get_slot("pl")
+        print("pl(programming language):"+pl)
         if "錯誤訊息" in function:
             #拿到所需訊息及最後一句使用者輸入
             question_or_error_message = tracker.latest_message.get('text')
@@ -100,6 +101,8 @@ class analyze_and_search(Action):
             #加上作業系統與程式語言作為關鍵字
             qkey.append(os)
             qkey.append(pl)
+            print("qkey:")
+            print(qkey)
             resultpage = outerSearch(qkey, 10, 0)
             #內部搜尋
             response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
