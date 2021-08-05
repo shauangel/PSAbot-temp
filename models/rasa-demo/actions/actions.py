@@ -33,10 +33,10 @@ class fill_slot(Action):
         function = tracker.get_slot("function")
         os = tracker.get_slot("os")
         pl = tracker.get_slot("pl")
-        if os != None:
-            os = os[0:-7]
-        if pl != None:
-            pl = pl[0:-7]
+#        if os != None:
+#            os = os[0:-7]
+#        if pl != None:
+#            pl = pl[0:-7]
         if os!=None and pl!=None:
             if "錯誤訊息" in function:
                 reply = "請貼上您的錯誤訊息"

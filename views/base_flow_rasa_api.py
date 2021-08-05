@@ -32,10 +32,10 @@ def base_flow_rasa():
                 message = 'question_or_error_message, ' + message
                 print("問題描述:"+message)
             elif "程式語言" in lastest_bot_reply:
-                message = message + '-rasaPL'
+                message = message + ' rasaPL'
                 print("程式語言:"+message)
             elif "作業系統" in lastest_bot_reply:
-                message = message + '-rasaOS'
+                message = message + ' rasaOS'
                 print("作業系統:"+message)
         
     payload = {'sender': sender_id, 'message': message}
