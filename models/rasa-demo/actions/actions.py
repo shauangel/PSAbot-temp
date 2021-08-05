@@ -59,6 +59,7 @@ class analyze_and_search(Action):
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         print('in analyze_and_search')
         function = tracker.get_slot("function")
+        print("pl(programming language):"+tracker.get_slot("os"))
         os = tracker.get_slot("os")[0:-4]
         pl = tracker.get_slot("pl")[0:-4]
         print("pl(programming language):"+pl)
