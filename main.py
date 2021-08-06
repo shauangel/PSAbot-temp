@@ -25,7 +25,8 @@ from views import register_blueprint
 #from lib import config
 from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
-
+# --- encryption --- #
+from models.RsaTool import RsaTool,rsa_setup
 
 def create_app():
     app = Flask(__name__)
@@ -45,6 +46,9 @@ def create_app():
     def user_loader(user_id):  
         user_now = UserModel(user_id)   
         return user_now
+    ''' --- 使用者資料加密 --- '''
+    # 要到models/RsaTool 更改path再使用
+    # rsa_setup()
     ''' ---------------------- '''
     # register app
     register_blueprint(app)
