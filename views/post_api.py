@@ -62,7 +62,7 @@ def insert_inner_post():
         }
         # 呼叫文字分析模組進行分析
         # textAnalyzer = TextAnalyze()
-        # post_dict['keyword'] = textAnalyzer.keywordExtration(post_dict['question'])
+        # post_dict['keyword'] = textAnalyzer.contentPreProcess(post_dict['question'])
         
         inner_post.insert_post(post_dict)
     except Exception as e :
@@ -85,7 +85,7 @@ def update_inner_post():
         }
         # 呼叫文字分析模組進行分析
         # textAnalyzer = TextAnalyze()
-        # post_dict['keyword'] = textAnalyzer.keywordExtration(post_dict['question'])
+        # post_dict['keyword'] = textAnalyzer.contentPreProcess(post_dict['question'])
         inner_post.update_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
