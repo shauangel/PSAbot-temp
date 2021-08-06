@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify
 
 # --- our models ---- #
 from models import inner_post
-#from models.TextAnalyze import TextAnalyze
+from models.TextAnalyze import TextAnalyze
 from datetime import datetime
 
 post_api = Blueprint('post_api', __name__)
@@ -51,6 +51,7 @@ def insert_inner_post():
             'asker_name' : data['asker_name'],
             'title' : data['title'],
             'question' : data['question'],
+            'edit' : data['edit'],
             'answer' : [],
             'keyword' : [],
             'tag' : data['tag'],
@@ -60,8 +61,8 @@ def insert_inner_post():
             'view_count' : 0
         }
         # 呼叫文字分析模組進行分析
-        textAnalyzer = TextAnalyze()
-        post_dict['keyword'] = textAnalyzer.keywordExtration(post_dict['question'])
+        # textAnalyzer = TextAnalyze()
+        # post_dict['keyword'] = textAnalyzer.keywordExtration(post_dict['question'])
         
         inner_post.insert_post(post_dict)
     except Exception as e :
@@ -78,12 +79,13 @@ def update_inner_post():
             'asker_id':data['asker_id'],
             'title' : data['title'],
             'question' : data['question'],
+            'edit' : data['edit'],
             'keyword' : [],
             'time' : datetime.fromisoformat(data['time'])
         }
         # 呼叫文字分析模組進行分析
-        textAnalyzer = TextAnalyze()
-        post_dict['keyword'] = textAnalyzer.keywordExtration(post_dict['question'])
+        # textAnalyzer = TextAnalyze()
+        # post_dict['keyword'] = textAnalyzer.keywordExtration(post_dict['question'])
         inner_post.update_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -110,6 +112,7 @@ def insert_inner_post_response():
             "replier_id" : data['replier_id'],
             "replier_name" : data['replier_name'],
             "response" : data['response'],
+            "edit" : data['edit'],
             "time" : datetime.fromisoformat(data['time']),
             "score":[],
             "incognito":data['incognito']
@@ -129,9 +132,25 @@ def update_inner_post_response():
             '_id' : data['_id'],
             "replier_id" : data['replier_id'],
             "response" : data['response'],
+            "edit" : data['edit'],
             "time" : datetime.fromisoformat(data['time'])
         }
         inner_post.update_response(response_dict)
+    except Exception as e :
+        response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}  
+    return jsonify(response_dict)
+
+# 刪除貼文回覆
+@post_api.route('/delete_inner_post_response',methods=['POST'])
+def delete_inner_post_response():
+    data = request.get_json()
+    try:
+        response_dict = {
+            'post_id' : data['post_id'],
+            '_id' : data['_id'],
+            "replier_id" : data['replier_id'],
+        }
+        inner_post.remove_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}  
     return jsonify(response_dict)
@@ -183,14 +202,14 @@ def delete_inner_post():
 @post_api.route('query_inner_search', methods=['POST'])
 def query_inner_search():
     data = request.get_json()
-    print("keyword陣列:")
-    print(data['keywords'])
-    #try:
+    #print(data['keywords'])
     inner_search_result=inner_post.query_inner_search(data['keywords'])
     inner_search_result_dict = {
         'inner_search_result': inner_search_result
     }
-#    except Exception as e :
-#        inner_search_result_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
-#        print(e)
     return jsonify(inner_search_result_dict)
+
+#近日熱門貼文
+@post_api.route('query_hot_post', methods=['get'])
+def query_hot_post():
+    return jsonify({"hot_post":inner_post.query_hot_post()})

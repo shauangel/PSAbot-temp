@@ -9,86 +9,62 @@
 # ====== our models ===== #
 from . import _db
 from . import user
+import re
 # ======================= #
 from sklearn import preprocessing
-
+from datetime import datetime, timedelta
 # 取得所有貼文列表
 def query_post_list(page_size,page_number,option):
-    if option == 'score': 
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
-                                                                 {'$sort': {'score': -1}}, 
-                                                                 {'$skip': page_size * (page_number - 1)}, 
-                                                                 {'$limit': page_size}])]
-        post_count = [i for i in _db.INNER_POST_COLLECTION.aggregate([{'$count': 'post_count'}])][0]['post_count']
-    elif option == 'view_count': 
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
-                                                                 {'$sort': {'view_count': -1}}, 
-                                                                 {'$skip': page_size * (page_number - 1)}, 
-                                                                 {'$limit': page_size}])]
-        post_count = [i for i in _db.INNER_POST_COLLECTION.aggregate([{'$count': 'post_count'}])][0]['post_count']
-    else : # 預設是用時間排
+    post_count = [i for i in _db.INNER_POST_COLLECTION.aggregate([{'$count': 'post_count'}])][0]['post_count']
+    if option == '': # 預設是用時間排
         post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
                                                                  {'$sort': {'time': -1}}, 
                                                                  {'$skip': page_size * (page_number - 1)}, 
                                                                  {'$limit': page_size}])]
-        post_count = [i for i in _db.INNER_POST_COLLECTION.aggregate([{'$count': 'post_count'}])][0]['post_count']
+    else : 
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
+                                                                 {'$sort': {option : -1}}, 
+                                                                 {'$skip': page_size * (page_number - 1)}, 
+                                                                 {'$limit': page_size}])]
     return {'post_count' : post_count,'post_list' : post_list}
 
-# 依貼文名稱頁數及筆數搜尋
-def query_post_list_by_title(post_title,page_size,page_number,option):
-    if option == 'score': 
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'match_title': {'$regexMatch': {'input': '$title', 'regex': '.*' + post_title + '.*'}}}}, 
-                                                                    {'$match': {'match_title': True}},
-                                                                    {'$sort': {'score': -1}}, 
-                                                                    {'$skip': page_size * (page_number - 1)}, 
-                                                                    {'$limit': page_size}])]
-        post_count = len([ i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'match_title': {'$regexMatch': {'input': '$title', 'regex': '.*' + post_title + '.*'}}}}, 
-                                                          {'$match': {'match_title': True}}])])
-    elif option == 'view_count': 
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'match_title': {'$regexMatch': {'input': '$title', 'regex': '.*' + post_title + '.*'}}}}, 
-                                                                    {'$match': {'match_title': True}},
-                                                                    {'$sort': {'view_count': -1}}, 
-                                                                    {'$skip': page_size * (page_number - 1)}, 
-                                                                    {'$limit': page_size}])]
-        post_count = len([ i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'match_title': {'$regexMatch': {'input': '$title', 'regex': '.*' + post_title + '.*'}}}}, 
-                                                          {'$match': {'match_title': True}}])])
-    else : # 預設是用時間排
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'match_title': {'$regexMatch': {'input': '$title', 'regex': '.*' + post_title + '.*'}}}}, 
-                                                                    {'$match': {'match_title': True}},
-                                                                    {'$sort': {'time': -1}}, 
-                                                                    {'$skip': page_size * (page_number - 1)}, 
-                                                                    {'$limit': page_size}])]
-        post_count = len([ i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'match_title': {'$regexMatch': {'input': '$title', 'regex': '.*' + post_title + '.*'}}}}, 
-                                                          {'$match': {'match_title': True}}])])
+# 依貼文名稱頁數及筆數搜尋，
+def query_post_list_by_title(search_string,page_size,page_number,option):
+    search_list = re.split(r'[ ]', search_string)                                   # 用空白切割字串
+    regex_list = [{'title':{'$regex':'|'.join(search_list), '$options':'i'}}]       # 標題搜尋
+    for token in search_list:                                                      # 關鍵字,tag搜尋
+        regex_list.append({'keyword':{'$regex':token, '$options':'i'}})
+        regex_list.append({'tag.tag_name':{'$regex':token, '$options':'i'}})
+    post_count = len([ i for i in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'$or': regex_list}}])])
+    if option == '': # 預設是用時間排 
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'$or': regex_list}},
+                                                                          {'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1, 'score': {'$sum': '$score.score'}}}, 
+                                                                          {'$sort': {'time': -1}}, 
+                                                                          {'$skip': page_size * (page_number - 1)}, 
+                                                                          {'$limit': page_size}])]
+    else : 
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'$or': regex_list}},
+                                                                          {'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1, 'score': {'$sum': '$score.score'}}}, 
+                                                                          {'$sort': {option : -1}}, 
+                                                                          {'$skip': page_size * (page_number - 1)}, 
+                                                                          {'$limit': page_size}])]
     return {'post_count' : post_count,'post_list' : post_list}
 # 依貼文標籤篩選
 def query_post_list_by_tag(tag_list,page_size,page_number,option):
-    if option == 'score': 
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
-                                                               {'$match': {'hastag': True}},
-                                                               {'$sort': {'score': -1}}, 
-                                                               {'$skip': page_size * (page_number - 1)}, 
-                                                               {'$limit': page_size}])]
-        post_count = len([i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
+    post_count = len([i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
                                                                        {'$match': {'hastag': True}}])])
-        
-        
-    elif option == 'view_count': 
-       post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
-                                                               {'$match': {'hastag': True}},
-                                                               {'$sort': {'view_count': -1}}, 
-                                                               {'$skip': page_size * (page_number - 1)}, 
-                                                               {'$limit': page_size}])]
-       post_count = len([i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
-                                                                       {'$match': {'hastag': True}}])])
-    else : # 預設是用時間排
+    if option == '': 
         post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
                                                                {'$match': {'hastag': True}},
                                                                {'$sort': {'time': -1}}, 
                                                                {'$skip': page_size * (page_number - 1)}, 
                                                                {'$limit': page_size}])]
-        post_count = len([i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
-                                                                       {'$match': {'hastag': True}}])])
+    else : # 預設是用時間排
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
+                                                               {'$match': {'hastag': True}},
+                                                               {'$sort': {option: -1}}, 
+                                                               {'$skip': page_size * (page_number - 1)}, 
+                                                               {'$limit': page_size}])]
     return {'post_count' : post_count,'post_list' : post_list}
 # 依post_id取得特定貼文
 def query_post(post_id):
@@ -133,6 +109,7 @@ def update_post(post_data):
                                                                     {
                                                                         'title':post_data['title'],
                                                                         'question':post_data['question'],
+                                                                        'edit':post_data['edit'],
                                                                         'keyword':post_data['keyword'],
                                                                         'time':post_data['time']}})
     # 使用者發文更新
@@ -175,7 +152,22 @@ def update_response(response_dict):
     post_id = response_dict.pop('post_id')
     _db.INNER_POST_COLLECTION.update_one({'_id':post_id,'answer._id':response_dict['_id']},
                                          {'$set':{'answer.$.response':response_dict['response'],
-                                                  'answer.$.time':response_dict['time']}})
+                                                  'answer.$.edit':response_dict['edit'],
+                                                  'answer.$.time':response_dict['time']
+                                                  }})
+# 刪除貼文回覆
+def remove_response(response_dict):
+    target_post = _db.INNER_POST_COLLECTION.find_one({'_id':response_dict['post_id']})
+    target_response = next(response for response in target_post['answer'] if response['_id'] == response_dict['_id'])
+    tags = target_post['tag']
+    _db.INNER_POST_COLLECTION.update_one({'_id':response_dict['post_id']},
+                                         {'$pull':{'answer':{'_id':response_dict['_id']}}})
+    user.update_response_list(response_dict['replier_id'])
+    # 扣掉回覆者所得分數
+    for tag in tags:
+        user.update_user_score(response_dict['replier_id'],tag['tag_id'],tag['tag_name'],-(1 + sum(score['score'] for score in target_response['score'])))
+        # 扣掉tag count
+        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter': -1}})
 
 # 編輯貼文評分
 def update_score(score_dict):
@@ -223,17 +215,14 @@ def update_score(score_dict):
 def remove_post(post_id):
     post_dict = _db.INNER_POST_COLLECTION.find_one({'_id':post_id})
     response_list = post_dict['answer']
-    tag_usage = len(post_dict['answer']) + 1
     # 依標籤扣除使用者分數
     tag_usage = len(post_dict['answer']) + 1
     for tag in post_dict['tag']:
         # 扣除發文時的分數
-        user.update_user_score(post_dict['asker_id'],tag['tag_id'],tag['tag_name'],-2)
-        user.update_user_score(post_dict['asker_id'],tag['tag_id'],tag['tag_name'],-sum(score['score'] for score in post_dict['score']))
+        user.update_user_score(post_dict['asker_id'],tag['tag_id'],tag['tag_name'],-(2 + sum(score['score'] for score in post_dict['score'])))
         # 扣除每則回應的分數
         for response in post_dict['answer']:
-            user.update_user_score(response['replier_id'],tag['tag_id'],tag['tag_name'],-1)
-            user.update_user_score(response['replier_id'],tag['tag_id'],tag['tag_name'],-sum(score['score'] for score in response['score']))
+            user.update_user_score(response['replier_id'],tag['tag_id'],tag['tag_name'],-(1 + sum(score['score'] for score in response['score'])))
         # 扣除tag usage_count(發文(1)+回應數)
         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter': -tag_usage}})
     # 從collection移除post
@@ -249,16 +238,16 @@ def remove_post(post_id):
 '''湘的'''
 #內部搜尋
 def query_inner_search(keywords):
-    #case isnsitive處理
+    #case insensitive處理
     tag=[]
     keyword=[]
+    lower_keywords=[]
     for i in keywords:
+        lower_keywords.append(i.lower())
         keyword.append({'keyword':{'$regex':i, '$options':'i'}})
         tag.append({'tag.tag_name':{'$regex':i, '$options':'i'}})
     tag.extend(keyword)
-#    print(keyword)
-#    print(tag)
-#    print(tag)
+    #print(lower_keywords)
     #第一階篩選數(相關貼文)，對資料做前處理（算好問題積分、最高答案積分）
     top_ten_post_dict_array = [{'_id':i['_id'], 'maxTotalAnsScore':i['maxTotalAnsScore'], 'keyword':i['keyword'], 'tag':i['tag'], 'scoreTotal':i['scoreTotal'], 'view_count':i['view_count']} for i in _db.INNER_POST_COLLECTION.aggregate(
     [
@@ -267,8 +256,6 @@ def query_inner_search(keywords):
             '$or': tag
         }
     }, {
-        '$limit': 10
-     }, {
         '$project': {
             'keyword': 1,
             'tag': 1,
@@ -344,36 +331,53 @@ def query_inner_search(keywords):
 #    print("篩選結果：")
 #    print(top_ten_post_dict_array)
     if len(top_ten_post_dict_array) > 0:
-        #計算keyword match數
+        #計算keyword match數、tag match數
         for i in top_ten_post_dict_array:
-            count = 0
+            count_key = 0
             i['matches_keyword'] = 0
-            for j in i['keyword']:
-                if j in keywords:
-                    count += 1
-            i['matches_keyword'] = count
-            
-        #計算tag match數
-        for i in top_ten_post_dict_array:
-            count = 0
+            count_tag = 0
             i['matches_tag'] = 0
+            for j in i['keyword']:
+                if j.lower() in lower_keywords:
+                    count_key += 1
+            i['matches_keyword'] = count_key
             for j in i['tag']:
-                if j['tag_name'] in keywords:
-                    count += 1
-            i['matches_tag'] = count
+                if j['tag_name'].lower() in lower_keywords:
+                    count_tag += 1
+            i['matches_tag'] = count_tag
+            #加總match數
+            i['matches'] = i['matches_keyword'] + i['matches_tag']
             
+#        #計算tag match數
+#        for i in top_ten_post_dict_array:
+#            count_tag = 0
+#            i['matches_tag'] = 0
+#            for j in i['tag']:
+#                if j['tag_name'].lower() in lower_keywords:
+#                    count_tag += 1
+#            i['matches_tag'] = count_tag
+            
+#        #加總match數
+#        for i in top_ten_post_dict_array:
+#            i['matches'] = i['matches_keyword'] + i['matches_tag']
+            
+        #規定至少匹配兩個
+        for i in range(len(top_ten_post_dict_array)-1, -1, -1):
+            if top_ten_post_dict_array[i]['matches'] < 2:
+                top_ten_post_dict_array.pop(i)
+        
+        top_ten_post_dict_array = sorted(top_ten_post_dict_array, key=lambda k: (k['matches'], k['scoreTotal'], k['_id']), reverse=True)[0:10]
+        
+        #print(top_ten_post_dict_array)
         a=[]
         b=[]
         c=[]
         d=[]
-        #加總match數
         for i in top_ten_post_dict_array:
-            i['matches'] = i['matches_keyword'] + i['matches_tag']
             a.append(i['matches'])
             b.append(i['scoreTotal'])
             c.append(i['view_count'])
             d.append(i['maxTotalAnsScore'])
-        
         normalized_matches = preprocessing.normalize([a])[0]
         normalized_scoreTotal = preprocessing.normalize([b])[0]
         normalized_view_count = preprocessing.normalize([c])[0]
@@ -408,11 +412,41 @@ def query_inner_search(keywords):
             i['output_order'] = i['normalized_matches'] * 5 + i['normalized_scoreTotal'] * 3 + i['normaliznormalized_view_counted_scoreTotal'] * 2 + i['normalized_maxTotalAnsScore']
         sorted_top_ten_post_dict_array = sorted(top_ten_post_dict_array, key=lambda k: (k['output_order'], k['_id']), reverse=True)
         """  """
-        print("query_inner_search:")
-        print(sorted_top_ten_post_dict_array)
+        
+        #print(sorted_top_ten_post_dict_array)
         return [i['_id'] for i in sorted_top_ten_post_dict_array]
     else:
-        print("query_inner_search:")
-        print([])
+        #print([])
         return []
+        
+#五日內回覆數最多排行(近日熱門貼文)
+def query_hot_post():
+    five_days_ago_datetime = datetime.today() - timedelta(days=5)
+    print(five_days_ago_datetime)
+    hot_post = [i['_id'] for i in _db.INNER_POST_COLLECTION.aggregate([
+    {
+        '$unwind': {
+            'path': '$answer'
+        }
+    }, {
+        '$match': {
+            'answer.time': {
+                '$lte': five_days_ago_datetime
+            }
+        }
+    }, {
+        '$group': {
+            '_id': '$_id',
+            'recentReply': {
+                '$sum': 1
+            }
+        }
+    }, {
+        '$sort': {
+            'recentReply': -1
+        }
+    }
+])]
+    #print(hot_post)
+    return hot_post
 '''香的'''
