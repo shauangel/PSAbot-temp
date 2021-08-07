@@ -69,9 +69,9 @@ def editReplyFrame():
     return render_template("editReplyFrame.html")
 
 @base_flow_web.route("/comprehensive")
-def editReplyFrame():
+def comprehensive():
     return render_template("comprehensive.html")
     
 @base_flow_web.route("/summary_new")
-def editReplyFrame():
+def summary_new():
     return render_template("summary_new.html")
