@@ -18,7 +18,6 @@ outersearch_cache_api = Blueprint('outersearch_cache_api', __name__)
 @outersearch_cache_api.route('/query_cache_by_id', methods=['POST'])
 def query_cache_by_id():
     idx = request.get_json()
-    print("idx: ", idx)
     try:
         result = outer_data_cache.query_by_id(idx)
         return jsonify(result)
