@@ -1,7 +1,7 @@
 # --- flask --- #
 from flask import Blueprint, request, jsonify
 #from flask_security import logout_user, login_required
-
+import re
 # --- our models ---- #
 from models import inner_post
 from . import TextAnalyze
@@ -61,9 +61,10 @@ def insert_inner_post():
             'view_count' : 0
         }
         # 呼叫文字分析模組進行分析
-        # textAnalyzer = TextAnalyze()
-        # post_dict['keyword'] = textAnalyzer.contentPreProcess(post_dict['question'])
-        
+        textAnalyzer = TextAnalyze()
+        # 去除code
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'])
+        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
         inner_post.insert_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -84,8 +85,10 @@ def update_inner_post():
             'time' : datetime.fromisoformat(data['time'])
         }
         # 呼叫文字分析模組進行分析
-        # textAnalyzer = TextAnalyze()
-        # post_dict['keyword'] = textAnalyzer.contentPreProcess(post_dict['question'])
+        textAnalyzer = TextAnalyze()
+        # 去除code
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'])
+        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
         inner_post.update_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -202,7 +205,7 @@ def delete_inner_post():
 @post_api.route('query_inner_search', methods=['POST'])
 def query_inner_search():
     data = request.get_json()
-    #print(data['keywords'])
+
     inner_search_result=inner_post.query_inner_search(data['keywords'])
     inner_search_result_dict = {
         'inner_search_result': inner_search_result
