@@ -87,9 +87,7 @@ function bot(string){
     // 
     setInterval(function(){
         if(document.getElementById("willBeClearString") != null){
-//            console.log("動態的「正在輸入訊息」");
             var botStringTemp = document.getElementById("willBeClearString").innerHTML;
-//            console.log("現在的字: "+botStringTemp);
             switch(botStringTemp){
                 case "正在輸入訊息...":
                     botStringTemp = "正在輸入訊息.";
@@ -101,11 +99,9 @@ function bot(string){
                     botStringTemp = "正在輸入訊息...";
                     break;
             }
-//            console.log("弄完後: "+botStringTemp);
             document.getElementById("willBeClearString").innerHTML = botStringTemp;
-//            console.log("顯示到螢幕上");
         }
-    }, 1500);
+    }, 1000);
     //
     
     // 處理關鍵字 START
