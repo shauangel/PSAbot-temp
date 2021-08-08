@@ -36,7 +36,7 @@ function checkLoginState() {
           "fields": "id,name,email"
           },
           function (response) {
-            console.log(response)
+            console.log(response);
             // 取得使用者資料丟到後端
             $.ajax({
                 type: "POST",
@@ -63,7 +63,7 @@ function checkLoginState() {
           });
       }
     }
-    , { auth_type: 'reauthenticate' });
+//    , { auth_type: 'reauthenticate' });
 }
 
 /* ================================================= */
