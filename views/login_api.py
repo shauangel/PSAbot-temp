@@ -63,7 +63,7 @@ def facebook_sign_in():
             "_id" : data['id'],
             "role" : 'facebook_user',
             "name" : data['name'],
-            "email" : data['email'],
+#            "email" : data['email'],
             "skill" : [],
             "record" : {
                 "posts" : [],
