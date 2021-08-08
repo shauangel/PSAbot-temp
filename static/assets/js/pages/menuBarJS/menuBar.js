@@ -360,7 +360,7 @@ function summary(id){//單篇的摘要
 }
 
 function rank(idArray){//全部的排行
-    var idArray = ['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'];
+//    var idArray = ['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'];
     localStorage.setItem("rankArray", idArray);
     setPage('comprehensive');
 }
