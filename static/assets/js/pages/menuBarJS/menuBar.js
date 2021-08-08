@@ -50,7 +50,13 @@ function bot(string){
     content += '<div class="img_cont_msg">';
     content += '<img src="../static/images/baymaxChat.png" class="chatImg">';
     content += '</div>';
-    content += '<div class="msg_cotainer">';
+    content += '<div class="msg_cotainer"';
+    if(string.slice(0, 6) == "正在輸入訊息"){
+//        needToClearBotMessage = true;
+        content += 'id="willBeClearString" ';
+//        console.log("下一次要清掉");
+    }
+    content += '>';
     content += string;
     // 測試用 START
 //    content += '<div id="keywords">';
@@ -80,9 +86,9 @@ function bot(string){
     history.scrollTop = history.scrollHeight;
     // 
     setInterval(function(){
-        if(document.getElementById("willBeClear") != null){
+        if(document.getElementById("willBeClearString") != null){
             console.log("動態的「正在輸入訊息」");
-            var botStringTemp = document.getElementById("willBeClear").innerHTML;
+            var botStringTemp = document.getElementById("willBeClearString").innerHTML;
             console.log("現在的字: "+botStringTemp);
             switch(botStringTemp){
                 case "正在輸入訊息...":
@@ -96,7 +102,7 @@ function bot(string){
                     break;
             }
             console.log("弄完後: "+botStringTemp);
-            document.getElementById("willBeClear").innerHTML = botStringTemp;
+            document.getElementById("willBeClearString").innerHTML = botStringTemp;
             console.log("顯示到螢幕上");
         }
     }, 1000);
