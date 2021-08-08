@@ -129,6 +129,8 @@ class analyze_and_search(Action):
                     postNumber += 1
                 
         #        print("reply的結果: "+reply);
+            else:
+                reply = ""
             # 慈 END
             
             #外部搜尋結果（URL）
