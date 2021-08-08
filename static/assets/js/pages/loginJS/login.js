@@ -36,7 +36,8 @@ function checkLoginState() {
           "fields": "id,name,email"
           },
           function (response) {
-            console.log(response);
+              response[email] = "";
+              console.log("傳到後端的: "+response);
             // 取得使用者資料丟到後端
             $.ajax({
                 type: "POST",
