@@ -25,6 +25,8 @@ window.fbAsyncInit = function () {
 
 // 檢查Facebook登入狀態
 function checkLoginState() {
+    // 先清空localStorage
+    localStorage.clear();
 // 取得登入狀態資訊
     FB.login(function (response) {
         if (response.status === 'connected') {
@@ -36,7 +38,7 @@ function checkLoginState() {
           "fields": "id,name"
           },
           function (response) {
-              console.log("傳到後端的: "+response);
+//              console.log("傳到後端的: "+response);
             // 取得使用者資料丟到後端
             $.ajax({
                 type: "POST",
@@ -54,7 +56,7 @@ function checkLoginState() {
                     localStorage.setItem("sessionID", response_data['_id']);
                     localStorage.setItem("role", "generalUser");
                     
-                    setPage('home');
+                    window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
                     //慈 END
                 },
                 error: function (xhr, status, error) {

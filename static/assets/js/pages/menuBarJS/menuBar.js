@@ -344,7 +344,6 @@ function rank(idArray){//全部的排行
 
 ////////////////// 初始化 START////////////////////
 function start(){
-    localStorage.clear();
     //這個是管理者
 //    localStorage.setItem("role", "manager");
 //    localStorage.setItem("sessionID", 4444);
