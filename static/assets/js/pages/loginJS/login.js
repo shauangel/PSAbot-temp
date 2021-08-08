@@ -52,7 +52,7 @@ function checkLoginState() {
 
                     //慈
                     localStorage.setItem("sessionID", response_data['_id']);
-                    localStorage.setItem("role", response_data['role']);
+                    localStorage.setItem("role", "generalUser");
                     console.log("慈加的id: "+response_data['_id']);
                     console.log("慈加的role: "+response_data['role']);
                 },

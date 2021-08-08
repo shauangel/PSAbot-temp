@@ -350,8 +350,8 @@ function start(){
 //    localStorage.setItem("sessionID", 4444);
     
     // 這個是一般使用者
-    localStorage.setItem("role", "generalUser");
-    localStorage.setItem("sessionID", 123);
+//    localStorage.setItem("role", "generalUser");
+//    localStorage.setItem("sessionID", 123);
     var session_id = localStorage.getItem("sessionID");
     
     // ---------- 同個頁面監聽localStorage START ---------- //
