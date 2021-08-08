@@ -7,7 +7,7 @@ function start(){
     $.ajax({
         url: myURL,
         data: JSON.stringify(data),
-        type: "GET",
+        type: "POST",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
