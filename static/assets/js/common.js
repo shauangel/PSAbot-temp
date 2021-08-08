@@ -3,7 +3,7 @@ var head_url = "https://soselab.asuscomm.com:55002/api/";
 
 function setPage(page){
     if(page!='comprehensive'){
-        localStorage.removeItem("rankArray");
+        localStorage.removeItem("rankId");
     }
     if(page!='summary_new'){
         localStorage.removeItem("summaryId");

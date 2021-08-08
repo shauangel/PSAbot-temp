@@ -359,9 +359,9 @@ function summary(id){//單篇的摘要
     setPage('summary_new');
 }
 
-function rank(idArray){//全部的排行
+function rank(id){//全部的排行
 //    var idArray = ['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'];
-    localStorage.setItem("rankArray", idArray);
+    localStorage.setItem("rankId", id);
     setPage('comprehensive');
 }
 // outerSearch END

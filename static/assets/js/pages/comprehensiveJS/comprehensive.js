@@ -1,7 +1,8 @@
 function start(){
     var myURL = head_url+"query_cache_by_id";
     console.log("myURL: "+myURL);
-    var data = {id: id};
+    var rankId = localStorage.getItem("rankId");
+    var data = {id: rankId};
 //    var address = 'stackoverflowRank.json';
     $.ajax({
         url: myURL,
@@ -10,6 +11,7 @@ function start(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log(response);
             rankContent(response);
         },
         error: function(response){
