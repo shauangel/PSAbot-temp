@@ -83,6 +83,7 @@ function bot(string){
         if(document.getElementById("willBeClear") != null){
             console.log("動態的「正在輸入訊息」");
             var botStringTemp = document.getElementById("willBeClear").innerHTML;
+            console.log("現在的字: "+botStringTemp);
             switch(botStringTemp){
                 case "正在輸入訊息...":
                     botStringTemp = "正在輸入訊息.";
@@ -94,7 +95,9 @@ function bot(string){
                     botStringTemp = "正在輸入訊息...";
                     break;
             }
+            console.log("弄完後: "+botStringTemp);
             document.getElementById("willBeClear").innerHTML = botStringTemp;
+            console.log("顯示到螢幕上");
         }
     }, 1000);
     //
