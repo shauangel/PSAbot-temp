@@ -3,7 +3,8 @@ function start(){
     
     var myURL = head_url+"query_cache_by_id";
     console.log("myURL: "+myURL);
-    var data = {id: id};
+    var summaryId = localStorage.getItem("summaryId");
+    var data = {id: summaryId};
 //    var address = 'summaryResponse.json';
     $.ajax({
         url: myURL,
@@ -43,9 +44,15 @@ function summaryContent(response){
     console.log(response);
     // 問題
     var question = document.getElementById("stackoverflowQuestion");
-    var questionScore = 0;
+    var likeScore = 0, dislikeScore = 0;
+    
     for(var i=0; i<response.question.score.length; i++){
-        questionScore += response.question.score[i].user_vote;
+        if(response.question.score[i].user_vote==1){
+            likeScore += 1;
+        }
+        else if(response.question.score[i].user_vote==-1){
+            dislikeScore += 1;
+        }
     }
     
     var content = "";
@@ -54,7 +61,7 @@ function summaryContent(response){
         content += '<span style="float: right;">';
             content += '<i class="fa fa-trophy" aria-hidden="true" style="font-size: 10px; color: #505458;"></i>';
             content += '<span style="font-size: 10px; color: #505458;">';
-                content += questionScore;
+                content += response.question.vote;
             content += '</span>';
         content += '</span>';
     content += '</span>';
@@ -80,9 +87,17 @@ function summaryContent(response){
         content += response.question.content;
     content += '</div>';
 
+    // 倒讚 START
+    content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
+    content += likeScore;
+    content += '</button>'; 
+    // 倒讚 END
     
-    content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>0</button>'; // 倒讚
-    content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>0</button>'; // 讚
+    // 讚 START
+    content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
+    content += dislikeScore;
+    content += '</button>';
+    // 讚 END
     
     content += '<span class="badge badge-default purpleLabel2" style=" background-color: white;">';
         content += response.time.slice(0, 10);
@@ -94,13 +109,13 @@ function summaryContent(response){
     var comment = document.getElementById("sclae-accordion");
     content = "";
     for(var i=0; i<response.answers.length; i++){
-        var like = 0, dislike = 0;
+        var likeScore = 0, dislikeScore = 0;
         for(var j=0; j<response.answers[i].score.length; j++){
             if(response.answers[i].user_vote==1){
-                like += 1;
+                likeScore += 1;
             }
             else if(response.answers[i].user_vote==-1){
-                dislike += 1;    
+                dislikeScore += 1;    
             }
         }
         content += '<div class="accordion-msg" style="">';
@@ -132,10 +147,10 @@ function summaryContent(response){
 //                content += i;
 //                content += '" style="margin-right: 5px; color: gray;">0</span>';
                 content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
-                content += like;
+                content += likeScore;
                 content += '</button>';
                 content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
-                content += dislike;
+                content += dislikeScore;
                 content += '</button>';
                     
                 content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';

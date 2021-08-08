@@ -354,7 +354,7 @@ function clickChatroomInnerSearch(postId){
 function summary(id){//單篇的摘要
     console.log("單篇的摘要");
     console.log("id: "+id);
-    localStorage.setItem("summaryId", "t_000004");
+    localStorage.setItem("summaryId", id);
     setPage('summary_new');
 }
 
