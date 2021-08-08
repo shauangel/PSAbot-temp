@@ -21,19 +21,19 @@ var keyWords = {};
 var needToClearBotMessage = false;
 
 function bot(string){
-    console.log("bot送訊息");
-    console.log("needToClearBotMessage: "+needToClearBotMessage);
+//    console.log("bot送訊息");
+//    console.log("needToClearBotMessage: "+needToClearBotMessage);
     keyWords = {};
     
     if(needToClearBotMessage){
-        console.log("有進來清");
+//        console.log("有進來清");
         var obj = document.getElementById("willBeClear");
         obj.innerHTML = "";
         var objParent = obj.parentNode;
         objParent.removeChild(obj);
         needToClearBotMessage = false;
-        console.log("object: ");
-        console.log(obj);
+//        console.log("object: ");
+//        console.log(obj);
     }
     
     var history = document.getElementById("history_message");
@@ -41,10 +41,10 @@ function bot(string){
     
     
     content += '<div ';
-    if(string == "正在輸入訊息..."){
+    if(string.slice(0, 6) == "正在輸入訊息"){
         needToClearBotMessage = true;
         content += 'id="willBeClear" ';
-        console.log("下一次要清掉");
+//        console.log("下一次要清掉");
     }
     content += 'class="d-flex justify-content-start mb-4">';
     content += '<div class="img_cont_msg">';
@@ -78,6 +78,26 @@ function bot(string){
     
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
+    // 
+    setInterval(function(){
+        if(document.getElementById("willBeClear") != null){
+            console.log("動態的「正在輸入訊息」");
+            var botStringTemp = document.getElementById("willBeClear").innerHTML;
+            switch(botStringTemp){
+                case "正在輸入訊息...":
+                    botStringTemp = "正在輸入訊息.";
+                    break;
+                case '正在輸入訊息.':
+                    botStringTemp = "正在輸入訊息..";
+                    break;
+                case "正在輸入訊息..":
+                    botStringTemp = "正在輸入訊息...";
+                    break;
+            }
+            document.getElementById("willBeClear").innerHTML = botStringTemp;
+        }
+    }, 1000);
+    //
     
     // 處理關鍵字 START
     var temp = document.getElementById("keywords");
