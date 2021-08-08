@@ -355,6 +355,7 @@ function summary(id){//單篇的摘要
     console.log("單篇的摘要");
     console.log("id: "+id);
     localStorage.setItem("summaryId", id);
+    console.log("拿到的: "+localStorage.getItem("summaryId"));
     setPage('summary_new');
 }
 
