@@ -6,7 +6,8 @@ function start(){
     var summaryId = localStorage.getItem("summaryId");
     var data = {id: summaryId};
 //    var address = 'summaryResponse.json';
-    console.log("送出去的data: "+data);
+    console.log("送出去的data: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         data: JSON.stringify(data),
