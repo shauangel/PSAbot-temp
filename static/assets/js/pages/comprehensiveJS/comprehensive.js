@@ -21,24 +21,6 @@ function start(){
     });
 }
 
-function like(id){
-    console.log("按了喜歡");
-    var likeNum = document.getElementById(id);
-    var number = parseInt(likeNum.innerHTML);
-    number += 1;
-    likeNum.innerHTML = number;
-    console.log("id: "+id);
-}
-
-function dislike(id){
-    console.log("按了不喜歡");
-    var dislikeNum = document.getElementById(id);
-    var number = parseInt(dislikeNum.innerHTML);
-    number += 1;
-    dislikeNum.innerHTML = number;
-    console.log("id: "+id);
-}
-
 function rankContent(response){
     console.log("rank: ");
     console.log(response);
