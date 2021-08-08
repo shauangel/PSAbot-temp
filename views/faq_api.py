@@ -1,10 +1,15 @@
 # --- flask --- #
-from flask import Blueprint, request, jsonify
 from datetime import datetime
-#from flask_security import logout_user, login_required
-
+from flask import Blueprint,request, jsonify
+'''匯入faq相關'''
+from flask import Flask,flash,redirect
+from werkzeug.utils import secure_filename
+import os
+import json
+import re
 # --- our models ---- #
 from models import faq_data
+from . import TextAnalyze
 
 faq_api = Blueprint('faq_api', __name__)
 
@@ -76,8 +81,9 @@ def insert_faq_post():
                         {
                             "_id" : "",       
                             "title" : data['question']['title'],    
-                            "content": data['question']['content'],   
-                            "vote" : data['question']['vote'],      
+                            "content": data['question']['content'],
+                            "edit": data['question']['edit'],
+                            "vote" : int(data['question']['vote']),      
                             "score" : [],
                         },
                         "answers" : 
@@ -85,56 +91,27 @@ def insert_faq_post():
                             {       
                                 "_id" : "",       
                                 "content" : a['content'],
-                                "vote" : a['vote'],     
+                                "edit" : a['edit'],
+                                "vote" : int(a['vote']),     
                                 "score" : [],
                             } for a in data['answers']
                         ],
                         "keywords" : [],     
                         "tags" : data['tags'],
-                        "time" : datetime.fromisoformat(data['time']),
+                        "time" : datetime.now().replace(microsecond=0).isoformat(),
                         "view_count" : 0
         }
+        # 呼叫文字分析模組進行分析
+        textAnalyzer = TextAnalyze()
+        # 去除code
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', faq_dict['question']['content'])
+        faq_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
         faq_data.insert_faq(faq_dict,'inner_faq')
     except Exception as e :
         faq_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
     return jsonify(faq_dict)
     
-# 匯入FAQ
-@faq_api.route('/import_faq_post', methods=['POST'])
-def import_faq_post():
-    data = request.get_json()
-    try: 
-        faq_list = [
-            {
-                        "_id" : "",          
-                        "link" : faq['link'],         
-                        "question" : 
-                        {
-                            "id" : "",       
-                            "title" : faq['question']['title'],    
-                            "content": faq['question']['content'],   
-                            "vote" : faq['question']['vote'],      
-                            "score" : [],
-                        },
-                        "answers" : 
-                        [
-                            {       
-                                "id" : "",       
-                                "content" : a['content'],
-                                "vote" : a['vote'],     
-                                "score" : [],
-                            } for a in faq['answers']
-                        ],
-                        "keywords" : [],     
-                        "tags" : faq['tags'],
-                        "time" : datetime.fromisoformat(faq['time']),
-                        "view_count" : 0
-            } for faq in data['faq_list']
-        ]
-        faq_data.insert_faq(faq_list,'inner_faq')
-    except Exception as e :
-        faq_list = {"error" : e.__class__.__name__ + " : " +e.args[0]}
-    return jsonify(faq_list)
+
 
 # 查看單篇FAQ
 @faq_api.route('/query_faq_post', methods=['POST'])
@@ -151,8 +128,8 @@ def like_faq_post():
     data = request.get_json()
     try:
         score_dict = {
-            'faq_id' : data['post_id'],
-            'answer_id' : data['response_id'],
+            'faq_id' : data['faq_id'],
+            'answer_id' : data['answer_id'],
             'user':data['user'],
             'score' : 1,
         }
@@ -166,8 +143,8 @@ def dislike_faq_post():
     data = request.get_json()
     try:
         score_dict = {
-            'faq_id' : data['post_id'],
-            'answer_id' : data['response_id'],
+            'faq_id' : data['faq_id'],
+            'answer_id' : data['answer_id'],
             'user':data['user'],
             'score' : -1,
         }
@@ -184,7 +161,8 @@ def insert_faq_answer():
             'faq_id':data['faq_id'],
             'id':"",
             'content':data['content'],
-            'vote':data['vote'],
+            'edit':data['edit'],
+            'vote':int(data['vote']),
             'score':[]
         }
         faq_data.insert_answer(answer_dict)
@@ -200,9 +178,10 @@ def update_faq_answer():
             'faq_id':data['faq_id'],
             'id':data['id'],
             'content':data['content'],
-            'vote':data['vote'],
+            'edit':data['edit'],
+            'vote':int(data['vote']),
         }
-        faq_data.insert_answer(answer_dict)
+        faq_data.update_answer(answer_dict)
     except Exception as e :
         answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
     return jsonify(answer_dict)
@@ -215,7 +194,7 @@ def delete_faq_answer():
             'faq_id':data['faq_id'],
             'id':data['id']
         }
-        faq_data.insert_answer(answer_dict)
+        faq_data.remove_answer(answer_dict)
     except Exception as e :
         answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
     return jsonify(answer_dict)
@@ -224,7 +203,12 @@ def delete_faq_answer():
 def update_faq_post():
     data = request.get_json()
     try: 
-        data['time'] = datetime.fromisoformat(data['time'])
+        # 呼叫文字分析模組進行分析
+        textAnalyzer = TextAnalyze()
+        # 去除code
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'])
+        data['keywords'] = textAnalyzer.contentPreProcess(target_content)
+        data['time'] = datetime.now().replace(microsecond=0).isoformat()
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -239,3 +223,79 @@ def delete_faq_post():
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
     return jsonify(data)
+
+
+UPLOAD_FOLDER = "/home/bach/PSAbot-vm/static/images/user_img"
+# UPLOAD_FOLDER = "/Users/jacknahu/Documents/GitHub/PQAbot/static/images/user_img"
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+ALLOWED_EXTENSIONS = {'json'}
+
+#判斷檔案類型
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@faq_api.route('/import_faq_post', methods=['POST'])
+def import_faq_post():
+    # check if the post request has the file part
+    if 'faq' not in request.files:
+          flash('No file part')
+          return redirect(request.url)
+    file = request.files['faq']
+    # if user does not select file, browser also submit an empty part without filename
+    try:
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            json_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            # 存檔案
+            file.save(json_url)
+            data_list = json.load(open(json_url,'r',encoding='utf-8'))
+            new_data = process_import_data(data_list)
+            # 刪除檔案
+            os.remove(json_url)
+            return jsonify({'message':new_data})
+        else:
+            flash('Please upload a .json file.')
+            return jsonify({'message':'Invalid file type.'})
+    except Exception as e :
+        return jsonify({'message':e})
+
+def process_import_data(data_list):
+    textAnalyzer = TextAnalyze()
+    faq_list = [
+            {
+                "_id" : "",          
+                "link" : faq['link'],         
+                "question" : 
+                {
+                    "id" : "",       
+                    "title" : faq['question']['title'],    
+                    "content": faq['question']['content'],   
+                    "edit": "", 
+                    "vote" : int(faq['question']['vote']),      
+                    "score" : [],
+                },
+                "answers" : 
+                [
+                    {       
+                        "id" : "",       
+                        "content" : a['content'],
+                        "edit" : "",
+                        "vote" : int(a['vote']),     
+                        "score" : [],
+                    } for a in faq['answers']
+                ],
+                "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'])),     
+                "tags" : [],
+                "time" : datetime.now().replace(microsecond=0).isoformat(),
+                "view_count" : 0
+            } for faq in data_list
+    ]
+    faq_data.insert_faq(faq_list,'inner_faq')
+    return faq_list

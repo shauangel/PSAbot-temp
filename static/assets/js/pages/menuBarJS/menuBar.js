@@ -178,12 +178,12 @@ function showKeyWords(){
 }
 
 function cancleKeyWords(keyWordId){
-    console.log("取消前: ");
-    console.log(keyWords);
+//    console.log("取消前: ");
+//    console.log(keyWords);
     delete keyWords[keyWordId];
     showKeyWords();
-    console.log("取消後: ");
-    console.log(keyWords);
+//    console.log("取消後: ");
+//    console.log(keyWords);
 }
 
 var postNumber;
@@ -324,6 +324,21 @@ function clickChatroomInnerSearch(postId){
     setPage('mySinglePostFrame');
 }
 // innerSearch END
+
+// outerSearch START
+function summary(id){//單篇的摘要
+    console.log("單篇的摘要");
+    console.log("id: "+id);
+    localStorage.setItem("summaryId", "t_000004");
+    setPage('summary_new');
+}
+
+function rank(idArray){//全部的排行
+    var idArray = ['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'];
+    localStorage.setItem("rankArray", idArray);
+    setPage('comprehensive');
+}
+// outerSearch END
 
 ////////////////// 聊天室 END ////////////////////
 

@@ -36,7 +36,7 @@ function checkLoginState() {
           "fields": "id,name,email"
           },
           function (response) {
-            console.log(response)
+            console.log(response);
             // 取得使用者資料丟到後端
             $.ajax({
                 type: "POST",
@@ -46,9 +46,15 @@ function checkLoginState() {
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (response_data) {
-                  sessionStorage.setItem('user_id', response_data['_id']);
-                  sessionStorage.setItem('role', response_data['role']);
-                  console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
+                    sessionStorage.setItem('user_id', response_data['_id']);
+                    sessionStorage.setItem('role', response_data['role']);
+                    console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
+
+                    //慈
+                    localStorage.setItem("sessionID", response_data['_id']);
+                    localStorage.setItem("role", response_data['role']);
+                    console.log("慈加的id: "+response_data['_id']);
+                    console.log("慈加的role: "+response_data['role']);
                 },
                 error: function (xhr, status, error) {
                   console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
@@ -57,7 +63,8 @@ function checkLoginState() {
           });
       }
     }
-    , { auth_type: 'reauthenticate' });
+//    , { auth_type: 'reauthenticate' }
+    );
 }
 
 /* ================================================= */
