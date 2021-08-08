@@ -356,9 +356,7 @@ function summary(id){//單篇的摘要
     console.log("id: "+id);
     localStorage.setItem("summaryId", id);
     console.log("拿到的: "+localStorage.getItem("summaryId"));
-    setTimeout(function(){
-        setPage('summary_new');
-    }, 2000);
+    setPage('summary_new');
 }
 
 function rank(idArray){//全部的排行

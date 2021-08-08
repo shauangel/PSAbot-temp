@@ -5,7 +5,7 @@ function setPage(page){
     if(page!='comprehensive'){
         localStorage.removeItem("rankArray");
     }
-    if(page!='summaryId'){
+    if(page!='summary_new'){
         localStorage.removeItem("summaryId");
     }
     localStorage.setItem("page", page);
