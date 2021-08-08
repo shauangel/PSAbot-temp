@@ -46,15 +46,16 @@ function checkLoginState() {
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (response_data) {
-                    sessionStorage.setItem('user_id', response_data['_id']);
-                    sessionStorage.setItem('role', response_data['role']);
-                    console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
+//                    sessionStorage.setItem('user_id', response_data['_id']);
+//                    sessionStorage.setItem('role', response_data['role']);
+//                    console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
 
-                    //慈
+                    //慈 START
                     localStorage.setItem("sessionID", response_data['_id']);
                     localStorage.setItem("role", "generalUser");
-                    console.log("慈加的id: "+response_data['_id']);
-                    console.log("慈加的role: "+response_data['role']);
+                    
+                    setPage('home');
+                    //慈 END
                 },
                 error: function (xhr, status, error) {
                   console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
