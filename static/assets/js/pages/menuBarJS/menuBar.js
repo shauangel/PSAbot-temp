@@ -78,7 +78,7 @@ function bot(string){
 //    content += '<input id="doneBtn"class="btn btn-primary purpleBtnInChatroom" value="完成" onclick="doneKeyWord()">';
     // 測試用 END
     
-    content += '<span class="msg_time">8:40 AM</span>';
+//    content += '<span class="msg_time">8:40 AM</span>';
     content += '</div>';
     content += '</div>';
     
@@ -134,13 +134,13 @@ function bot(string){
 }
 
 function user(string){
-    console.log("user送訊息");
+//    console.log("user送訊息");
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     content += '<div class="d-flex justify-content-end mb-4">';
     content += '<div class="msg_cotainer_send">';
     content += string;
-    content += '<span class="msg_time">8:40 AM</span>';
+//    content += '<span class="msg_time">8:40 AM</span>';
     content += '</div>';
     content += '<div class="img_cont_msg">';
     content += '<img src="../static/images/jackson.png" class="chatImg">';
