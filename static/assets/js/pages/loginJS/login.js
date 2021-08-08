@@ -33,10 +33,9 @@ function checkLoginState() {
         FB.api(
           '/me',
           'GET', {
-          "fields": "id,name,email"
+          "fields": "id,name"
           },
           function (response) {
-              response[email] = "";
               console.log("傳到後端的: "+response);
             // 取得使用者資料丟到後端
             $.ajax({
