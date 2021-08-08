@@ -63,7 +63,8 @@ function checkLoginState() {
           });
       }
     }
-//    , { auth_type: 'reauthenticate' });
+//    , { auth_type: 'reauthenticate' }
+    );
 }
 
 /* ================================================= */
