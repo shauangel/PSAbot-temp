@@ -84,7 +84,7 @@ function onLoadGoogleCallback(){
   });
   function attachSignin(element) {
     console.log(element.id);
-    console.log('Sign_in: ' +　GoogleAuth.isSignedIn.get());
+    console.log('Sign_in: ' +　auth2.isSignedIn.get());
     auth2.attachClickHandler(element, {},
       function(googleUser) 
       {
