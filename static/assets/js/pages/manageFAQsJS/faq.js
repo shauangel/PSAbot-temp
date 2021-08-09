@@ -997,22 +997,22 @@ function searchFaqPost(){
             break;
     }
     
-    switch(searchType){
-        case "searchAll":
-            searchAll("new");
-            contentSearch = " | 顯示全部";
-            break;
-        case "searchText":
-            searchText("new");
-            contentSearch = " | 相關的字";
-            break;
-        case "searchTag":
-            searchTag("new");
-            contentSearch = " | 相關標籤";
-            break;
-    }
+//    switch(searchType){
+//        case "searchAll":
+//            searchAll("new");
+//            contentSearch = " | 顯示全部";
+//            break;
+//        case "searchText":
+//            searchText("new");
+//            contentSearch = " | 相關的字";
+//            break;
+//        case "searchTag":
+//            searchTag("new");
+//            contentSearch = " | 相關標籤";
+//            break;
+//    }
     
-    document.getElementById("optionText").innerHTML = content+contentSearch+contentSort;
+    document.getElementById("optionText").innerHTML = content+contentSort;
 }
 ///////////////// 搜尋的處理 END /////////////////
 function set(){
