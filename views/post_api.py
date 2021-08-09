@@ -4,7 +4,9 @@ from flask import Blueprint, request, jsonify
 import re
 # --- our models ---- #
 from models import inner_post
-from . import TextAnalyze
+#from . import TextAnalyze
+from .TextAnalyze import TextAnalyze #為了解決insert_inner_post的錯
+
 from datetime import datetime
 
 post_api = Blueprint('post_api', __name__)

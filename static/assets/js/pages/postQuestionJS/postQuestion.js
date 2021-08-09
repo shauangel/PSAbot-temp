@@ -330,11 +330,11 @@ function save(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("成功: 拿姓名（query_user_profile）");
+//            console.log("成功: 拿姓名（query_user_profile）");
             name = response.name;
         },
         error: function(){
-            console.log("失敗: 拿姓名（query_user_profile）");
+//            console.log("失敗: 拿姓名（query_user_profile）");
         }
     });
     
