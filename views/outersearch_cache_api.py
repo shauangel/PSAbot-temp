@@ -7,7 +7,6 @@ Created on Tue Aug  3 13:06:08 2021
 """
 # --- flask --- #
 from flask import Blueprint, request, jsonify
-from datetime import datetime
 
 # --- our models ---- #
 from models import outer_data_cache
