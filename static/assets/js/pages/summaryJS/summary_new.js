@@ -120,73 +120,80 @@ function summaryContent(response){
                 dislikeScore += 1;    
             }
         }
-        content += '<div class="accordion-msg" style="">';
-            content += ' <a class="ourHover" style="font-size: 20px; color: #505458;">最佳解答';
-            content += (i+1);
-            content += '</a>';
-        
-            content += '<div style="float: right; font-size: 15px;">';
-
-        
-            // like & dislike
-//                content += '<i class="fa fa-thumbs-o-up" aria-hidden="true" onclick="like(';
-//                var temp = "like"+i;
-//                content += "'";
-//                content += temp;
-//                content += "'";
-//                content += ')"></i>';
-//                content += '<span id="like';
-//                content += i;
-//                content += '" style="margin-right: 5px; color: gray;">0</span>';
-//
-//                content += '<i class="fa fa-thumbs-o-down" aria-hidden="true" onclick="dislike(';
-//                var temp = "dislike"+i;
-//                content += "'";
-//                content += temp;
-//                content += "'";
-//                content += ')"></i>';
-//                content += '<span id="dislike';
-//                content += i;
-//                content += '" style="margin-right: 5px; color: gray;">0</span>';
-                content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
-                content += likeScore;
-                content += '</button>';
-                content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
-                content += dislikeScore;
-                content += '</button>';
+        content += '<div class="accordion-panel">';//第一個div
+//        //----- 解答的標題 START -----//
+            content += '<div class="accordion-heading" role="tab" id="heading';
+            content += i;
+            content += '">';
+            
+                content += '<h3 class="card-title accordion-title">';
+                    content += '<a class="accordion-msg" data-toggle="collapse" data-parent="#accordion" href="#collapse';
+                    content += i;
+                    content += '" aria-expanded="true" aria-controls="collapse';
+                    content += i;
+                    content += '">';
+                        content += '最佳解答'
+                        content += (i+1);
                     
-                content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
-                content += '<span style="margin-right: 5px; color: #505458;">';
-                content += response.answers[i].vote;
-                content += '</span>';
-            content += '</div>';
-
-        content += '</div>';
-
-        content += '<div class="accordion-desc">';
-            content += '<p>';
-                content += '<a href="';
-                content += response.link;
-                content += '#';
-                content += response.answers[i].id;
-                content += '" target="_blank" class="">點我看原文</a><br><br>';
-                // 摘要 START
-                content += '<div style="font-size: 16px; font-weight: bold; width: auto; color: #505458;">摘要: </div>';
-                content += '<div style="margin-top: 10px; font-size: 12px;">';
-                    content += response.answers[i].abstract;
-                content += '</div>';
-                // 摘要END
-                
-                content += '<br><br>';
-                
-                // 摘要 START
-                content += '<div style="font-size: 16px; font-weight: bold; width: auto; color: #505458;">原始內容: </div>';
-                content += '<div style="margin-top: 10px; font-size: 12px;">';
-                    content += response.answers[i].content;
-                content += '</div>';
-                // 摘要END
         
-            content += '</p>';
+                        content += '<div style="float: right; font-size: 15px;">';
+
+
+                            content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
+                            content += likeScore;
+                            content += '</button>';
+        
+                            content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
+                            content += dislikeScore;
+                            content += '</button>';
+        
+                            content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
+        
+                            content += '<span style="margin-right: 5px; color: #505458;">';
+                            content += response.answers[i].vote;
+                            content += '</span>';
+                    
+                        content += '</div>';
+                        
+                    content += '</a>';
+                content += '</h3>';
+            content += '</div>';
+            //----- 解答的標題 END -----//
+        
+            //----- 解答 START -----//
+            content += '<div id="collapse';
+            content += i;
+            content += '" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading';
+            content += i;
+            content += '">';
+
+                content += '<div class="accordion-content accordion-desc">';
+        
+                    content += '<p>';
+                        content += '<a href="';
+                        content += response.link;
+                        content += '#';
+                        content += response.answers[i].id;
+                        content += '" target="_blank">點我看原文</a><br><br>';
+        
+                        // 摘要 START
+                        content += '<div style="font-size: 16px; font-weight: bold; width: auto; color: #505458;">摘要: </div>';
+                        content += '<div style="margin-top: 10px; font-size: 12px;">';
+                            content += response.answers[i].abstract;
+                        content += '</div>';
+                        // 摘要END
+                        
+                        // 原內容 START
+                        content += '<div style="font-size: 16px; font-weight: bold; width: auto; color: #505458;">原始內容: </div>';
+                        content += '<div style="margin-top: 10px; font-size: 12px;">';
+                            content += response.answers[i].content;
+                        content += '</div>';
+                        // 原內容END
+                        
+                    content += '</p>';
+                content += '</div>';
+            content += '</div>';
+            //----- 解答 END -----//
         content += '</div>';
     }
     comment.innerHTML = content;

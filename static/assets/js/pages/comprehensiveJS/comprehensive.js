@@ -68,11 +68,12 @@ function rankContent(response){
 //                content += '" style="margin-right: 5px; color: gray;">0</span>';
 //                        content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>';
 //                        content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>';
-
-                        content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
-                        content += '<span style="margin-right: 5px; color: #505458;">';
+                        content += '<span style="margin-right: 5px; color: #505458; float: right;">';
                         content += parseInt((response.answers[i].score*100));
                         content += '</span>';
+                    
+                        content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458; float: right;"></i>';
+                        
                     content += '</a>';
                 content += '</h3>';
             content += '</div>';
@@ -88,11 +89,16 @@ function rankContent(response){
                 content += '<div class="accordion-content accordion-desc">';
         
                     content += '<p>';
-                        content += '<a href="https://www.youtube.com/watch?v=ewmMS-5TpTg&t=344s" target="_blank">點我看原文</a><br><br>';
+                        content += '<a href="';
+                        content += response.answers[i].link;
+                        content += '#';
+                        content += response.answers[i]._id;
+                        content += '" target="_blank">點我看原文</a><br><br>';
                         content += response.answers[i].content;
                     content += '</p>';
                 content += '</div>';
             content += '</div>';
+            //----- 解答 END -----//
         content += '</div>'
     }
     comment.innerHTML = content;
