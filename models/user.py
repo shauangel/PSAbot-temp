@@ -39,7 +39,6 @@ def update_user(update_dict):
     # -------- 資料加密 --------- #
     # rsatool = RsaTool()
     # new_name = rsatool.encrypt(update_dict['name'])
-    # new_email = rsatool.encrypt(update_dict['email'])
     # --------------------------- #
     user_data = _db.USER_COLLECTION.find_one({'_id':update_dict['_id']})
     _db.USER_COLLECTION.update_one({'_id':update_dict['_id']},{'$set':{'name': new_name}})
