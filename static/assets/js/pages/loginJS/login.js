@@ -105,7 +105,10 @@ function attachSignin(element) {
     }
   );
 }
-
+function googleSignIn(){
+  auth2.signIn()
+  console.log('user changed. id: ' + auth2.currentUser.get().getId())
+}
 function userChanged(googleUser){
   if (googleUser.getId()!=null) {
     //傳送access token至後端驗證
