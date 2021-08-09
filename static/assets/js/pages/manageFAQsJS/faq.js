@@ -731,7 +731,7 @@ function showFaq(faqList){
                     content += '<span> FAQ的ID #';
                     content += id;
                     content += '</span>';
-        
+                    
                     // score START
                     content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
                     content += score;

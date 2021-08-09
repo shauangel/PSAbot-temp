@@ -72,6 +72,8 @@ function thumbs(score, answerId, tagId){
         
         tempId = "postDislike"+summaryId;
         document.getElementById(tempId).className=="fa fa-thumbs-o-down";
+        
+        $("#postScore"+summaryId).html(parseInt($("#postScore"+summaryId))+parseInt(score));
     }
     else{//代表是答案
         tempId = "answerLike"+answerId;
@@ -79,6 +81,8 @@ function thumbs(score, answerId, tagId){
         
         tempId = "answerLike"+answerId;
         document.getElementById(tempId).className=="fa fa-thumbs-o-down";
+        
+        $("#answerScore"+answerId).html(parseInt($("#answerScore"+summaryId))+parseInt(score));
     }
     
     if(originState.slice(0, 14)=="fa fa-thumbs-o-"){//原本沒按
@@ -89,7 +93,7 @@ function thumbs(score, answerId, tagId){
     else{//原本有按
         data = {id: summaryId, answer_id: answerId, user_id: userId, mode: 0};
     }
-    console("安祺data: ");
+    console.log("安祺data: ");
     console.log(data);
     var myURL = head_url + "update_cache_score";
     $.ajax({
@@ -118,15 +122,16 @@ function summaryContent(response){
     console.log(response);
     // 問題
     var question = document.getElementById("stackoverflowQuestion");
-    var likeScore = 0, dislikeScore = 0;
+    var likeScore = 0, dislikeScore = 0, score=0;
     
     for(var i=0; i<response.question.score.length; i++){
-        if(response.question.score[i].user_vote==1){
-            likeScore += 1;
-        }
-        else if(response.question.score[i].user_vote==-1){
-            dislikeScore += 1;
-        }
+        score += response.question.score[i].user_vote;
+//        if(response.question.score[i].user_vote==1){
+//            likeScore += 1;
+//        }
+//        else if(response.question.score[i].user_vote==-1){
+//            dislikeScore += 1;
+//        }
     }
     
     var content = "";
@@ -135,11 +140,21 @@ function summaryContent(response){
     content += '<span style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
         content += response.question.title;//標題
         content += '<span style="float: right;">';
-            content += '<i class="fa fa-trophy" aria-hidden="true" style="font-size: 10px; color: #505458;"></i>';
-            content += '<span style="font-size: 10px; color: #505458;">';
-                content += response.question.vote;
+            // vote START
+            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
+            content += response.question.vote;
             content += '</span>';
-        content += '</span>';
+            // vote END
+    
+            // score START
+            // id為: postScore+postId
+            content += '<span id="postScore';
+            content += localStorage.getItem("summaryId");
+            content += '" style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+            content += score;
+            content += '</span>';
+            // score END
+        ontent += '</span>';
     content += '</span>';
     
     content += '<br>';
@@ -194,8 +209,9 @@ function summaryContent(response){
     var comment = document.getElementById("accordion");
     content = "";
     for(var i=0; i<response.answers.length; i++){
-        var likeScore = 0, dislikeScore = 0;
+        var likeScore = 0, dislikeScore = 0, score=0;
         for(var j=0; j<response.answers[i].score.length; j++){
+            score += response.answers[i].user_vote;
             if(response.answers[i].user_vote==1){
                 likeScore += 1;
             }
@@ -220,12 +236,22 @@ function summaryContent(response){
                     
         
                         content += '<div style="float: right; font-size: 15px;">';
-                            content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
-        
-                            content += '<span style="margin-right: 5px; color: #505458;">';
+                            
+                            // vote START
+                            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
                             content += response.answers[i].vote;
                             content += '</span>';
-                    
+                            // vote END
+
+                            // score START
+                            // id為: answerScore+answerId
+                            content += '<span id="answerScore';
+                            content += response.answers[i].id;
+                            content += '" style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+                            content += score;
+                            content += '</span>';
+                            // score END
+
                         content += '</div>';
                         
                     content += '</a>';

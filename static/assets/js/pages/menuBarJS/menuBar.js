@@ -345,6 +345,7 @@ function innerSearch(response, content){
 }
 
 function clickChatroomInnerSearch(postId){
+    localStorage.setItem("postType", "innerPost");
     localStorage.setItem("singlePostId", postId);
     setPage('mySinglePostFrame');
 }
