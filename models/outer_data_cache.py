@@ -11,8 +11,8 @@
 - b_ : block排行
 * =============================='''
 
-from . import _db
-#import _db
+#from . import _db
+import _db
 from datetime import datetime
 import time
 ##for test
@@ -78,6 +78,26 @@ def insert_cache(data_list, data_type):
         
     return id_list
 
+def update_cache_score(data):
+    print(data)
+    target_data = _db.OUTER_DATA_CACHE_COLLECTION.find_one({"_id" : data['id']})
+    try:
+        target_score_list = target_data['question']['score'] if len(data['answer_id']) == 0 else list(filter(lambda ans: ans['id'] == int(data['answer_id']), target_data['answers']))[0]['score']
+    except:
+        print("ERROR: cannot find score list")
+        return
+    
+    check = list(filter(lambda t: t['user_id'] == data['user_id'], target_score_list))
+    if data['mode'] != 0:
+        try:
+            check[0]['score'] = data['mode']
+        except:
+            target_score_list.append({'user_id':data['user_id'], "score":data['mode']})
+    else:
+        target_score_list.remove(check[0])
+    _db.OUTER_DATA_CACHE_COLLECTION.update_one({"_id":data['id']}, {"$set" : {"question" : target_data['question'],
+                                                                              "answers" : target_data['answers']}})
+            
 #block ranking 儲存格式
 def transform_block_rank(data_list):
     blocks = [{
@@ -118,7 +138,7 @@ if __name__ == "__main__":
     
     
     """
-    remove_all()
+    #remove_all()
     #print(get_biggest_id())
     
     #result = insert_cache(data, "blocks_rank")
@@ -128,6 +148,8 @@ if __name__ == "__main__":
     #['b_000006']
     #print(result)
     #print(type(result))
+    test = {"id" : "t_000001", "answer_id" : "", "user_id" : "123", "mode" : 0}
+    update_cache_score(test)
     
 
 
