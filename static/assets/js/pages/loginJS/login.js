@@ -82,14 +82,42 @@ function onLoadGoogleCallback(){
       scope: 'profile'
     });
     auth2 = gapi.auth2.getAuthInstance();
-    attachSignin(document.getElementById('google-login-btn'));
+    //attachSignin(document.getElementById('google-login-btn'));
     auth2.currentUser.listen(userChanged);
   });
+}
 
-  function userChanged(googleUser){
-    if (googleUser.getId()!=null) {
+function userChanged(googleUser){
+  if (googleUser.getId()!=null) {
+    //傳送access token至後端驗證
+    console.log('user changed. id: ' + googleUser.getId())
+    $.ajax({
+      type: "POST",
+      url: head_url + 'google_sign_in',
+      data: JSON.stringify({
+        'id_token': googleUser.getAuthResponse().id_token
+      }),
+      dataType: "json",
+      contentType: 'application/json; charset=utf-8',
+      success: function (response_data) {
+        sessionStorage.setItem('user_id', response_data['_id']);
+        sessionStorage.setItem('role', response_data['role']);
+        console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
+      },
+      error: function (xhr, status, error) {
+        console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
+      }
+    });
+  }
+}
+function attachSignin(element) {
+  console.log(element.id);
+  auth2.attachClickHandler(element, {},
+    function(googleUser) 
+    {
+      // 登入成功
+      var profile = googleUser.getBasicProfile();
       //傳送access token至後端驗證
-      console.log('user changed. id: ' + googleUser.getId())
       $.ajax({
         type: "POST",
         url: head_url + 'google_sign_in',
@@ -107,41 +135,13 @@ function onLoadGoogleCallback(){
           console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
         }
       });
+    }, 
+    function(error) 
+    {
+      //登入失敗
+      console.log('Sign-in error', error);
     }
-  }
-  function attachSignin(element) {
-    console.log(element.id);
-    auth2.attachClickHandler(element, {},
-      function(googleUser) 
-      {
-        // 登入成功
-        var profile = googleUser.getBasicProfile();
-        //傳送access token至後端驗證
-        $.ajax({
-          type: "POST",
-          url: head_url + 'google_sign_in',
-          data: JSON.stringify({
-            'id_token': googleUser.getAuthResponse().id_token
-          }),
-          dataType: "json",
-          contentType: 'application/json; charset=utf-8',
-          success: function (response_data) {
-            sessionStorage.setItem('user_id', response_data['_id']);
-            sessionStorage.setItem('role', response_data['role']);
-            console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
-          },
-          error: function (xhr, status, error) {
-            console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
-          }
-        });
-      }, 
-      function(error) 
-      {
-        //登入失敗
-        console.log('Sign-in error', error);
-      }
-    );
-  }
+  );
 }
 
 
