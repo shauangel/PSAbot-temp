@@ -11,9 +11,9 @@
 - b_ : block排行
 * =============================='''
 
-from . import _db
-#import _db
-#from datetime import datetime
+#from . import _db
+import _db
+from datetime import datetime
 ##for test
 import json
 import copy
@@ -37,7 +37,7 @@ cache_format = {
 #利用自訂id查詢資料
 def query_by_id(idx):
     query = {"_id" : idx }
-    return [r for r in _db.OUTER_DATA_CACHE_COLLECTION.find(query)][0]
+    return _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
     
 
 #找最大id
@@ -118,15 +118,16 @@ if __name__ == "__main__":
     
     
     """
-    remove_all()
+    #remove_all()
     #print(get_biggest_id())
     
     #result = insert_cache(data, "blocks_rank")
     #result = insert_cache(data, "temp_data")
     #print(result)
-    #result = query_by_id('t_000104')
+    #result = query_by_id('t_000009')
     #['b_000006']
     #print(result)
+    #print(type(result))
     
 
 

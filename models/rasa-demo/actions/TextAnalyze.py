@@ -73,7 +73,7 @@ class TextAnalyze:
         ###Step 4.nlargest(句子數量, 可迭代之資料(句子&權重), 分別須滿足的條件)
         summarized_sen = nlargest(3, sentence_w, key=sentence_w.get)
         
-        return " ".join(summarized_sen)
+        return str(summarized_sen)
     
     
     #利用LDA topic modeling取出關鍵字
