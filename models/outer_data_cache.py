@@ -11,8 +11,8 @@
 - b_ : block排行
 * =============================='''
 
-#from . import _db
-import _db
+from . import _db
+#import _db
 from datetime import datetime
 ##for test
 import json
@@ -37,7 +37,9 @@ cache_format = {
 #利用自訂id查詢資料
 def query_by_id(idx):
     query = {"_id" : idx }
-    return _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
+    result = _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
+    print(result)
+    return result
     
 
 #找最大id
