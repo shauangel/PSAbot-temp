@@ -37,7 +37,7 @@ cache_format = {
 #利用自訂id查詢資料
 def query_by_id(idx):
     query = {"_id" : idx }
-    return _db.OUTER_DATA_CACHE_COLLECTION.find(query)
+    return [r for r in _db.OUTER_DATA_CACHE_COLLECTION.find(query)][0]
     
 
 #找最大id
@@ -110,22 +110,22 @@ def remove_all():
 
 
 if __name__ == "__main__":
+    """
     filepath_A = "/Users/shauangel/Desktop/PSAbot專題/python/BLOCK_test.json"
     filepath_B = "/Users/shauangel/Desktop/PSAbot專題/python/DATA_test.json"
     with open(filepath_A, "r", encoding="utf-8") as f:
         data = json.load(f)
     
     remove_all()
+    """
     #print(get_biggest_id())
     
     #result = insert_cache(data, "blocks_rank")
     #result = insert_cache(data, "temp_data")
     #print(result)
-    #result = query_by_id(['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'])
+    result = query_by_id('t_000104')
     #['b_000006']
-    #for r in result:
-    #    print(r['link'])
-    #    print("------")
+    print(result)
     
 
 
