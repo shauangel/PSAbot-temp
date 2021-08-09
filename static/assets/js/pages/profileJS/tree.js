@@ -135,6 +135,8 @@ function printTree(){
 
 var treeTag;
 function buildTree(){
+    console.log("buildTree: ");
+    console.log(rootTreeNode);
     treeTag = "<li>"+rootTreeNode.name+"<br><div class='score'>"+rootTreeNode.score+"</div><ul>";
     //建出樹的tag
     for(var i=0;i<rootTreeNode.child.length;i++){
