@@ -121,11 +121,11 @@ function getUserTag(){
 }
 
 function printTree(){
-    console.log("printTree");
+//    console.log("printTree");
     for(var i=0; i<rootTreeNode.child.length; i++){
-        console.log("2nd: "+rootTreeNode.child[i].name);
+//        console.log("2nd: "+rootTreeNode.child[i].name);
         for(var j=0; j<rootTreeNode.child[i].child.length; j++){
-            console.log("3rd: "+rootTreeNode.child[i].child[j].name);
+//            console.log("3rd: "+rootTreeNode.child[i].child[j].name);
         }
     }
 }
