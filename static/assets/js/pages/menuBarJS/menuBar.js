@@ -669,8 +669,6 @@ function getUserHeadshotAndName(){
     
     var data = {"_id": id};
     var name = "";
-    console.log("給後端的: ");
-    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -679,15 +677,12 @@ function getUserHeadshotAndName(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("成功: 拿姓名（query_user_profile）");
+//            console.log("成功: 拿姓名（query_user_profile）");
             name += '<span>';
             name += response.name;
             name += '</span>';
             
             document.getElementById("userName").setAttribute("value", response.name);
-            
-            console.log("拿到的: ");
-            console.log(response);
             localStorage.setItem("userName", response.name);
         },
         error: function(){
@@ -969,6 +964,8 @@ function save(){
     myURL = head_url + "update_user_profile";
     var name = $("#userName").val();
     var data = {"_id": userId, "name": name};
+    console.log("給後端的: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -977,8 +974,10 @@ function save(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("收到的: ");
+            console.log(response);
             localStorage.setItem("userName", name);
-            console.log("成功: 更新姓名（update_user_profile）");
+//            console.log("成功: 更新姓名（update_user_profile）");
         },
         error: function(response){
             console.log("失敗: 更新姓名（update_user_profile）");
