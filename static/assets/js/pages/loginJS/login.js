@@ -137,12 +137,12 @@ function managerLogin(){
     contentType: 'application/json; charset=utf-8',
     success: function (response_data) {
       if(response_data['_id']== 'invalid.'){
-        alert('帳號或密碼錯誤')
+        alert('帳號或密碼錯誤');
       }
       else{
-      localStorage.setItem("sessionID", response_data['_id']);
-      localStorage.setItem("role", response_data['role']);
-      console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.')
+        localStorage.setItem("sessionID", response_data['_id']);
+        localStorage.setItem("role", response_data['role']);
+        console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.');
       }
       
     },
