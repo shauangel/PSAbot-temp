@@ -347,20 +347,20 @@ function showQuestion(response){
             }
             
             if(postType=="faq"){
-                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數">';
+//                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數">';
                     content += '<span id="postScore';
                     content += id;
-                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
                     content += qusetionScore;
                     content += '</span>';
-                content += '</div>';
+//                content += '</div>';
 
                 // vote（管理者輸入的分數） START
-                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數">';
-                    content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+//                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數">';
+                    content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
                     content += questionVote;
                     content += '</span>';
-                content += '</div>';
+//                content += '</div>';
                 // vote（管理者輸入的分數） END
             }
             else if(postType=="innerPost"){
