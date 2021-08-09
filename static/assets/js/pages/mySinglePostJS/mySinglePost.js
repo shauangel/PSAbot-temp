@@ -590,13 +590,13 @@ function showAnswers(response){
                             content += '<span id="answerScore';
                             content += answerId;
                             content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
-                            content += questionScore;
+                            content += answerScore;
                             content += '</span>';
         //                content += '</div>';
 
                         // vote（管理者輸入的分數） START
                             content += '<span style="float:right; margin-left: 4px;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
-                            content += questionVote;
+                            content += answerVote;
                             content += '</span>';
                         // vote（管理者輸入的分數） END
                     }
