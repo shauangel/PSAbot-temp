@@ -346,21 +346,28 @@ function showQuestion(response){
                 }
             }
             
-            content += '<div data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數">';
-                content += '<span id="postScore';
-                content += id;
-                content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-                content += qusetionScore;
-                content += '</span>';
-            content += '</div>';
-            
-            // vote（管理者輸入的分數） START
-            content += '<div data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數">';
+            if(postType=="faq"){
+                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數">';
+                    content += '<span id="postScore';
+                    content += id;
+                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+                    content += qusetionScore;
+                    content += '</span>';
+                content += '</div>';
+
+                // vote（管理者輸入的分數） START
+                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數">';
+                    content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+                    content += questionVote;
+                    content += '</span>';
+                content += '</div>';
+                // vote（管理者輸入的分數） END
+            }
+            else if(postType=="innerPost"){
                 content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-                content += questionVote;
+                    content += qusetionScore;
                 content += '</span>';
-            content += '</div>';
-            // vote（管理者輸入的分數） END
+            }
     
             //----- 分數 END -----//
         content += '</div>';
