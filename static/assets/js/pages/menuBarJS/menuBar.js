@@ -1040,7 +1040,7 @@ function save(){
 ////////////////// 登出 START ////////////////////
 function logOut(){
     localStorage.clear();
-    window.location.href = "login.html";
+    window.location.href = "https://soselab.asuscomm.com:55002/site/login";
 }
 ////////////////// 登出 END ////////////////////
 
