@@ -61,6 +61,7 @@ function checkLoginState() {
 
                     //慈 START
                     localStorage.setItem("sessionID", response_data['_id']);
+                    localStorage.setItem("userName", response_data['name']);
                     localStorage.setItem("role", "facebook_user");
                     
                     window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
