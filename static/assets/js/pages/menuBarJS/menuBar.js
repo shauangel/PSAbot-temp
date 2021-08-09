@@ -415,10 +415,7 @@ function start(){
     
     
     var role = localStorage.getItem("role");
-    if(role=="manager"){
-        document.getElementById("chatingPSAbot").innerHTML = "";
-    }
-    else{
+    if(role!="manager"){
         // ---------- PSABot聊天室 START ---------- //
         //到時候要用session_id
 
