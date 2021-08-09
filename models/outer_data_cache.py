@@ -83,7 +83,7 @@ def transform_block_rank(data_list):
     blocks = [{
         "_id" : block['id'],
         "content" : block['content'],
-        "vote" : 0,
+        "link" : block['link'],
         "score" : block['score']
         } for block in data_list]
     
@@ -102,7 +102,7 @@ def transform_temp_data(data_dict):
     data_dict['question']['score'] = []
     data_dict['question']['vote'] = 0
     for a in data_dict['answers']:
-        a['score'] = { "user_id" : "", "user_vote" : 0 }
+        a['score'] = []
         a['vote'] = 0
         
 
