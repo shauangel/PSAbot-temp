@@ -25,7 +25,7 @@ def query_user_profile():
         user_profile = {
             '_id' : user_dict['_id'],
             'name': user_dict['name'],
-            'email':user_dict['email'],
+            'email':user_dict['email']
         }
         
     except Exception as e :
