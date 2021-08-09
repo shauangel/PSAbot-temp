@@ -22,6 +22,7 @@ def query_cache_by_id():
     print("拿到的id: ", idx['id'])
     try:
         result = outer_data_cache.query_by_id(idx)
+        print(result)
         return jsonify(result)
         
     except Exception as e :
