@@ -82,7 +82,7 @@ function thumbs(score, answerId, tagId){
         tempId = "answerLike"+answerId;
         document.getElementById(tempId).className="fa fa-thumbs-o-up";
         
-        tempId = "answerLike"+answerId;
+        tempId = "answerDislike"+answerId;
         document.getElementById(tempId).className="fa fa-thumbs-o-down";
         
         $("#answerScore"+answerId).text(parseInt($("#answerScore"+answerId).text())+parseInt(score));
@@ -143,11 +143,12 @@ function summaryContent(response){
     var content = "";
     
     ///////////////////////////// 問題 START /////////////////////////////
-    content += '<span style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
+    content += '<div style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
         content += response.question.title;//標題
         content += '<div style="float: right;">';
             // vote START
-            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="外面網站的分數"></i>';
+            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+    
                 content += response.question.vote;
             content += '</span>';
             // vote END
@@ -156,7 +157,7 @@ function summaryContent(response){
             // id為: postScore+postId
             content += '<span id="postScore';
             content += localStorage.getItem("summaryId");
-            content += '" style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="此網站的分數"></i>';
+            content += '" style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
                 content += score;
             content += '</span>';
             // score END
@@ -206,7 +207,7 @@ function summaryContent(response){
     
     content += '<span class="badge badge-default purpleLabel2" style=" background-color: white;">';
         content += response.time.slice(0, 10);
-    content += '</span>';
+    content += '</div>';
     question.innerHTML = content;
     hljs.highlightAll();
     ///////////////////////////// 問題 END /////////////////////////////
