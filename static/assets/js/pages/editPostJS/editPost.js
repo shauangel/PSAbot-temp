@@ -180,7 +180,7 @@ function save(){
         success: function(response){
 //            console.log("成功: 編輯貼文");
             console.log(response);
-//            setPage('mySinglePostFrame');
+            setPage('mySinglePostFrame');
         },
         error: function(response){
 //            console.log("失敗: 編輯");
