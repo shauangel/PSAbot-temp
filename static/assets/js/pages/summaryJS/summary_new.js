@@ -1,4 +1,5 @@
 function start(){
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 //    query_cache_by_id
     
     var myURL = head_url+"query_cache_by_id";
