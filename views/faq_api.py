@@ -207,8 +207,8 @@ def update_faq_post():
         textAnalyzer = TextAnalyze()
         # 去除code
         target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'])
-        data['keywords'] = textAnalyzer.contentPreProcess(target_content)
-        data['time'] = datetime.now().replace(microsecond=0).isoformat()
+        data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)})
+        data.update({'time': datetime.now().replace(microsecond=0).isoformat()})
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
