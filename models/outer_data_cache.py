@@ -25,7 +25,7 @@ cache_format = {
                       "title" : "",
                       "content" : "",
                       "abstract" : "",
-                      "score" : {},
+                      "score" : [],
                       "vote" : 0},
         "answers" : [],
         "keywords" : [],
@@ -98,7 +98,7 @@ def transform_temp_data(data_dict):
     data_dict['tags'] = []
     data_dict['time'] = datetime.now().replace(microsecond=0).isoformat()
     data_dict['view_count'] = 0
-    data_dict['question']['score'] = { "user_id" : "", "user_vote" : 0 }
+    data_dict['question']['score'] = []
     data_dict['question']['vote'] = 0
     for a in data_dict['answers']:
         a['score'] = { "user_id" : "", "user_vote" : 0 }
