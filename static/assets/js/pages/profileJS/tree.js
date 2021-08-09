@@ -74,6 +74,8 @@ function buildThirdLevel(data){
     //var parentName = getTagName(data.parent);
     var parentName = data.parent.tag_name;
     //parentName.child.push(temp);
+    console.log("是否包含: ");
+    console.log(secondLevelName.includes(parentName));
     if(secondLevelName.includes(parentName)){
         var index = secondLevelName.indexOf(parentName);
         rootTreeNode.child[index].child.push(temp);
