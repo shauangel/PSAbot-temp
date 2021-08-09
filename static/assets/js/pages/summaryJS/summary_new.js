@@ -71,21 +71,21 @@ function thumbs(score, answerId, tagId){
     var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
     if(answerId==""){//代表是貼文
         tempId = "postLike"+summaryId;
-        document.getElementById(tempId).className=="fa fa-thumbs-o-up";
+        document.getElementById(tempId).className="fa fa-thumbs-o-up";
         
         tempId = "postDislike"+summaryId;
-        document.getElementById(tempId).className=="fa fa-thumbs-o-down";
+        document.getElementById(tempId).className="fa fa-thumbs-o-down";
         
         $("#postScore"+summaryId).text(parseInt($("#postScore"+summaryId).text())+parseInt(score));
     }
     else{//代表是答案
         tempId = "answerLike"+answerId;
-        document.getElementById(tempId).className=="fa fa-thumbs-o-up";
+        document.getElementById(tempId).className="fa fa-thumbs-o-up";
         
         tempId = "answerLike"+answerId;
-        document.getElementById(tempId).className=="fa fa-thumbs-o-down";
+        document.getElementById(tempId).className="fa fa-thumbs-o-down";
         
-        $("#answerScore"+answerId).text(parseInt($("#answerScore"+summaryId).text())+parseInt(score));
+        $("#answerScore"+answerId).text(parseInt($("#answerScore"+answerId).text())+parseInt(score));
     }
     
     console.log("切丸: "+originState.slice(0, 15));
