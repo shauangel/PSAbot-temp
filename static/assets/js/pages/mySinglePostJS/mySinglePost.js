@@ -346,16 +346,20 @@ function showQuestion(response){
                 }
             }
             
-            content += '<span id="postScore';
-            content += id;
-            content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-            content += qusetionScore;
-            content += '</span>';
+            content += '<div data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數">';
+                content += '<span id="postScore';
+                content += id;
+                content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+                content += qusetionScore;
+                content += '</span>';
+            content += '</div>';
             
             // vote（管理者輸入的分數） START
-            content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-            content += questionVote;
-            content += '</span>';
+            content += '<div data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數">';
+                content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+                content += questionVote;
+                content += '</span>';
+            content += '</div>';
             // vote（管理者輸入的分數） END
     
             //----- 分數 END -----//
@@ -428,14 +432,6 @@ function showQuestion(response){
                     content += postId;
                     content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
                 }
-                // 讚旁邊分數的Id: postLikeScore+貼文id
-//                if(postType=="faq"){
-//                    content += '<span id="postLikeScore';
-//                    content += postId;
-//                    content += '">';
-//                    content += like;
-//                    content += '</span>';
-//                }
                 content += '</button>';
                 //----- 檢查有沒有按讚 END -----//
                     
@@ -459,14 +455,6 @@ function showQuestion(response){
                     content += postId;
                     content += '" class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
                 }
-//                // 讚旁邊分數的Id: postDislikeScore+貼文id
-//                if(postType=="faq"){
-//                    content += '<span id="postDislikeScore';
-//                    content += postId;
-//                    content += '">';
-//                    content += dislike;
-//                    content += '</span>';
-//                }
                 content += '</button>';
                 //----- 檢查有沒有倒讚 END -----//
             
