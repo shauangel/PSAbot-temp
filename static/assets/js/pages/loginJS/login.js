@@ -78,16 +78,12 @@ function onLoadGoogleCallback(){
   gapi.load('auth2', function(){
     gapi.auth2.init({
       client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
-      cookiepolicy: 'single_host_origin',
+      cookiepolicy: 'none',
       scope: 'profile'
     });
     auth2 = gapi.auth2.getAuthInstance();
     attachSignin(document.getElementById('google-login-btn'));
-    //auth2.currentUser.listen(userChanged);
-    if (auth2.isSignedIn.get() == true) {
-      auth2.signIn();
-      userChanged();
-    }
+    auth2.currentUser.listen(userChanged);
   });
 
   function userChanged(googleUser){
