@@ -126,6 +126,7 @@ function userChanged(googleUser){
 function managerLogin(){
   var user = document.getElementById("inputUser").value;
   var password = document.getElementById("inputPassword").value;
+  console.log('user :' + user + ' ,password: ' + password)
   $.ajax({
     type: "POST",
     url: head_url + 'password_sign_in',
