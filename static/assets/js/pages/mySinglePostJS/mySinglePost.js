@@ -347,20 +347,17 @@ function showQuestion(response){
             }
             
             if(postType=="faq"){
-//                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數">';
                     content += '<span id="postScore';
                     content += id;
-                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
+                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
                     content += qusetionScore;
                     content += '</span>';
 //                content += '</div>';
 
                 // vote（管理者輸入的分數） START
-//                content += '<div data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數">';
-                    content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+                    content += '<span style="float:right; margin-left: 4px;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
                     content += questionVote;
                     content += '</span>';
-//                content += '</div>';
                 // vote（管理者輸入的分數） END
             }
             else if(postType=="innerPost"){
@@ -497,6 +494,8 @@ function showAnswers(response){
         
         var answerTitle, answerContent, answerTime, answerScore=0, answerId, answerOwnerId, scoreArray;
         
+        var answerVote;
+        
         var like=0, dislike=0;
         
         switch(postType){
@@ -512,7 +511,7 @@ function showAnswers(response){
                 for(var j=0; j<scoreArray.length; j++){
                     answerScore += response.answers[i].score[j].score;
                 }
-                answerScore = response.answers[i].vote;
+                answerVote = response.answers[i].vote;
                 if(answerScore==0){
 //                    qusetionScore = 0;
                     for(var i=0; i<response.answers[i].score.length; i++){
@@ -587,13 +586,26 @@ function showAnswers(response){
                     //----- 編輯、刪除按鈕 END -----//
                     
                     //----- 回覆分數 START -----//
-                    content += '<span id="answerScore';
-                    content += answerId;
-                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-                        content += answerScore;
-                    content += '</span>';
-                    if(postType=="faq" && response.answers[i].vote!=0){
-                        content += '<span style="float: right;">網站分數</span>';
+                    if(postType=="faq"){
+                            content += '<span id="answerScore';
+                            content += answerId;
+                            content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+                            content += qusetionScore;
+                            content += '</span>';
+        //                content += '</div>';
+
+                        // vote（管理者輸入的分數） START
+                            content += '<span style="float:right; margin-left: 4px;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
+                            content += questionVote;
+                            content += '</span>';
+                        // vote（管理者輸入的分數） END
+                    }
+                    else{
+                        content += '<span id="answerScore';
+                        content += answerId;
+                        content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+                            content += answerScore;
+                        content += '</span>';
                     }
                     //----- 回覆分數 END -----//
                 content += '</div>';
