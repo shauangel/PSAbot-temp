@@ -87,7 +87,7 @@ function onLoadGoogleCallback(){
   });
 
   function userChanged(googleUser){
-    if (googleUser) {
+    if (googleUser.getId()!=null) {
       //傳送access token至後端驗證
       console.log('user changed. id: ' + googleUser.getId())
       $.ajax({
