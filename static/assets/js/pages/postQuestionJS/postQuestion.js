@@ -2,6 +2,7 @@
 // 預覽內容
 function showReplyContent(why){//why可以是see, save
     var userContent = $("#replyContent").val();
+    console.log("userCOntetn: "+userContent);
     var storeContent = ""; //要存起來的程式碼
     
     //dotNum 代表有連續幾個`
@@ -36,13 +37,14 @@ function showReplyContent(why){//why可以是see, save
                 while(true){
                     if(userContent[i] == ' '){
                         i += 1;
+                        console.log("i: "+i);
                     }
                     else{
                         break;
                     }
                 }
                 // 清除多餘的換行 END
-                
+                console.log("結束i: "+i);
                 language = "";
                 needCouple = true; //代表需要後半段
             }
@@ -54,6 +56,7 @@ function showReplyContent(why){//why可以是see, save
             }
         }
         else{
+            console.log("else裡的i: "+i);
             console.log("要加上去的內容: "+userContent[i]);
             storeContent += userContent[i];
         }
