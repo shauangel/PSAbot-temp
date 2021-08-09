@@ -65,7 +65,7 @@ def insert_inner_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'])
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
         print("去除code: ")
         print(target_content)
         post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
