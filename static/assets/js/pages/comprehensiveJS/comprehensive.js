@@ -89,7 +89,7 @@ function rankContent(response){
         
                     content += '<p>';
                         content += '<a href="https://www.youtube.com/watch?v=ewmMS-5TpTg&t=344s" target="_blank">點我看原文</a><br><br>';
-                        content += response.scores[i].content;
+                        content += response.answers[i].content;
                     content += '</p>';
                 content += '</div>';
             content += '</div>';
