@@ -136,7 +136,8 @@ function managerLogin(){
     dataType: "json",
     contentType: 'application/json; charset=utf-8',
     success: function (response_data) {
-      if(response_data['_id']== 'invalid.'){
+      console.log(response_data)
+      if(response_data['_id'] == 'invalid.'){
         alert('帳號或密碼錯誤');
       }
       else{
