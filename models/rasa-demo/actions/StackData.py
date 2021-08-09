@@ -22,7 +22,7 @@ class StackData:
             "title" : q['title'],
             "content" : self.__addClass2Code(q['body']),
             "abstract" : self.__getPureText(q['body']),
-            "orgin_view_count" : q['view_count'],
+            "orign_web_view_count" : q['view_count'],
             "vote" : q['score']
             }
         if 'accepted_answer_id' in q.keys():
