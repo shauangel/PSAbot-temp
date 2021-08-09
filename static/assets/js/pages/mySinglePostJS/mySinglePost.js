@@ -172,7 +172,7 @@ function objectInArrayThumb(obj, arr){//score, user_id
     return false;
 }
 
-function thumbs(score, answerId, targetUserId, web){
+function thumbs(score, answerId, targetUserId){
     //replyId==""，代表是按貼文的
     // web true代表是網路分數，動態變化的是讚旁邊的數字
     var myURL, data;
@@ -184,10 +184,6 @@ function thumbs(score, answerId, targetUserId, web){
     console.log("answerId: "+answerId);
     if(score==1){
         if(answerId==""){// post like
-            if(web=="false"){
-                console.log("post like");
-                $("#postScore"+postId).html(scoreIcon+(parseInt($("#postScore"+postId).text())+1));
-            }
             $("#postLikeScore"+postId).html(parseInt($("#postLikeScore"+postId).text())+1);
             tempId = "postLike"+postId;
             document.getElementById(tempId).className = "fa fa-thumbs-up";
@@ -195,9 +191,6 @@ function thumbs(score, answerId, targetUserId, web){
             document.getElementById(tempId).className = "fa fa-thumbs-o-down";
         }
         else{// answer like
-            if(web=="false"){
-                $("#answerScore"+answerId).html(scoreIcon+(parseInt($("#answerScore"+answerId).text())+1));
-            }
             $("#answerLikeScore"+answerId).html(parseInt($("#answerLikeScore"+answerId).text())+1);
             tempId = "answerLike"+answerId;
             document.getElementById(tempId).className = "fa fa-thumbs-up";
@@ -207,9 +200,6 @@ function thumbs(score, answerId, targetUserId, web){
     }
     else{
         if(answerId==""){//post dislike
-            if(web=="false"){
-                $("#postScore"+postId).html(scoreIcon+(parseInt($("#postScore"+postId).text())-1));
-            }
             $("#postDislikeScore"+postId).html(parseInt($("#postDislikeScore"+postId).text())+1);
             tempId = "postDislike"+postId;
             document.getElementById(tempId).className = "fa fa-thumbs-down";
@@ -217,9 +207,6 @@ function thumbs(score, answerId, targetUserId, web){
             document.getElementById(tempId).className = "fa fa-thumbs-o-up";
         }
         else{// answer dislike
-            if(web=="false"){
-                $("#answerScore"+answerId).html(scoreIcon+(parseInt($("#answerScore"+answerId).text())-1));
-            }
             $("#answerDislikeScore"+answerId).html(parseInt($("#answerDislikeScore"+answerId).text())+1);
             tempId = "answerDislike"+answerId;
             document.getElementById(tempId).className = "fa fa-thumbs-down";
@@ -628,13 +615,6 @@ function showAnswers(response){
                         content += answerId;
                         content += "', '";
                         content += answerOwnerId;
-                        content += "', '";
-                        if(postType=="faq" && response.answers[i].vote!=0){
-                            content += true;
-                        }
-                        else{
-                            content += false;
-                        }
                         content += "')";
                         content += '">';
 
@@ -651,14 +631,6 @@ function showAnswers(response){
                             content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
                         }
                         // 檢查有沒有按讚 END
-                        if(postType=="faq"){
-                            // 讚旁邊分數的Id: answerLikeScore+回覆id
-                            content += '<span id="answerLikeScore';
-                            content += answerId;
-                            content += '">';
-                            content += like;
-                            content += '</span>';
-                        }
                         content += '</button>';
 
                         content += '<button type="button" class="scoreBtn" onclick="thumbs(';
@@ -666,13 +638,6 @@ function showAnswers(response){
                         content += answerId;
                         content += "', '";
                         content += answerOwnerId;
-                        content += "', '";
-                        if(postType=="faq" && response.answers[i].vote!=0){
-                            content += true;
-                        }
-                        else{
-                            content += false;
-                        }
                         content += "')";
                         content += '">';
 
@@ -690,14 +655,6 @@ function showAnswers(response){
                             content += '" class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
                         }
                         // 檢查有沒有按倒讚 END
-                        if(postType=="faq"){
-                            // 讚旁邊分數的Id: answerDislikeScore+回覆id
-                            content += '<span id="answerDislikeScore';
-                            content += answerId;
-                            content += '">';
-                            content += dislike;
-                            content += '</span>';
-                        }
                         content += '</button>';
                     
                     content += '</div>';
