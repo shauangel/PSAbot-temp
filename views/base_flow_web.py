@@ -79,3 +79,7 @@ def summary_new():
 @base_flow_web.route("/FaqFrame")
 def FaqFrame():
     return render_template("FaqFrame.html")
+
+@base_flow_web.route("/manageDataFrame")
+def FaqFrame():
+    return render_template("manageDataFrame.html")
