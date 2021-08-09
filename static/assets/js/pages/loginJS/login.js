@@ -83,7 +83,7 @@ function onLoadGoogleCallback(){
     });
     
     auth2 = gapi.auth2.getAuthInstance();
-    console.log('current_user: ' + auth2.currentUser.get());
+    console.log('current_user: ' + auth2.currentUser.get().getBasicProfile());
     auth2.currentUser.listen(userChanged);
   });
 }
