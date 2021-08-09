@@ -25,6 +25,6 @@ function logout(){
             console.log('flask logout.')
         }
     });
-    sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('sessionID');
     sessionStorage.removeItem('role');
 }
