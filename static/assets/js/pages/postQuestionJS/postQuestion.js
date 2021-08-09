@@ -35,7 +35,7 @@ function showReplyContent(why){//why可以是see, save
                 
                 // 清除多餘的換行 START
                 while(true){
-                    if(userContent.slice(i, i+10) == '&#13;&#10;'){
+                    if(userContent[i] == '\\n'){
                         i += 1;
                         console.log("i: "+i);
                     }
