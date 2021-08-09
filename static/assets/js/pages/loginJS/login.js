@@ -87,7 +87,7 @@ function onLoadGoogleCallback(){
       userChanged();
     }
   });
-  function userChanged(){
+  function userChanged(googleUser){
     console.log('user changed.')
     if (googleUser) {
       //傳送access token至後端驗證
