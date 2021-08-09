@@ -38,10 +38,8 @@ cache_format = {
 #利用自訂id查詢資料
 def query_by_id(idx):
     query = {"_id" : idx }
+    print(idx)
     result = _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
-    while(result is None):
-        result = _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
-        print(result)
     return result
     
 
@@ -65,7 +63,8 @@ def insert_cache(data_list, data_type):
     if data_type == "blocks_rank":
         cache_data = transform_block_rank(data_list)
         cache_data['_id'] = "b_" + str(int(current_id) + 1).zfill(6)
-        _db.OUTER_DATA_CACHE_COLLECTION.insert_one(cache_data)
+        check = _db.OUTER_DATA_CACHE_COLLECTION.insert_one(cache_data)
+        print(check.matched_count())
         id_list.append(cache_data['_id'])
         
     else:    
@@ -76,10 +75,10 @@ def insert_cache(data_list, data_type):
             elif data_type == "temp_data":
                 data_dict['_id'] = "t_" + current_id.zfill(6)
                 transform_temp_data(data_dict)
-                
-                
+            check = _db.OUTER_DATA_CACHE_COLLECTION.insert_one(data_dict)
+            print(check.matched_count())
             id_list.append(data_dict['_id'])
-        _db.OUTER_DATA_CACHE_COLLECTION.insert_many(data_list)
+        
     return id_list
 
 #block ranking 儲存格式
