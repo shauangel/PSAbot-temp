@@ -64,6 +64,7 @@ function thumbs(score, answerId, tagId){
     
     console.log("tagId: "+tagId);
     var originState = document.getElementById(tagId).className;
+    console.log("originState: "+originState);
     var upDown = originState.slice(15, -1);
     
     var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
@@ -86,6 +87,7 @@ function thumbs(score, answerId, tagId){
         $("#answerScore"+answerId).text(parseInt($("#answerScore"+summaryId).text())+parseInt(score));
     }
     
+    console.log("切丸: "+originState.slice(0, 14));
     if(originState.slice(0, 14)=="fa fa-thumbs-o-"){//原本沒按
         data = {id: summaryId, answer_id: answerId, user_id: userId, mode: score};
         //tagId
