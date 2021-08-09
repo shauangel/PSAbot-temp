@@ -224,6 +224,7 @@ function thumbs(score, answerId, targetUserId){
             myURL = head_url + "dislike_faq_post";
 //            console.log("API為: dislike_faq_post");
         }
+        console.log("myURL: "+myURL);
         $.ajax({
             url: myURL,
             type: "POST",
