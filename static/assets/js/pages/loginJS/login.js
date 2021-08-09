@@ -108,7 +108,7 @@ function userChanged(googleUser){
         sessionStorage.setItem('user_id', response_data['_id']);
         sessionStorage.setItem('role', response_data['role']);
         console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
-        window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+        console.log('id_token' +  googleUser.getAuthResponse().id_token)
       },
       error: function (xhr, status, error) {
         console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
