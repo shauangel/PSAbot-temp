@@ -412,48 +412,54 @@ function start(){
             $('.action_menu').toggle();
         });
     });
+    
+    
+    var role = localStorage.getItem("role");
+    if(role=="manager"){
+        document.getElementById("chatingPSAbot").innerHTML = "";
+    }
+    else{
+        // ---------- PSABot聊天室 START ---------- //
+        //到時候要用session_id
 
-    
-    // ---------- PSABot聊天室 START ---------- //
-    //到時候要用session_id
-    
-    //傳session_start
-    var myURL = head_url + "session_start?sender_id="+session_id;
-    console.log("myURL: "+myURL);
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        async:false,
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-            console.log("response: "+response);
-            console.log(response);
-        },
-        error: function(){
-            console.log("error");
-        }
-    });
-    
-    
-    var myURL = head_url + "welcome?sender_id="+session_id;
-    console.log("myURL: "+myURL);
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        async:false,
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-            console.log("");
-            console.log(response);
-            bot(response.text)
-        },
-        error: function(){
-            console.log("error");
-        }
-    });
-    // ---------- PSABot聊天室 END ---------- //
+        //傳session_start
+        var myURL = head_url + "session_start?sender_id="+session_id;
+        console.log("myURL: "+myURL);
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            dataType: "json",
+            async:false,
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("response: "+response);
+                console.log(response);
+            },
+            error: function(){
+                console.log("error");
+            }
+        });
+
+
+        var myURL = head_url + "welcome?sender_id="+session_id;
+        console.log("myURL: "+myURL);
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            dataType: "json",
+            async:false,
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("");
+                console.log(response);
+                bot(response.text)
+            },
+            error: function(){
+                console.log("error");
+            }
+        });
+        // ---------- PSABot聊天室 END ---------- //
+    }
     
 }
 
