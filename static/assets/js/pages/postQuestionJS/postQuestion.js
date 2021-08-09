@@ -32,6 +32,17 @@ function showReplyContent(why){//why可以是see, save
                 storeContent += language
                 storeContent += '">';
                 
+                // 清除多餘的換行 START
+                while(true){
+                    if(userContent[i] == ' '){
+                        i += 1;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                // 清除多餘的換行 END
+                
                 language = "";
                 needCouple = true; //代表需要後半段
             }
