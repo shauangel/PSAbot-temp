@@ -179,9 +179,6 @@ function thumbs(score, answerId, targetUserId){
     var postId = localStorage.getItem("singlePostId");
     var userId = localStorage.getItem("sessionID");
     var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
-    console.log("web: "+web);
-    console.log("score: "+score);
-    console.log("answerId: "+answerId);
     if(score==1){
         if(answerId==""){// post like
             $("#postLikeScore"+postId).html(parseInt($("#postLikeScore"+postId).text())+1);
@@ -339,7 +336,6 @@ function showQuestion(response){
                     content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
                     content += questionScore;
                     content += '</span>';
-//                content += '</div>';
 
                 // vote（管理者輸入的分數） START
                     content += '<span style="float:right; margin-left: 4px;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
