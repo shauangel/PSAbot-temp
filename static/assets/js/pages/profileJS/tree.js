@@ -91,7 +91,7 @@ function deleteEpmtyNode(){
 // 並且建立第三層(呼叫buildThirdLevel)
 // 把用不到的第二層刪除(呼叫deleteEmptyNode)
 function getUserTag(){
-    var myURL = head_url+"query_user_tag?user_id=testSkillTree";
+    var myURL = head_url+"query_user_tag?user_id="+localStorage.getItem("sessionID");
     
     $.ajax({
         url: myURL,
