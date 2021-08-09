@@ -35,7 +35,7 @@ function showReplyContent(why){//why可以是see, save
                 
                 // 清除多餘的換行 START
                 while(true){
-                    if(userContent[i] == '<br>'){
+                    if(userContent[i] == '&#13;&#10;'){
                         i += 1;
                         console.log("i: "+i);
                     }
