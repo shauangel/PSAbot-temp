@@ -345,6 +345,7 @@ function innerSearch(response, content){
 }
 
 function clickChatroomInnerSearch(postId){
+    localStorage.setItem("postType", "innerPost");
     localStorage.setItem("singlePostId", postId);
     setPage('mySinglePostFrame');
 }
@@ -415,10 +416,7 @@ function start(){
     
     
     var role = localStorage.getItem("role");
-    if(role=="manager"){
-        document.getElementById("chatingPSAbot").innerHTML = "";
-    }
-    else{
+    if(role!="manager"){
         // ---------- PSABot聊天室 START ---------- //
         //到時候要用session_id
 
