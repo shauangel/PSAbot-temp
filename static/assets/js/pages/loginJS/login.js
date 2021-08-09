@@ -85,7 +85,9 @@ function checkLoginState() {
 /* ================================================= */
 
 /* ================ Google Sign in ================= */
-
+function checkGoogleLogin(){
+  GoogleUser.reloadAuthResponse();
+}
 function attachSignin(element) {
   console.log(element.id);
   auth2.attachClickHandler(element, {},
@@ -100,7 +102,6 @@ function attachSignin(element) {
         data: JSON.stringify({
           'id_token': googleUser.getAuthResponse().id_token
         }),
-        async: false,
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response_data) {
