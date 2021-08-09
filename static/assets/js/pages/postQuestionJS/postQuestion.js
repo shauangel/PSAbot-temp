@@ -35,7 +35,7 @@ function showReplyContent(why){//why可以是see, save
                 
                 // 清除多餘的換行 START
                 while(true){
-                    if(userContent[i] == '/\n/g'){
+                    if(userContent[i] == '\n'){
                         i += 1;
                         console.log("i: "+i);
                     }
@@ -56,6 +56,7 @@ function showReplyContent(why){//why可以是see, save
             }
         }
         else{
+            userContent[i] = userContent[i].replace(/\n/g,"<br>");
             console.log("else裡的i: "+i);
             console.log("要加上去的內容: "+userContent[i]);
             storeContent += userContent[i];
