@@ -717,6 +717,7 @@ function showFaq(faqList){
         time = time.slice(0, 10);
         var score = faqList[i].score;
 //        var vote = faqList[i].vote;
+        var vote = 0;
 
         content += '<div class="col-lg-4 col-xl-3 col-sm-12">';
         content += '<a href="#" onclick="setLocalStorage(';
@@ -730,22 +731,16 @@ function showFaq(faqList){
                     content += '<span> FAQ的ID #';
                     content += id;
                     content += '</span>';
-
-                    content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-                    content += score;
-                    content += '</span>';
         
                     // score START
-                    content += '<span id="postScore';
-                    content += id;
-                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+                    content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
                     content += score;
                     content += '</span>';
                     // score END
 
                 // vote（管理者輸入的分數） START
                     content += '<span style="float:right; margin-left: 4px;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
-                    content += score;
+                    content += vote;
                     content += '</span>';
                 // vote（管理者輸入的分數） END
         
