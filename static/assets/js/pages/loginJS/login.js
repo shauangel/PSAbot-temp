@@ -1,5 +1,6 @@
 /* ================ Facebook Login ================= */
 // 設定 Facebook JavaScript SDK
+var auth2;
 window.fbAsyncInit = function () {
     FB.init({
       appId: '1018939978932508',
@@ -75,18 +76,20 @@ function checkLoginState() {
 /* ================ Google Sign in ================= */
 function onLoadGoogleCallback(){
   gapi.load('auth2', function(){
-    auth2 = gapi.auth2.init({
+    gapi.auth2.init({
       client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
       cookiepolicy: 'single_host_origin',
       scope: 'profile'
     });
+    auth2 = gapi.auth2.getAuthInstance();
     attachSignin(document.getElementById('google-login-btn'));
-    auth2.currentUser.listen(userChanged);
+    //auth2.currentUser.listen(userChanged);
     if (auth2.isSignedIn.get() == true) {
       auth2.signIn();
       userChanged();
     }
   });
+
   function userChanged(googleUser){
     console.log('user changed.')
     if (googleUser) {
