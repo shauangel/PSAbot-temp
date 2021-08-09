@@ -86,23 +86,10 @@ function onLoadGoogleCallback(){
     auth2.currentUser.listen(userChanged);
   });
 }
-function attachSignin(element) {
-  console.log(element.id);
-  auth2.attachClickHandler(element, {},
-    function(googleUser) 
-    {
-      userChanged(googleUser)
-    }, 
-    function(error) 
-    {
-      //登入失敗
-      console.log('Sign-in error', error);
-    }
-  );
-}
 function googleSignIn(){
-  auth2.signIn()
-  console.log('user changed. id: ' + auth2.currentUser.get().getId())
+  auth2.signIn();
+  console.log('user changed. id: ' + auth2.currentUser.get().getId());
+  location.reload();
 }
 function userChanged(googleUser){
   if (googleUser.getId()!=null) {
@@ -125,6 +112,7 @@ function userChanged(googleUser){
         console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
       }
     });
+    window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
   }
 }
 
