@@ -11,8 +11,8 @@
 - b_ : block排行
 * =============================='''
 
-from . import _db
-#import _db
+#from . import _db
+import _db
 from datetime import datetime
 import time
 ##for test
@@ -100,10 +100,8 @@ def transform_temp_data(data_dict):
     data_dict['time'] = datetime.now().replace(microsecond=0).isoformat()
     data_dict['view_count'] = 0
     data_dict['question']['score'] = []
-    data_dict['question']['vote'] = 0
     for a in data_dict['answers']:
         a['score'] = []
-        a['vote'] = 0
         
 
 def remove_all():
@@ -113,13 +111,14 @@ def remove_all():
 if __name__ == "__main__":
     """
     filepath_A = "/Users/shauangel/Desktop/PSAbot專題/python/BLOCK_test.json"
+    
     filepath_B = "/Users/shauangel/Desktop/PSAbot專題/python/DATA_test.json"
     with open(filepath_A, "r", encoding="utf-8") as f:
         data = json.load(f)
     
     
     """
-    #remove_all()
+    remove_all()
     #print(get_biggest_id())
     
     #result = insert_cache(data, "blocks_rank")
