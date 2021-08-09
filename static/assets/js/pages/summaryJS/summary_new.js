@@ -108,7 +108,7 @@ function summaryContent(response){
     hljs.highlightAll();
     
     // 回覆
-    var comment = document.getElementById("sclae-accordion");
+    var comment = document.getElementById("accordion");
     content = "";
     for(var i=0; i<response.answers.length; i++){
         var likeScore = 0, dislikeScore = 0;
