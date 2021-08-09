@@ -68,6 +68,8 @@ function secondLevel(data){
 
 // 建立第三層(創節點＋加到rootTreeNode.child[i].child裡面)
 function buildThirdLevel(data){
+    console.log("創造節點: ");
+    console.log(data);
     var temp = new TreeNode(data.tag_name, data.score);
     //var parentName = getTagName(data.parent);
     var parentName = data.parent.tag_name;
@@ -100,6 +102,8 @@ function getUserTag(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("拿到的user skill: ");
+            console.log(response);
             for(var i=0; i<response.tag_info.length; i++){
                 //檢查是否為第三層，是則buildThirdLevel，否則直接改一、二層node score
                 if(secondLevelName.includes(response.tag_info[i].tag_name)) {
@@ -121,7 +125,6 @@ function getUserTag(){
 }
 
 function printTree(){
-//    console.log("printTree");
     for(var i=0; i<rootTreeNode.child.length; i++){
 //        console.log("2nd: "+rootTreeNode.child[i].name);
         for(var j=0; j<rootTreeNode.child[i].child.length; j++){
