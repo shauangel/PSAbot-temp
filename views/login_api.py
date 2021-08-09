@@ -83,6 +83,7 @@ def facebook_sign_in():
 @login_api.route('/password_sign_in', methods=['POST'])
 def password_sign_in():
     data = request.get_json()
+    print(data)
     user_dict = user.query_user(data['_id'])
     # 取得使用者資料，若使用者不存在就建立一份
     if user_dict != None:
@@ -98,6 +99,7 @@ def password_sign_in():
     
     else:
         user_role = {'_id': 'invalid.','role':''}
+    print(user_role)
     return jsonify(user_role)
 
 @login_api.route('/logout', methods=['GET'])
