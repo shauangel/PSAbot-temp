@@ -22,8 +22,8 @@ class StackData:
             "title" : q['title'],
             "content" : self.__addClass2Code(q['body']),
             "abstract" : self.__getPureText(q['body']),
-            "view_count" : q['view_count'],
-            "web_score" : q['score']
+            "orgin_view_count" : q['view_count'],
+            "vote" : q['score']
             }
         if 'accepted_answer_id' in q.keys():
             return result, q['accepted_answer_id']
@@ -36,7 +36,7 @@ class StackData:
         for ans in answers:
             result.append({
                           "id" : ans['answer_id'],
-                          "score" : ans['score'],
+                          "vote" : ans['score'],
                           "content" : self.__addClass2Code(ans['body']),
                           "abstract" : self.__getPureText(ans['body']),
                           })
