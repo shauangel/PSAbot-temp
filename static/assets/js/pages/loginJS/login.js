@@ -1,3 +1,9 @@
+/* ================ login card nav bar ================ */
+$('#bologna-list a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+/* ================================================= */
 /* ================ Facebook Login ================= */
 // 設定 Facebook JavaScript SDK
 var auth2;
@@ -55,7 +61,7 @@ function checkLoginState() {
 
                     //慈 START
                     localStorage.setItem("sessionID", response_data['_id']);
-                    localStorage.setItem("role", "generalUser");
+                    localStorage.setItem("role", "facebook_user");
                     
                     window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
                     //慈 END
@@ -72,7 +78,6 @@ function checkLoginState() {
 }
 
 /* ================================================= */
-
 /* ================ Google Sign in ================= */
 function onLoadGoogleCallback(){
   gapi.load('auth2', function(){
@@ -106,10 +111,9 @@ function userChanged(googleUser){
       dataType: "json",
       contentType: 'application/json; charset=utf-8',
       success: function (response_data) {
-        sessionStorage.setItem('user_id', response_data['_id']);
-        sessionStorage.setItem('role', response_data['role']);
-        console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
-        console.log('id_token: ' +  googleUser.getAuthResponse().id_token)
+        localStorage.setItem("sessionID", response_data['_id']);
+        localStorage.setItem("role", "google_user");
+        console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.')
       },
       error: function (xhr, status, error) {
         console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
@@ -117,11 +121,36 @@ function userChanged(googleUser){
     });
   }
 }
-
-
-$('#bologna-list a').on('click', function (e) {
-  e.preventDefault()
-  $(this).tab('show')
-})
+/* ================================================= */
+/* ================ Manager Sign in ================= */
+function managerLogin(){
+  var user = document.getElementById("inputUser").value;
+  var password = document.getElementById("inputPassword").value;
+  $.ajax({
+    type: "POST",
+    url: head_url + 'password_sign_in',
+    data: JSON.stringify({
+      '_id': user,
+      'password':password,
+    }),
+    dataType: "json",
+    contentType: 'application/json; charset=utf-8',
+    success: function (response_data) {
+      if(response_data['_id']== 'invalid.'){
+        alert('帳號或密碼錯誤')
+      }
+      else{
+      localStorage.setItem("sessionID", response_data['_id']);
+      localStorage.setItem("role", response_data['role']);
+      console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.')
+      }
+      
+    },
+    error: function (xhr, status, error) {
+      console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
+    }
+  });
+  
+}
 
 /* ================================================= */
