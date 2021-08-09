@@ -149,7 +149,10 @@ class analyze_and_search(Action):
             #取得block排名
             result = TextAnalyze.blockRanking(stack_items, qkey)
             #print(result)
-
+            for i in stack_items:
+                i['question']['abstract'] = textAnalyzer.textSummarization(i['question']['abstract'])
+                for ans in i['answers']:
+                    ans['abstract'] = textAnalyzer.textSummarization(ans['abstract'])
                     
             temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items, 'type' : "temp_data"})
             block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
