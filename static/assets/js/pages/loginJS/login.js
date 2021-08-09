@@ -83,12 +83,7 @@ function onLoadGoogleCallback(){
     });
     
     auth2 = gapi.auth2.getAuthInstance();
-    auth2.then(function() {  // onInit
-      auth2.currentUser.listen(userChanged);
-      attachSignin(document.getElementById('google-login-btn'));
-    }, function() {  // onError
-      console.log('error')
-    });
+    auth2.currentUser.listen(userChanged);
   });
 }
 function attachSignin(element) {
