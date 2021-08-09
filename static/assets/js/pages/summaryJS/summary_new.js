@@ -92,7 +92,9 @@ function thumbs(score, answerId, tagId){
     if(originState.slice(0, 15)=="fa fa-thumbs-o-"){//原本沒按
         data = {id: summaryId, answer_id: answerId, user_id: userId, mode: score};
         //tagId
-        document.getElementById(tagId).className="fa fa-thumbs"+upDown;
+        var temp = "fa fa-thumbs-"+upDown;
+        console.log("temp: "+temp);
+        document.getElementById(tagId).className= temp;
     }
     else{//原本有按
         data = {id: summaryId, answer_id: answerId, user_id: userId, mode: 0};
