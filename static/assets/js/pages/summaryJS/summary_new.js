@@ -1,7 +1,6 @@
 function start(){
     $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 //    query_cache_by_id
-    
     var myURL = head_url+"query_cache_by_id";
     console.log("myURL: "+myURL);
     var summaryId = localStorage.getItem("summaryId");
@@ -146,9 +145,9 @@ function summaryContent(response){
     ///////////////////////////// 問題 START /////////////////////////////
     content += '<span style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
         content += response.question.title;//標題
-        content += '<div style="float: right;" class="sub-title">';
+        content += '<span style="float: right;">';
             // vote START
-            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
     
                 content += response.question.vote;
             content += '</span>';
@@ -162,7 +161,7 @@ function summaryContent(response){
                 content += score;
             content += '</span>';
             // score END
-        content += '</div>';
+        content += '</span>';
     content += '</span>';
     
     content += '<br>';
