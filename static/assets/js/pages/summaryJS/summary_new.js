@@ -74,7 +74,7 @@ function thumbs(score, answerId, tagId){
         tempId = "postDislike"+summaryId;
         document.getElementById(tempId).className=="fa fa-thumbs-o-down";
         
-        $("#postScore"+summaryId).html(parseInt($("#postScore"+summaryId))+parseInt(score));
+        $("#postScore"+summaryId).text(parseInt($("#postScore"+summaryId))+parseInt(score));
     }
     else{//代表是答案
         tempId = "answerLike"+answerId;
@@ -83,7 +83,7 @@ function thumbs(score, answerId, tagId){
         tempId = "answerLike"+answerId;
         document.getElementById(tempId).className=="fa fa-thumbs-o-down";
         
-        $("#answerScore"+answerId).html(parseInt($("#answerScore"+summaryId))+parseInt(score));
+        $("#answerScore"+answerId).text(parseInt($("#answerScore"+summaryId))+parseInt(score));
     }
     
     if(originState.slice(0, 14)=="fa fa-thumbs-o-"){//原本沒按
@@ -298,7 +298,7 @@ function summaryContent(response){
                             content += response.answers[i].id;
                             content += '\', \'answerLike';
                             content += response.answers[i].id;
-                            content += '\')"><i id="like';
+                            content += '\')"><i id="answerLike';
                             content += response.answers[i].id;
                             content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>';
         
