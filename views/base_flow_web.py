@@ -75,3 +75,7 @@ def comprehensive():
 @base_flow_web.route("/summary_new")
 def summary_new():
     return render_template("summary_new.html")
+    
+@base_flow_web.route("/FaqFrame")
+def summary_new():
+    return render_template("FaqFrame.html")
