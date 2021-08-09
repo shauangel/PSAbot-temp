@@ -178,7 +178,7 @@ function thumbs(score, answerId, targetUserId){
     var myURL, data;
     var postId = localStorage.getItem("singlePostId");
     var userId = localStorage.getItem("sessionID");
-    var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
+    var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
     if(score==1){
         if(answerId==""){// post like
             $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));

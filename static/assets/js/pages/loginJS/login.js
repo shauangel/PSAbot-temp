@@ -115,6 +115,9 @@ function userChanged(googleUser){
       success: function (response_data) {
         localStorage.setItem("sessionID", response_data['_id']);
         localStorage.setItem("role", "google_user");
+          //慈 START
+          window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+          //慈 END
         console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.')
       },
       error: function (xhr, status, error) {
