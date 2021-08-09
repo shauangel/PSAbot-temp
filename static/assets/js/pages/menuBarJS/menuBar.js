@@ -669,6 +669,8 @@ function getUserHeadshotAndName(){
     
     var data = {"_id": id};
     var name = "";
+    console.log("給後端的: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -684,7 +686,7 @@ function getUserHeadshotAndName(){
             
             document.getElementById("userName").setAttribute("value", response.name);
             
-            console.log("response.name: "+response.name);
+            console.log("拿到的: "+response);
             localStorage.setItem("userName", response.name);
         },
         error: function(){
