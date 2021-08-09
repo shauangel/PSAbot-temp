@@ -45,6 +45,8 @@ function checkLoginState() {
           "fields": "id,name"
           },
           function (response) {
+              // 慈
+              localStorage.setItem("userName", response['name']);
 //              console.log("傳到後端的: "+response);
             // 取得使用者資料丟到後端
             $.ajax({
@@ -55,6 +57,7 @@ function checkLoginState() {
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (response_data) {
+                    console.log(response_data);
 //                    sessionStorage.setItem('user_id', response_data['_id']);
 //                    sessionStorage.setItem('role', response_data['role']);
 //                    console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
