@@ -116,7 +116,7 @@ button .purpleLabel2 {
     color: #505458;
     background-color: white;
     outline: none;
-    float: left;
+/*    float: left;*/
     padding: 8px 16px;
     text-decoration: none;
     transition: background-color .3s;
@@ -154,7 +154,7 @@ button .purpleLabel2 {
 
 .purpleBtn{
     background-color: #5D478B; float: right; 
-    border-radius: 5px; 
+    border-radius: 5px;
     width: 150px;
     height: 50px;
 }
