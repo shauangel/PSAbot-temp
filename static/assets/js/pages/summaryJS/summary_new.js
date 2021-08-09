@@ -41,6 +41,118 @@ function dislike(id){
     console.log("id: "+id);
 }
 
+/////////////// 按讚、倒讚 START ///////////////
+function objectInArrayThumb(obj, arr){//score, user_id
+    for(var i=0; i<arr.length; i++){
+        if(obj.score == arr[i].score && obj.user_id == arr[i].user_id){
+            return true;
+        }
+    }
+    return false;
+}
+
+function thumbs(score, answerId){
+    //replyId==""，代表是按貼文的
+    // web true代表是網路分數，動態變化的是讚旁邊的數字
+    var myURL, data;
+    var summaryId = localStorage.getItem("summaryId");
+    var userId = localStorage.getItem("sessionID");
+    console.log("score: "+score);
+    console.log("answerId: "+answerId);
+    console.log("summaryId: "+summaryId);
+    console.log("userId: "+userId);
+    
+    var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
+    if(score==1){
+        if(answerId==""){// post like
+            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
+            tempId = "postLike"+postId;
+            document.getElementById(tempId).className = "fa fa-thumbs-up";
+            tempId = "postDislike"+postId;
+            document.getElementById(tempId).className = "fa fa-thumbs-o-down";
+        }
+        else{// answer like
+            $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
+            tempId = "answerLike"+answerId;
+            document.getElementById(tempId).className = "fa fa-thumbs-up";
+            tempId = "answerDislike"+answerId;
+            document.getElementById(tempId).className = "fa fa-thumbs-o-down";
+        }
+    }
+    else{
+        if(answerId==""){//post dislike
+            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
+            tempId = "postDislike"+postId;
+            document.getElementById(tempId).className = "fa fa-thumbs-down";
+            tempId = "postLike"+postId;
+            document.getElementById(tempId).className = "fa fa-thumbs-o-up";
+        }
+        else{// answer dislike
+            $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+            tempId = "answerDislike"+answerId;
+            document.getElementById(tempId).className = "fa fa-thumbs-down";
+            tempId = "answerLike"+answerId;
+            document.getElementById(tempId).className = "fa fa-thumbs-o-up";
+        }
+    }
+    
+    if(postType=="faq"){//代表是faq
+        data = {faq_id: postId, answer_id: answerId, user: userId};
+        console.log("data: ");
+        console.log(data);
+        if(score == 1){
+            myURL = head_url + "like_faq_post";
+//            console.log("API為: like_faq_post");
+        }
+        else{
+            myURL = head_url + "dislike_faq_post";
+//            console.log("API為: dislike_faq_post");
+        }
+        console.log("myURL: "+myURL);
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log(response);
+//                window.location.reload();
+            },
+            error: function(response){
+            }
+        });
+    }
+    else if(postType=="innerPost"){//代表是innerPost
+        data = {post_id: postId, response_id: answerId, user: userId, target_user: targetUserId};
+        console.log(data);
+        if(score == 1){
+            myURL = head_url + "like_inner_post";
+//            console.log("API為: like_inner_post");
+        }
+        else{
+            myURL = head_url + "dislike_inner_post";
+//            console.log("API為: dislike_inner_post");
+        }
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+//                console.log(response);
+//                window.location.reload();
+            },
+            error: function(response){
+            }
+        });
+    }
+}
+/////////////// 按讚、倒讚 END ///////////////
+
 function summaryContent(response){
     console.log("summary: ");
     console.log(response);
@@ -58,6 +170,8 @@ function summaryContent(response){
     }
     
     var content = "";
+    
+    ///////////////////////////// 問題 START /////////////////////////////
     content += '<span style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
         content += response.question.title;//標題
         content += '<span style="float: right;">';
@@ -91,13 +205,11 @@ function summaryContent(response){
 
     // 倒讚 START
     content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
-    content += likeScore;
     content += '</button>'; 
     // 倒讚 END
     
     // 讚 START
     content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
-    content += dislikeScore;
     content += '</button>';
     // 讚 END
     
@@ -106,8 +218,9 @@ function summaryContent(response){
     content += '</span>';
     question.innerHTML = content;
     hljs.highlightAll();
+    ///////////////////////////// 問題 END /////////////////////////////
     
-    // 回覆
+    ///////////////////////////// 回覆 START /////////////////////////////
     var comment = document.getElementById("accordion");
     content = "";
     for(var i=0; i<response.answers.length; i++){
@@ -138,13 +251,10 @@ function summaryContent(response){
         
                         content += '<div style="float: right; font-size: 15px;">';
 
-
                             content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
-                            content += likeScore;
                             content += '</button>';
         
                             content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
-                            content += dislikeScore;
                             content += '</button>';
         
                             content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
@@ -195,6 +305,7 @@ function summaryContent(response){
             content += '</div>';
             //----- 解答 END -----//
         content += '</div>';
+        ///////////////////////////// 回覆 END /////////////////////////////
     }
     comment.innerHTML = content;
 }
