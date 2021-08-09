@@ -14,6 +14,7 @@
 from . import _db
 #import _db
 from datetime import datetime
+import time
 ##for test
 import json
 import copy
@@ -38,6 +39,9 @@ cache_format = {
 def query_by_id(idx):
     query = {"_id" : idx }
     result = _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
+    while(result is None):
+        time.sleep(3)
+        result = _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
     print(result)
     return result
     
