@@ -354,7 +354,7 @@ function showQuestion(response){
             
             // vote（管理者輸入的分數） START
             content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-            content += qusetionVote;
+            content += questionVote;
             content += '</span>';
             // vote（管理者輸入的分數） END
     

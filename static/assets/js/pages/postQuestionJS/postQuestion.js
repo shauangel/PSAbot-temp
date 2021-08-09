@@ -54,6 +54,7 @@ function showReplyContent(why){//why可以是see, save
             }
         }
         else{
+            console.log("要加上去的內容: "+userContent[i]);
             storeContent += userContent[i];
         }
     }
