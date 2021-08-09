@@ -57,6 +57,9 @@ function showReplyContent(why){//why可以是see, save
             storeContent += userContent[i];
         }
     }
+    
+    console.log("preview的內容: ");
+    console.log(storeContent);
     if(why=="see"){
         document.getElementById("previewContent").innerHTML = storeContent;
         hljs.highlightAll();
