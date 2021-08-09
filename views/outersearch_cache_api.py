@@ -19,12 +19,10 @@ def query_cache_by_id():
     idx = request.get_json()
     try:
         result = outer_data_cache.query_by_id(idx)
-        print(type(result[0]))
-        print(result[0])
         return jsonify(result)
         
     except Exception as e :
-        setting_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+        setting_dict = {"error" : e.__class__.__name__ + ":" + str(e.args[0])}
         print("錯誤訊息: ", e)
     return jsonify(setting_dict)
 
@@ -37,7 +35,7 @@ def insert_cache():
         print(type(result))
         return jsonify(result)
     except Exception as e :
-        setting_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+        setting_dict = {"error" : e.__class__.__name__ + ":" + str(e.args[0])}
         print("錯誤訊息: ", e)
     return jsonify(setting_dict)
 
