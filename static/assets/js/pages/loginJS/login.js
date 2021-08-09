@@ -81,7 +81,35 @@ function onLoadGoogleCallback(){
       scope: 'profile'
     });
     attachSignin(document.getElementById('google-login-btn'));
+    auth2.currentUser.listen(userChanged);
+    if (auth2.isSignedIn.get() == true) {
+      auth2.signIn();
+      userChanged();
+    }
   });
+  function userChanged(){
+    console.log('user changed.')
+    if (googleUser) {
+      //傳送access token至後端驗證
+      $.ajax({
+        type: "POST",
+        url: head_url + 'google_sign_in',
+        data: JSON.stringify({
+          'id_token': googleUser.getAuthResponse().id_token
+        }),
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response_data) {
+          sessionStorage.setItem('user_id', response_data['_id']);
+          sessionStorage.setItem('role', response_data['role']);
+          console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
+        },
+        error: function (xhr, status, error) {
+          console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
+        }
+      });
+    }
+  }
   function attachSignin(element) {
     console.log(element.id);
     auth2.attachClickHandler(element, {},
@@ -96,7 +124,6 @@ function onLoadGoogleCallback(){
           data: JSON.stringify({
             'id_token': googleUser.getAuthResponse().id_token
           }),
-          async: false,
           dataType: "json",
           contentType: 'application/json; charset=utf-8',
           success: function (response_data) {
@@ -108,8 +135,6 @@ function onLoadGoogleCallback(){
             console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
           }
         });
-        
-        
       }, 
       function(error) 
       {
