@@ -4,8 +4,7 @@ from flask import Blueprint, request, jsonify
 import re
 # --- our models ---- #
 from models import inner_post
-#from . import TextAnalyze
-from .TextAnalyze import TextAnalyze #為了解決insert_inner_post的錯
+from .TextAnalyze import TextAnalyze
 
 from datetime import datetime
 
@@ -65,10 +64,8 @@ def insert_inner_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'])
-        print("去除code: ")
-        print(target_content)
-        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
+        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         inner_post.insert_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -91,8 +88,8 @@ def update_inner_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'])
-        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
+        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         inner_post.update_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
