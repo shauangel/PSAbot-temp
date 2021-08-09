@@ -76,14 +76,13 @@ function checkLoginState() {
 /* ================ Google Sign in ================= */
 function onLoadGoogleCallback(){
   gapi.load('auth2', function(){
-    gapi.auth2.init({
+    auth2 = gapi.auth2.init({
       client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
       cookiepolicy: 'none',
       scope: 'profile'
     });
     
     auth2 = gapi.auth2.getAuthInstance();
-    console.log('current_user: ' + auth2.currentUser.get().getBasicProfile());
     auth2.currentUser.listen(userChanged);
   });
 }
@@ -92,21 +91,6 @@ function googleSignIn(){
   console.log('click btn');
   auth2.signIn();
   console.log('user changed. id: ' + auth2.currentUser.get().getId());
-}
-
-function listenCookieChange(callback, interval = 1000) {
-  let lastCookie = document.cookie;
-  setInterval(()=> {
-    let cookie = document.cookie;
-    if (cookie !== lastCookie) {
-      try {
-        console.log('cookie change.')
-        window.location.reload();
-      } finally {
-        lastCookie = cookie;
-      }
-    }
-  }, interval);
 }
 
 function userChanged(googleUser){
@@ -125,7 +109,7 @@ function userChanged(googleUser){
         sessionStorage.setItem('user_id', response_data['_id']);
         sessionStorage.setItem('role', response_data['role']);
         console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
-        console.log('id_token' +  googleUser.getAuthResponse().id_token)
+        console.log('id_token: ' +  googleUser.getAuthResponse().id_token)
       },
       error: function (xhr, status, error) {
         console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
