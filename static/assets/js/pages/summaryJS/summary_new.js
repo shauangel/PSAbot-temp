@@ -62,16 +62,20 @@ function thumbs(score, answerId){
     console.log("summaryId: "+summaryId);
     console.log("userId: "+userId);
     
+    console.log("")
+    
     var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
     if(score==1){
         if(answerId==""){// post like
-            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
-            tempId = "postLike"+postId;
-            document.getElementById(tempId).className = "fa fa-thumbs-up";
-            tempId = "postDislike"+postId;
-            document.getElementById(tempId).className = "fa fa-thumbs-o-down";
+            console.log("按post的讚");
+//            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
+//            tempId = "postLike"+postId;
+//            document.getElementById(tempId).className = "fa fa-thumbs-up";
+//            tempId = "postDislike"+postId;
+//            document.getElementById(tempId).className = "fa fa-thumbs-o-down";
         }
         else{// answer like
+            console.log("按answer的讚");
             $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
             tempId = "answerLike"+answerId;
             document.getElementById(tempId).className = "fa fa-thumbs-up";
@@ -81,6 +85,7 @@ function thumbs(score, answerId){
     }
     else{
         if(answerId==""){//post dislike
+            console.log("按post的倒讚");
             $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
             tempId = "postDislike"+postId;
             document.getElementById(tempId).className = "fa fa-thumbs-down";
@@ -88,6 +93,7 @@ function thumbs(score, answerId){
             document.getElementById(tempId).className = "fa fa-thumbs-o-up";
         }
         else{// answer dislike
+            console.log("按answer的倒讚");
             $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
             tempId = "answerDislike"+answerId;
             document.getElementById(tempId).className = "fa fa-thumbs-down";
@@ -204,12 +210,18 @@ function summaryContent(response){
     content += '</div>';
 
     // 倒讚 START
-    content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
+    // 倒讚的Id: postDislike+postId
+    content += '<button type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'-1\', \'\')"><i id="postDislike';
+    content += localStorage.getItem("summaryId");
+    content += '" class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
     content += '</button>'; 
     // 倒讚 END
     
     // 讚 START
-    content += '<button type="button" class="scoreBtn" style="float: right;"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
+    // 讚的Id: postLike+postId
+    content += '<button type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'-1\', \'\')"><i id="postLike';
+    content += localStorage.getItem("summaryId");
+    content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
     content += '</button>';
     // 讚 END
     
@@ -250,13 +262,6 @@ function summaryContent(response){
                     
         
                         content += '<div style="float: right; font-size: 15px;">';
-
-                            content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
-                            content += '</button>';
-        
-                            content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
-                            content += '</button>';
-        
                             content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
         
                             content += '<span style="margin-right: 5px; color: #505458;">';
@@ -301,6 +306,22 @@ function summaryContent(response){
                         // 原內容END
                         
                     content += '</p>';
+                    content += '<div style="float: right; font-size: 15px;">';
+                            
+                            // 讚的Id: answerLike+answerId
+                            content += '<button type="button" class="scoreBtn" onclick="thumbs(\'1\', \'';
+                            content += response.answers[i].id;
+                            content += ')"><i id="like';
+                            content += response.answers[i].id;
+                            content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>';
+        
+                            // 倒讚的Id: answerDislike+answerId
+                            content += '<button type="button" class="scoreBtn" style="margin-right: 10px;" onclick="thumbs(\'-1\', \'';
+                            content += response.answers[i].id;
+                            content += ')"><i id="dislike';
+                            content += response.answers[i].id;
+                            content += '" class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>';
+                    content += '</div>';
                 content += '</div>';
             content += '</div>';
             //----- 解答 END -----//
