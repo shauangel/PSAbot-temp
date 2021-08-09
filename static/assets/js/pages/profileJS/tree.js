@@ -116,12 +116,12 @@ function getUserTag(){
             }
             //deleteEpmtyNode();
             //printTree();
-            buildTree();
         },
         error: function(){
             console.log("error");
         }
     });
+    buildTree();
 }
 
 function printTree(){
