@@ -143,9 +143,9 @@ function summaryContent(response){
     var content = "";
     
     ///////////////////////////// 問題 START /////////////////////////////
-    content += '<div style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
+    content += '<span style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
         content += response.question.title;//標題
-        content += '<div style="float: right;">';
+        content += '<div style="float: right;" class="sub-title">';
             // vote START
             content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
     
@@ -207,7 +207,7 @@ function summaryContent(response){
     
     content += '<span class="badge badge-default purpleLabel2" style=" background-color: white;">';
         content += response.time.slice(0, 10);
-    content += '</div>';
+    content += '</span>';
     question.innerHTML = content;
     hljs.highlightAll();
     ///////////////////////////// 問題 END /////////////////////////////
