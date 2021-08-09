@@ -460,17 +460,17 @@ function start(){
 function setMenuBar(){
     var role = localStorage.getItem("role"), start, end;
     var leftManuBarPagesContent = "";
-    var setPage = ["home", "profileFrame", "postQuestionFrame", "postRowFrame", "home", "postRowFrame", "manageFAQsFrame", "manageDataFrame"];
-    var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench"];
-    var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "首頁", "管理內部貼文", "管理FAQs資料", "管理資料更新數據"];
+    var setPage = ["home", "profileFrame", "postQuestionFrame", "postRowFrame", "FaqFrame", "home", "postRowFrame", "manageFAQsFrame", "manageDataFrame"];
+    var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "fa fa-cogs", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench"];
+    var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "瀏覽FAQ", "首頁", "管理內部貼文", "管理FAQ資料", "管理資料更新數據"];
     
     if(role=="facebook_user" || role=="google_user"){
         start = 0;
-        end = 4;
+        end = 5;
     }
     else if(role == "manager"){
-        start = 4;
-        end = 8;
+        start = 5;
+        end = 9;
         document.getElementById("interestingTags").innerHTML = "";
     }
     

@@ -35,8 +35,14 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <!-- 匿名的bootstrap END -->
     
+    <!-- highlight START -->
+    <link rel="stylesheet" href="../static/assets/highlight/styles/color-brewer.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <!-- highlight END -->
+    
     <!-- font-awesome.css -->
     <link rel="stylesheet" type="text/css" href="../static/assets/css/font-awesome.css">
+    <script src="../static/assets/js/pages/replyQuestionJS/replyQuestion.js"></script>
 </head>
 
 <body style="background: white;">
@@ -63,23 +69,54 @@
                                         <div class="card">
                                             <div class="card-block">
                                                 <form>
-                                                    <div>
-                                                        <label class="col-sm-2 col-form-label">是否匿名</label>
-                                                        
-                                                            <input id="anonymous" type="checkbox"  data-toggle="toggle" data-size="xs" data-onstyle="secondary" data-width="60" data-height="35" data-on="是" data-off="否">
-                                                    </div>
+                                                    <div class="form-group row" id="replyFirst"></div>
                                                     <br>
                                                     <!-- 回覆內容 row start -->
                                                     <div class="form-group row">
                                                         <label class="col-sm-2 col-form-label">回覆內容</label>
                                                         <div class="col-sm-10">
-                                                            <textarea id="response" rows="5" cols="5" class="form-control"
-                                                            placeholder="輸入回覆內容"></textarea>
+                                                            <!-- 選擇程式碼語言 START -->
+                                                            <select name="codeLanguage">
+                                                                <option value="python" selected>python</option>
+                                                                <option value="html">HTML</option>
+                                                                <option value="css">CSS</option>
+                                                                <option value="javascript">Javascript</option>
+                                                                <option value="c">C</option>
+                                                            </select>
+                                                            <!-- 選擇程式碼語言 END -->
+                                                            
+                                                            <!-- 新增程式碼按鈕 START -->
+                                                            <div class="themeButton" style="display: inline-block; padding: 3px;" onclick="addCodeArea()">
+                                                            新增程式碼區塊
+                                                            </div>
+                                                            <!-- 新增程式碼按鈕 END -->
+                                                            
+                                                            <!-- 預覽按鈕 START -->
+                                                            <div class="themeButton" style="display: inline-block; padding: 3px;" onclick="showReplyContent('see')">預覽
+                                                            </div>
+                                                            <!-- 預覽按鈕 END -->
+                                                            
+                                                            <textarea id="replyContent" rows="5" cols="5" class="form-control"
+                                                        placeholder="輸入回覆內容"></textarea>
+                                                            
+                                                            <!-- 預覽區塊 START -->
+                                                            <div id="previewContent" style="border: 0.1mm solid; border-color: #545048;">
+                                                            <br>預覽區塊<br><br>
+                                                            </div>
+                                                            <!-- 預覽區塊 END -->
                                                         </div>
                                                     </div>
+                                                    <!-- 回覆內容 row END -->
+                                                </form>
+                                                    
                                                     <!-- 回覆內容 row end -->
                                                     <input class="btn btn-primary purpleBtn" value="回覆" onclick="save()">
-                                                </form>
+                                                    
+                                                
+                                                <!-- 測試 START -->
+                                                
+                                                <!-- 測試 END -->
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -93,6 +130,27 @@
                 </div>                                            
             </div>                                    
         </div>
+    
+<!-- 不得為空 START -->
+<div class="modal fade" id="note" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">不得為空</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+          <div class="modal-body" id="modalContent">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">好的</button>
+          </div>
+        </div>
+      </div>
+</div>
+<!-- 不得為空 END -->
 
                                         <!-- Warning Section Starts -->
                                         <!-- Older IE warning message -->
@@ -156,8 +214,8 @@
 <script src="../static/assets/js/pcoded.min.js"></script>
 <script src="../static/assets/js/demo-12.js"></script>
 <script src="../static/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="../static/assets/js/pages/replyQuestionJS/replyQuestion.js"></script>
     <script src="../static/assets/js/common.js"></script>
+    <script src="../static/assets/js/pages/codeJS/editormd.js"></script>
 </body>
 
 </html>

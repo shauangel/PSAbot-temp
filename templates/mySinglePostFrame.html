@@ -29,6 +29,10 @@
       <link rel="stylesheet" type="text/css" href="../static/assets/css/jquery.mCustomScrollbar.css">
       <link rel="stylesheet" type="text/css" href="../static/assets/css/pages/profileCSS/custom.css">
       <link rel="stylesheet" type="text/css" href="../static/assets/css/font-awesome.css">
+    <!-- highlight START -->
+    <link rel="stylesheet" href="../static/assets/highlight/styles/color-brewer.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <!-- highlight END -->
   </head>
 
   <body style="background: white;">
@@ -44,16 +48,16 @@
                                     <!-- 貼文 start -->
                                     <div class="card">
                                         <div class="card-header">
-                                            <div class="card-header-left" id="header">
-                                                
-                                             </div>
+                                            <!-- 問題title START -->
+                                            <div class="card-header-left" id="questionTitle"></div>
+                                            <!-- 問題title START -->
+                                            
                                               <div class="card-header-right">
                                                   <i class="icofont icofont-spinner-alt-5"></i>
                                               </div>
                                         </div>
                                         <div class="card-block">
                                             <div class="row">
-                                                <!-- 問題 start-->
                                                 <div class="col-12" id="question">
                                                     <div class="badge-box">
                                                         <!-- 貼文編號與分數start -->
@@ -82,10 +86,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- 問題 end-->
                                                 
                                                 <div class="card-header">
-                                                    <div class="card-header-left">
+                                                    <div class="card-header-left" id="answerTitle">
                                                         <div class="title" style="display: inline-block">回答</div>
                                                         <div id="answerButton" style="display: inline-block;"></div>
                                                     </div>
@@ -170,27 +173,27 @@
         </div>
     </div>
 
-      <!-- 再次確認是否刪除貼文 START -->
+      <!-- 再次確認是否刪除貼文/回覆 START -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">刪除貼文</h5>
+                <h5 class="modal-title" id="deleteTitleInModal"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
                 一旦刪除不可復原<br>
-                您確定要刪除貼文？
+                您確定要刪除？
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deletePost()">刪除</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deletePostOrAnswer()">刪除</button>
               </div>
             </div>
           </div>
-          <!-- 再次確認是否刪除貼文 END -->
+          <!-- 再次確認是否刪除貼文/回覆 END -->
     </div>
         <!-- Warning Section Starts -->
         <!-- Older IE warning message -->
