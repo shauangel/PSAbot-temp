@@ -92,12 +92,12 @@ def password_sign_in():
             login_user(user_now) 
             session['user_id'] = user_dict['_id']
             session['role'] = user_dict['role']
-            user_role = {'user_id': user_dict['_id'],'role':user_dict['role']}
+            user_role = {'_id': user_dict['_id'],'role':user_dict['role']}
         else:
-            user_role = {'user_id': 'invalid.','role':''}
+            user_role = {'_id': 'invalid.','role':''}
     
     else:
-        user_role = {'user_id': 'invalid.','role':''}
+        user_role = {'_id': 'invalid.','role':''}
     return jsonify(user_role)
 
 @login_api.route('/logout', methods=['GET'])
