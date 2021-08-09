@@ -32,13 +32,24 @@ def insert_cache():
     data = request.get_json()
     try:
         result = outer_data_cache.insert_cache(data['data'], data['type'])
-        print(type(result))
         return jsonify(result)
     except Exception as e :
         setting_dict = {"error" : e.__class__.__name__ + ":" + str(e.args[0])}
         print("錯誤訊息: ", e)
     return jsonify(setting_dict)
 
+#更新點讚情況
+@outersearch_cache_api.route('/insert_cache', methods=['POST'])
+def update_cache_score():
+    data = request.get_json()
+    try:
+        outer_data_cache.update_cache_score(data)
+        return jsonify("success")
+    except Exception as e :
+        setting_dict = {"error" : e.__class__.__name__ + ":" + str(e.args[0])}
+        print("錯誤訊息: ", e)
+    return jsonify(setting_dict)
+        
 
 
 
