@@ -65,7 +65,7 @@ function thumbs(score, answerId, tagId){
     console.log("tagId: "+tagId);
     var originState = document.getElementById(tagId).className;
     console.log("originState: "+originState);
-    var upDown = originState.slice(15, -1);
+    var upDown = originState.slice(15, originState.length);
     console.log("upDown: "+upDown);
     
     var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
@@ -145,7 +145,7 @@ function summaryContent(response){
         content += response.question.title;//標題
         content += '<div style="float: right;">';
             // vote START
-            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
+            content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="外面網站的分數"></i>';
                 content += response.question.vote;
             content += '</span>';
             // vote END
@@ -154,7 +154,7 @@ function summaryContent(response){
             // id為: postScore+postId
             content += '<span id="postScore';
             content += localStorage.getItem("summaryId");
-            content += '" style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+            content += '" style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="此網站的分數"></i>';
                 content += score;
             content += '</span>';
             // score END
