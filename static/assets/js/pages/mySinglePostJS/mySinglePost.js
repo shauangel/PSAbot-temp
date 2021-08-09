@@ -451,13 +451,13 @@ function showQuestion(response){
                     content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
                 }
                 // 讚旁邊分數的Id: postLikeScore+貼文id
-                if(postType=="faq"){
-                    content += '<span id="postLikeScore';
-                    content += postId;
-                    content += '">';
-                    content += like;
-                    content += '</span>';
-                }
+//                if(postType=="faq"){
+//                    content += '<span id="postLikeScore';
+//                    content += postId;
+//                    content += '">';
+//                    content += like;
+//                    content += '</span>';
+//                }
                 content += '</button>';
                 //----- 檢查有沒有按讚 END -----//
                     
@@ -488,14 +488,14 @@ function showQuestion(response){
                     content += postId;
                     content += '" class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
                 }
-                // 讚旁邊分數的Id: postDislikeScore+貼文id
-                if(postType=="faq"){
-                    content += '<span id="postDislikeScore';
-                    content += postId;
-                    content += '">';
-                    content += dislike;
-                    content += '</span>';
-                }
+//                // 讚旁邊分數的Id: postDislikeScore+貼文id
+//                if(postType=="faq"){
+//                    content += '<span id="postDislikeScore';
+//                    content += postId;
+//                    content += '">';
+//                    content += dislike;
+//                    content += '</span>';
+//                }
                 content += '</button>';
                 //----- 檢查有沒有倒讚 END -----//
             

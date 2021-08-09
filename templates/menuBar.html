@@ -95,17 +95,14 @@
                         <!-- 通知＆個人頭像 -->
                         <ul class="nav-right">
                             <li class="header-notification">
-                                <a href="#!">
-                                    <i class="ti-bell"></i>
-                                    <!-- 新通知粉色的那個 -->
-                                    <span class="badge bg-c-pink"></span>
+                                <a href="#">
+                                    <i id="bell" class="ti-bell"></i>
+<!--                                     新通知粉色的那個 -->
+                                        <span id="newNotification"></span>
                                 </a>
-                                <ul class="show-notification">
-                                    <li>
-                                        <h6>通知</h6>
-<!--                                        <label class="label label-danger">新的</label>-->
-                                    </li>
-                                </ul>
+                                 <!-- 通知內容 START -->
+                                <ul class="show-notification" id="showNotification" style="height: 506px; overflow: scroll;"></ul>
+                                <!-- 通知內容 END -->
                             </li>
                             <li class="user-profile header-notification">
                                 

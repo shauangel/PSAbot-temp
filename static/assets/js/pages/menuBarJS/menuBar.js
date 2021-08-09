@@ -1300,7 +1300,8 @@ function checkNotification(postId, index){
 
 window.addEventListener("load", function(){
     start();
-    if(localStorage.getItem("role")=="generalUser"){
+    var role = localStorage.getItem("role");
+    if(role=="facebook_user"||role=="google_user"){
         setNotification();
     }
     else{
