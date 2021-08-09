@@ -333,16 +333,16 @@ function showQuestion(response){
             //----- 貼文ID or 發文者 END -----//
             
             //----- 分數 START -----//
-            var qusetionScore=0, questionVote=0, like=0, dislike=0;
+            var questionScore=0, questionVote=0, like=0, dislike=0;
             if(postType=="faq"){
                 questionVote = response.question.vote;//question的是字串
                 for(var i=0; i<response.question.score.length; i++){
-                    qusetionScore += parseInt(response.score[i].score);
+                    questionScore += parseInt(response.score[i].score);
                 }
             }
             else if(postType=="innerPost"){
                 for(var i=0; i<response.score.length; i++){
-                    qusetionScore += parseInt(response.score[i].score);
+                    questionScore += parseInt(response.score[i].score);
                 }
             }
             
@@ -350,7 +350,7 @@ function showQuestion(response){
                     content += '<span id="postScore';
                     content += id;
                     content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
-                    content += qusetionScore;
+                    content += questionScore;
                     content += '</span>';
 //                content += '</div>';
 
@@ -362,7 +362,7 @@ function showQuestion(response){
             }
             else if(postType=="innerPost"){
                 content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-                    content += qusetionScore;
+                    content += questionScore;
                 content += '</span>';
             }
     
@@ -590,7 +590,7 @@ function showAnswers(response){
                             content += '<span id="answerScore';
                             content += answerId;
                             content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
-                            content += qusetionScore;
+                            content += questionScore;
                             content += '</span>';
         //                content += '</div>';
 
