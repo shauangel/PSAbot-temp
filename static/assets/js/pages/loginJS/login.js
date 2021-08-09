@@ -87,11 +87,28 @@ function onLoadGoogleCallback(){
     auth2.currentUser.listen(userChanged);
   });
 }
+
 function googleSignIn(){
   console.log('click btn');
   auth2.signIn();
   console.log('user changed. id: ' + auth2.currentUser.get().getId());
 }
+
+function listenCookieChange(callback, interval = 1000) {
+  let lastCookie = document.cookie;
+  setInterval(()=> {
+    let cookie = document.cookie;
+    if (cookie !== lastCookie) {
+      try {
+        console.log('cookie change.')
+        window.location.reload();
+      } finally {
+        lastCookie = cookie;
+      }
+    }
+  }, interval);
+}
+
 function userChanged(googleUser){
   if (googleUser.getId() != null) {
     //傳送access token至後端驗證
