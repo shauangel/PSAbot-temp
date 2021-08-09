@@ -62,6 +62,7 @@ function thumbs(score, answerId, tagId){
     console.log("summaryId: "+summaryId);
     console.log("userId: "+userId);
     
+    console.log("tagId: "+tagId);
     var originState = document.getElementById(tagId).className;
     var upDown = originState.slice(15, -1);
     
@@ -139,10 +140,10 @@ function summaryContent(response){
     ///////////////////////////// 問題 START /////////////////////////////
     content += '<span style="font-size: 25px; font-weight: bold; width: auto; color: #505458;">';
         content += response.question.title;//標題
-        content += '<span style="float: right;">';
+        content += '<div style="float: right;">';
             // vote START
             content += '<span style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
-            content += response.question.vote;
+                content += response.question.vote;
             content += '</span>';
             // vote END
     
@@ -151,10 +152,10 @@ function summaryContent(response){
             content += '<span id="postScore';
             content += localStorage.getItem("summaryId");
             content += '" style="font-size: 10px; color: #505458;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
-            content += score;
+                content += score;
             content += '</span>';
             // score END
-        content += '</span>';
+        content += '</div>';
     content += '</span>';
     
     content += '<br>';
@@ -296,6 +297,7 @@ function summaryContent(response){
                             content += '<button type="button" class="scoreBtn" onclick="thumbs(\'1\', \'';
                             content += response.answers[i].id;
                             content += '\', \'answerLike';
+                            content += response.answers[i].id;
                             content += '\')"><i id="like';
                             content += response.answers[i].id;
                             content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>';
