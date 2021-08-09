@@ -28,7 +28,7 @@ function rankContent(response){
     console.log(response);
     var comment = document.getElementById("accordion");
     var content = "";
-    for(var i=0; i<response.scores.length; i++){
+    for(var i=0; i<response.answers.length; i++){
 //        console.log("i: "+i);
         content += '<div class="accordion-panel">';//第一個div
             //----- 標題 START -----//
@@ -66,11 +66,13 @@ function rankContent(response){
 //                content += '<span id="dislike';
 //                content += i;
 //                content += '" style="margin-right: 5px; color: gray;">0</span>';
-                        content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>';
-                        content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>';
+//                        content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>';
+//                        content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>';
 
                         content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
-                        content += '<span style="margin-right: 5px; color: #505458;">30</span>';
+                        content += '<span style="margin-right: 5px; color: #505458;">';
+                        content += parseInt((response.answers[i].score*100));
+                        content += '</span>';
                     content += '</a>';
                 content += '</h3>';
             content += '</div>';

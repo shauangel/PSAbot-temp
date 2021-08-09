@@ -413,13 +413,6 @@ function showQuestion(response){
                 content += '<button type="button" class="scoreBtn" onclick="thumbs(';
                 content += "'1', '', '";
                 content += postOwnerId;
-                content += "', '";
-                if(response.question.vote!="0" && postType=="faq"){
-                    content += true;
-                }
-                else{
-                    content += false;
-                }
                 content += "')";
                 content += '">';
                 
@@ -451,13 +444,6 @@ function showQuestion(response){
                 content += '<button type="button" class="scoreBtn" onclick="thumbs(';
                 content += "'-1', '', '";
                 content += postOwnerId;
-                content += "', '";
-                if(response.question.vote!="0" && postType=="faq"){
-                    content += true;
-                }
-                else{
-                    content += false;
-                }
                 content += "')";
                 content += '">';
 
