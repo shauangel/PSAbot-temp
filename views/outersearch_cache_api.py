@@ -39,7 +39,7 @@ def insert_cache():
     return jsonify(setting_dict)
 
 #更新點讚情況
-@outersearch_cache_api.route('/insert_cache', methods=['POST'])
+@outersearch_cache_api.route('/update_cache_score', methods=['POST'])
 def update_cache_score():
     data = request.get_json()
     try:
