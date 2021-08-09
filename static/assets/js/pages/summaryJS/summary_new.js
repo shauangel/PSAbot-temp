@@ -154,7 +154,7 @@ function summaryContent(response){
             content += score;
             content += '</span>';
             // score END
-        ontent += '</span>';
+        content += '</span>';
     content += '</span>';
     
     content += '<br>';
