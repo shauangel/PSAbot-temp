@@ -1,17 +1,5 @@
 /* ================ Facebook Login ================= */
 // 設定 Facebook JavaScript SDK
-var auth2;
-window.onload=function(){
-  gapi.load('auth2', function(){
-    auth2 = gapi.auth2.init({
-      client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
-      cookiepolicy: 'single_host_origin',
-      scope: 'profile'
-    });
-    attachSignin(document.getElementById('google-login-btn'));
-  });
-}
-
 window.fbAsyncInit = function () {
     FB.init({
       appId: '1018939978932508',
@@ -83,45 +71,62 @@ function checkLoginState() {
 }
 
 /* ================================================= */
-
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  
+}
 /* ================ Google Sign in ================= */
-function checkGoogleLogin(){
-  GoogleUser.reloadAuthResponse();
+function onLoadGoogleCallback(){
+  gapi.load('auth2', function(){
+    auth2 = gapi.auth2.init({
+      client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
+      cookiepolicy: 'single_host_origin',
+      scope: 'profile'
+    });
+    attachSignin(document.getElementById('google-login-btn'));
+    
+  });
+  function attachSignin(element) {
+    console.log(element.id);
+    auth2.attachClickHandler(element, {},
+      function(googleUser) 
+      {
+        // 登入成功
+        var profile = googleUser.getBasicProfile();
+        //傳送access token至後端驗證
+        $.ajax({
+          type: "POST",
+          url: head_url + 'google_sign_in',
+          data: JSON.stringify({
+            'id_token': googleUser.getAuthResponse().id_token
+          }),
+          async: false,
+          dataType: "json",
+          contentType: 'application/json; charset=utf-8',
+          success: function (response_data) {
+            sessionStorage.setItem('user_id', response_data['_id']);
+            sessionStorage.setItem('role', response_data['role']);
+            console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
+          },
+          error: function (xhr, status, error) {
+            console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
+          }
+        });
+        
+        
+      }, 
+      function(error) 
+      {
+        //登入失敗
+        console.log('Sign-in error', error);
+      }
+    );
+  }
 }
-function attachSignin(element) {
-  console.log(element.id);
-  auth2.attachClickHandler(element, {},
-    function(googleUser) 
-    {
-      // 登入成功
-      var profile = googleUser.getBasicProfile();
-      console.log('Sign in user: ' +　auth2.isSignedIn.get());
-      $.ajax({
-        type: "POST",
-        url: head_url + 'google_sign_in',
-        data: JSON.stringify({
-          'id_token': googleUser.getAuthResponse().id_token
-        }),
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function (response_data) {
-          sessionStorage.setItem('user_id', response_data['_id']);
-          sessionStorage.setItem('role', response_data['role']);
-          console.log('user_id :' + sessionStorage.getItem('user_id') + ' ,role: ' + sessionStorage.getItem('role') + ' has logged in.')
-        },
-        error: function (xhr, status, error) {
-          console.log('get_data: '+ xhr.responseText + status + ',error_msg: ' + error);
-        }
-      });
-    }, 
-    function(error) 
-    {
-      //登入失敗
-      console.log('Sign-in error: ' + error);
-    }
-  );
-}
-
 
 
 

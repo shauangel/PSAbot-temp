@@ -89,43 +89,44 @@
               </div>
               <hr />
               <!--Google Sign in button-->
-              <div style="height: 70%;">
+              <div class="g-signin2" data-onsuccess="onSignIn"></div>
+              <!-- <div style="height: 70%;">
                 <div id="gSignInWrapper">
                   <button id="google-login-btn" class="customGPlusSignIn" onclick="checkGoogleLogin()">
                     <input type="image" src="../static/images/google.png" style="width: 13%; float: left;" />
                     <span class="buttonText">Sign in with Google</span>
                   </button>
-                </div>
+                </div> -->
 
-                <!--Facebook Sign in button-->
-                <div class="facebook-login">
-                  <button type="button" id="facebook-login-btn" onclick="checkLoginState()">
-                    <i class="fa fa-facebook" aria-hidden="true" style="float: left;"></i>
-                    <span class="buttonText">Sign in with Facebook</span>
-                  </button>
-                </div>
-                <!--Test Logout button-->
-                <!-- <a href="#" onclick="logout()">logout test</a> -->
+              <!--Facebook Sign in button-->
+              <div class="facebook-login">
+                <button type="button" id="facebook-login-btn" onclick="checkLoginState()">
+                  <i class="fa fa-facebook" aria-hidden="true" style="float: left;"></i>
+                  <span class="buttonText">Sign in with Facebook</span>
+                </button>
               </div>
-              <hr />
-              <div class="row">
-                <div class="col-md-10">
-                  <p class="text-inverse text-left m-b-0" style="color: gray;">困難問題交給我，大神的答案輕鬆有</p>
-                </div>
-              </div>
-
+              <!--Test Logout button-->
+              <!-- <a href="#" onclick="logout()">logout test</a> -->
             </div>
-          </form>
-          <!-- end of form -->
+            <hr />
+            <div class="row">
+              <div class="col-md-10">
+                <p class="text-inverse text-left m-b-0" style="color: gray;">困難問題交給我，大神的答案輕鬆有</p>
+              </div>
+            </div>
+
         </div>
-        <!-- Authentication card end -->
+        </form>
+        <!-- end of form -->
       </div>
-      <div class="col-sm-6" style="width: 50%; height: 40%;">
-        <img src="../static/images/computer.png">
-      </div>
-      <!-- end of col-sm-12 -->
+      <!-- Authentication card end -->
     </div>
-    <!-- end of row -->
+    <div class="col-sm-6" style="width: 50%; height: 40%;">
+      <img src="../static/images/computer.png">
+    </div>
+    <!-- end of col-sm-12 -->
+  </div>
+  <!-- end of row -->
   </div>
   <!-- end of container-fluid -->
   <!--  </section>-->
