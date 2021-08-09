@@ -83,16 +83,17 @@ function onLoadGoogleCallback(){
     });
     
     auth2 = gapi.auth2.getAuthInstance();
+    console.log('current_user: ' + auth2.currentUser.get());
     auth2.currentUser.listen(userChanged);
   });
 }
 function googleSignIn(){
+  console.log('click btn');
   auth2.signIn();
   console.log('user changed. id: ' + auth2.currentUser.get().getId());
-  location.reload();
 }
 function userChanged(googleUser){
-  if (googleUser.getId()!=null) {
+  if (googleUser.getId() != null) {
     //傳送access token至後端驗證
     console.log('user changed. id: ' + googleUser.getId())
     $.ajax({
