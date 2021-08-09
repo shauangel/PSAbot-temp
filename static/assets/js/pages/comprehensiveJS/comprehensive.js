@@ -3,6 +3,8 @@ function start(){
     console.log("myURL: "+myURL);
     var rankId = localStorage.getItem("rankId");
     var data = {id: rankId};
+    console.log("送出的data: ");
+    console.log(data);
 //    var address = 'stackoverflowRank.json';
     $.ajax({
         url: myURL,

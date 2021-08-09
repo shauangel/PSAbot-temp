@@ -398,7 +398,8 @@ function start(){
     // ---------- 個人資料 START ---------- //
     showIdentity();
     getUserHeadshotAndName();
-    if(localStorage.getItem("role")=="generalUser"){
+    var role = localStorage.getItem("role");
+    if(role=="facebook_user" || role=="google_user"){
         getUserInterestTags();
     }
     // ---------- 個人資料 END ---------- //
@@ -463,7 +464,7 @@ function setMenuBar(){
     var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench"];
     var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "首頁", "管理內部貼文", "管理FAQs資料", "管理資料更新數據"];
     
-    if(role == "generalUser"){
+    if(role=="facebook_user" || role=="google_user"){
         start = 0;
         end = 4;
     }
@@ -608,7 +609,7 @@ function open_close(){
 
 function showIdentity(){
     var role = localStorage.getItem("role");
-    if(role == "generalUser"){
+    if(role=="facebook_user" || role=="google_user"){
         document.getElementById("userRoleMenubar").innerHTML = "一般使用者";
     }
     else if(role == "manager"){
