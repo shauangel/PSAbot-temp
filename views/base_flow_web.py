@@ -81,5 +81,5 @@ def FaqFrame():
     return render_template("FaqFrame.html")
 
 @base_flow_web.route("/manageDataFrame")
-def FaqFrame():
+def manageDataFrame():
     return render_template("manageDataFrame.html")
