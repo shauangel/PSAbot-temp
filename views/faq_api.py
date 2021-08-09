@@ -9,7 +9,7 @@ import json
 import re
 # --- our models ---- #
 from models import faq_data
-from . import TextAnalyze
+from .TextAnalyze import TextAnalyze
 
 faq_api = Blueprint('faq_api', __name__)
 
@@ -104,8 +104,8 @@ def insert_faq_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', faq_dict['question']['content'])
-        faq_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', faq_dict['question']['content'].replace('\n', '').replace('\r', ''))
+        faq_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         faq_data.insert_faq(faq_dict,'inner_faq')
     except Exception as e :
         faq_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -206,8 +206,8 @@ def update_faq_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'])
-        data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)})
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'].replace('\n', '').replace('\r', ''))
+        data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)[0]})
         data.update({'time': datetime.now().replace(microsecond=0).isoformat()})
         faq_data.update_faq(data)
     except Exception as e :
@@ -291,7 +291,7 @@ def process_import_data(data_list):
                         "score" : [],
                     } for a in faq['answers']
                 ],
-                "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'])),     
+                "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'].replace('\n', '').replace('\r', '')))[0],     
                 "tags" : [],
                 "time" : datetime.now().replace(microsecond=0).isoformat(),
                 "view_count" : 0
