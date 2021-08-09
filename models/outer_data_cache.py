@@ -13,7 +13,7 @@
 
 from . import _db
 #import _db
-#from datetime import datetime
+from datetime import datetime
 ##for test
 import json
 import copy
@@ -37,7 +37,7 @@ cache_format = {
 #利用自訂id查詢資料
 def query_by_id(idx):
     query = {"_id" : idx }
-    return [r for r in _db.OUTER_DATA_CACHE_COLLECTION.find(query)][0]
+    return [r for r in _db.OUTER_DATA_CACHE_COLLECTION.find(query)]
     
 
 #找最大id
