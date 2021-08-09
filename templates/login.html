@@ -89,44 +89,43 @@
               </div>
               <hr />
               <!--Google Sign in button-->
-              <div class="g-signin2" data-onsuccess="onSignIn"></div>
-              <!-- <div style="height: 70%;">
+              <div style="height: 70%;">
                 <div id="gSignInWrapper">
-                  <button id="google-login-btn" class="customGPlusSignIn" onclick="checkGoogleLogin()">
+                  <button id="google-login-btn" class="customGPlusSignIn">
                     <input type="image" src="../static/images/google.png" style="width: 13%; float: left;" />
                     <span class="buttonText">Sign in with Google</span>
                   </button>
-                </div> -->
+                </div>
 
-              <!--Facebook Sign in button-->
-              <div class="facebook-login">
-                <button type="button" id="facebook-login-btn" onclick="checkLoginState()">
-                  <i class="fa fa-facebook" aria-hidden="true" style="float: left;"></i>
-                  <span class="buttonText">Sign in with Facebook</span>
-                </button>
+                <!--Facebook Sign in button-->
+                <div class="facebook-login">
+                  <button type="button" id="facebook-login-btn" onclick="checkLoginState()">
+                    <i class="fa fa-facebook" aria-hidden="true" style="float: left;"></i>
+                    <span class="buttonText">Sign in with Facebook</span>
+                  </button>
+                </div>
+                <!--Test Logout button-->
+                <!-- <a href="#" onclick="logout()">logout test</a> -->
               </div>
-              <!--Test Logout button-->
-              <!-- <a href="#" onclick="logout()">logout test</a> -->
-            </div>
-            <hr />
-            <div class="row">
-              <div class="col-md-10">
-                <p class="text-inverse text-left m-b-0" style="color: gray;">困難問題交給我，大神的答案輕鬆有</p>
+              <hr />
+              <div class="row">
+                <div class="col-md-10">
+                  <p class="text-inverse text-left m-b-0" style="color: gray;">困難問題交給我，大神的答案輕鬆有</p>
+                </div>
               </div>
-            </div>
 
+            </div>
+          </form>
+          <!-- end of form -->
         </div>
-        </form>
-        <!-- end of form -->
+        <!-- Authentication card end -->
       </div>
-      <!-- Authentication card end -->
+      <div class="col-sm-6" style="width: 50%; height: 40%;">
+        <img src="../static/images/computer.png">
+      </div>
+      <!-- end of col-sm-12 -->
     </div>
-    <div class="col-sm-6" style="width: 50%; height: 40%;">
-      <img src="../static/images/computer.png">
-    </div>
-    <!-- end of col-sm-12 -->
-  </div>
-  <!-- end of row -->
+    <!-- end of row -->
   </div>
   <!-- end of container-fluid -->
   <!--  </section>-->
@@ -149,7 +148,7 @@
   <script type="text/javascript" src="../static/assets/js/common-pages.js"></script>
   <!-- Facebook/Google login js-->
   <!-- Google Cloud Platform JS -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://apis.google.com/js/platform.js?onload=onLoadGoogleCallback" async defer></script>
   <!-- My script -->
   <script src="../static/assets/js/pages/loginJS/login.js"></script>
   <script src="../static/assets/js/common.js"></script>
