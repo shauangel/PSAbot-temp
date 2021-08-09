@@ -18,10 +18,10 @@ outersearch_cache_api = Blueprint('outersearch_cache_api', __name__)
 @outersearch_cache_api.route('/query_cache_by_id', methods=['POST'])
 def query_cache_by_id():
     idx = request.get_json()
-    print("拿到的東西: ", idx)
-    print("拿到的id: ", idx['id'])
     try:
         result = outer_data_cache.query_by_id(idx)
+        print(type(result[0]))
+        print(result[0])
         return jsonify(result)
         
     except Exception as e :
