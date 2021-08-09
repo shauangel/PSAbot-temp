@@ -81,9 +81,14 @@ function onLoadGoogleCallback(){
       cookiepolicy: 'none',
       scope: 'profile'
     });
+    
     auth2 = gapi.auth2.getAuthInstance();
-    attachSignin(document.getElementById('google-login-btn'));
-    auth2.currentUser.listen(userChanged);
+    auth2.then(function() {  // onInit
+      auth2.currentUser.listen(userChanged);
+      attachSignin(document.getElementById('google-login-btn'));
+    }, function() {  // onError
+      console.log('error')
+    });
   });
 }
 
