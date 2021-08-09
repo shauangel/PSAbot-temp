@@ -126,6 +126,7 @@ function userChanged(googleUser){
 function managerLogin(){
   var user = document.getElementById("inputUser").value;
   var password = document.getElementById("inputPassword").value;
+  console.log('user :' + user + ' ,password: ' + password)
   $.ajax({
     type: "POST",
     url: head_url + 'password_sign_in',
@@ -145,6 +146,7 @@ function managerLogin(){
         localStorage.setItem("sessionID", response_data['_id']);
         localStorage.setItem("role", response_data['role']);
         console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.');
+        window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
       }
       
     },
