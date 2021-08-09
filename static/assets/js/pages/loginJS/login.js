@@ -37,7 +37,6 @@ function checkLoginState() {
 // 取得登入狀態資訊
     FB.login(function (response) {
         if (response.status === 'connected') {
-        console.log(response)
         // 若已登入則利用facebook api取得使用者資料
         FB.api(
           '/me',
@@ -45,8 +44,7 @@ function checkLoginState() {
           "fields": "id,name"
           },
           function (response) {
-              // 慈
-              localStorage.setItem("userName", response['name']);
+              console.log(response);
 //              console.log("傳到後端的: "+response);
             // 取得使用者資料丟到後端
             $.ajax({
@@ -64,7 +62,7 @@ function checkLoginState() {
 
                     //慈 START
                     localStorage.setItem("sessionID", response_data['_id']);
-                    localStorage.setItem("userName", response_data['name']);
+//                    localStorage.setItem("userName", response_data['name']);
                     localStorage.setItem("role", "facebook_user");
                     
                     window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';

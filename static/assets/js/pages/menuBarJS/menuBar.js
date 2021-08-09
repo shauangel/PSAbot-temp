@@ -684,6 +684,7 @@ function getUserHeadshotAndName(){
             
             document.getElementById("userName").setAttribute("value", response.name);
             
+            console.log("response.name: "+response.name);
             localStorage.setItem("userName", response.name);
         },
         error: function(){
