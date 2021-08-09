@@ -35,6 +35,7 @@ def insert_cache():
     data = request.get_json()
     try:
         result = outer_data_cache.insert_cache(data['data'], data['type'])
+        print(type(result))
         return jsonify(result)
     except Exception as e :
         setting_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
