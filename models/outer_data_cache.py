@@ -37,8 +37,7 @@ cache_format = {
 
 #利用自訂id查詢資料
 def query_by_id(idx):
-    query = {"_id" : idx }
-    print(idx)
+    query = {"_id" : idx['id'] }
     result = _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
     return result
     
@@ -64,8 +63,7 @@ def insert_cache(data_list, data_type):
         cache_data = transform_block_rank(data_list)
         cache_data['_id'] = "b_" + str(int(current_id) + 1).zfill(6)
         check = _db.OUTER_DATA_CACHE_COLLECTION.insert_one(cache_data)
-        print(check.inserted_id)
-        id_list.append(cache_data['_id'])
+        id_list.append(check.inserted_id)
         
     else:    
         for data_dict in data_list:
@@ -76,8 +74,7 @@ def insert_cache(data_list, data_type):
                 data_dict['_id'] = "t_" + current_id.zfill(6)
                 transform_temp_data(data_dict)
             check = _db.OUTER_DATA_CACHE_COLLECTION.insert_one(data_dict)
-            print(check.inserted_id)
-            id_list.append(data_dict['_id'])
+            id_list.append(check.inserted_id)
         
     return id_list
 
