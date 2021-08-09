@@ -66,6 +66,8 @@ def insert_inner_post():
         textAnalyzer = TextAnalyze()
         # 去除code
         target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'])
+        print("去除code: ")
+        print(target_content)
         post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
         inner_post.insert_post(post_dict)
     except Exception as e :
