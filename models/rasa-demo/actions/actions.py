@@ -150,7 +150,7 @@ class analyze_and_search(Action):
             result = TextAnalyze.blockRanking(stack_items, qkey)
             #print(result)
             for i in range(5):
-                stack_items[i]['question']['absract'] = textAnalyzer.textSummarization(stack_items[i]['question']['absract'])
+                stack_items[i]['question']['abstract'] = textAnalyzer.textSummarization(stack_items[i]['question']['abstract'])
                 for ans in stack_items[i]['answers']:
                     ans['abstract'] = textAnalyzer.textSummarization(ans['abstract'])
             temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
