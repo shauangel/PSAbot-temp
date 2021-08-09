@@ -8,11 +8,15 @@ function showReplyContent(why){//why可以是see, save
     //dotNum 代表有連續幾個`
     //needCouple 是否需要後半段```
     //language 代表程式碼的語言
-    var dotNum=0, needCouple=false, language="";
+    var dotNum=0, needCouple=false, language="", middle=false, subString;
     for(var i=0; i<userContent.length; i++){
         if(userContent[i]=="`"){ //遇到`
             dotNum += 1;
             if(dotNum==3 && needCouple==false){ //湊滿3個 && 是第一次
+                //去頭去尾換行 START
+                middle = true;
+                subString = "";
+                //去頭去尾換行 END
                 
                 dotNum = 0;//需要清空`的數量
                 
@@ -20,7 +24,9 @@ function showReplyContent(why){//why可以是see, save
                 i += 1;//直接前往下一個index
                 var flag = false;
                 while(true){
-                    if(userContent[i] ==']') break;
+                    if(userContent[i] ==']'){
+                        break;
+                    }
                     if(flag==true){
                         language += userContent[i];
                     }
@@ -32,19 +38,7 @@ function showReplyContent(why){//why可以是see, save
                 storeContent += '<pre><code class="';
                 storeContent += language
                 storeContent += '">';
-                
-                // 清除多餘的換行 START
-                while(true){
-                    if(userContent[i]=='$#13;' || userContent[i]=='$#10;'){
-                        i += 1;
-                        console.log("i: "+i);
-                    }
-                    else{
-                        break;
-                    }
-                }
-                // 清除多餘的換行 END
-                console.log("結束i: "+i);
+
                 language = "";
                 needCouple = true; //代表需要後半段
             }
@@ -52,13 +46,16 @@ function showReplyContent(why){//why可以是see, save
                 dotNum = 0;//需要清空`的數量
                 needCouple = false;
                 
+                subString = subString.trim();
+                
+                storeContent += subString;
                 storeContent += "</code></pre>";
             }
         }
+        else if(middle){
+            subString += userContent[i];
+        }
         else{
-            userContent[i] = userContent[i].replace(/\n/g,"<br>");
-            console.log("else裡的i: "+i);
-            console.log("要加上去的內容: "+userContent[i]);
             storeContent += userContent[i];
         }
     }
