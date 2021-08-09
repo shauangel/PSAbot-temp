@@ -181,14 +181,14 @@ function thumbs(score, answerId, targetUserId){
     var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
     if(score==1){
         if(answerId==""){// post like
-            $("#postLikeScore"+postId).html(parseInt($("#postLikeScore"+postId).text())+1);
+            $("#postScore"+postId).html(parseInt($("#postScore"+postId).text())+1);
             tempId = "postLike"+postId;
             document.getElementById(tempId).className = "fa fa-thumbs-up";
             tempId = "postDislike"+postId;
             document.getElementById(tempId).className = "fa fa-thumbs-o-down";
         }
         else{// answer like
-            $("#answerLikeScore"+answerId).html(parseInt($("#answerLikeScore"+answerId).text())+1);
+            $("#answerScore"+answerId).html(parseInt($("#answerScore"+answerId).text())+1);
             tempId = "answerLike"+answerId;
             document.getElementById(tempId).className = "fa fa-thumbs-up";
             tempId = "answerDislike"+answerId;
@@ -197,14 +197,14 @@ function thumbs(score, answerId, targetUserId){
     }
     else{
         if(answerId==""){//post dislike
-            $("#postDislikeScore"+postId).html(parseInt($("#postDislikeScore"+postId).text())+1);
+            $("#postScore"+postId).html(parseInt($("#postScore"+postId).text())+1);
             tempId = "postDislike"+postId;
             document.getElementById(tempId).className = "fa fa-thumbs-down";
             tempId = "postLike"+postId;
             document.getElementById(tempId).className = "fa fa-thumbs-o-up";
         }
         else{// answer dislike
-            $("#answerDislikeScore"+answerId).html(parseInt($("#answerDislikeScore"+answerId).text())+1);
+            $("#answerScore"+answerId).html(parseInt($("#answerScore"+answerId).text())+1);
             tempId = "answerDislike"+answerId;
             document.getElementById(tempId).className = "fa fa-thumbs-down";
             tempId = "answerLike"+answerId;
