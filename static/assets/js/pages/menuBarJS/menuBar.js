@@ -48,7 +48,7 @@ function bot(string){
     }
     content += 'class="d-flex justify-content-start mb-4">';
     content += '<div class="img_cont_msg">';
-    content += '<img src="../static/images/baymaxChat.png" class="chatImg">';
+    content += '<img src="../static/images/icon.png" class="chatImg" style="background-color: #5D478B;">';
     content += '</div>';
     content += '<div class="msg_cotainer"';
     if(string.slice(0, 6) == "正在輸入訊息"){
@@ -1040,7 +1040,7 @@ function save(){
 ////////////////// 登出 START ////////////////////
 function logOut(){
     localStorage.clear();
-    window.location.href = "login.html";
+    window.location.href = "https://soselab.asuscomm.com:55002/site/login";
 }
 ////////////////// 登出 END ////////////////////
 
