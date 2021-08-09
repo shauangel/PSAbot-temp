@@ -101,61 +101,6 @@ function thumbs(score, answerId){
 //            document.getElementById(tempId).className = "fa fa-thumbs-o-up";
         }
     }
-    
-    if(postType=="faq"){//代表是faq
-        data = {faq_id: postId, answer_id: answerId, user: userId};
-        console.log("data: ");
-        console.log(data);
-        if(score == 1){
-            myURL = head_url + "like_faq_post";
-//            console.log("API為: like_faq_post");
-        }
-        else{
-            myURL = head_url + "dislike_faq_post";
-//            console.log("API為: dislike_faq_post");
-        }
-        console.log("myURL: "+myURL);
-        $.ajax({
-            url: myURL,
-            type: "POST",
-            data: JSON.stringify(data),
-            async: false,
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function(response){
-                console.log(response);
-//                window.location.reload();
-            },
-            error: function(response){
-            }
-        });
-    }
-    else if(postType=="innerPost"){//代表是innerPost
-        data = {post_id: postId, response_id: answerId, user: userId, target_user: targetUserId};
-        console.log(data);
-        if(score == 1){
-            myURL = head_url + "like_inner_post";
-//            console.log("API為: like_inner_post");
-        }
-        else{
-            myURL = head_url + "dislike_inner_post";
-//            console.log("API為: dislike_inner_post");
-        }
-        $.ajax({
-            url: myURL,
-            type: "POST",
-            data: JSON.stringify(data),
-            async: false,
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function(response){
-//                console.log(response);
-//                window.location.reload();
-            },
-            error: function(response){
-            }
-        });
-    }
 }
 /////////////// 按讚、倒讚 END ///////////////
 
