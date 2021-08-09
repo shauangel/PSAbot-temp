@@ -686,7 +686,8 @@ function getUserHeadshotAndName(){
             
             document.getElementById("userName").setAttribute("value", response.name);
             
-            console.log("拿到的: "+response);
+            console.log("拿到的: ");
+            console.log(response);
             localStorage.setItem("userName", response.name);
         },
         error: function(){
