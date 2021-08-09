@@ -51,7 +51,7 @@ function objectInArrayThumb(obj, arr){//score, user_id
     return false;
 }
 
-function thumbs(score, answerId){
+function thumbs(score, answerId, tagId){
     //replyId==""，代表是按貼文的
     // web true代表是網路分數，動態變化的是讚旁邊的數字
     var myURL, data;
@@ -62,45 +62,54 @@ function thumbs(score, answerId){
     console.log("summaryId: "+summaryId);
     console.log("userId: "+userId);
     
-    console.log("")
+    var originState = document.getElementById(tagId).className;
+    var upDown = originState.slice(15, -1);
     
     var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
-    if(score==1){
-        if(answerId==""){// post like
-            console.log("按post的讚");
-//            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
-//            tempId = "postLike"+postId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-up";
-//            tempId = "postDislike"+postId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-o-down";
-        }
-        else{// answer like
-            console.log("按answer的讚");
-//            $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
-//            tempId = "answerLike"+answerId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-up";
-//            tempId = "answerDislike"+answerId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-o-down";
-        }
+    if(answerId==""){//代表是貼文
+        tempId = "postLike"+summaryId;
+        document.getElementById(tempId).className=="fa fa-thumbs-o-up";
+        
+        tempId = "postDislike"+summaryId;
+        document.getElementById(tempId).className=="fa fa-thumbs-o-down";
     }
-    else{
-        if(answerId==""){//post dislike
-            console.log("按post的倒讚");
-//            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
-//            tempId = "postDislike"+postId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-down";
-//            tempId = "postLike"+postId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-o-up";
-        }
-        else{// answer dislike
-            console.log("按answer的倒讚");
-//            $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
-//            tempId = "answerDislike"+answerId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-down";
-//            tempId = "answerLike"+answerId;
-//            document.getElementById(tempId).className = "fa fa-thumbs-o-up";
-        }
+    else{//代表是答案
+        tempId = "answerLike"+answerId;
+        document.getElementById(tempId).className=="fa fa-thumbs-o-up";
+        
+        tempId = "answerLike"+answerId;
+        document.getElementById(tempId).className=="fa fa-thumbs-o-down";
     }
+    
+    if(originState.slice(0, 14)=="fa fa-thumbs-o-"){//原本沒按
+        data = {id: summaryId, answer_id: answerId, user_id: userId, mode: score};
+        //tagId
+        document.getElementById(tagId).className="fa fa-thumbs"+upDown;
+    }
+    else{//原本有按
+        data = {id: summaryId, answer_id: answerId, user_id: userId, mode: 0};
+    }
+    console("安祺data: ");
+    console.log(data);
+    var myURL = head_url + "update_cache_score";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+//            console.log("成功: 編輯貼文（update_inner_post）");
+//            setPage('mySinglePostFrame');
+            console.log(response);
+        },
+        error: function(response){
+//            console.log("失敗: 編輯貼文（update_inner_post）");
+            console.log(response);
+        }
+    });
+    
 }
 /////////////// 按讚、倒讚 END ///////////////
 
@@ -156,7 +165,9 @@ function summaryContent(response){
 
     // 倒讚 START
     // 倒讚的Id: postDislike+postId
-    content += '<button type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'-1\', \'\')"><i id="postDislike';
+    content += '<button name="post" type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'-1\', \'\', \'postDislike';
+    content += localStorage.getItem("summaryId");
+    content += '\')"><i id="postDislike';
     content += localStorage.getItem("summaryId");
     content += '" class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
     content += '</button>'; 
@@ -164,7 +175,9 @@ function summaryContent(response){
     
     // 讚 START
     // 讚的Id: postLike+postId
-    content += '<button type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'-1\', \'\')"><i id="postLike';
+    content += '<button name="post" type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'1\', \'\', \'postLike';
+    content += localStorage.getItem("summaryId");
+    content += '\')"><i id="postLike';
     content += localStorage.getItem("summaryId");
     content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
     content += '</button>';
@@ -256,6 +269,7 @@ function summaryContent(response){
                             // 讚的Id: answerLike+answerId
                             content += '<button type="button" class="scoreBtn" onclick="thumbs(\'1\', \'';
                             content += response.answers[i].id;
+                            content += '\', \'answerLike';
                             content += '\')"><i id="like';
                             content += response.answers[i].id;
                             content += '" class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>';
@@ -263,7 +277,9 @@ function summaryContent(response){
                             // 倒讚的Id: answerDislike+answerId
                             content += '<button type="button" class="scoreBtn" style="margin-right: 10px;" onclick="thumbs(\'-1\', \'';
                             content += response.answers[i].id;
-                            content += '\')"><i id="dislike';
+                            content += '\', \'answerDislike';
+                            content += response.answers[i].id;
+                            content += '\')"><i id="answerDislike';
                             content += response.answers[i].id;
                             content += '" class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>';
                     content += '</div>';
