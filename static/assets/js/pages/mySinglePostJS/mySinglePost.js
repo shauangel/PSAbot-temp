@@ -333,30 +333,11 @@ function showQuestion(response){
             //----- 貼文ID or 發文者 END -----//
             
             //----- 分數 START -----//
-            var qusetionScore=0, like=0, dislike=0;
+            var qusetionScore=0, questionVote=0, like=0, dislike=0;
             if(postType=="faq"){
-                qusetionScore = response.question.vote;
-                if(qusetionScore==""){
-                    qusetionScore = 0;
-                    for(var i=0; i<response.question.score.length; i++){
-                        qusetionScore += response.score[i].score;
-                        if(response.score[i].score==1){
-                            like+=1;
-                        }
-                        else if(response.score[i].score==-1){
-                            dislike+=1;
-                        }
-                    }
-                }
-                else{
-                    for(var i=0; i<response.question.score.length; i++){
-                        if(response.score[i].score==1){
-                            like+=1;
-                        }
-                        else if(response.score[i].score==-1){
-                            dislike+=1;
-                        }
-                    }
+                questionVote = response.question.vote;//question的是字串
+                for(var i=0; i<response.question.score.length; i++){
+                    qusetionScore += parseInt(response.score[i].score);
                 }
             }
             else if(postType=="innerPost"){
@@ -370,9 +351,13 @@ function showQuestion(response){
             content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
             content += qusetionScore;
             content += '</span>';
-            if(postType=="faq" && response.question.vote!="0"){
-                content += '<span style="float: right;">網站分數</span>';
-            }
+            
+            // vote（管理者輸入的分數） START
+            content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
+            content += qusetionVote;
+            content += '</span>';
+            // vote（管理者輸入的分數） END
+    
             //----- 分數 END -----//
         content += '</div>';
 
