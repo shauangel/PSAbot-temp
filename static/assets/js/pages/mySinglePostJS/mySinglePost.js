@@ -511,7 +511,7 @@ function showQuestion(response){
 
 function showAnswers(response){
     console.log(response);
-    content = "";
+    var content = "";
     var tempAnswerLength;
     var userId=localStorage.getItem("sessionID"), role=localStorage.getItem("role");
     switch(postType){
@@ -553,22 +553,22 @@ function showAnswers(response){
                 answerVote = response.answers[i].vote;
                 if(answerScore==0){
 //                    qusetionScore = 0;
-                    for(var i=0; i<response.answers[i].score.length; i++){
-                        answerScore += response.answers[i].score[i].score;
-                        if(response.answers[i].score[i].score==1){
+                    for(var j=0; j<response.answers[j].score.length; j++){
+                        answerScore += response.answers[j].score[j].score;
+                        if(response.answers[j].score[j].score==1){
                             like+=1;
                         }
-                        else if(response.answers[i].score[i].score==-1){
+                        else if(response.answers[j].score[j].score==-1){
                             dislike+=1;
                         }
                     }
                 }
                 else{
-                    for(var i=0; i<response.answers[i].score.length; i++){
-                        if(response.answers[i].score[i].score==1){
+                    for(var j=0; j<response.answers[j].score.length; j++){
+                        if(response.answers[j].score[j].score==1){
                             like+=1;
                         }
-                        else if(response.answers[i].score[i].score==-1){
+                        else if(response.answers[j].score[j].score==-1){
                             dislike+=1;
                         }
                     }
@@ -595,8 +595,6 @@ function showAnswers(response){
                 }
                 break;
         }
-        
-        
         content += '<div class="col-12">';
             content += '<div class="badge-box">';
                 content += '<div class="sub-title">';
