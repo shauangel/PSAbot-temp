@@ -24,9 +24,9 @@ from flask_cors import CORS
 from views import register_blueprint
 #from lib import config
 from os import urandom
-from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
+from models.PSAbotLoginManager import PSAbotLoginManager,UserModel,manager_set_up
 # --- encryption --- #
-from models.RsaTool import RsaTool,rsa_setup
+from models.RsaTool import rsa_setup
 
 def create_app():
     app = Flask(__name__)
@@ -48,7 +48,8 @@ def create_app():
         return user_now
     ''' --- 使用者資料加密 --- '''
     # 要到models/RsaTool 更改path再使用
-    # rsa_setup()
+    rsa_setup()
+    manager_set_up("PSABOTMANAGER","123","超強管理員","")
     ''' ---------------------- '''
     # register app
     register_blueprint(app)
