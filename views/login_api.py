@@ -46,6 +46,9 @@ def google_sign_in():
         }
         user.insert_user(user_dict)
         user_dict = user.query_user(id_info['sub'])
+        user_dict.update({'first_login':True})
+    else:
+        user_dict.update({'first_login':False})
     # --- flask login --- #
     user_now = UserModel(user_dict['_id'])  
     login_user(user_now) 
@@ -73,6 +76,9 @@ def facebook_sign_in():
         }
         user.insert_user(user_dict)
         user_dict = user.query_user(data['id'])
+        user_dict.update({'first_login':True})
+    else:
+        user_dict.update({'first_login':False})
     # --- flask login --- #
     user_now = UserModel(user_dict['_id'])  
     login_user(user_now) 
