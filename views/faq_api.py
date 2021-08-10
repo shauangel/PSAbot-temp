@@ -89,7 +89,8 @@ def insert_faq_post():
                         "answers" : 
                         [
                             {       
-                                "_id" : "",       
+                                "_id" : "",
+                                "id":"",
                                 "content" : a['content'],
                                 "edit" : a['edit'],
                                 "vote" : int(a['vote']),     
@@ -163,7 +164,8 @@ def insert_faq_answer():
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
-            'score':[]
+            'score':[],
+            "_id":""
         }
         faq_data.insert_answer(answer_dict)
     except Exception as e :
@@ -180,6 +182,7 @@ def update_faq_answer():
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
+            "_id":""
         }
         faq_data.update_answer(answer_dict)
     except Exception as e :
@@ -289,6 +292,7 @@ def process_import_data(data_list):
                         "edit" : "",
                         "vote" : int(a['vote']),     
                         "score" : [],
+                        "_id" : "",
                     } for a in faq['answers']
                 ],
                 "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'].replace('\n', '').replace('\r', '')))[0],     
