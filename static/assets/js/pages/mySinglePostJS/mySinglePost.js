@@ -65,9 +65,9 @@ function deletePostOrAnswer(){
     
     //--- faq回覆 START ---//
     else if(postType=="faq" && deleteType=="answer"){
-        data = {faq_id: postId, id: answerId};
-        console.log("刪除faq的回覆: ");
-        console.log(data);
+        data = {faq_id: postId, answer_id: answerId};
+//        console.log("刪除faq的回覆: ");
+//        console.log(data);
         
         var myURL = head_url + "delete_faq_answer";
         $.ajax({
