@@ -195,7 +195,7 @@ function thumbs(score, answerId, targetUserId){
             }
             tempId = "postDislike"+postId;
             console.log("dislike's ID: "+tempId);
-            if(document.getElementById(tempId).className == "fa fa-thumbs-o-down"){
+            if(document.getElementById(tempId).className == "fa fa-thumbs-down"){
                 console.log("減1分");
                 $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
             }
@@ -209,7 +209,7 @@ function thumbs(score, answerId, targetUserId){
                 $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
             }
             else{
-                document.getElementById(tempId).className=="fa fa-thumbs-up";
+                document.getElementById(tempId).className = "fa fa-thumbs-up";
                 $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
             }
             
@@ -245,14 +245,17 @@ function thumbs(score, answerId, targetUserId){
             if(document.getElementById(tempId).className=="fa fa-thumbs-down"){
                 document.getElementById(tempId).className = "fa fa-thumbs-o-down";
                 $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
+                console.log("加1分");
             }
             else{
                 document.getElementById(tempId).className = "fa fa-thumbs-down";
                 $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+                console.log("減1分");
             }
             tempId = "answerLike"+answerId;
             if(document.getElementById(tempId).className = "fa fa-thumbs-up"){
                 $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+                console.log("減1分");
             }
             document.getElementById(tempId).className = "fa fa-thumbs-o-up";
         }
