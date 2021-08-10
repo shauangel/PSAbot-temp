@@ -218,7 +218,7 @@ def update_score(score_dict):
     else :
         target_answer = next(answer for answer in target_faq['answers'] if answer['id'] == score_dict['answer_id'])
         # 若使用者按過讚/倒讚，使用set
-        if any(s['user_id'] == score_dict['user'] for s in target_answer['score']):
+        if any(score['user_id'] == score_dict['user'] for score in target_answer['score']):
             target_score = next(score for score in target_answer['score'] if score['user_id'] == score_dict['user'])
             if target_score['score'] == score_dict['score']:
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
