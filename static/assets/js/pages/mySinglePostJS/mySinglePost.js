@@ -584,7 +584,8 @@ function showAnswers(response){
                 }
                 answerId = response.answer[i]._id;
                 answerOwnerId = response.answer[i].replier_id;
-                answerContent = response.answer[i].response.replaceAll('\n', '<br>');
+//                answerContent = response.answer[i].response.replaceAll('\n', '<br>');
+                answerContent = response.answer[i].response;
                 answerTime = new Date(response.answer[i].time);
                 answerTime = answerTime.toISOString();
                 answerTime = answerTime.slice(0, 10);
