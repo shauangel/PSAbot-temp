@@ -1043,6 +1043,25 @@ function save(){
 
 ////////////////// 登出 START ////////////////////
 function logOut(){
+    if(sessionStorage.getItem('role') == 'google_user'){
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('Google User signed out.');
+        });
+    }
+    else if(sessionStorage.getItem('role') == 'facebook_user'){
+        FB.logout(function(response) {
+            console.log('Facebook User logout.');
+          });
+    }
+    // flask logout
+    $.ajax({
+        type: 'GET',
+        url: head_url +  'logout',
+        success: function () {
+            console.log('flask logout.')
+        }
+    });
     localStorage.clear();
     window.location.href = "https://soselab.asuscomm.com:55002/site/login";
 }
