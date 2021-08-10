@@ -47,12 +47,6 @@ def create_app():
         user_now = UserModel(user_id)   
         return user_now
     # register app
-    data = {"_id":"PSABOTMANAGER",
-                "role":"manager",
-                "password":"123",
-                "name":"管理員",
-                "email":""}
-    insert_user(data)
     register_blueprint(app)
     return app
 
