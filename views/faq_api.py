@@ -1,5 +1,5 @@
 # --- flask --- #
-from datetime import datetime,timezone,timedelta
+from datetime import datetime
 from flask import Blueprint,request, jsonify
 '''匯入faq相關'''
 from flask import Flask,flash,redirect
@@ -90,8 +90,7 @@ def insert_faq_post():
                         "answers" : 
                         [
                             {       
-                                "_id" : "",
-                                "id":"",
+                                "answer_id" : "",
                                 "content" : a['content'],
                                 "edit" : a['edit'],
                                 "vote" : int(a['vote']),     
@@ -161,7 +160,7 @@ def insert_faq_answer():
     try: 
         answer_dict = {
             'faq_id':data['faq_id'],
-            'id':"",
+            'answer_id':"",
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
@@ -179,11 +178,10 @@ def update_faq_answer():
     try: 
         answer_dict = {
             'faq_id':data['faq_id'],
-            'id':data['id'],
+            'answer_id':data['id'],
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
-            "_id":""
         }
         faq_data.update_answer(answer_dict)
     except Exception as e :
@@ -288,12 +286,11 @@ def process_import_data(data_list):
                 "answers" : 
                 [
                     {       
-                        "id" : "",       
+                        "answer_id" : "",       
                         "content" : a['content'],
                         "edit" : "",
                         "vote" : int(a['vote']),     
-                        "score" : [],
-                        "_id" : "",
+                        "score" : []
                     } for a in faq['answers']
                 ],
                 "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'].replace('\n', '').replace('\r', '')))[0],     
