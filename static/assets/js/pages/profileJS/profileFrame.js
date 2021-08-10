@@ -86,8 +86,8 @@ function showPostRecord(response){
 
             content += '<div class="badge-box">';
                 content += '<div class="sub-title">';
-                    content += '<span>貼文ID ';
-                    content += postId;
+                    content += '<span>';
+                    content += localStorage.getItem("userName");
                     content += '</span>';
 
                     content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
@@ -146,8 +146,8 @@ function showAnswerRecord(response){
 
             content += '<div class="badge-box">';
                 content += '<div class="sub-title">';
-                    content += '<span>貼文ID ';
-                    content += postId;
+                    content += '<span>';
+                    content += localStorage.getItem("userName");
                     content += '</span>';
 
                     content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
