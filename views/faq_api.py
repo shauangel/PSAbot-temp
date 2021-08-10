@@ -1,5 +1,5 @@
 # --- flask --- #
-from datetime import datetime,timezone,timedelta
+from datetime import datetime
 from flask import Blueprint,request, jsonify
 '''匯入faq相關'''
 from flask import Flask,flash,redirect
@@ -9,6 +9,7 @@ import json
 import re
 # --- our models ---- #
 from models import faq_data
+from models._db import pacific
 from .TextAnalyze import TextAnalyze
 
 faq_api = Blueprint('faq_api', __name__)
@@ -89,8 +90,7 @@ def insert_faq_post():
                         "answers" : 
                         [
                             {       
-                                "_id" : "",
-                                "id":"",
+                                "answer_id" : "",
                                 "content" : a['content'],
                                 "edit" : a['edit'],
                                 "vote" : int(a['vote']),     
@@ -99,7 +99,7 @@ def insert_faq_post():
                         ],
                         "keywords" : [],     
                         "tags" : data['tags'],
-                        "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
+                        "time" : pacific.localize(datetime.now().replace(microsecond=0)),
                         "view_count" : 0
         }
         # 呼叫文字分析模組進行分析
@@ -160,7 +160,7 @@ def insert_faq_answer():
     try: 
         answer_dict = {
             'faq_id':data['faq_id'],
-            'id':"",
+            'answer_id':"",
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
@@ -178,11 +178,10 @@ def update_faq_answer():
     try: 
         answer_dict = {
             'faq_id':data['faq_id'],
-            'id':data['id'],
+            'answer_id':data['id'],
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
-            "_id":""
         }
         faq_data.update_answer(answer_dict)
     except Exception as e :
@@ -211,7 +210,7 @@ def update_faq_post():
         # 去除code
         target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'].replace('\n', '').replace('\r', ''))
         data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)[0]})
-        data.update({'time': datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8)))})
+        data.update({'time': pacific.localize(datetime.now().replace(microsecond=0))})
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -287,17 +286,16 @@ def process_import_data(data_list):
                 "answers" : 
                 [
                     {       
-                        "id" : "",       
+                        "answer_id" : "",       
                         "content" : a['content'],
                         "edit" : "",
                         "vote" : int(a['vote']),     
-                        "score" : [],
-                        "_id" : "",
+                        "score" : []
                     } for a in faq['answers']
                 ],
                 "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'].replace('\n', '').replace('\r', '')))[0],     
                 "tags" : [],
-                "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
+                "time" : pacific.localize(datetime.now().replace(microsecond=0)),
                 "view_count" : 0
             } for faq in data_list
     ]
