@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import session, redirect, url_for
 from flask_login import LoginManager,UserMixin
-from . import user,_db
+from . import user
 
 ''' ------------------------------------------------------------
 step1. import
