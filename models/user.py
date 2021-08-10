@@ -130,7 +130,7 @@ def update_notification_add(user_id, replier_name, post_id):
     
     _db.USER_COLLECTION.update_one({'_id':user_id}, {'$push':{'notification':{
                         'id':count+1,
-                        'time':dt2,
+                        'time':datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
                         'detail':{
                             'post_id': post_id,
                             'replier_name': replier_name
