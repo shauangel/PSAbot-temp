@@ -215,7 +215,7 @@ function thumbs(score, answerId, targetUserId){
             
             tempId = "answerDislike"+answerId;
             if(document.getElementById(tempId).className=="fa fa-thumbs-down"){
-                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
             }
             document.getElementById(tempId).className = "fa fa-thumbs-o-down";
         }
