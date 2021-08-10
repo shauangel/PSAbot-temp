@@ -1,7 +1,7 @@
 import rsa
 
-key_path = "/Users/jacknahu/Documents/GitHub/PQAbot/models/"
-# key_path = "/home/bach/PSAbot-vm/models/"
+# key_path = "/Users/jacknahu/Documents/GitHub/PQAbot/models/"
+key_path = "/home/bach/PSAbot-vm/models/"
 
 def rsa_setup():
     publicKey, privateKey = rsa.newkeys(512)
