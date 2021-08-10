@@ -68,7 +68,7 @@ function thumbs(score, answerId, tagId){
     var upDown = originState.slice(15, originState.length);
     console.log("upDown: "+upDown);
     
-    var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true"></i>';
+    var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
     if(answerId==""){//代表是貼文
         tempId = "postLike"+summaryId;
         document.getElementById(tempId).className="fa fa-thumbs-o-up";
@@ -76,7 +76,7 @@ function thumbs(score, answerId, tagId){
         tempId = "postDislike"+summaryId;
         document.getElementById(tempId).className="fa fa-thumbs-o-down";
         
-        $("#postScore"+summaryId).text(parseInt($("#postScore"+summaryId).text())+parseInt(score));
+        $("#postScore"+summaryId).text(scoreIcon+(parseInt($("#postScore"+summaryId).text())+parseInt(score)));
     }
     else{//代表是答案
         tempId = "answerLike"+answerId;
@@ -85,7 +85,7 @@ function thumbs(score, answerId, tagId){
         tempId = "answerDislike"+answerId;
         document.getElementById(tempId).className="fa fa-thumbs-o-down";
         
-        $("#answerScore"+answerId).text(parseInt($("#answerScore"+answerId).text())+parseInt(score));
+        $("#answerScore"+answerId).text(scoreIcon+(parseInt($("#answerScore"+answerId).text())+parseInt(score)));
     }
     
     console.log("切丸: "+originState.slice(0, 15));
@@ -187,7 +187,7 @@ function summaryContent(response){
 
     // 倒讚 START
     // 倒讚的Id: postDislike+postId
-    content += '<button name="post" type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'-1\', \'\', \'postDislike';
+    content += '<button name="post" type="button" class="scoreBtn" style="float: right; margin: 3px;" onclick="thumbs(\'-1\', \'\', \'postDislike';
     content += localStorage.getItem("summaryId");
     content += '\')"><i id="postDislike';
     content += localStorage.getItem("summaryId");
@@ -197,7 +197,7 @@ function summaryContent(response){
     
     // 讚 START
     // 讚的Id: postLike+postId
-    content += '<button name="post" type="button" class="scoreBtn" style="float: right;" onclick="thumbs(\'1\', \'\', \'postLike';
+    content += '<button name="post" type="button" class="scoreBtn" style="float: right; margin: 3px;" onclick="thumbs(\'1\', \'\', \'postLike';
     content += localStorage.getItem("summaryId");
     content += '\')"><i id="postLike';
     content += localStorage.getItem("summaryId");
