@@ -76,7 +76,7 @@ function thumbs(score, answerId, tagId){
         tempId = "postDislike"+summaryId;
         document.getElementById(tempId).className="fa fa-thumbs-o-down";
         
-        $("#postScore"+summaryId).text(scoreIcon+(parseInt($("#postScore"+summaryId).text())+parseInt(score)));
+        $("#postScore"+summaryId).html(scoreIcon+(parseInt($("#postScore"+summaryId).text())+parseInt(score)));
     }
     else{//代表是答案
         tempId = "answerLike"+answerId;
@@ -85,7 +85,7 @@ function thumbs(score, answerId, tagId){
         tempId = "answerDislike"+answerId;
         document.getElementById(tempId).className="fa fa-thumbs-o-down";
         
-        $("#answerScore"+answerId).text(scoreIcon+(parseInt($("#answerScore"+answerId).text())+parseInt(score)));
+        $("#answerScore"+answerId).html(scoreIcon+(parseInt($("#answerScore"+answerId).text())+parseInt(score)));
     }
     
     console.log("切丸: "+originState.slice(0, 15));
