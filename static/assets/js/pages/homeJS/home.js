@@ -25,6 +25,7 @@ function start(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log(response);
             for(var i=0; i<response.hot_post.length; i++){
                 var getTitleURL = head_url+"query_inner_post";
                 var data = {_id: response.hot_post[i]}
@@ -49,6 +50,7 @@ function start(){
                     }
                 });
             }
+            console.log(response.hot_post.length);
             if(response.hot_post.length!=0){
                 console.log("有進來");
                setTimeout(function(){
