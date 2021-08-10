@@ -72,6 +72,7 @@ function showPostRecord(response){
         var title = response.post_list[i].title;
         var tag = response.post_list[i].tag;
         var time = new Date(response.post_list[i].time).toISOString();
+        var score = 0;
         time = time.slice(0, 10);
         var askerName;
         if(response.post_list[i].incognito==true){
