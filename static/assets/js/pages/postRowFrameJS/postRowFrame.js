@@ -543,7 +543,7 @@ function showPost(response){
         time = time.toISOString();
         time = time.slice(0, 10);
         var score = response[i].score;
-        if(response[i].incognito == "true"){
+        if(response[i].incognito == true){
             name = "匿名";
         }
         else{
