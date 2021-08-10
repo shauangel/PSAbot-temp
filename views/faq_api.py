@@ -130,7 +130,7 @@ def like_faq_post():
         score_dict = {
             'faq_id' : data['faq_id'],
             'answer_id' : data['answer_id'],
-            'user':data['user'],
+            'user': data['user'],
             'score' : 1,
         }
         faq_data.update_score(score_dict)
@@ -145,7 +145,7 @@ def dislike_faq_post():
         score_dict = {
             'faq_id' : data['faq_id'],
             'answer_id' : data['answer_id'],
-            'user':data['user'],
+            'user': data['user'],
             'score' : -1,
         }
         faq_data.update_score(score_dict)
