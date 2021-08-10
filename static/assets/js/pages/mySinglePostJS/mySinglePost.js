@@ -661,7 +661,7 @@ function showAnswers(response){
                     }
                        // 檢查有沒有按讚 START //
                         content += '<div style="float:right;">';
-                        content += '<button type="button" class="scoreBtn" onclick="thumbs(';
+                        content += '<button type="button" style="margin:3px;" class="scoreBtn" onclick="thumbs(';
                         content += "'1', '";
                         content += answerId;
                         content += "', '";
@@ -684,7 +684,7 @@ function showAnswers(response){
                         // 檢查有沒有按讚 END
                         content += '</button>';
 
-                        content += '<button type="button" class="scoreBtn" onclick="thumbs(';
+                        content += '<button type="button" style="margin:3px;" class="scoreBtn" onclick="thumbs(';
                         content += "'-1', '";
                         content += answerId;
                         content += "', '";
