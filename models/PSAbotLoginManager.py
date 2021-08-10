@@ -11,7 +11,7 @@ step2. use decorater
     @login_required                                     # 使用者必須登入才可瀏覽，若未登入會導向登入畫面
     @roles_required('facebook_user', 'google_user')     # 使用者必須屬於其中一種類別才可瀏覽，若不屬於會導向登入畫面
 ------------------------------------------------------------ '''
-def manager_user_set_up(account,password,name,email):
+def manager_set_up(account,password,name,email):
     data = {"_id":str(account),
             "role":"manager",
             "password":str(password),
