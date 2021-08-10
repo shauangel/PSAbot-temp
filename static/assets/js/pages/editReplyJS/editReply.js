@@ -187,7 +187,7 @@ function editFaqAnswer(){
         $("#note").modal("show");
     }
     else{
-        var data = {faq_id: faqId, id: answerId, vote: vote, edit: edit, content: response};
+        var data = {faq_id: faqId, answer_id: answerId, vote: vote, edit: edit, content: response};
         console.log("data: ");
         console.log(data);
         myURL = head_url + "update_faq_answer";
