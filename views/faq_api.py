@@ -177,7 +177,7 @@ def update_faq_answer():
     try: 
         answer_dict = {
             'faq_id':data['faq_id'],
-            'answer_id':data['id'],
+            'answer_id':data['answer_id'],
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
@@ -193,7 +193,7 @@ def delete_faq_answer():
     try: 
         answer_dict = {
             'faq_id':data['faq_id'],
-            'id':data['id']
+            'answer_id':data['answer_id']
         }
         faq_data.remove_answer(answer_dict)
     except Exception as e :
