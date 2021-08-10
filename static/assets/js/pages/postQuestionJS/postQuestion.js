@@ -375,6 +375,7 @@ function save(){
     var anonymous = document.getElementById('anonymous').checked;
     
     var data = {asker_id: id, asker_name: name, title: title, question: question, edit: edit, tag: tag, time: time, incognito: anonymous};
+    console.log("是否匿名: "+anonymous);
     if(title=="" || question=="" || edit==""){
         $("#warning").modal('show');
     }
