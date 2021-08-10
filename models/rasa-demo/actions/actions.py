@@ -140,11 +140,11 @@ class analyze_and_search(Action):
 
             #外部搜尋
             #stackoverflow物件
-            #stack_items = StackData.parseStackData(resultpage)
+            stack_items = StackData.parseStackData(resultpage)
             ######假資料～～～～～
             
-            with open("DATA_test.json", "r", encoding="utf-8") as f:
-                stack_items = json.load(f)
+            #with open("DATA_test.json", "r", encoding="utf-8") as f:
+            #    stack_items = json.load(f)
                 
             raw_data = [" ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
             #取得block排名
@@ -242,11 +242,11 @@ class outer_search(Action):
             print(url)
         #外部搜尋
         #stackoverflow物件
-        #stack_items = StackData.parseStackData(resultpage)
+        stack_items = StackData.parseStackData(resultpage)
         
         #假資料～～～～～
-        with open("DATA_test.json", "r", encoding="utf-8") as f:
-            stack_items = json.load(f)
+        #with open("DATA_test.json", "r", encoding="utf-8") as f:
+        #    stack_items = json.load(f)
         
         raw_data = [ " ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
         #取得block排名
