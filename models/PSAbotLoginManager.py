@@ -12,6 +12,7 @@ step2. use decorater
     @roles_required('facebook_user', 'google_user')     # 使用者必須屬於其中一種類別才可瀏覽，若不屬於會導向登入畫面
 ------------------------------------------------------------ '''
 
+    
 class PSAbotLoginManager(LoginManager):
     def __init__(self, app):
         super().__init__()

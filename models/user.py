@@ -13,9 +13,11 @@ from datetime import datetime
 # 新增 user
 def insert_user(user_dict):
     # -------- 資料加密 --------- #
-    # rsatool = RsaTool()
-    # user_dict['name'] = rsatool.encrypt(user_dict['name'])
-    # user_dict['email'] = rsatool.encrypt(user_dict['email'])
+    rsatool = RsaTool()
+    user_dict['name'] = rsatool.encrypt(user_dict['name'])
+    user_dict['email'] = rsatool.encrypt(user_dict['email'])
+    if 'password' in user_dict.keys():
+        user_dict['password'] = rsatool.encrypt(user_dict['password'])
     # --------------------------- #
     _db.USER_COLLECTION.insert_one(user_dict)
     
@@ -26,27 +28,25 @@ def query_user(user_id):
     update_post_list(user_id)
     update_response_list(user_id)
     target_user = _db.USER_COLLECTION.find_one({'_id':user_id})
-    # -------- 資料解密 --------- #
-    # rsatool = RsaTool()
-    # target_user['email'] = rsatool.decrypt(target_user['emal'])
-    # target_user['name'] = rsatool.decrypt(target_user['name'])
+    if target_user != None:
+        # -------- 資料解密 --------- #
+        rsatool = RsaTool()
+        target_user['email'] = rsatool.decrypt(target_user['email'])
+        target_user['name'] = rsatool.decrypt(target_user['name'])
+        if 'password' in target_user.keys():
+            target_user['password'] = rsatool.decrypt(target_user['password'])
     # -------------------------- #
     return target_user
 
 # 編輯使用者資料
 def update_user(update_dict):
     new_name = update_dict['name']
-    new_email = update_dict['email']
     # -------- 資料加密 --------- #
-    # rsatool = RsaTool()
-    # new_name = rsatool.encrypt(update_dict['name'])
-    # new_email = rsatool.encrypt(update_dict['email'])
+    rsatool = RsaTool()
+    new_name = rsatool.encrypt(update_dict['name'])
     # --------------------------- #
     user_data = _db.USER_COLLECTION.find_one({'_id':update_dict['_id']})
-    _db.USER_COLLECTION.update_one({'_id':update_dict['_id']},{'$set':
-                                                               {
-                                                                   'name': new_name,
-                                                                   'email':new_email}})
+    _db.USER_COLLECTION.update_one({'_id':update_dict['_id']},{'$set':{'name': new_name}})
     # 更改所有發過文的名字
     if len(update_dict['name']) != 0:
         for post in user_data['record']['posts']:

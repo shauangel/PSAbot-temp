@@ -1,5 +1,6 @@
 function setLocalStorage(id){
     localStorage.setItem("forwardPage", "profileFrame");
+    localStorage.setItem("postType", "innerPost");
     localStorage.setItem("singlePostId", id);
     setPage('mySinglePostFrame');
 }
@@ -85,7 +86,7 @@ function showPostRecord(response){
 
             content += '<div class="badge-box">';
                 content += '<div class="sub-title">';
-                    content += '<span>貼文 ';
+                    content += '<span>貼文ID ';
                     content += postId;
                     content += '</span>';
 
@@ -145,7 +146,7 @@ function showAnswerRecord(response){
 
             content += '<div class="badge-box">';
                 content += '<div class="sub-title">';
-                    content += '<span>貼文 #';
+                    content += '<span>貼文ID ';
                     content += postId;
                     content += '</span>';
 

@@ -1,7 +1,7 @@
 //var head_url = "http://127.0.0.1/";
 var session_id;
 var first_start = true;
-
+var auth2;      // google登入相關
 function changePage(){
     console.log("變更頁面");
     var page = localStorage.getItem("page");
@@ -48,7 +48,7 @@ function bot(string){
     }
     content += 'class="d-flex justify-content-start mb-4">';
     content += '<div class="img_cont_msg">';
-    content += '<img src="../static/images/baymaxChat.png" class="chatImg">';
+    content += '<img src="../static/images/iconSmall.png" class="chatImg" style="background-color: #5D478B;">';
     content += '</div>';
     content += '<div class="msg_cotainer"';
     if(string.slice(0, 6) == "正在輸入訊息"){
@@ -345,6 +345,7 @@ function innerSearch(response, content){
 }
 
 function clickChatroomInnerSearch(postId){
+    localStorage.setItem("postType", "innerPost");
     localStorage.setItem("singlePostId", postId);
     setPage('mySinglePostFrame');
 }
@@ -354,13 +355,14 @@ function clickChatroomInnerSearch(postId){
 function summary(id){//單篇的摘要
     console.log("單篇的摘要");
     console.log("id: "+id);
-    localStorage.setItem("summaryId", "t_000004");
+    localStorage.setItem("summaryId", id);
+    console.log("拿到的: "+localStorage.getItem("summaryId"));
     setPage('summary_new');
 }
 
-function rank(idArray){//全部的排行
-    var idArray = ['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'];
-    localStorage.setItem("rankArray", idArray);
+function rank(id){//全部的排行
+//    var idArray = ['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'];
+    localStorage.setItem("rankId", id);
     setPage('comprehensive');
 }
 // outerSearch END
@@ -369,6 +371,14 @@ function rank(idArray){//全部的排行
 
 ////////////////// 初始化 START////////////////////
 function start(){
+    //如果是第一次登入，要先跳出編輯個人資訊的頁面 START
+    var role = localStorage.getItem("role");
+    var first = localStorage.getItem("first_login");
+    if(role!="manager" && first=="true"){
+        $("#exampleModal").modal('show');
+    }
+    localStorage.removeItem("first_login");
+    //如果是第一次登入，要先跳出編輯個人資訊的頁面 END
     //這個是管理者
 //    localStorage.setItem("role", "manager");
 //    localStorage.setItem("sessionID", 4444);
@@ -397,7 +407,8 @@ function start(){
     // ---------- 個人資料 START ---------- //
     showIdentity();
     getUserHeadshotAndName();
-    if(localStorage.getItem("role")=="generalUser"){
+    var role = localStorage.getItem("role");
+    if(role=="facebook_user" || role=="google_user"){
         getUserInterestTags();
     }
     // ---------- 個人資料 END ---------- //
@@ -410,65 +421,68 @@ function start(){
             $('.action_menu').toggle();
         });
     });
+    
+    
+    var role = localStorage.getItem("role");
+    if(role!="manager"){
+        // ---------- PSABot聊天室 START ---------- //
+        //到時候要用session_id
 
-    
-    // ---------- PSABot聊天室 START ---------- //
-    //到時候要用session_id
-    
-    //傳session_start
-    var myURL = head_url + "session_start?sender_id="+session_id;
-    console.log("myURL: "+myURL);
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        async:false,
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-            console.log("response: "+response);
-            console.log(response);
-        },
-        error: function(){
-            console.log("error");
-        }
-    });
-    
-    
-    var myURL = head_url + "welcome?sender_id="+session_id;
-    console.log("myURL: "+myURL);
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        async:false,
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-            console.log("");
-            console.log(response);
-            bot(response.text)
-        },
-        error: function(){
-            console.log("error");
-        }
-    });
-    // ---------- PSABot聊天室 END ---------- //
+        //傳session_start
+        var myURL = head_url + "session_start?sender_id="+session_id;
+        console.log("myURL: "+myURL);
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            dataType: "json",
+            async:false,
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("response: "+response);
+                console.log(response);
+            },
+            error: function(){
+                console.log("error");
+            }
+        });
+
+
+        var myURL = head_url + "welcome?sender_id="+session_id;
+        console.log("myURL: "+myURL);
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            dataType: "json",
+            async:false,
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("");
+                console.log(response);
+                bot(response.text)
+            },
+            error: function(){
+                console.log("error");
+            }
+        });
+        // ---------- PSABot聊天室 END ---------- //
+    }
     
 }
 
 function setMenuBar(){
     var role = localStorage.getItem("role"), start, end;
     var leftManuBarPagesContent = "";
-    var setPage = ["home", "profileFrame", "postQuestionFrame", "postRowFrame", "home", "postRowFrame", "manageFAQsFrame", "manageDataFrame"];
-    var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench"];
-    var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "首頁", "管理內部貼文", "管理FAQs資料", "管理資料更新數據"];
+    var setPage = ["home", "profileFrame", "postQuestionFrame", "postRowFrame", "FaqFrame", "home", "postRowFrame", "FaqFrame", "manageDataFrame"];
+    var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "fa fa-cogs", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench"];
+    var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "瀏覽FAQ", "首頁", "管理內部貼文", "管理FAQ資料", "管理資料更新數據"];
     
-    if(role == "generalUser"){
+    if(role=="facebook_user" || role=="google_user"){
         start = 0;
-        end = 4;
+        end = 5;
     }
     else if(role == "manager"){
-        start = 4;
-        end = 8;
+        start = 5;
+        end = 9;
         document.getElementById("interestingTags").innerHTML = "";
     }
     
@@ -607,7 +621,7 @@ function open_close(){
 
 function showIdentity(){
     var role = localStorage.getItem("role");
-    if(role == "generalUser"){
+    if(role=="facebook_user" || role=="google_user"){
         document.getElementById("userRoleMenubar").innerHTML = "一般使用者";
     }
     else if(role == "manager"){
@@ -675,13 +689,12 @@ function getUserHeadshotAndName(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("成功: 拿姓名（query_user_profile）");
+//            console.log("成功: 拿姓名（query_user_profile）");
             name += '<span>';
             name += response.name;
             name += '</span>';
             
             document.getElementById("userName").setAttribute("value", response.name);
-            
             localStorage.setItem("userName", response.name);
         },
         error: function(){
@@ -963,6 +976,8 @@ function save(){
     myURL = head_url + "update_user_profile";
     var name = $("#userName").val();
     var data = {"_id": userId, "name": name};
+    console.log("給後端的: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -971,8 +986,10 @@ function save(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("收到的: ");
+            console.log(response);
             localStorage.setItem("userName", name);
-            console.log("成功: 更新姓名（update_user_profile）");
+//            console.log("成功: 更新姓名（update_user_profile）");
         },
         error: function(response){
             console.log("失敗: 更新姓名（update_user_profile）");
@@ -1031,11 +1048,39 @@ function save(){
 
 //編輯個人資訊 END
 
-
+//////////// Google 登出需要 init gapi ////////////
+function onLoadGoogleCallback(){
+    gapi.load('auth2', function(){
+        gapi.auth2.init({
+          client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
+          cookiepolicy: 'none',
+          scope: 'profile'
+        });
+        auth2 = gapi.auth2.getAuthInstance();
+    });
+}
 ////////////////// 登出 START ////////////////////
 function logOut(){
+    if(localStorage.getItem('role') == 'google_user'){
+        auth2.signOut().then(function () {
+            console.log('Google User signed out.');
+        });
+    }
+    else if(localStorage.getItem('role') == 'facebook_user'){
+        FB.logout(function(response) {
+            console.log('Facebook User logout.');
+          });
+    }
+    // flask logout
+    $.ajax({
+        type: 'GET',
+        url: head_url +  'logout',
+        success: function () {
+            console.log('flask logout.')
+        }
+    });
     localStorage.clear();
-    window.location.href = "login.html";
+    window.location.href = "https://soselab.asuscomm.com:55002/site/login";
 }
 ////////////////// 登出 END ////////////////////
 
@@ -1051,4 +1096,279 @@ window.addEventListener("storage", function(e){
 });
 ////////////////// 不同頁面監聽localStorage END ////////////////////
 
-window.addEventListener("load", start, false);
+////////////////// 處理通知 START //////////////////
+var notificationPage;
+var notificationIndex = [];
+var notificationEnd = false;
+
+function setNotification(){
+    // 開始監聽是否有新通知
+    listenNotification();
+    
+    // 點擊小鈴鐺（要call API）
+    var bell = document.getElementById("bell");
+    bell.addEventListener("click", function(){
+        notNewAnymore();
+    }, false);
+    bell.addEventListener("mouseover", function(){
+        notNewAnymore();
+    }, false);
+    var showNotificationScope = document.getElementById("showNotification");
+    showNotificationScope.addEventListener("mouseleave", function(){
+        showNotificationScope.scrollTop = 0;
+    }, false);
+    
+    // 初始化（先抓5筆資料）
+    notificationPage = 0;
+    notificationEnd = false;
+    getNotification();
+    
+    // 開始監聽是否有滑動
+    var showNotificationScope = document.getElementById("showNotification");
+    showNotificationScope.addEventListener("scroll", moreNotification, false);
+}
+
+// 監聽是否有新通知（60秒一次）
+function listenNotification(){
+    if(localStorage.getItem("role")!="manager"){
+        // 每5秒去檢查一次
+        setInterval(function(){
+            var myURL = head_url+"check_new_notification?user_id="+localStorage.getItem("sessionID");
+            $.ajax({
+                url: myURL,
+                type: "GET",
+                async: false, 
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function(response){
+                    if(response.new==true){
+                        $("#newNotification").addClass("badge bg-c-pink");
+                        notificationPage = 0;
+                        getNotification();
+                    }
+                },
+                error: function(){
+                }
+            });
+        }, 60000);
+    }
+}
+
+// 滑到底之後載入更多通知
+function moreNotification(){
+    var showNotificationScope = document.getElementById("showNotification");
+//    console.log("可視高度: "+showNotificationScope.clientHeight);
+//    console.log("總高度: "+showNotificationScope.scrollHeight);
+//    console.log("捲進去的高度: "+showNotificationScope.scrollTop);
+    if(showNotificationScope.scrollTop+showNotificationScope.clientHeight >= showNotificationScope.scrollHeight){
+        if(notificationEnd==false){
+            notificationPage += 1;
+            getNotification();
+        }
+    }
+}
+
+// 顯示通知
+function showNotification(response){
+    console.log("收到的通知: ");
+    console.log(response);
+    notificationIndex = [];
+    var content;
+    if(notificationPage==0){
+        content = "<li><h6>通知</h6></li>";
+    }
+    else{
+        content = document.getElementById("showNotification").innerHTML;
+    }
+    if(response.result.length==0){
+        if(notificationEnd==false && notificationPage==0){// 如果是第一次抓就沒資料，才要顯示
+            content += '<li><div class="media"><div class="media-body">目前尚無通知</div></div></li>';
+        }
+        else{// 如果是滑到底以後沒資料 顯示「已經沒有更多通知了～」
+            content += '<li><div class="media"><div class="media-body">已經沒有更多通知了～</div></div></li>';
+        }
+        notificationEnd = true;
+    }
+    for(var i=0; i<response.result.length; i++){
+        notificationIndex.push(response.result[i].id);
+
+        var now = new Date();
+        var time = new Date(dateToJsType(response.result[i].time));
+        var diff = new Date(Date.parse(now)-Date.parse(time));//相差幾毫秒
+        
+        if(diff<86400000){ //同一天，一天有86400000毫秒
+           if(diff<3600000){ //幾分鐘前
+               time = Math.floor(diff/60000);
+               time = time + "分鐘前";
+               console.log(time);
+            }
+            else{ //幾小時前
+                time = Math.floor(diff/3600000);
+                time = time + "小時前";
+                console.log(time);
+            }
+        }
+        else{ //不同天
+            time = time.toISOString();
+            time = time.slice(0, 10);
+        }
+        
+        content += '<li id="background';
+        content += response.result[i].id;
+        content += '" style="background: ';
+        // 是否看過 START
+        if(response.result[i].check==false){
+//            content += '<label id="notification';
+//            content += response.result[i].id;
+//            content += '" class="label label-danger align-self-center">是新的</label>';
+            content += '#E6E6FA;">';
+        }
+        else{
+//            content += '<label id="notification';
+//            content += response.result[i].id;
+//            content += '" class="label label-danger align-self-center" style="background: #505458;">已看過</label>';
+            content += '#FFFFFF;">';
+        }
+                // 是否看過 END
+        
+            content += '<div class="media" onclick="checkNotification(\'';
+            content += response.result[i].detail.post_id;
+            content += '\', \'';
+            content += response.result[i].id;
+            content += '\')">';
+
+                // 拿照片 STRAT
+//                content += '<img class="d-flex align-self-center" src="../static/images/person_4.jpg" alt="Generic placeholder image">';
+                content += '<i class="d-flex align-self-center fa-lg fa fa-reply-all" aria-hidden="true" style="margin: 10px;"></i>';
+//                content += '<i class="d-flex align-self-center fa-lg fa fa-comments-o" aria-hidden="true" style="margin: 10px;"></i>';
+                // 拿照片 END
+        
+                content += '<div class="media-body">';
+//                    content += '<h5 class="notification-user">';
+//                        content += response.result[i].detail.replier_name;
+//                    content += '</h5>';
+                    content += '<p class="notification-msg">';
+                        content += response.result[i].detail.replier_name;
+                    content += '回覆了您的貼文</p>';
+                    content += '<span class="notification-time">';
+                        content += time;
+                    content += '</span>';
+                content += '</div>';
+            content += '</div>';
+        content += '</li>';
+    }
+    document.getElementById("showNotification").innerHTML = content;
+}
+
+// 拿通知
+function getNotification(){
+    var myURL = head_url + "check_notification_content?user_id="+localStorage.getItem("sessionID")+"&page="+notificationPage;
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        async: false, 
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+//            console.log("通知列表: ");
+//            console.log(response);
+            showNotification(response);
+        },
+        error: function(){
+//            console.log("error");
+        }
+    });
+}
+
+// call API，代表通知已經不是新的了～
+function notNewAnymore(){
+    $("#newNotification").removeClass("badge bg-c-pink");
+    var myURL = head_url + "set_notification_new";
+    var data = {user_id: localStorage.getItem("sessionID"), id: notificationIndex};
+    
+    $.ajax({
+    url: myURL,
+    type: "POST",
+    data: JSON.stringify(data),
+    async: false,
+    dataType: "json",
+    contentType: 'application/json; charset=utf-8',
+    success: function(response){
+//        console.log("成功set_notification_new");
+//        console.log(response);
+    },
+    error: function(response){
+        
+    }
+});
+}
+
+// call API，代表已經查看過～
+function alreadyChecked(index){
+    $("#background"+index).css("background-color", "#FFFFF");
+    var myURL = head_url + "set_notification_check?user_id="+localStorage.getItem("sessionID")+"&id="+index;
+//    console.log("已經查看過了～: "+myURL);
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        async: false, 
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("成功回傳");
+//            console.log(response);
+            notificationPage = 0;
+            getNotification();
+        },
+        error: function(){
+//            console.log("error");
+        }
+    });
+}
+
+function checkNotification(postId, index){
+    alreadyChecked(index);
+    localStorage.setItem("postType", "innerPost");
+    localStorage.setItem("singlePostId", postId);
+    setPage("mySinglePostFrame");
+}
+
+////////////////// 處理通知 END //////////////////
+
+window.addEventListener("load", function(){
+    start();
+    var role = localStorage.getItem("role");
+    if(role=="facebook_user"||role=="google_user"){
+        setNotification();
+        window.fbAsyncInit = function () {
+          FB.init({
+            appId: '1018939978932508',
+            cookie: true,
+            xfbml: true,
+            version: 'v11.0'
+          });
+
+          FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {
+            return;
+          }
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    }
+    else{
+        document.getElementById("chatImage").innerHTML = "";//聊天圖像
+        document.getElementById("chatroom").innerHTML = "";//聊天視窗
+        document.getElementById("chatList").innerHTML = "";//聊天列表
+        document.getElementById("headerNotification").innerHTML = "";//上方通知
+    }
+}, false);
+
+//window.addEventListener("load", start, false);

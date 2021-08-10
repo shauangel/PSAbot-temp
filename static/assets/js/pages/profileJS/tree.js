@@ -91,7 +91,7 @@ function deleteEpmtyNode(){
 // 並且建立第三層(呼叫buildThirdLevel)
 // 把用不到的第二層刪除(呼叫deleteEmptyNode)
 function getUserTag(){
-    var myURL = head_url+"query_user_tag?user_id=testSkillTree";
+    var myURL = head_url+"query_user_tag?user_id="+localStorage.getItem("sessionID");
     
     $.ajax({
         url: myURL,
@@ -100,6 +100,8 @@ function getUserTag(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("使用者的tag: ");
+            console.log(response);
             for(var i=0; i<response.tag_info.length; i++){
                 //檢查是否為第三層，是則buildThirdLevel，否則直接改一、二層node score
                 if(secondLevelName.includes(response.tag_info[i].tag_name)) {
@@ -112,26 +114,27 @@ function getUserTag(){
             }
             //deleteEpmtyNode();
             //printTree();
-            buildTree();
         },
         error: function(){
             console.log("error");
         }
     });
+    buildTree();
 }
 
 function printTree(){
-    console.log("printTree");
     for(var i=0; i<rootTreeNode.child.length; i++){
-        console.log("2nd: "+rootTreeNode.child[i].name);
+//        console.log("2nd: "+rootTreeNode.child[i].name);
         for(var j=0; j<rootTreeNode.child[i].child.length; j++){
-            console.log("3rd: "+rootTreeNode.child[i].child[j].name);
+//            console.log("3rd: "+rootTreeNode.child[i].child[j].name);
         }
     }
 }
 
 var treeTag;
 function buildTree(){
+    console.log("tree: ");
+    console.log(rootTreeNode);
     treeTag = "<li>"+rootTreeNode.name+"<br><div class='score'>"+rootTreeNode.score+"</div><ul>";
     //建出樹的tag
     for(var i=0;i<rootTreeNode.child.length;i++){

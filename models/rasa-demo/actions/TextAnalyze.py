@@ -73,7 +73,7 @@ class TextAnalyze:
         ###Step 4.nlargest(句子數量, 可迭代之資料(句子&權重), 分別須滿足的條件)
         summarized_sen = nlargest(3, sentence_w, key=sentence_w.get)
         
-        return summarized_sen
+        return str(summarized_sen)
     
     
     #利用LDA topic modeling取出關鍵字
@@ -128,10 +128,10 @@ class TextAnalyze:
 
 def blockRanking(stack_items, qkey):
     analyzer = TextAnalyze()
-    ans = [items['answers'] for items in stack_items]
+    ans = [{"answer" : items['answers'], "link" : items['link']} for items in stack_items]
     
     #data pre-process
-    all_content = [[{"id" : sing_ans["id"], "content" : sing_ans['abstract']} for sing_ans in q_ans_list] for q_ans_list in ans ]
+    all_content = [[{"id" : sing_ans["id"], "content" : sing_ans['abstract'], "link" : q_ans_list['link']} for sing_ans in q_ans_list['answer']] for q_ans_list in ans ]
     all_content_flat = list(chain.from_iterable(all_content))
     raw = [t["content"] for t in all_content_flat]
     

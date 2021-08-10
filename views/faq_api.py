@@ -9,7 +9,7 @@ import json
 import re
 # --- our models ---- #
 from models import faq_data
-from . import TextAnalyze
+from .TextAnalyze import TextAnalyze
 
 faq_api = Blueprint('faq_api', __name__)
 
@@ -89,7 +89,8 @@ def insert_faq_post():
                         "answers" : 
                         [
                             {       
-                                "_id" : "",       
+                                "_id" : "",
+                                "id":"",
                                 "content" : a['content'],
                                 "edit" : a['edit'],
                                 "vote" : int(a['vote']),     
@@ -98,14 +99,14 @@ def insert_faq_post():
                         ],
                         "keywords" : [],     
                         "tags" : data['tags'],
-                        "time" : datetime.now().replace(microsecond=0).isoformat(),
+                        "time" : datetime.now().replace(microsecond=0),
                         "view_count" : 0
         }
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', faq_dict['question']['content'])
-        faq_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', faq_dict['question']['content'].replace('\n', '').replace('\r', ''))
+        faq_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         faq_data.insert_faq(faq_dict,'inner_faq')
     except Exception as e :
         faq_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -126,16 +127,16 @@ def query_faq_post():
 @faq_api.route('/like_faq_post', methods=['POST'])
 def like_faq_post():
     data = request.get_json()
-    try:
-        score_dict = {
-            'faq_id' : data['faq_id'],
-            'answer_id' : data['answer_id'],
-            'user':data['user'],
-            'score' : 1,
-        }
-        faq_data.update_score(score_dict)
-    except Exception as e :
-        score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+    # try:
+    score_dict = {
+        'faq_id' : data['faq_id'],
+        'answer_id' : data['answer_id'],
+        'user': data['user'],
+        'score' : 1,
+    }
+    faq_data.update_score(score_dict)
+    # except Exception as e :
+        # score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
     return jsonify(score_dict)
 # 對FAQ按倒讚
 @faq_api.route('/dislike_faq_post', methods=['POST'])
@@ -145,7 +146,7 @@ def dislike_faq_post():
         score_dict = {
             'faq_id' : data['faq_id'],
             'answer_id' : data['answer_id'],
-            'user':data['user'],
+            'user': data['user'],
             'score' : -1,
         }
         faq_data.update_score(score_dict)
@@ -163,7 +164,8 @@ def insert_faq_answer():
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
-            'score':[]
+            'score':[],
+            "_id":""
         }
         faq_data.insert_answer(answer_dict)
     except Exception as e :
@@ -180,6 +182,7 @@ def update_faq_answer():
             'content':data['content'],
             'edit':data['edit'],
             'vote':int(data['vote']),
+            "_id":""
         }
         faq_data.update_answer(answer_dict)
     except Exception as e :
@@ -206,9 +209,9 @@ def update_faq_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'])
-        data['keywords'] = textAnalyzer.contentPreProcess(target_content)
-        data['time'] = datetime.now().replace(microsecond=0).isoformat()
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'].replace('\n', '').replace('\r', ''))
+        data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)[0]})
+        data.update({'time': datetime.now().replace(microsecond=0)})
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -289,13 +292,14 @@ def process_import_data(data_list):
                         "edit" : "",
                         "vote" : int(a['vote']),     
                         "score" : [],
+                        "_id" : "",
                     } for a in faq['answers']
                 ],
-                "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'])),     
+                "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'].replace('\n', '').replace('\r', '')))[0],     
                 "tags" : [],
-                "time" : datetime.now().replace(microsecond=0).isoformat(),
+                "time" : datetime.now().replace(microsecond=0),
                 "view_count" : 0
             } for faq in data_list
     ]
-    faq_data.insert_faq(faq_list,'inner_faq')
+    faq_data.import_faq(faq_list,'inner_faq')
     return faq_list

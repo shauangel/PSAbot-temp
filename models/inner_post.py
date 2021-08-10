@@ -180,11 +180,16 @@ def update_score(score_dict):
     if len(score_dict['response_id']) == 0 :
         # 若使用者按過讚/倒讚，使用set
         if any(s['user_id'] == score_dict['user'] for s in target_post['score']):
-            _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'score.user_id': score_dict['user']},{'$set':{'score.$':new_score_record}})
             original_score_record = next(s for s in target_post['score'] if s['user_id'] == score_dict['user'])
-            # 更新被按的人的技能分數
-            for tag in target_post['tag']:
-                user.update_user_score(target_post['asker_id'],tag['tag_id'],tag['tag_name'],new_score_record['score'] - original_score_record['score'])
+            if original_score_record['score'] == score_dict['score']:
+                _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'score.user_id': score_dict['user']},{'$pull':{'score.$':original_score_record}})
+                for tag in target_post['tag']:
+                    user.update_user_score(target_post['asker_id'],tag['tag_id'],tag['tag_name'],-original_score_record['score'])
+            else:
+                _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'score.user_id': score_dict['user']},{'$set':{'score.$':new_score_record}})
+                # 更新被按的人的技能分數
+                for tag in target_post['tag']:
+                    user.update_user_score(target_post['asker_id'],tag['tag_id'],tag['tag_name'],new_score_record['score'] - original_score_record['score'])
         else:
             # 貼文本身push一個使用者評分
             _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id']},{'$push':{'score':new_score_record}})
@@ -203,10 +208,17 @@ def update_score(score_dict):
         # 若使用者按過讚/倒讚，使用set
         if any(s['user_id'] == score_dict['user'] for s in target_response['score']):
             original_score_record = next(s for s in target_response['score'] if s['user_id'] == score_dict['user'])
-            _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'answer._id':score_dict['response_id']},{'$pull':{'answer.$.score':original_score_record}})
-            _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'answer._id':score_dict['response_id']},{'$push':{'answer.$.score':new_score_record}})
-            for tag in target_post['tag']:
-                user.update_user_score(target_response['replier_id'],tag['tag_id'],tag['tag_name'],new_score_record['score'] - original_score_record['score'])
+            if original_score_record['score'] == score_dict['score']:
+                _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'answer._id':score_dict['response_id']},{'$pull':{'answer.$.score':original_score_record}})
+                for tag in target_post['tag']:
+                    user.update_user_score(target_response['replier_id'],tag['tag_id'],tag['tag_name'],-original_score_record['score'])
+            else:
+                _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],
+                                                      'answer._id':score_dict['response_id']},
+                                                     {'$set':{'answer.$.score.$[elem]':new_score_record}},
+                                                     array_filters= [{ "elem.user_id": score_dict['user']}])
+                for tag in target_post['tag']:
+                    user.update_user_score(target_response['replier_id'],tag['tag_id'],tag['tag_name'],new_score_record['score'] - original_score_record['score'])
         else:
             _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'answer._id':score_dict['response_id']},{'$push':{'answer.$.score':new_score_record}})
             for tag in target_post['tag']:

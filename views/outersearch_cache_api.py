@@ -7,7 +7,6 @@ Created on Tue Aug  3 13:06:08 2021
 """
 # --- flask --- #
 from flask import Blueprint, request, jsonify
-from datetime import datetime
 
 # --- our models ---- #
 from models import outer_data_cache
@@ -23,7 +22,7 @@ def query_cache_by_id():
         return jsonify(result)
         
     except Exception as e :
-        setting_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+        setting_dict = {"error" : e.__class__.__name__ + ":" + str(e.args[0])}
         print("錯誤訊息: ", e)
     return jsonify(setting_dict)
 
@@ -35,10 +34,22 @@ def insert_cache():
         result = outer_data_cache.insert_cache(data['data'], data['type'])
         return jsonify(result)
     except Exception as e :
-        setting_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+        setting_dict = {"error" : e.__class__.__name__ + ":" + str(e.args[0])}
         print("錯誤訊息: ", e)
     return jsonify(setting_dict)
 
+#更新點讚情況
+@outersearch_cache_api.route('/update_cache_score', methods=['POST'])
+def update_cache_score():
+    data = request.get_json()
+    try:
+        outer_data_cache.update_cache_score(data)
+        return jsonify("success")
+    except Exception as e :
+        setting_dict = {"error" : e.__class__.__name__ + ":" + str(e.args[0])}
+        print("錯誤訊息: ", e)
+    return jsonify(setting_dict)
+        
 
 
 

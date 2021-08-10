@@ -1,7 +1,7 @@
 import rsa
 
 # key_path = "/Users/jacknahu/Documents/GitHub/PQAbot/models/"
-path = "/home/bach/PSAbot-vm/models/"
+key_path = "/home/bach/PSAbot-vm/models/"
 
 def rsa_setup():
     publicKey, privateKey = rsa.newkeys(512)
@@ -27,4 +27,5 @@ class RsaTool(object):
         
     def decrypt(self,data):
         return rsa.decrypt(data, self.privkey).decode('utf-8')
-    
+
+

@@ -22,8 +22,8 @@ class StackData:
             "title" : q['title'],
             "content" : self.__addClass2Code(q['body']),
             "abstract" : self.__getPureText(q['body']),
-            "view_count" : q['view_count'],
-            "web_score" : q['score']
+            "orign_web_view_count" : q['view_count'],
+            "vote" : q['score']
             }
         if 'accepted_answer_id' in q.keys():
             return result, q['accepted_answer_id']
@@ -36,7 +36,7 @@ class StackData:
         for ans in answers:
             result.append({
                           "id" : ans['answer_id'],
-                          "score" : ans['score'],
+                          "vote" : ans['score'],
                           "content" : self.__addClass2Code(ans['body']),
                           "abstract" : self.__getPureText(ans['body']),
                           })
@@ -87,7 +87,6 @@ def parseStackData(url_list):
             break
     question = site.fetch('questions', filter='withbody', ids=query_ids)['items']
     answers = site.fetch('questions/{ids}/answers', filter='withbody', ids=query_ids, sort='votes', order='desc')['items']
-    print(question[0])
     ctg_ans = {}
     for ans in answers:
         if ans['question_id'] in ctg_ans:
@@ -98,7 +97,6 @@ def parseStackData(url_list):
     for q in question:
         try:
             temp = StackData(q, ctg_ans[q['question_id']])
-            print(ctg_ans[q['question_id']])
             stack_items.append(temp.showData())
         except:
             continue

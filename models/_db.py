@@ -7,7 +7,7 @@ Created on Fri Apr 23 21:46:58 2021
 """
 
 from pymongo import MongoClient
-
+from . import user
 
 DB = MongoClient('mongodb+srv://pqamanager:pass123word@pqacluster0.umi6y.mongodb.net/test')['PQAbot']
 
@@ -16,3 +16,6 @@ USER_COLLECTION = DB['User']
 INNER_POST_COLLECTION = DB['InnerPost']
 OUTER_DATA_COLLECTION = DB['OuterData']
 OUTER_DATA_CACHE_COLLECTION = DB['OuterDataCache']
+FAQ_DATA_COLLECTION = DB['FAQData']
+
+

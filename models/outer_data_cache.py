@@ -14,6 +14,7 @@
 from . import _db
 #import _db
 from datetime import datetime
+import time
 ##for test
 import json
 import copy
@@ -25,7 +26,7 @@ cache_format = {
                       "title" : "",
                       "content" : "",
                       "abstract" : "",
-                      "score" : {},
+                      "score" : [],
                       "vote" : 0},
         "answers" : [],
         "keywords" : [],
@@ -36,8 +37,9 @@ cache_format = {
 
 #利用自訂id查詢資料
 def query_by_id(idx):
-    query = {"_id" : idx }
-    return _db.OUTER_DATA_CACHE_COLLECTION.find(query)
+    query = {"_id" : idx['id'] }
+    result = _db.OUTER_DATA_CACHE_COLLECTION.find_one(query)
+    return result
     
 
 #找最大id
@@ -60,8 +62,8 @@ def insert_cache(data_list, data_type):
     if data_type == "blocks_rank":
         cache_data = transform_block_rank(data_list)
         cache_data['_id'] = "b_" + str(int(current_id) + 1).zfill(6)
-        _db.OUTER_DATA_CACHE_COLLECTION.insert_one(cache_data)
-        id_list.append(cache_data['_id'])
+        check = _db.OUTER_DATA_CACHE_COLLECTION.insert_one(cache_data)
+        id_list.append(check.inserted_id)
         
     else:    
         for data_dict in data_list:
@@ -71,18 +73,37 @@ def insert_cache(data_list, data_type):
             elif data_type == "temp_data":
                 data_dict['_id'] = "t_" + current_id.zfill(6)
                 transform_temp_data(data_dict)
-                
-                
-            id_list.append(data_dict['_id'])
-        _db.OUTER_DATA_CACHE_COLLECTION.insert_many(data_list)
+            check = _db.OUTER_DATA_CACHE_COLLECTION.insert_one(data_dict)
+            id_list.append(check.inserted_id)
+        
     return id_list
 
+def update_cache_score(data):
+    print(data)
+    target_data = _db.OUTER_DATA_CACHE_COLLECTION.find_one({"_id" : data['id']})
+    try:
+        target_score_list = target_data['question']['score'] if len(data['answer_id']) == 0 else list(filter(lambda ans: ans['id'] == int(data['answer_id']), target_data['answers']))[0]['score']
+    except:
+        print("ERROR: cannot find score list")
+        return
+    
+    check = list(filter(lambda t: t['user_id'] == data['user_id'], target_score_list))
+    if data['mode'] != 0:
+        try:
+            check[0]['score'] = data['mode']
+        except:
+            target_score_list.append({'user_id':data['user_id'], "score":data['mode']})
+    else:
+        target_score_list.remove(check[0])
+    _db.OUTER_DATA_CACHE_COLLECTION.update_one({"_id":data['id']}, {"$set" : {"question" : target_data['question'],
+                                                                              "answers" : target_data['answers']}})
+            
 #block ranking 儲存格式
 def transform_block_rank(data_list):
     blocks = [{
         "_id" : block['id'],
         "content" : block['content'],
-        "vote" : 0,
+        "link" : block['link'],
         "score" : block['score']
         } for block in data_list]
     
@@ -98,11 +119,9 @@ def transform_temp_data(data_dict):
     data_dict['tags'] = []
     data_dict['time'] = datetime.now().replace(microsecond=0).isoformat()
     data_dict['view_count'] = 0
-    data_dict['question']['score'] = { "user_id" : "", "user_vote" : 0 }
-    data_dict['question']['vote'] = 0
+    data_dict['question']['score'] = []
     for a in data_dict['answers']:
-        a['score'] = { "user_id" : "", "user_vote" : 0 }
-        a['vote'] = 0
+        a['score'] = []
         
 
 def remove_all():
@@ -110,22 +129,27 @@ def remove_all():
 
 
 if __name__ == "__main__":
+    """
     filepath_A = "/Users/shauangel/Desktop/PSAbot專題/python/BLOCK_test.json"
+    
     filepath_B = "/Users/shauangel/Desktop/PSAbot專題/python/DATA_test.json"
     with open(filepath_A, "r", encoding="utf-8") as f:
         data = json.load(f)
     
-    remove_all()
+    
+    """
+    #remove_all()
     #print(get_biggest_id())
     
     #result = insert_cache(data, "blocks_rank")
     #result = insert_cache(data, "temp_data")
     #print(result)
-    #result = query_by_id(['t_000001', 't_000002', 't_000003', 't_000004', 't_000005'])
+    #result = query_by_id('t_000009')
     #['b_000006']
-    #for r in result:
-    #    print(r['link'])
-    #    print("------")
+    #print(result)
+    #print(type(result))
+    test = {"id" : "t_000001", "answer_id" : "", "user_id" : "123", "mode" : 0}
+    update_cache_score(test)
     
 
 

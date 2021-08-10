@@ -140,16 +140,22 @@ class analyze_and_search(Action):
 
             #外部搜尋
             #stackoverflow物件
-            stack_items = StackData.parseStackData(resultpage)
-#假資料～～～～～
+            #stack_items = StackData.parseStackData(resultpage)
+            ######假資料～～～～～
             
-            #with open("DATA_test.json", "r", encoding="utf-8") as f:
-            #    stack_items = json.load(f)
+            with open("DATA_test.json", "r", encoding="utf-8") as f:
+                stack_items = json.load(f)
+                
             raw_data = [" ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
             #取得block排名
             result = TextAnalyze.blockRanking(stack_items, qkey)
-#print(result)
-            temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
+            #print(result)
+            for i in stack_items:
+                i['question']['abstract'] = str(textAnalyzer.textSummarization(i['question']['abstract']))
+                for ans in i['answers']:
+                    ans['abstract'] = str(textAnalyzer.textSummarization(ans['abstract']))
+                    
+            temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items, 'type' : "temp_data"})
             block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
 
             print(temp_data_id_list.text)
@@ -236,11 +242,11 @@ class outer_search(Action):
             print(url)
         #外部搜尋
         #stackoverflow物件
-        stack_items = StackData.parseStackData(resultpage)
+        #stack_items = StackData.parseStackData(resultpage)
         
         #假資料～～～～～
-        #with open("DATA_test.json", "r", encoding="utf-8") as f:
-        #    stack_items = json.load(f)
+        with open("DATA_test.json", "r", encoding="utf-8") as f:
+            stack_items = json.load(f)
         
         raw_data = [ " ".join([item['question']['abstract'], " ".join([ans['abstract'] for ans in item['answers']])]) for item in stack_items ]
         #取得block排名

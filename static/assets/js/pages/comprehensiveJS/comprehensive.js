@@ -1,15 +1,19 @@
 function start(){
     var myURL = head_url+"query_cache_by_id";
     console.log("myURL: "+myURL);
-    var data = {id: id};
+    var rankId = localStorage.getItem("rankId");
+    var data = {id: rankId};
+    console.log("送出的data: ");
+    console.log(data);
 //    var address = 'stackoverflowRank.json';
     $.ajax({
         url: myURL,
         data: JSON.stringify(data),
-        type: "GET",
+        type: "POST",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log(response);
             rankContent(response);
         },
         error: function(response){
@@ -19,30 +23,12 @@ function start(){
     });
 }
 
-function like(id){
-    console.log("按了喜歡");
-    var likeNum = document.getElementById(id);
-    var number = parseInt(likeNum.innerHTML);
-    number += 1;
-    likeNum.innerHTML = number;
-    console.log("id: "+id);
-}
-
-function dislike(id){
-    console.log("按了不喜歡");
-    var dislikeNum = document.getElementById(id);
-    var number = parseInt(dislikeNum.innerHTML);
-    number += 1;
-    dislikeNum.innerHTML = number;
-    console.log("id: "+id);
-}
-
 function rankContent(response){
     console.log("rank: ");
     console.log(response);
     var comment = document.getElementById("accordion");
     var content = "";
-    for(var i=0; i<response.scores.length; i++){
+    for(var i=0; i<response.answers.length; i++){
 //        console.log("i: "+i);
         content += '<div class="accordion-panel">';//第一個div
             //----- 標題 START -----//
@@ -80,11 +66,14 @@ function rankContent(response){
 //                content += '<span id="dislike';
 //                content += i;
 //                content += '" style="margin-right: 5px; color: gray;">0</span>';
-                        content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>';
-                        content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>';
-
-                        content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458;"></i>';
-                        content += '<span style="margin-right: 5px; color: #505458;">30</span>';
+//                        content += '<button type="button" class="scoreBtn"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>';
+//                        content += '<button type="button" class="scoreBtn" style="margin-right: 10px;"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i></button>';
+                        content += '<span style="margin-right: 5px; color: #505458; float: right;">';
+                        content += parseInt((response.answers[i].score*100));
+                        content += '</span>';
+                    
+                        content += '<i class="fa fa-trophy" aria-hidden="true" style="color: #505458; float: right;"></i>';
+                        
                     content += '</a>';
                 content += '</h3>';
             content += '</div>';
@@ -100,11 +89,16 @@ function rankContent(response){
                 content += '<div class="accordion-content accordion-desc">';
         
                     content += '<p>';
-                        content += '<a href="https://www.youtube.com/watch?v=ewmMS-5TpTg&t=344s" target="_blank">點我看原文</a><br><br>';
-                        content += response.scores[i].content;
+                        content += '<a href="';
+                        content += response.answers[i].link;
+                        content += '#';
+                        content += response.answers[i]._id;
+                        content += '" target="_blank">點我看原文</a><br><br>';
+                        content += response.answers[i].content;
                     content += '</p>';
                 content += '</div>';
             content += '</div>';
+            //----- 解答 END -----//
         content += '</div>'
     }
     comment.innerHTML = content;

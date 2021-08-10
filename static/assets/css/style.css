@@ -29,13 +29,14 @@ File: style.css
 
 /* 自己新增的 START */
 .chatImg {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-
-  border: 2px solid transparent;
-  border-color: #5D478B;
+/*    position:absolute;*/
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+/*    border: 2px solid transparent;*/
+/*    border-color: #5D478B;*/
+    background-color: #5D478B;
 }
 
 .chatIng {
