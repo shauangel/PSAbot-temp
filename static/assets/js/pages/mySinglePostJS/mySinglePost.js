@@ -66,8 +66,8 @@ function deletePostOrAnswer(){
     //--- faq回覆 START ---//
     else if(postType=="faq" && deleteType=="answer"){
         data = {faq_id: postId, id: answerId};
-//        console.log("刪除faq的回覆: ");
-//        console.log(data);
+        console.log("刪除faq的回覆: ");
+        console.log(data);
         
         var myURL = head_url + "delete_faq_answer";
         $.ajax({
@@ -79,7 +79,7 @@ function deletePostOrAnswer(){
             contentType: 'application/json; charset=utf-8',
             success: function(response){
 //                console.log("API名稱: delete_faq_answer");
-//                console.log(response);
+                console.log(response);
                 localStorage.removeItem("delete");
                 localStorage.removeItem("answerId");
                 location.reload();
