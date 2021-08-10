@@ -364,7 +364,7 @@ function showQuestion(response){
             if(postType=="faq"){
                 questionVote = response.question.vote;//question的是字串
                 for(var i=0; i<response.question.score.length; i++){
-                    questionScore += parseInt(response.score[i].score);
+                    questionScore += parseInt(response.question.score[i].score);
                 }
             }
             else if(postType=="innerPost"){

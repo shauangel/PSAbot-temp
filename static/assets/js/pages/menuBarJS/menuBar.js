@@ -371,6 +371,9 @@ function rank(id){//全部的排行
 
 ////////////////// 初始化 START////////////////////
 function start(){
+    //如果是第一次登入，要先跳出編輯個人資訊的頁面 START
+    $("#exampleModal").modal('show');
+    //如果是第一次登入，要先跳出編輯個人資訊的頁面 END
     //這個是管理者
 //    localStorage.setItem("role", "manager");
 //    localStorage.setItem("sessionID", 4444);
