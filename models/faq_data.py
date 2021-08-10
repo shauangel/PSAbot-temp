@@ -218,7 +218,7 @@ def update_score(score_dict):
     else :
         target_answer = next(answer for answer in target_faq['answers'] if answer['id'] == score_dict['answer_id'])
         # 若使用者按過讚/倒讚，使用set
-        if any(s['user_id'] == score_dict['user'] for s in target_answer['score']):
+        if any(score['user_id'] == score_dict['user'] for score in target_answer['score']):
             target_score = next(score for score in target_answer['score'] if score['user_id'] == score_dict['user'])
             if target_score['score'] == score_dict['score']:
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
@@ -227,9 +227,9 @@ def update_score(score_dict):
                                                    {'$pull':{'answers.$.score':target_score}})
             else:
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
-                                                    'answers.id':score_dict['answer_id'],
-                                                    'answers.score.user_id':score_dict['user']},
-                                                   {'$set':{'answers.$.score':new_score_record}})
+                                                    'answers.id':score_dict['answer_id']},
+                                                   {'$set':{'answers.$.score.$[elem]':new_score_record}},
+                                                   array_filters= [{ "elem.user_id": score_dict['user']}])
         # 否則直接push一個評分
         else:
              _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
