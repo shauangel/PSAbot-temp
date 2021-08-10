@@ -396,9 +396,13 @@ function showQuestion(response){
                 // vote（管理者輸入的分數） END
             }
             else if(postType=="innerPost"){
-                content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
-                    content += questionScore;
+                // score START
+                content += '<span id="postScore';
+                content += id;
+                content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+                content += questionScore;
                 content += '</span>';
+                // score END
             }
     
             //----- 分數 END -----//
