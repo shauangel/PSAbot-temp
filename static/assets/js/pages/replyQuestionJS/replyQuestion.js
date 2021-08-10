@@ -4,16 +4,21 @@ var postType;
 // 預覽內容
 function showReplyContent(why){//why可以是see, save
     var userContent = $("#replyContent").val();
+    console.log("userCOntetn: "+userContent);
     var storeContent = ""; //要存起來的程式碼
     
     //dotNum 代表有連續幾個`
     //needCouple 是否需要後半段```
     //language 代表程式碼的語言
-    var dotNum=0, needCouple=false, language="";
+    var dotNum=0, needCouple=false, language="", middle=false, subString;
     for(var i=0; i<userContent.length; i++){
         if(userContent[i]=="`"){ //遇到`
             dotNum += 1;
             if(dotNum==3 && needCouple==false){ //湊滿3個 && 是第一次
+                //去頭去尾換行 START
+                middle = true;
+                subString = "";
+                //去頭去尾換行 END
                 
                 dotNum = 0;//需要清空`的數量
                 
@@ -21,7 +26,9 @@ function showReplyContent(why){//why可以是see, save
                 i += 1;//直接前往下一個index
                 var flag = false;
                 while(true){
-                    if(userContent[i] ==']') break;
+                    if(userContent[i] ==']'){
+                        break;
+                    }
                     if(flag==true){
                         language += userContent[i];
                     }
@@ -33,7 +40,7 @@ function showReplyContent(why){//why可以是see, save
                 storeContent += '<pre><code class="';
                 storeContent += language
                 storeContent += '">';
-                
+
                 language = "";
                 needCouple = true; //代表需要後半段
             }
@@ -41,13 +48,24 @@ function showReplyContent(why){//why可以是see, save
                 dotNum = 0;//需要清空`的數量
                 needCouple = false;
                 
+                subString = subString.trim();
+                
+                storeContent += subString;
                 storeContent += "</code></pre>";
+                middle = false;
             }
         }
+        else if(middle){
+            subString += userContent[i];
+        }
         else{
+            console.log("else");
             storeContent += userContent[i];
         }
     }
+    
+    console.log("preview的內容: ");
+    console.log(storeContent);
     if(why=="see"){
         document.getElementById("previewContent").innerHTML = storeContent;
         hljs.highlightAll();
@@ -167,51 +185,52 @@ function addInnerPostAnswer(){
         }
     });
     
-    //----- 為了處理通知 更新資料庫 -----//
-    myURL = head_url + "add_post_notification?user_id="+postOwnerId+"&replier_name="+replierName+"&post_id="+postId;
-//    console.log("myURL: "+myURL);
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        async: false,
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-//            console.log("成功: 新增貼文通知（add_post_notification）");
-            setPage('mySinglePostFrame');
-        },
-        error: function(response){
-//            console.log("失敗: 新增貼文通知（add_post_notification）");
-//            console.log(response);
-            window.alert("回覆貼文 失敗！\n請再試一次");
-        }
-    });
-    
-    //----- 回覆貼文 -----//
+    // 回覆貼文的資料
     var response = showReplyContent("save");
     var edit = $("#replyContent").val();
-    
+
     var data = {post_id: postId, replier_id: replierId, replier_name: replierName, response: response, edit: edit, time: time, incognito: anonymous};
-//    console.log("回覆innerPost");
-//    console.log(data);
-    myURL = head_url + "insert_inner_post_response";
-    $.ajax({
-        url: myURL,
-        type: "POST",
-        data: JSON.stringify(data),
-        async: false,
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-//            console.log(response);
-            setPage('mySinglePostFrame');
-        },
-        error: function(response){
-//            console.log("失敗: 回覆貼文（insert_inner_post_response）");
-//            console.log(response);
-            window.alert("回覆貼文 失敗！\n請再試一次");
-        }
-    });
+    if(response=="" || edit==""){
+       $("#note").modal('show');
+    }
+    else{
+        //----- 為了處理通知 更新資料庫 -----//
+        myURL = head_url + "add_post_notification?user_id="+postOwnerId+"&replier_name="+replierName+"&post_id="+postId;
+    //    console.log("myURL: "+myURL);
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+            },
+            error: function(response){
+                console.log(response);
+//                window.alert("回覆貼文 失敗！\n請再試一次");
+            }
+        });
+
+        //----- 回覆貼文 -----//
+        myURL = head_url + "insert_inner_post_response";
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log(response);
+                setPage('mySinglePostFrame');
+            },
+            error: function(response){
+                console.log("失敗: 回覆貼文（insert_inner_post_response）");
+                console.log(response);
+                window.alert("回覆貼文 失敗！\n請再試一次");
+            }
+        });   
+    }
 }
 
 function start(){

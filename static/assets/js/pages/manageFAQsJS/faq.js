@@ -7,11 +7,15 @@ function showReplyContent(why, textId, viewId){//why可以是see, save
     //dotNum 代表有連續幾個`
     //needCouple 是否需要後半段```
     //language 代表程式碼的語言
-    var dotNum=0, needCouple=false, language="";
+    var dotNum=0, needCouple=false, language="", middle=false, subString;
     for(var i=0; i<userContent.length; i++){
         if(userContent[i]=="`"){ //遇到`
             dotNum += 1;
             if(dotNum==3 && needCouple==false){ //湊滿3個 && 是第一次
+                //去頭去尾換行 START
+                middle = true;
+                subString = "";
+                //去頭去尾換行 END
                 
                 dotNum = 0;//需要清空`的數量
                 
@@ -39,8 +43,15 @@ function showReplyContent(why, textId, viewId){//why可以是see, save
                 dotNum = 0;//需要清空`的數量
                 needCouple = false;
                 
+                subString = subString.trim();
+                
+                storeContent += subString;
                 storeContent += "</code></pre>";
+                middle = false;
             }
+        }
+        else if(middle){
+            subString += userContent[i];
         }
         else{
             storeContent += userContent[i];

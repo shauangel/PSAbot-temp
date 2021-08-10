@@ -48,42 +48,45 @@ function start(){
                     }
                 });
             }
+            if(response.hot_post.length!=0){
+               setTimeout(function(){
+                    document.getElementById("titleDiv").innerHTML = '<i id="trophy" class="fa fa-code" aria-hidden="true" style="color: #545058; font-size: 25px; height: 5%; margin-top: 15px; margin-left: 15px; margin-right: 5px;"></i><span id="questionName">今日排行榜</span>';
+
+                    var index = -1;
+                    // Cacheing HTML elements
+                    var trophy = document.querySelector('#trophy');
+                    var questionName   = document.querySelector('#questionName');
+                    var titleDiv = document.querySelector('#titleDiv');
+                    setInterval(function(){
+                        // Fade out
+                        titleDiv.style.opacity = 0;
+
+                        // Fade in 
+                        setTimeout(function(){
+                            index += 1;
+                            questionName.innerHTML = titles[(index%(titles.length))].name;
+                            trophy.style.color = titles[(index%titles.length)].color;
+                            if((index%titles.length)>=3){
+                                trophy.className = "fa fa-code animate__swing";
+                            }
+                            else{
+                                trophy.className = "fa fa-trophy animate__swing";
+                            }
+                            titleDiv.onclick = function(){
+                                setLocalStorage(titles[(index%(titles.length))].id);
+                            };
+                            titleDiv.style.opacity = 1;
+                        },500);
+                    }, 3000);
+                }, 1000);
+            }
         },
         error: function(){
 //            console.log("error");
         }
     });
     
-    setTimeout(function(){
-        document.getElementById("titleDiv").innerHTML = '<i id="trophy" class="fa fa-code" aria-hidden="true" style="color: #545058; font-size: 25px; height: 5%; margin-top: 15px; margin-left: 15px; margin-right: 5px;"></i><span id="questionName">今日排行榜</span>';
-        
-        var index = -1;
-        // Cacheing HTML elements
-        var trophy = document.querySelector('#trophy');
-        var questionName   = document.querySelector('#questionName');
-        var titleDiv = document.querySelector('#titleDiv');
-        setInterval(function(){
-            // Fade out
-            titleDiv.style.opacity = 0;
-            
-            // Fade in 
-            setTimeout(function(){
-                index += 1;
-                questionName.innerHTML = titles[(index%(titles.length))].name;
-                trophy.style.color = titles[(index%titles.length)].color;
-                if((index%titles.length)>=3){
-                    trophy.className = "fa fa-code animate__swing";
-                }
-                else{
-                    trophy.className = "fa fa-trophy animate__swing";
-                }
-                titleDiv.onclick = function(){
-                    setLocalStorage(titles[(index%(titles.length))].id);
-                };
-                titleDiv.style.opacity = 1;
-            },500);
-        }, 3000);
-    }, 1000);
+    
 }
 
 window.addEventListener("load", start, false);

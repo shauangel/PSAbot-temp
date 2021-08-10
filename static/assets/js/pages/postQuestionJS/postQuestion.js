@@ -50,6 +50,7 @@ function showReplyContent(why){//why可以是see, save
                 
                 storeContent += subString;
                 storeContent += "</code></pre>";
+                middle = false;
             }
         }
         else if(middle){
@@ -374,27 +375,32 @@ function save(){
     var anonymous = document.getElementById('anonymous').checked;
     
     var data = {asker_id: id, asker_name: name, title: title, question: question, edit: edit, tag: tag, time: time, incognito: anonymous};
-    console.log("傳出去的data資料");
-    console.log(data);
-    myURL = head_url + "insert_inner_post";
-    $.ajax({
-        url: myURL,
-        type: "POST",
-        data: JSON.stringify(data),
-        async: false,
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-            console.log("成功: 發布貼文（insert_inner_post）");
-            console.log(response);
-            setPage('profileFrame');
-        },
-        error: function(response){
-            console.log("失敗: 發布貼文（insert_inner_post）");
-            console.log(response);
-            window.alert("發布貼文 失敗！\n請再試一次");
-        }
-    });
+    if(title=="" || question=="" || edit==""){
+        $("#warning").modal('show');
+    }
+    else{
+        console.log("傳出去的data資料");
+        console.log(data);
+        myURL = head_url + "insert_inner_post";
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("成功: 發布貼文（insert_inner_post）");
+                console.log(response);
+                setPage('profileFrame');
+            },
+            error: function(response){
+                console.log("失敗: 發布貼文（insert_inner_post）");
+                console.log(response);
+                window.alert("發布貼文 失敗！\n請再試一次");
+            }
+        });
+    }
 }
 
 window.addEventListener("load", start, false);
