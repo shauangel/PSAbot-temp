@@ -64,6 +64,8 @@ function editPageNum(sum, buttonId){
 
 /////////////////// 貼文＆回覆紀錄 START ///////////////////
 function showPostRecord(response){
+    console.log("貼文");
+    console.log(response);
     var content = "";
     for(var i=0; i<response.post_list.length; i++){
         var postId = response.post_list[i]._id;
@@ -76,7 +78,7 @@ function showPostRecord(response){
             askerName = "匿名";
         }
         else{
-            askerName = response.asker_name;
+            askerName = response.post_list[i].asker_name;
         }
 
         for(var j=0; j<response.post_list[i].score.length; j++){
@@ -138,7 +140,7 @@ function showAnswerRecord(response){
             askerName = "匿名";
         }
         else{
-            askerName = response.asker_name;
+            askerName = response.post_list[i].asker_name;
         }
         if(responsePostId.indexOf(postId)==-1){
             
