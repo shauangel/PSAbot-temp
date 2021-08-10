@@ -536,12 +536,19 @@ function showPost(response){
     for(var i=0; i<response.length; i++){
         var id = response[i]._id;
         var title = response[i].title;
+        var name;
 //        console.log("title: "+title);
         var tag = response[i].tag;
         var time = new Date(response[i].time);
         time = time.toISOString();
         time = time.slice(0, 10);
         var score = response[i].score;
+        if(response[i].incognito == "true"){
+            name = "匿名";
+        }
+        else{
+            name = response[i].asker_name;
+        }
 
         content += '<div class="col-lg-4 col-xl-3 col-sm-12">';
         content += '<a href="#" onclick="setLocalStorage(';
@@ -555,14 +562,14 @@ function showPost(response){
 //                    if(role == "manager"){
 //                        content += '<i class="fa fa-trash-o fa-lg" aria-hidden="true" style="color: red;"></i>';
 //                    }
-                    content += '<span> 貼文ID ';
+                    content += '<span>';
 //                    if(response.incognito == true){
 //                        content += '匿名';
 //                    }
 //                    else{
 //                        content += response[i].asker_name;
 //                    }
-                    content += id;
+                    content += name;
                     content += '</span>';
 
                     content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
