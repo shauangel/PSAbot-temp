@@ -36,7 +36,8 @@ function start(){
                     dataType: "json",
                     contentType: 'application/json; charset=utf-8',
                     success: function(response){
-                        
+                        console.log("拿到的熱門貼文");
+                        console.log(response);
                         if(i>2){
                             titles.push(new title(response.title, "#545058", response._id));
                         }
@@ -49,6 +50,7 @@ function start(){
                 });
             }
             if(response.hot_post.length!=0){
+                console.log("有進來");
                setTimeout(function(){
                     document.getElementById("titleDiv").innerHTML = '<i id="trophy" class="fa fa-code" aria-hidden="true" style="color: #545058; font-size: 25px; height: 5%; margin-top: 15px; margin-left: 15px; margin-right: 5px;"></i><span id="questionName">今日排行榜</span>';
 
