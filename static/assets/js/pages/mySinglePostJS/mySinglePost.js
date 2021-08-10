@@ -196,8 +196,8 @@ function thumbs(score, answerId, targetUserId){
             tempId = "postDislike"+postId;
             console.log("dislike's ID: "+tempId);
             if(document.getElementById(tempId).className == "fa fa-thumbs-down"){
-                console.log("減1分");
-                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
+                console.log("家1分");
+                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
             }
             document.getElementById(tempId).className = "fa fa-thumbs-o-down";
         }
@@ -253,7 +253,7 @@ function thumbs(score, answerId, targetUserId){
                 console.log("減1分");
             }
             tempId = "answerLike"+answerId;
-            if(document.getElementById(tempId).className = "fa fa-thumbs-up"){
+            if(document.getElementById(tempId).className == "fa fa-thumbs-up"){
                 $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
                 console.log("減1分");
             }
