@@ -222,7 +222,8 @@ def update_score(score_dict):
             target_score = next(score for score in target_answer['score'] if score['user_id'] == score_dict['user'])
             if target_score['score'] == score_dict['score']:
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
-                                                    'answers.id':score_dict['answer_id']},
+                                                    'answers.id':score_dict['answer_id'],
+                                                    'answers.score.user_id':score_dict['user']},
                                                    {'$pull':{'answers.$.score':target_score}})
             else:
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],

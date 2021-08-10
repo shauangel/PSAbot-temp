@@ -127,16 +127,16 @@ def query_faq_post():
 @faq_api.route('/like_faq_post', methods=['POST'])
 def like_faq_post():
     data = request.get_json()
-    try:
-        score_dict = {
-            'faq_id' : data['faq_id'],
-            'answer_id' : data['answer_id'],
-            'user': data['user'],
-            'score' : 1,
-        }
-        faq_data.update_score(score_dict)
-    except Exception as e :
-        score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+    # try:
+    score_dict = {
+        'faq_id' : data['faq_id'],
+        'answer_id' : data['answer_id'],
+        'user': data['user'],
+        'score' : 1,
+    }
+    faq_data.update_score(score_dict)
+    # except Exception as e :
+        # score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
     return jsonify(score_dict)
 # 對FAQ按倒讚
 @faq_api.route('/dislike_faq_post', methods=['POST'])
