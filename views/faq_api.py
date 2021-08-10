@@ -256,7 +256,7 @@ def import_faq_post():
             # 存檔案
             file.save(json_url)
             data_list = json.load(open(json_url,'r',encoding='utf-8'))
-            print(type(data_list))
+            print(data_list)
             #new_data = process_import_data(data_list)
             # 刪除檔案
             #os.remove(json_url)
