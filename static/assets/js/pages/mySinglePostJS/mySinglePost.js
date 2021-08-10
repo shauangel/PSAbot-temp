@@ -174,40 +174,82 @@ function objectInArrayThumb(obj, arr){//score, user_id
 
 function thumbs(score, answerId, targetUserId){
     //replyId==""，代表是按貼文的
-    // web true代表是網路分數，動態變化的是讚旁邊的數字
     var myURL, data;
     var postId = localStorage.getItem("singlePostId");
     var userId = localStorage.getItem("sessionID");
-    var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
+    var tempId, scoreIcon = '<i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+    
     if(score==1){
         if(answerId==""){// post like
-            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
+            
             tempId = "postLike"+postId;
-            document.getElementById(tempId).className = "fa fa-thumbs-up";
+            if(document.getElementById(tempId).className == "fa fa-thumbs-up"){
+                document.getElementById(tempId).className = "fa fa-thumbs-o-up";
+                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
+            }
+            else{
+                document.getElementById(tempId).className = "fa fa-thumbs-up";
+                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
+            }
             tempId = "postDislike"+postId;
+            if(document.getElementById(tempId).className == "fa fa-thumbs-o-down"){
+                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
+            }
             document.getElementById(tempId).className = "fa fa-thumbs-o-down";
         }
         else{// answer like
-            $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
+            
             tempId = "answerLike"+answerId;
-            document.getElementById(tempId).className = "fa fa-thumbs-up";
+            if(document.getElementById(tempId).className=="fa fa-thumbs-up"){
+                document.getElementById(tempId).className = "fa fa-thumbs-o-up";
+                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+            }
+            else{
+                document.getElementById(tempId).className=="fa fa-thumbs-up";
+                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
+            }
+            
             tempId = "answerDislike"+answerId;
+            if(document.getElementById(tempId).className=="fa fa-thumbs-down"){
+                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+            }
             document.getElementById(tempId).className = "fa fa-thumbs-o-down";
         }
     }
     else{
         if(answerId==""){//post dislike
-            $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
+            
             tempId = "postDislike"+postId;
-            document.getElementById(tempId).className = "fa fa-thumbs-down";
+            if(document.getElementById(tempId).className=="fa fa-thumbs-down"){//有案->沒案
+                document.getElementById(tempId).className = "fa fa-thumbs-o-down";
+                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
+            }
+            else{
+                document.getElementById(tempId).className = "fa fa-thumbs-down";
+                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
+            }
+            
             tempId = "postLike"+postId;
+            if(document.getElementById(tempId).className=="fa fa-thumbs-up"){
+                $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
+            }
             document.getElementById(tempId).className = "fa fa-thumbs-o-up";
         }
         else{// answer dislike
-            $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+            
             tempId = "answerDislike"+answerId;
-            document.getElementById(tempId).className = "fa fa-thumbs-down";
+            if(document.getElementById(tempId).className=="fa fa-thumbs-down"){
+                document.getElementById(tempId).className = "fa fa-thumbs-o-down";
+                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())+1));
+            }
+            else{
+                document.getElementById(tempId).className = "fa fa-thumbs-down";
+                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+            }
             tempId = "answerLike"+answerId;
+            if(document.getElementById(tempId).className = "fa fa-thumbs-up"){
+                $("#answerScore"+answerId).html(scoreIcon + (parseInt($("#answerScore"+answerId).text())-1));
+            }
             document.getElementById(tempId).className = "fa fa-thumbs-o-up";
         }
     }
@@ -332,16 +374,18 @@ function showQuestion(response){
             }
             
             if(postType=="faq"){
-                    content += '<span id="postScore';
-                    content += id;
-                    content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
-                    content += questionScore;
-                    content += '</span>';
+                // score START
+                content += '<span id="postScore';
+                content += id;
+                content += '" style="float:right;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="此網站的分數"></i>';
+                content += questionScore;
+                content += '</span>';
+                // score END
 
                 // vote（管理者輸入的分數） START
-                    content += '<span style="float:right; margin-left: 4px;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
-                    content += questionVote;
-                    content += '</span>';
+                content += '<span style="float:right; margin-left: 4px;"><i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="top" data-original-title="外面網站的分數"></i>';
+                content += questionVote;
+                content += '</span>';
                 // vote（管理者輸入的分數） END
             }
             else if(postType=="innerPost"){
@@ -665,6 +709,7 @@ function showAnswers(response){
 }
 
 function start(){
+    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     postType = localStorage.getItem("postType");
     var userId = localStorage.getItem("sessionID");
     var role = localStorage.getItem("role");

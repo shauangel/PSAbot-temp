@@ -716,8 +716,7 @@ function showFaq(faqList){
         time = time.toISOString();
         time = time.slice(0, 10);
         var score = faqList[i].score;
-//        var vote = faqList[i].vote;
-        var vote = 0;
+        var vote = faqList[i].question.vote;
 
         content += '<div class="col-lg-4 col-xl-3 col-sm-12">';
         content += '<a href="#" onclick="setLocalStorage(';

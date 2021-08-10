@@ -1122,31 +1122,28 @@ function setNotification(){
 
 // 監聽是否有新通知（60秒一次）
 function listenNotification(){
-    // 每5秒去檢查一次
-    setInterval(function(){
-        var myURL = head_url+"check_new_notification?user_id="+localStorage.getItem("sessionID");
-        $.ajax({
-            url: myURL,
-            type: "GET",
-            async: false, 
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function(response){
-                if(response.new==true){
-//                    console.log("有新的通知");
-                    $("#newNotification").addClass("badge bg-c-pink");
-                    notificationPage = 0;
-                    getNotification();
+    if(localStorage.getItem("role")!="manager"){
+        // 每5秒去檢查一次
+        setInterval(function(){
+            var myURL = head_url+"check_new_notification?user_id="+localStorage.getItem("sessionID");
+            $.ajax({
+                url: myURL,
+                type: "GET",
+                async: false, 
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function(response){
+                    if(response.new==true){
+                        $("#newNotification").addClass("badge bg-c-pink");
+                        notificationPage = 0;
+                        getNotification();
+                    }
+                },
+                error: function(){
                 }
-                else{
-//                    console.log("沒有");
-                }
-            },
-            error: function(){
-//                console.log("error");
-            }
-        });
-    }, 60000);
+            });
+        }, 60000);
+    }
 }
 
 // 滑到底之後載入更多通知
