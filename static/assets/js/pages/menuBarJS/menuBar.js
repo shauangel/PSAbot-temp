@@ -1,4 +1,5 @@
 //var head_url = "http://127.0.0.1/";
+var userPicSrc;
 var session_id;
 var first_start = true;
 var auth2;      // google登入相關
@@ -139,7 +140,9 @@ function user(string){
 //    content += '<span class="msg_time">8:40 AM</span>';
     content += '</div>';
     content += '<div class="img_cont_msg">';
-    content += '<img src="../static/images/jackson.png" class="chatImg">';
+    content += '<img src="';
+    content += userPicSrc;
+    content += '" class="chatImg">';
     content += '</div>';
     content += '</div>';
     
@@ -667,6 +670,7 @@ function getUserHeadshotAndName(){
         success: function(response){
             console.log("成功: 拿照片（read_image）");
             img += '<img class="img-40 img-radius" alt="User-Profile-Image" src="';
+            userPicSrc = response.src;
             img += response.src;
             img += '">';
             document.getElementById("headshot").setAttribute("src", response.src);
