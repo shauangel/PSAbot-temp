@@ -539,10 +539,10 @@ function showAnswers(response){
         
         switch(postType){
             case "faq":
-                answerId = response.answers[i].id;
+                answerId = response.answers[i].answer_id;
                 answerOwnerId = "manager";
                 answerTitle = "回覆的ID #" + answerId;
-                answerContent = response.answers[i].content.replaceAll('\n', '<br>');
+                answerContent = response.answers[i].content;
                 answerTime = new Date(response.time);
                 answerTime = answerTime.toISOString();
                 answerTime = answerTime.slice(0, 10);
