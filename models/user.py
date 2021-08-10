@@ -28,6 +28,7 @@ def query_user(user_id):
     update_post_list(user_id)
     update_response_list(user_id)
     target_user = _db.USER_COLLECTION.find_one({'_id':user_id})
+    print(target_user)
     if target_user != None:
         # -------- 資料解密 --------- #
         rsatool = RsaTool()
