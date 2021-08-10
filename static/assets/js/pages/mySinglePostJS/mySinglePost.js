@@ -546,6 +546,7 @@ function showAnswers(response){
 //                answerTime = new Date(response.time);
 //                answerTime = answerTime.toISOString();
 //                answerTime = answerTime.slice(0, 10);
+                answerTime = "----/--/--"
                 scoreArray = response.answers[i].score;
                 for(var j=0; j<scoreArray.length; j++){
                     answerScore += response.answers[i].score[j].score;
@@ -654,11 +655,11 @@ function showAnswers(response){
 //                        <span><br><code>hello world</code></span>
 
                 content += '<div style="margin-top: 20px;">';
-                    if(postType=="innerPost"){
-                        content += '<label class="badge purpleLabel2">';
-                            content += answerTime;
-                        content += '</label>';
-                    }
+                    
+                    content += '<label class="badge purpleLabel2">';
+                        content += answerTime;
+                    content += '</label>';
+                    
                        // 檢查有沒有按讚 START //
                         content += '<div style="float:right;">';
                         content += '<button type="button" style="margin:3px;" class="scoreBtn" onclick="thumbs(';
