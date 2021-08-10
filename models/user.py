@@ -13,11 +13,9 @@ from datetime import datetime
 # 新增 user
 def insert_user(user_dict):
     # -------- 資料加密 --------- #
-    rsatool = RsaTool()
-    user_dict['name'] = rsatool.encrypt(user_dict['name'])
-    user_dict['email'] = rsatool.encrypt(user_dict['email'])
-    if 'password' in user_dict.keys():
-        user_dict['password'] = rsatool.encrypt(user_dict['password'])
+    # rsatool = RsaTool()
+    # user_dict['name'] = rsatool.encrypt(user_dict['name'])
+    # user_dict['email'] = rsatool.encrypt(user_dict['email'])
     # --------------------------- #
     _db.USER_COLLECTION.insert_one(user_dict)
     
@@ -28,25 +26,27 @@ def query_user(user_id):
     update_post_list(user_id)
     update_response_list(user_id)
     target_user = _db.USER_COLLECTION.find_one({'_id':user_id})
-    if target_user != None:
-        # -------- 資料解密 --------- #
-        rsatool = RsaTool()
-        target_user['email'] = rsatool.decrypt(target_user['email'])
-        target_user['name'] = rsatool.decrypt(target_user['name'])
-        if 'password' in target_user.keys():
-            target_user['password'] = rsatool.decrypt(target_user['password'])
+    # -------- 資料解密 --------- #
+    # rsatool = RsaTool()
+    # target_user['email'] = rsatool.decrypt(target_user['emal'])
+    # target_user['name'] = rsatool.decrypt(target_user['name'])
     # -------------------------- #
     return target_user
 
 # 編輯使用者資料
 def update_user(update_dict):
     new_name = update_dict['name']
+    new_email = update_dict['email']
     # -------- 資料加密 --------- #
-    rsatool = RsaTool()
-    new_name = rsatool.encrypt(update_dict['name'])
+    # rsatool = RsaTool()
+    # new_name = rsatool.encrypt(update_dict['name'])
+    # new_email = rsatool.encrypt(update_dict['email'])
     # --------------------------- #
     user_data = _db.USER_COLLECTION.find_one({'_id':update_dict['_id']})
-    _db.USER_COLLECTION.update_one({'_id':update_dict['_id']},{'$set':{'name': new_name}})
+    _db.USER_COLLECTION.update_one({'_id':update_dict['_id']},{'$set':
+                                                               {
+                                                                   'name': new_name,
+                                                                   'email':new_email}})
     # 更改所有發過文的名字
     if len(update_dict['name']) != 0:
         for post in user_data['record']['posts']:
@@ -109,19 +109,22 @@ def update_response_list(replier_id):
 """緗"""
 #新增貼文回覆通知
 def update_notification_add(user_id, replier_name, post_id):
-    count = [i['count'] for i in _db.USER_COLLECTION.aggregate([
-    {
-        '$match': {
-            '_id': 'testSkillTree'
-        }
-    }, {
-        '$project': {
-            'count': {
-                '$size': '$notification'
+    if _db.USER_COLLECTION.find_one({'_id':user_id}) == None:
+        count =0
+    else:
+        count = [i['count'] for i in _db.USER_COLLECTION.aggregate([
+        {
+            '$match': {
+                '_id': user_id
+            }
+        }, {
+            '$project': {
+                'count': {
+                    '$size': '$notification'
+                }
             }
         }
-    }
-])][0]
+    ])][0]
     
     print("count: "+str(count))
     
@@ -144,9 +147,14 @@ def query_notification(user_id):
     return _db.USER_COLLECTION.find_one({'_id':user_id})
     
 #new全設false
-def update_notification_new(user_id):
-    _db.USER_COLLECTION.update_one({'_id':user_id}, {'$set': {'notification.$[].new':False}})
-
+def update_notification_new(user_id, id):
+    _db.USER_COLLECTION.update_one(
+        {'_id':user_id},
+        { '$set': { "notification.$[element].new" : False } },
+        upsert=True,
+        array_filters=[ { "element.id": { '$in': id } } ]
+    )
+    
 #依頁數查看通知
 def query_notification_by_page(user_id, page):
     return [{'id':i['notification']['id'], 'time':i['notification']['time'], 'detail':i['notification']['detail'], 'new':i['notification']['new'], 'check':i['notification']['check'], 'type':i['notification']['type']} for i in _db.USER_COLLECTION.aggregate([
@@ -174,23 +182,8 @@ def query_notification_by_page(user_id, page):
 def update_notification_check(user_id, id):
     _db.USER_COLLECTION.update_one({'_id':user_id, 'notification.id': id},
     { '$set': { 'notification.$.check' : True } })
-#    _db.USER_COLLECTION.aggregate([
-#    {
-#        '$match': {
-#            '_id': user_id
-#        }
-#    }, {
-#        '$unwind': {
-#            'path': '$notification'
-#        }
-#    }, {
-#        '$match': {
-#            'notification.id': id
-#        }
-#    }, {
-#        '$set': {
-#            'notification.check': True
-#        }
-#    }
-#])
+
+#刪除通知
+def update_notification_delete(post_id):
+    _db.USER_COLLECTION.update_many({}, {'$pull':{'notification':{'detail.post_id':post_id}}})
 """ """

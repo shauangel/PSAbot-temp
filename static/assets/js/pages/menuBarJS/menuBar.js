@@ -1066,7 +1066,9 @@ function onLoadGoogleCallback(){
 ////////////////// 登出 START ////////////////////
 function logOut(){
     if(localStorage.getItem('role') == 'google_user'){
+		auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
+			auth2.disconnect();
             console.log('Google User signed out.');
         });
     }
