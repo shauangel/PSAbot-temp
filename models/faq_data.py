@@ -229,7 +229,7 @@ def update_score(score_dict):
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
                                                     'answers.id':score_dict['answer_id'],
                                                     'answers.score.user_id':score_dict['user']},
-                                                   {'$set':{'answers.$.score':new_score_record}})
+                                                   {'$set':{'answers.score.$':new_score_record}})
         # 否則直接push一個評分
         else:
              _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
