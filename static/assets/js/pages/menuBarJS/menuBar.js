@@ -1292,7 +1292,8 @@ function notNewAnymore() {
     $("#newNotification").removeClass("badge bg-c-pink");
     var myURL = head_url + "set_notification_new";
     var data = { user_id: localStorage.getItem("sessionID"), id: notificationIndex };
-    console.log("data: "+data);
+    console.log("data: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
