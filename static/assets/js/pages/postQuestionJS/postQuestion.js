@@ -50,12 +50,14 @@ function showReplyContent(why){//why可以是see, save
                 
                 storeContent += subString;
                 storeContent += "</code></pre>";
+                middle = false;
             }
         }
         else if(middle){
             subString += userContent[i];
         }
         else{
+            console.log("else");
             storeContent += userContent[i];
         }
     }
