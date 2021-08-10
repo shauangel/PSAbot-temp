@@ -543,9 +543,9 @@ function showAnswers(response){
                 answerOwnerId = "manager";
                 answerTitle = "回覆的ID #" + answerId;
                 answerContent = response.answers[i].content;
-                answerTime = new Date(response.time);
-                answerTime = answerTime.toISOString();
-                answerTime = answerTime.slice(0, 10);
+//                answerTime = new Date(response.time);
+//                answerTime = answerTime.toISOString();
+//                answerTime = answerTime.slice(0, 10);
                 scoreArray = response.answers[i].score;
                 for(var j=0; j<scoreArray.length; j++){
                     answerScore += response.answers[i].score[j].score;
@@ -656,11 +656,11 @@ function showAnswers(response){
 //                        <span><br><code>hello world</code></span>
 
                 content += '<div style="margin-top: 20px;">';
-                    content += '<label class="badge purpleLabel2">';
-                        content += answerTime;
-                    content += '</label>';
-
-                    
+                    if(postType=="innerPost"){
+                        content += '<label class="badge purpleLabel2">';
+                            content += answerTime;
+                        content += '</label>';
+                    }
                        // 檢查有沒有按讚 START //
                         content += '<div style="float:right;">';
                         content += '<button type="button" class="scoreBtn" onclick="thumbs(';
@@ -781,6 +781,8 @@ function start(){
                 content += ')"><i class="fa fa-plus" aria-hidden="true"></i></button>';
             }
             document.getElementById("answerTitle").innerHTML = content;
+            console.log("回覆: ");
+            console.log(response);
             showAnswers(response);
             //----- 顯示答案 END -----//
         },
