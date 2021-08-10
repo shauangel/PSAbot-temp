@@ -17,12 +17,12 @@ from datetime import datetime, timedelta
 def query_post_list(page_size,page_number,option):
     post_count = [i for i in _db.INNER_POST_COLLECTION.aggregate([{'$count': 'post_count'}])][0]['post_count']
     if option == '': # 預設是用時間排
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'asker_name': 1, 'incognito':1,'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
                                                                  {'$sort': {'time': -1}}, 
                                                                  {'$skip': page_size * (page_number - 1)}, 
                                                                  {'$limit': page_size}])]
     else : 
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'asker_name': 1, 'incognito':1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}}, 
                                                                  {'$sort': {option : -1}}, 
                                                                  {'$skip': page_size * (page_number - 1)}, 
                                                                  {'$limit': page_size}])]
@@ -38,13 +38,13 @@ def query_post_list_by_title(search_string,page_size,page_number,option):
     post_count = len([ i for i in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'$or': regex_list}}])])
     if option == '': # 預設是用時間排 
         post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'$or': regex_list}},
-                                                                          {'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1, 'score': {'$sum': '$score.score'}}}, 
+                                                                          {'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1, 'asker_name': 1, 'incognito':1, 'score': {'$sum': '$score.score'}}}, 
                                                                           {'$sort': {'time': -1}}, 
                                                                           {'$skip': page_size * (page_number - 1)}, 
                                                                           {'$limit': page_size}])]
     else : 
         post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'$or': regex_list}},
-                                                                          {'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1, 'score': {'$sum': '$score.score'}}}, 
+                                                                          {'$project': {'_id': 1, 'title': 1, 'tag': 1, 'time': 1, 'asker_name': 1, 'incognito':1, 'score': {'$sum': '$score.score'}}}, 
                                                                           {'$sort': {option : -1}}, 
                                                                           {'$skip': page_size * (page_number - 1)}, 
                                                                           {'$limit': page_size}])]
@@ -54,13 +54,13 @@ def query_post_list_by_tag(tag_list,page_size,page_number,option):
     post_count = len([i for i in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
                                                                        {'$match': {'hastag': True}}])])
     if option == '': 
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1,  'asker_name': 1, 'incognito':1,'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
                                                                {'$match': {'hastag': True}},
                                                                {'$sort': {'time': -1}}, 
                                                                {'$skip': page_size * (page_number - 1)}, 
                                                                {'$limit': page_size}])]
     else : # 預設是用時間排
-        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
+        post_list = [ doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$project': {'_id': 1, 'title': 1, 'time': 1,  'asker_name': 1, 'incognito':1,'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}, 'hastag': {'$setIsSubset': [tag_list, '$tag']}}}, 
                                                                {'$match': {'hastag': True}},
                                                                {'$sort': {option: -1}}, 
                                                                {'$skip': page_size * (page_number - 1)}, 
