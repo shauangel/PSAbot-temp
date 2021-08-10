@@ -181,18 +181,22 @@ function thumbs(score, answerId, targetUserId){
     
     if(score==1){
         if(answerId==""){// post like
-            
             tempId = "postLike"+postId;
+            console.log("like's Id: "+tempId);
             if(document.getElementById(tempId).className == "fa fa-thumbs-up"){
                 document.getElementById(tempId).className = "fa fa-thumbs-o-up";
+                console.log("減1分");
                 $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
             }
             else{
                 document.getElementById(tempId).className = "fa fa-thumbs-up";
+                console.log("加1分");
                 $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())+1));
             }
             tempId = "postDislike"+postId;
+            console.log("dislike's ID: "+tempId);
             if(document.getElementById(tempId).className == "fa fa-thumbs-o-down"){
+                console.log("減1分");
                 $("#postScore"+postId).html(scoreIcon + (parseInt($("#postScore"+postId).text())-1));
             }
             document.getElementById(tempId).className = "fa fa-thumbs-o-down";
