@@ -23,13 +23,13 @@ def query_list(page_size,page_number,option):
                                                                {'$count': 'faq_count'}])][0]['faq_count']
     if option == '': # 預設是用時間排
         faq_list = [ doc for doc in _db.FAQ_DATA_COLLECTION.aggregate([{'$skip': 1},
-                                                                       {'$project': {'_id': 1, 'question.title': 1, 'time': 1, 'keywords': 1,'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
+                                                                       {'$project': {'_id': 1, 'question.title': 1, 'question.vote': 1, 'time': 1, 'keywords': 1,'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
                                                                        {'$sort': {'time': -1}}, 
                                                                        {'$skip': page_size * (page_number - 1)}, 
                                                                        {'$limit': page_size}])]
     else : 
         faq_list = [ doc for doc in _db.FAQ_DATA_COLLECTION.aggregate([{'$skip': 1},
-                                                                       {'$project': {'_id': 1, 'question.title': 1, 'time': 1, 'keywords': 1,'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
+                                                                       {'$project': {'_id': 1, 'question.title': 1, 'question.vote': 1, 'time': 1, 'keywords': 1,'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
                                                                        {'$sort': {option: -1}}, 
                                                                        {'$skip': page_size * (page_number - 1)}, 
                                                                        {'$limit': page_size}])]
@@ -41,14 +41,14 @@ def query_list_by_tag(tag_list,page_size,page_number,option):
                                                                    {'$match': {'hastag': True}}])])
     if option == '': # 預設是用時間排
         faq_list = [ doc for doc in _db.FAQ_DATA_COLLECTION.aggregate([{'$skip': 1}, 
-                                                                       {'$project': {'_id': 1, 'question.title': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1, 'hastag': {'$setIsSubset': [tag_list, '$tags']}}}, 
+                                                                       {'$project': {'_id': 1, 'question.title': 1, 'question.vote': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1, 'hastag': {'$setIsSubset': [tag_list, '$tags']}}}, 
                                                                        {'$match': {'hastag': True}},
                                                                        {'$sort': {'time': -1}}, 
                                                                        {'$skip': page_size * (page_number - 1)}, 
                                                                        {'$limit': page_size}])]
     else : 
         faq_list = [ doc for doc in _db.FAQ_DATA_COLLECTION.aggregate([{'$skip': 1}, 
-                                                                       {'$project': {'_id': 1, 'question.title': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1, 'hastag': {'$setIsSubset': [tag_list, '$tags']}}}, 
+                                                                       {'$project': {'_id': 1, 'question.title': 1, 'question.vote': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1, 'hastag': {'$setIsSubset': [tag_list, '$tags']}}}, 
                                                                        {'$match': {'hastag': True}},
                                                                        {'$sort': {option : -1}}, 
                                                                        {'$skip': page_size * (page_number - 1)}, 
@@ -68,14 +68,14 @@ def query_list_by_string(search_string,page_size,page_number,option):
     if option == '': 
         faq_list = [ doc for doc in _db.FAQ_DATA_COLLECTION.aggregate([{'$skip': 1}, 
                                                                        {'$match': {'$or': regex_list}},
-                                                                       {'$project': {'_id': 1, 'question.title': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
+                                                                       {'$project': {'_id': 1, 'question.title': 1, 'question.vote': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
                                                                        {'$sort': {'time': -1}}, 
                                                                        {'$skip': page_size * (page_number - 1)}, 
                                                                        {'$limit': page_size}])]
     else :
         faq_list = [ doc for doc in _db.FAQ_DATA_COLLECTION.aggregate([{'$skip': 1}, 
                                                                        {'$match': {'$or': regex_list}},
-                                                                       {'$project': {'_id': 1, 'question.title': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
+                                                                       {'$project': {'_id': 1, 'question.title': 1, 'question.vote': 1, 'time': 1, 'keywords':1, 'tags': 1, 'score': {'$sum': '$score.score'}, 'view_count': 1}}, 
                                                                        {'$sort': {option: -1}}, 
                                                                        {'$skip': page_size * (page_number - 1)}, 
                                                                        {'$limit': page_size}])]
@@ -185,7 +185,7 @@ def transform_faq(faq_list):
             ],
             "keywords" : faq['kewords'],     
             "tags" : [],
-            "time" : datetime.now().replace(microsecond=0).isoformat(),
+            "time" : datetime.now().replace(microsecond=0),
             "view_count" : 0
         } for faq in faq_list
     ]
@@ -201,20 +201,33 @@ def update_score(score_dict):
     # response_id為空表示更新貼文評分
     if len(score_dict['answer_id']) == 0 :
         # 若使用者按過讚/倒讚，使用set
-        if any(s['user_id'] == score_dict['user'] for s in target_faq['score']):
-            _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],'question.score.user_id': score_dict['user']},{'$set':{'question.score.$':new_score_record}})
+        if any(s['user_id'] == score_dict['user'] for s in target_faq['question']['score']):
+            target_score =  next(score for score in target_faq['question']['score'] if score['user_id'] == score_dict['user'])
+            if target_score['score'] == score_dict['score']: # 點兩次取消評分
+                _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id']},
+                                                   {'$pull':{'question.score':target_score}})
+            else: # 變另一個評分
+                _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
+                                                    'question.score.user_id': score_dict['user']},
+                                                   {'$set':{'question.score.$':new_score_record}})
         else:
             # FAQ本身push一個使用者評分
             _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id']},{'$push':{'question.score':new_score_record}})
     # response_id不為空表示更新回覆評分
     else :
-        target_answer = next(answer for answer in target_faq['answers'] if answer['_id'] == score_dict['answer_id'])
+        target_answer = next(answer for answer in target_faq['answers'] if answer['id'] == score_dict['answer_id'])
         # 若使用者按過讚/倒讚，使用set
         if any(s['user_id'] == score_dict['user'] for s in target_answer['score']):
-            _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
-                                                'answers.id':score_dict['answer_id'],
-                                                'answers.score.user_id':score_dict['user']},
-                                               {'$set':{'answers.$.score':new_score_record}})
+            target_score = next(score for score in target_answer['score'] if score['user_id'] == score_dict['user'])
+            if target_score['score'] == score_dict['score']:
+                _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
+                                                    'answers.id':score_dict['answer_id']},
+                                                   {'$pull':{'answers.$.score':target_score}})
+            else:
+                _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
+                                                    'answers.id':score_dict['answer_id'],
+                                                    'answers.score.user_id':score_dict['user']},
+                                                   {'$set':{'answers.$.score':new_score_record}})
         # 否則直接push一個評分
         else:
              _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
@@ -238,7 +251,7 @@ def update_faq(data_dict):
                                                                       'question.edit' : data_dict['question']['edit'],
                                                                       'question.vote' : data_dict['question']['vote'],
                                                                       'keywords' : data_dict['keywords'],
-                                                                      'time' : datetime.now().replace(microsecond=0).isoformat(),
+                                                                      'time' : datetime.now().replace(microsecond=0),
                                                                       'tags' : data_dict['tags']
                                                                       }})
 

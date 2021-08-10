@@ -98,7 +98,7 @@ def insert_faq_post():
                         ],
                         "keywords" : [],     
                         "tags" : data['tags'],
-                        "time" : datetime.now().replace(microsecond=0).isoformat(),
+                        "time" : datetime.now().replace(microsecond=0),
                         "view_count" : 0
         }
         # 呼叫文字分析模組進行分析
@@ -126,31 +126,31 @@ def query_faq_post():
 @faq_api.route('/like_faq_post', methods=['POST'])
 def like_faq_post():
     data = request.get_json()
-#    try:
-    score_dict = {
-        'faq_id' : data['faq_id'],
-        'answer_id' : data['answer_id'],
-        'user':data['user'],
-        'score' : 1,
-    }
-    faq_data.update_score(score_dict)
-#    except Exception as e :
-#        score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+    try:
+        score_dict = {
+            'faq_id' : data['faq_id'],
+            'answer_id' : data['answer_id'],
+            'user':data['user'],
+            'score' : 1,
+        }
+        faq_data.update_score(score_dict)
+    except Exception as e :
+        score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
     return jsonify(score_dict)
 # 對FAQ按倒讚
 @faq_api.route('/dislike_faq_post', methods=['POST'])
 def dislike_faq_post():
     data = request.get_json()
-#    try:
-    score_dict = {
-        'faq_id' : data['faq_id'],
-        'answer_id' : data['answer_id'],
-        'user':data['user'],
-        'score' : -1,
-    }
-    faq_data.update_score(score_dict)
-#    except Exception as e :
-#        score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+    try:
+        score_dict = {
+            'faq_id' : data['faq_id'],
+            'answer_id' : data['answer_id'],
+            'user':data['user'],
+            'score' : -1,
+        }
+        faq_data.update_score(score_dict)
+    except Exception as e :
+        score_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
     return jsonify(score_dict)
 # 新增answer
 @faq_api.route('/insert_faq_answer', methods=['POST'])
@@ -208,7 +208,7 @@ def update_faq_post():
         # 去除code
         target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'].replace('\n', '').replace('\r', ''))
         data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)[0]})
-        data.update({'time': datetime.now().replace(microsecond=0).isoformat()})
+        data.update({'time': datetime.now().replace(microsecond=0)})
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -293,7 +293,7 @@ def process_import_data(data_list):
                 ],
                 "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'].replace('\n', '').replace('\r', '')))[0],     
                 "tags" : [],
-                "time" : datetime.now().replace(microsecond=0).isoformat(),
+                "time" : datetime.now().replace(microsecond=0),
                 "view_count" : 0
             } for faq in data_list
     ]
