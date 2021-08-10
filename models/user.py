@@ -34,7 +34,7 @@ def query_user(user_id):
         target_user['email'] = rsatool.decrypt(target_user['email'])
         target_user['name'] = rsatool.decrypt(target_user['name'])
         if 'password' in target_user.keys():
-            target_user['password'] = rsatool.encrypt(target_user['password'])
+            target_user['password'] = rsatool.decrypt(target_user['password'])
     # -------------------------- #
     return target_user
 
