@@ -4,6 +4,7 @@ from flask import Blueprint, request, jsonify
 import re
 # --- our models ---- #
 from models import inner_post
+from models._db import pacific
 from .TextAnalyze import TextAnalyze
 
 from datetime import datetime,timezone,timedelta
@@ -46,6 +47,7 @@ def query_inner_post_list_by_tag():
 def insert_inner_post():
     data = request.get_json()
     try:
+        
         post_dict = {
             '_id' : '',
             'asker_id' : data['asker_id'],
@@ -56,7 +58,7 @@ def insert_inner_post():
             'answer' : [],
             'keyword' : [],
             'tag' : data['tag'],
-            'time' : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
+            'time' : pacific.localize(datetime.now().replace(microsecond=0)),
             'incognito' :data['incognito'],
             'score' : [],
             'view_count' : 0
@@ -83,7 +85,7 @@ def update_inner_post():
             'question' : data['question'],
             'edit' : data['edit'],
             'keyword' : [],
-            'time' : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8)))
+            'time' : pacific.localize(datetime.now().replace(microsecond=0))
         }
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
@@ -117,7 +119,7 @@ def insert_inner_post_response():
             "replier_name" : data['replier_name'],
             "response" : data['response'],
             "edit" : data['edit'],
-            "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
+            "time" : pacific.localize(datetime.now().replace(microsecond=0)),
             "score":[],
             "incognito":data['incognito']
         }
@@ -137,7 +139,7 @@ def update_inner_post_response():
             "replier_id" : data['replier_id'],
             "response" : data['response'],
             "edit" : data['edit'],
-            "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8)))
+            "time" : pacific.localize(datetime.now().replace(microsecond=0))
         }
         inner_post.update_response(response_dict)
     except Exception as e :
