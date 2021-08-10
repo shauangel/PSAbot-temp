@@ -6,7 +6,7 @@ import re
 from models import inner_post
 from .TextAnalyze import TextAnalyze
 
-from datetime import datetime
+from datetime import datetime,timezone,timedelta
 
 post_api = Blueprint('post_api', __name__)
 
@@ -56,7 +56,7 @@ def insert_inner_post():
             'answer' : [],
             'keyword' : [],
             'tag' : data['tag'],
-            'time' : datetime.fromisoformat(data['time']),
+            'time' : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
             'incognito' :data['incognito'],
             'score' : [],
             'view_count' : 0
@@ -83,7 +83,7 @@ def update_inner_post():
             'question' : data['question'],
             'edit' : data['edit'],
             'keyword' : [],
-            'time' : datetime.fromisoformat(data['time'])
+            'time' : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8)))
         }
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
@@ -117,7 +117,7 @@ def insert_inner_post_response():
             "replier_name" : data['replier_name'],
             "response" : data['response'],
             "edit" : data['edit'],
-            "time" : datetime.fromisoformat(data['time']),
+            "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
             "score":[],
             "incognito":data['incognito']
         }
@@ -137,7 +137,7 @@ def update_inner_post_response():
             "replier_id" : data['replier_id'],
             "response" : data['response'],
             "edit" : data['edit'],
-            "time" : datetime.fromisoformat(data['time'])
+            "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8)))
         }
         inner_post.update_response(response_dict)
     except Exception as e :

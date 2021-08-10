@@ -84,6 +84,7 @@ def facebook_sign_in():
     login_user(user_now) 
     session['user_id'] = user_dict['_id']
     session['role'] = user_dict['role']
+    print(user_dict)
     return jsonify(user_dict)
 
 @login_api.route('/password_sign_in', methods=['POST'])
