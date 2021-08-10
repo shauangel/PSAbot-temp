@@ -374,6 +374,9 @@ function save(){
     var anonymous = document.getElementById('anonymous').checked;
     
     var data = {asker_id: id, asker_name: name, title: title, question: question, edit: edit, tag: tag, time: time, incognito: anonymous};
+    if(title=="" || question=="" || edit==""){
+        $("#warning").modal('show');
+    }
     console.log("傳出去的data資料");
     console.log(data);
     myURL = head_url + "insert_inner_post";
