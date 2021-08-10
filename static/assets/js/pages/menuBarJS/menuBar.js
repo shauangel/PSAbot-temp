@@ -1043,13 +1043,13 @@ function save(){
 
 ////////////////// 登出 START ////////////////////
 function logOut(){
-    if(sessionStorage.getItem('role') == 'google_user'){
+    if(localStorage.getItem('role') == 'google_user'){
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
             console.log('Google User signed out.');
         });
     }
-    else if(sessionStorage.getItem('role') == 'facebook_user'){
+    else if(localStorage.getItem('role') == 'facebook_user'){
         FB.logout(function(response) {
             console.log('Facebook User logout.');
           });
