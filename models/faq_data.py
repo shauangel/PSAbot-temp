@@ -110,9 +110,10 @@ def import_faq(data_list,data_type):
     else:
         # sort _id,將最大的+1當作新的_id
         biggest_id = int(all_faq.skip(1).sort('_id',-1).limit(1)[0]['_id'])
-        current_id = str(biggest_id + 1).zfill(6)
+        current_id = str(biggest_id).zfill(6)
     for data_dict in data_list:  
         data_dict['_id'] = str(int(current_id) + 1).zfill(6)
+        current_id = int(current_id) + 1
         # 處理內部內部貼文 answer_id,tag
         if data_type == 'inner_faq':
             answer_id = 0

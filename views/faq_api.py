@@ -256,11 +256,10 @@ def import_faq_post():
             # 存檔案
             file.save(json_url)
             data_list = json.load(open(json_url,'r',encoding='utf-8'))
-            print(data_list)
-            #new_data = process_import_data(data_list)
+            new_data = process_import_data(data_list)
             # 刪除檔案
-            #os.remove(json_url)
-            return jsonify({'message':'get data'})
+            os.remove(json_url)
+            return jsonify({'message':new_data})
         else:
             flash('Please upload a .json file.')
             return jsonify({'message':'Invalid file type.'})
@@ -298,5 +297,5 @@ def process_import_data(data_list):
                 "view_count" : 0
             } for faq in data_list
     ]
-    faq_data.insert_faq(faq_list,'inner_faq')
+    faq_data.import_faq(faq_list,'inner_faq')
     return faq_list
