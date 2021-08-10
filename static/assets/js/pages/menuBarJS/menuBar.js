@@ -1044,6 +1044,13 @@ function save(){
 ////////////////// 登出 START ////////////////////
 function logOut(){
     if(localStorage.getItem('role') == 'google_user'){
+        gapi.load('auth2', function(){
+            auth2 = gapi.auth2.init({
+              client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
+              cookiepolicy: 'none',
+              scope: 'profile'
+            });
+        });
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
             console.log('Google User signed out.');
