@@ -57,7 +57,6 @@ function showReplyContent(why){//why可以是see, save
             subString += userContent[i];
         }
         else{
-            console.log("else");
             storeContent += userContent[i];
         }
     }
