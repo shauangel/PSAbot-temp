@@ -1,5 +1,5 @@
 # --- flask --- #
-from datetime import datetime
+from datetime import datetime,timezone,timedelta
 from flask import Blueprint,request, jsonify
 '''匯入faq相關'''
 from flask import Flask,flash,redirect
@@ -99,7 +99,7 @@ def insert_faq_post():
                         ],
                         "keywords" : [],     
                         "tags" : data['tags'],
-                        "time" : datetime.now().replace(microsecond=0),
+                        "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
                         "view_count" : 0
         }
         # 呼叫文字分析模組進行分析
@@ -211,7 +211,7 @@ def update_faq_post():
         # 去除code
         target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'].replace('\n', '').replace('\r', ''))
         data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)[0]})
-        data.update({'time': datetime.now().replace(microsecond=0)})
+        data.update({'time': datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8)))})
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -297,7 +297,7 @@ def process_import_data(data_list):
                 ],
                 "keywords" : textAnalyzer.contentPreProcess(re.sub(r'<pre>.*?</pre>', ' ', faq['question']['content'].replace('\n', '').replace('\r', '')))[0],     
                 "tags" : [],
-                "time" : datetime.now().replace(microsecond=0),
+                "time" : datetime.now().replace(microsecond=0).astimezone(timezone(timedelta(hours=8))),
                 "view_count" : 0
             } for faq in data_list
     ]
