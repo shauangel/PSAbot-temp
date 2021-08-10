@@ -28,12 +28,13 @@ def query_user(user_id):
     update_post_list(user_id)
     update_response_list(user_id)
     target_user = _db.USER_COLLECTION.find_one({'_id':user_id})
-    # -------- 資料解密 --------- #
-    rsatool = RsaTool()
-    target_user['email'] = rsatool.decrypt(target_user['emal'])
-    target_user['name'] = rsatool.decrypt(target_user['name'])
-    if 'password' in target_user.keys():
-        target_user['password'] = rsatool.encrypt(target_user['password'])
+    if target_user != None:
+        # -------- 資料解密 --------- #
+        rsatool = RsaTool()
+        target_user['email'] = rsatool.decrypt(target_user['email'])
+        target_user['name'] = rsatool.decrypt(target_user['name'])
+        if 'password' in target_user.keys():
+            target_user['password'] = rsatool.decrypt(target_user['password'])
     # -------------------------- #
     return target_user
 
