@@ -100,6 +100,8 @@ function getUserTag(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("使用者的tag: ");
+            console.log(response);
             for(var i=0; i<response.tag_info.length; i++){
                 //檢查是否為第三層，是則buildThirdLevel，否則直接改一、二層node score
                 if(secondLevelName.includes(response.tag_info[i].tag_name)) {
@@ -131,6 +133,8 @@ function printTree(){
 
 var treeTag;
 function buildTree(){
+    console.log("tree: ");
+    console.log(rootTreeNode);
     treeTag = "<li>"+rootTreeNode.name+"<br><div class='score'>"+rootTreeNode.score+"</div><ul>";
     //建出樹的tag
     for(var i=0;i<rootTreeNode.child.length;i++){
