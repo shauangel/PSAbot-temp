@@ -93,14 +93,14 @@ def update_user_interest(user_id,tag_list):
 # 更新使用者發文紀錄
 def update_post_list(user_id):
     post_list = [doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'asker_id': user_id}}, 
-                                                                       {'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}},
+                                                                       {'$project': {'_id': 1, 'title': 1,'asker_name':1,'incognito':1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}},
                                                                        {'$sort': {'time': -1}}])]
     _db.USER_COLLECTION.update_one({'_id':user_id},{'$set':{'record.posts':post_list}})
 
 # 更新使用者回覆紀錄
 def update_response_list(replier_id):
     response_list = [doc for doc in _db.INNER_POST_COLLECTION.aggregate([{'$match': {'answer.replier_id': replier_id}}, 
-                                                                       {'$project': {'_id': 1, 'title': 1, 'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}},
+                                                                       {'$project': {'_id': 1, 'title': 1, 'asker_name':1,'incognito':1,'time': 1, 'tag': 1,'asker_id': 1,'icognito': 1, 'score': {'$sum': '$score.score'}}},
                                                                        {'$sort': {'time': -1}}])]
     _db.USER_COLLECTION.update_one({'_id':replier_id},{'$set':{'record.responses':response_list}})   
 

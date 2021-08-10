@@ -71,7 +71,13 @@ function showPostRecord(response){
         var tag = response.post_list[i].tag;
         var time = new Date(response.post_list[i].time).toISOString();
         time = time.slice(0, 10);
-        var score = 0;
+        var askerName;
+        if(response.post_list[i].incognito==true){
+            askerName = "匿名";
+        }
+        else{
+            askerName = response.asker_name;
+        }
 
         for(var j=0; j<response.post_list[i].score.length; j++){
             score += response.post_list[i].score[j].score;
@@ -87,7 +93,7 @@ function showPostRecord(response){
             content += '<div class="badge-box">';
                 content += '<div class="sub-title">';
                     content += '<span>';
-                    content += localStorage.getItem("userName");
+                    content += askerName;
                     content += '</span>';
 
                     content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
@@ -127,6 +133,13 @@ function showAnswerRecord(response){
     var content = "";
     for(var i=0; i<response.post_list.length; i++){
         var postId = response.post_list[i]._id;
+        var askerName;
+        if(response.post_list[i].incognito==true){
+            askerName = "匿名";
+        }
+        else{
+            askerName = response.asker_name;
+        }
         if(responsePostId.indexOf(postId)==-1){
             
             responsePostId.push(postId);
@@ -147,7 +160,7 @@ function showAnswerRecord(response){
             content += '<div class="badge-box">';
                 content += '<div class="sub-title">';
                     content += '<span>';
-                    content += localStorage.getItem("userName");
+                    content += askerName;
                     content += '</span>';
 
                     content += '<span style="float:right;"><i class="fa fa-trophy" aria-hidden="true"></i>';
