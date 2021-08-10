@@ -1292,7 +1292,7 @@ function notNewAnymore() {
     $("#newNotification").removeClass("badge bg-c-pink");
     var myURL = head_url + "set_notification_new";
     var data = { user_id: localStorage.getItem("sessionID"), id: notificationIndex };
-
+    console.log("data: "+data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1301,11 +1301,11 @@ function notNewAnymore() {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            //        console.log("成功set_notification_new");
-            //        console.log(response);
+            console.log("成功set_notification_new");
+            console.log(response);
         },
         error: function (response) {
-
+            console.log(response);
         }
     });
 }
