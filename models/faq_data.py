@@ -7,6 +7,7 @@
 * ========================================'''
 
 from . import _db
+#import _db
 import re
 from datetime import datetime
 # 調整更新週期
@@ -93,7 +94,7 @@ def insert_faq(data_dict,data_type):
     if data_type == 'inner_faq':
         answer_id = 0
         for ans in data_dict['answers']:
-            ans['id'] = str(answer_id + 1).zfill(6)
+            ans['answer_id'] = str(answer_id + 1).zfill(6)
             answer_id += 1
         # 如果有tag，更新tag的紀錄
         if len(data_dict['tags']) != 0:
@@ -105,7 +106,8 @@ def insert_faq(data_dict,data_type):
 # 匯入FAQ
 def import_faq(data_list,data_type):
     all_faq = _db.FAQ_DATA_COLLECTION.find().skip(1)
-    if all_faq.count() == 0:
+    #print(all_faq.count())
+    if all_faq.count() == 1:
         current_id = '000000'
     else:
         # sort _id,將最大的+1當作新的_id
@@ -118,7 +120,7 @@ def import_faq(data_list,data_type):
         if data_type == 'inner_faq':
             answer_id = 0
             for ans in data_dict['answers']:
-                ans['id'] = str(answer_id + 1).zfill(6)
+                ans['answer_id'] = str(answer_id + 1).zfill(6)
                 answer_id += 1
             # 如果有tag，更新tag的紀錄
             if len(data_dict['tags']) != 0:
@@ -132,17 +134,17 @@ def insert_answer(data_dict):
     faq_id = data_dict.pop('faq_id')
     target_faq = _db.FAQ_DATA_COLLECTION.find_one({'_id':faq_id})
     if len(target_faq['answers']) == 0:
-        data_dict['id'] = '000001'
+        data_dict['answer_id'] = '000001'
     else:
-        biggest_id = int(sorted(target_faq['answers'], key = lambda k: k['id'],reverse=True)[0]['id'])
-        data_dict['id'] = str(biggest_id + 1).zfill(6)
+        biggest_id = int(sorted(target_faq['answers'], key = lambda k: k['answer_id'],reverse=True)[0]['answer_id'])
+        data_dict['answer_id'] = str(biggest_id + 1).zfill(6)
     _db.FAQ_DATA_COLLECTION.update({'_id':faq_id},{'$push':{'answers':data_dict}})
     # 更新tag count
     for tag in target_faq['tags']:
         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':1}})
 
 def update_answer(data_dict):
-    _db.FAQ_DATA_COLLECTION.update({'_id':data_dict['faq_id'],'answers.id':data_dict['id']},
+    _db.FAQ_DATA_COLLECTION.update({'_id':data_dict['faq_id'],'answers.answer_id':data_dict['answer_id']},
                                    {'$set':{'answers.$.content':data_dict['content'],
                                             'answers.$.vote':data_dict['vote'], 
                                             'answers.$.edit':data_dict['edit']}})
@@ -150,7 +152,7 @@ def update_answer(data_dict):
 def remove_answer(data_dict):
     tags = _db.FAQ_DATA_COLLECTION.find_one({'_id':data_dict['faq_id']})
     _db.FAQ_DATA_COLLECTION.update_one({'_id':data_dict['faq_id']},
-                                  {'$pull':{'answers':{'id':data_dict['id']}}})
+                                  {'$pull':{'answers':{'answer_id':data_dict['answer_id']}}})
     # 扣掉tag count
     for tag in tags:
         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter': -1}})
@@ -177,19 +179,20 @@ def transform_faq(faq_list):
             "answers" : 
             [
                 {       
-                    "_id" : ans['id'],       
+                    "answer_id" : ans['id'],  
                     "content" : ans['content'],
                     "edit":"",
                     "vote" : int(ans['vote']),     
                     "score" : [],
                 } for ans in faq['answers']
             ],
-            "keywords" : faq['kewords'],     
+            "keywords" : faq['keywords'],     
             "tags" : [],
             "time" : datetime.now().replace(microsecond=0),
             "view_count" : 0
         } for faq in faq_list
     ]
+    
     import_faq(transformed_list,'outer_faq')
 
 # 編輯貼文評分
@@ -216,24 +219,24 @@ def update_score(score_dict):
             _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id']},{'$push':{'question.score':new_score_record}})
     # response_id不為空表示更新回覆評分
     else :
-        target_answer = next(answer for answer in target_faq['answers'] if answer['id'] == score_dict['answer_id'])
+        target_answer = next(answer for answer in target_faq['answers'] if answer['answer_id'] == score_dict['answer_id'])
         # 若使用者按過讚/倒讚，使用set
         if any(score['user_id'] == score_dict['user'] for score in target_answer['score']):
             target_score = next(score for score in target_answer['score'] if score['user_id'] == score_dict['user'])
             if target_score['score'] == score_dict['score']:
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
-                                                    'answers.id':score_dict['answer_id'],
+                                                    'answers.answer_id':score_dict['answer_id'],
                                                     'answers.score.user_id':score_dict['user']},
                                                    {'$pull':{'answers.$.score':target_score}})
             else:
                 _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
-                                                    'answers.id':score_dict['answer_id']},
+                                                    'answers.answer_id':score_dict['answer_id']},
                                                    {'$set':{'answers.$.score.$[elem]':new_score_record}},
                                                    array_filters= [{ "elem.user_id": score_dict['user']}])
         # 否則直接push一個評分
         else:
              _db.FAQ_DATA_COLLECTION.update_one({'_id':score_dict['faq_id'],
-                                                'answers.id':score_dict['answer_id']},
+                                                'answers.answer_id':score_dict['answer_id']},
                                                {'$push':{'answers.$.score':new_score_record}})
 # 更新FAQ內容
 def update_faq(data_dict):
@@ -265,3 +268,5 @@ def remove_faq(faq_id):
          _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':-1}})
     _db.FAQ_DATA_COLLECTION.delete_one({'_id':faq_id})
 
+#if __name__ == "__main__":
+    #_db.FAQ_DATA_COLLECTION.delete_many({})
