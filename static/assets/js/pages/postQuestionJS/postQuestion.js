@@ -375,15 +375,12 @@ function save(){
     var anonymous = document.getElementById('anonymous').checked;
     
     var data = {asker_id: id, asker_name: name, title: title, question: question, edit: edit, tag: tag, time: time, incognito: anonymous};
-    console.log("是否匿名: "+anonymous);
     if(title.length==0){
-        console.log("標題不得為空");
-        $("#warningContent").val('標題不得為空');
+        $("#warningContent").text('標題不得為空');
         $("#warning").modal('show');
     }
     else if(question.length==0){
-        console.log("內容不得為空");
-        $("#warningContent").val('內容不得為空');
+        $("#warningContent").text('內容不得為空');
         $("#warning").modal('show');
     }
     else{
