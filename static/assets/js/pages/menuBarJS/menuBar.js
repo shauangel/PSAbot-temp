@@ -1052,7 +1052,7 @@ function save() {
 //編輯個人資訊 END
 
 //////////// Google 登出需要 init gapi ////////////
-function onLoadGoogleCallback() {
+window.onload = function(){
     gapi.load('auth2', function () {
         // Retrieve the singleton for the GoogleAuth library and set up the client.
         gapi.auth2.init({
