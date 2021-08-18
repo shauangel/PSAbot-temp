@@ -956,96 +956,102 @@ function cancle(id, page) {
 //////////////////儲存 照片＆姓名＆興趣標籤 START////////////////////
 function save() {
     // 把資料傳給後端
-
-    var userId = localStorage.getItem("sessionID");
-    var userImgName = userId + ".png";
-    let form = new FormData();
-    if (document.getElementById("headshotBtn").files[0] != null) {
-        form.append("img", document.getElementById("headshotBtn").files[0], userImgName);
-
-        var myURL = head_url + "save_user_img";
-
-        fetch(myURL, {
-            method: 'POST',
-            body: form,
-            async: false,
-        }).then(res => {
-            return res.json();   // 使用 json() 可以得到 json 物件
-        }).then(result => {
-            console.log(result); // 得到 {name: "oxxo", age: 18, text: "你的名字是 oxxo，年紀 18 歲～"}
-        });
-    }
-
-    myURL = head_url + "update_user_profile";
     var name = $("#userName").val();
-    var data = { "_id": userId, "name": name };
-    console.log("給後端的: ");
-    console.log(data);
-    $.ajax({
-        url: myURL,
-        type: "POST",
-        data: JSON.stringify(data),
-        async: false,
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            console.log("收到的: ");
-            console.log(response);
-            localStorage.setItem("userName", name);
-            //            console.log("成功: 更新姓名（update_user_profile）");
-        },
-        error: function (response) {
-            console.log("失敗: 更新姓名（update_user_profile）");
-            console.log(response);
+    if(name.length==0){
+       $("#warning").modal('show');
+    }
+    else{
+        var userId = localStorage.getItem("sessionID");
+        var userImgName = userId + ".png";
+        let form = new FormData();
+        if (document.getElementById("headshotBtn").files[0] != null) {
+            form.append("img", document.getElementById("headshotBtn").files[0], userImgName);
+
+            var myURL = head_url + "save_user_img";
+
+            fetch(myURL, {
+                method: 'POST',
+                body: form,
+                async: false,
+            }).then(res => {
+                return res.json();   // 使用 json() 可以得到 json 物件
+            }).then(result => {
+                console.log(result); // 得到 {name: "oxxo", age: 18, text: "你的名字是 oxxo，年紀 18 歲～"}
+            });
         }
-    });
 
-    // 更新畫面
-    getUserHeadshotAndName();
+        myURL = head_url + "update_user_profile";
 
-    // ---------- 傳興趣標籤 START ---------- //
-    var sendTags = [];
+        var data = { "_id": userId, "name": name };
+        console.log("給後端的: ");
+        console.log(data);
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("收到的: ");
+                console.log(response);
+                localStorage.setItem("userName", name);
+                //            console.log("成功: 更新姓名（update_user_profile）");
+            },
+            error: function (response) {
+                console.log("失敗: 更新姓名（update_user_profile）");
+                console.log(response);
+            }
+        });
 
-    // 先檢查被取消的
-    for (var i = 0; i < originTags.length; i++) {
-        if (chosenTags.indexOf(originTags[i]) == -1) {
-            var temp = { tag_id: originTags[i], skill_name: allTags[originTags[i]], interested_score: 0 };
-            sendTags.push(temp);
+        // 更新畫面
+        getUserHeadshotAndName();
+
+        // ---------- 傳興趣標籤 START ---------- //
+        var sendTags = [];
+
+        // 先檢查被取消的
+        for (var i = 0; i < originTags.length; i++) {
+            if (chosenTags.indexOf(originTags[i]) == -1) {
+                var temp = { tag_id: originTags[i], skill_name: allTags[originTags[i]], interested_score: 0 };
+                sendTags.push(temp);
+            }
         }
+
+        // 再新增要加上去的
+        for (var i = 0; i < chosenTags.length; i++) {
+            if (originTags.indexOf(chosenTags[i]) == -1) {
+                var temp = { tag_id: chosenTags[i], skill_name: allTags[chosenTags[i]], interested_score: 1 };
+                sendTags.push(temp);
+            }
+        }
+
+        var data = { _id: userId, tag: sendTags }
+        console.log("興趣標籤的修改: ");
+        console.log(data);
+
+        var myURL = head_url + "update_user_interest";
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("成功: 修改興趣標籤（update_inner_post）");
+                console.log(response);
+            },
+            error: function (response) {
+                console.log("失敗: 修改興趣標籤（update_inner_post）");
+                console.log(response);
+            }
+        });
+        // ---------- 傳興趣標籤 END ---------- //
+
+        getUserInterestTags();
     }
 
-    // 再新增要加上去的
-    for (var i = 0; i < chosenTags.length; i++) {
-        if (originTags.indexOf(chosenTags[i]) == -1) {
-            var temp = { tag_id: chosenTags[i], skill_name: allTags[chosenTags[i]], interested_score: 1 };
-            sendTags.push(temp);
-        }
-    }
-
-    var data = { _id: userId, tag: sendTags }
-    console.log("興趣標籤的修改: ");
-    console.log(data);
-
-    var myURL = head_url + "update_user_interest";
-    $.ajax({
-        url: myURL,
-        type: "POST",
-        data: JSON.stringify(data),
-        async: false,
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            console.log("成功: 修改興趣標籤（update_inner_post）");
-            console.log(response);
-        },
-        error: function (response) {
-            console.log("失敗: 修改興趣標籤（update_inner_post）");
-            console.log(response);
-        }
-    });
-    // ---------- 傳興趣標籤 END ---------- //
-
-    getUserInterestTags();
 }
 //////////////////儲存 照片＆姓名＆興趣標籤 END////////////////////
 
