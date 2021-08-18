@@ -376,7 +376,12 @@ function save(){
     
     var data = {asker_id: id, asker_name: name, title: title, question: question, edit: edit, tag: tag, time: time, incognito: anonymous};
     console.log("是否匿名: "+anonymous);
-    if(title=="" || question=="" || edit==""){
+    if(title==""){
+        $("#warningContent").val('標題不得為空');
+        $("#warning").modal('show');
+    }
+    else if(question==""){
+        $("#warningContent").val('內容不得為空');
         $("#warning").modal('show');
     }
     else{
