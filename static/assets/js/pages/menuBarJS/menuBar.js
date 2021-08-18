@@ -2,7 +2,6 @@
 var userPicSrc;
 var session_id;
 var first_start = true;
-var gauth;      // google登入相關
 function changePage() {
     console.log("變更頁面");
     var page = localStorage.getItem("page");
@@ -1051,21 +1050,25 @@ function save() {
 //////////////////儲存 照片＆姓名＆興趣標籤 END////////////////////
 
 //編輯個人資訊 END
+
+//////////// Google 登出需要 init gapi ////////////
+function onLoadGoogleCallback() {
+    gapi.load('auth2', function () {
+        // Retrieve the singleton for the GoogleAuth library and set up the client.
+        gapi.auth2.init({
+            client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
+            cookiepolicy: 'none',
+            scope: 'profile'
+        });
+    });
+}
 ////////////////// 登出 START ////////////////////
 function logOut() {
     if (localStorage.getItem('role') == 'google_user') {
-        gapi.auth2.init(
-            {
-                client_id: '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com',
-                cookiepolicy: 'none',
-                scope: 'profile'
-            }
-        ).then(function () { 
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('Google User signed out.');
-            });
-        })
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('Google User signed out.');
+        });
     }
     else if (localStorage.getItem('role') == 'facebook_user') {
         FB.logout(function (response) {
