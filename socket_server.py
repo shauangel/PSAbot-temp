@@ -5,7 +5,7 @@ import time
 new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 new_socket.connect(("8.8.8.8", 80))
 s_ip = new_socket.getsockname()[0]
-print(sip)
+print(s_ip)
 new_socket.close()
 #host_name = socket.gethostname()
 #port = 55003
