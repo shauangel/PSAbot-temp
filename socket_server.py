@@ -3,7 +3,7 @@ import sys
 import time
 
 new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-host_name = new_socket.gethostname()
+host_name = socket.gethostname()
 new_socket.connect(("8.8.8.8", 80))
 s_ip = new_socket.getsockname()[0]
 port = 55003
