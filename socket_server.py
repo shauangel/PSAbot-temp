@@ -5,6 +5,7 @@ import time
 new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 new_socket.connect(("8.8.8.8", 80))
 s_ip = new_socket.getsockname()[0]
+host_name = socket.gethostname()
 port = 8080
 
 new_socket.bind((host_name, port))
