@@ -5,7 +5,7 @@ import time
 new_socket = socket.socket()
 host_name = socket.gethostname()
 #s_ip = socket.gethostbyname(host_name)
-s_ip = socket.getfqdn()
+s_ip = socket.gethostbyname(socket.getfqdn())
 port = 55003
 
 new_socket.bind((host_name, port))
