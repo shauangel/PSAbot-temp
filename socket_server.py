@@ -6,9 +6,9 @@ new_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 new_socket.connect(("8.8.8.8", 80))
 s_ip = new_socket.getsockname()[0]
 host_name = socket.gethostname()
-port = 8080
+port = 55003
 
-new_socket.bind((host_name, port))
+new_socket.bind((s_ip, port))
 print("Binding successful!")
 print("This is your hostname: ", host_name)
 print("This is your IP: ", s_ip)
