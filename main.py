@@ -21,10 +21,18 @@ def create_app():
     app.config['SECRET_KEY'] = urandom(24).hex()
     #app.config.from_object(config.Config())
     CORS(app)
-    
+    # models setup
+    #models.setup(app)
+
     # security setup
+
     # Security(app, models.user.USER_DATASTORE,login_form=models.user.ExtendedLoginForm)
-    
+    ''' --- login manager ---- '''
+    login_manager = PSAbotLoginManager(app)
+    @login_manager.user_loader
+    def user_loader(user_id):  
+        user_now = UserModel(user_id)   
+        return user_now
     # register app
     register_blueprint(app)
     return app
@@ -33,25 +41,11 @@ def create_app():
 #def refresh_schedule():
 #    models.reschedule.refresh_schedule()
 
-''' --- login manager ---- '''
-def login_manager_setup():
-    app = Blueprint('app', __name__)
-    login_manager = PSAbotLoginManager()
-    login_manager.init_app(app)
-    @login_manager.user_loader
-    def user_loader(user_id):  
-        user_now = UserModel(user_id)   
-        return user_now
-    
-
 
 
 if __name__ == "__main__":
     # scheduler=APScheduler()
     app = create_app()
-    login_manager_setup()
-    app.config["FAQ_FOLDER"] = "/home/bach/PSAbot-vm/static/images/user_img"
-    
     # scheduler.init_app(app)
     # scheduler.start()
     app.run(host='0.0.0.0', port=55001)
