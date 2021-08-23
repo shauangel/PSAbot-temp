@@ -49,6 +49,8 @@ if __name__ == "__main__":
     # scheduler=APScheduler()
     app = create_app()
     login_manager_setup()
+    app.config["FAQ_FOLDER"] = "/home/bach/PSAbot-vm/static/images/user_img"
+    
     # scheduler.init_app(app)
     # scheduler.start()
     app.run(host='0.0.0.0', port=55001)
