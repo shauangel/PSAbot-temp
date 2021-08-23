@@ -1,8 +1,7 @@
 # --- flask --- #
 from datetime import datetime
-from flask import Blueprint,request, jsonify
 '''匯入faq相關'''
-from flask import Flask,flash,redirect
+from flask import Blueprint,request, jsonify,flash,redirect
 from werkzeug.utils import secure_filename
 import os
 import json
@@ -226,21 +225,15 @@ def delete_faq_post():
     return jsonify(data)
 
 
-UPLOAD_FOLDER = "/home/bach/PSAbot-vm/static/images/user_img"
-# UPLOAD_FOLDER = "/Users/jacknahu/Documents/GitHub/PQAbot/static/images/user_img"
-
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-ALLOWED_EXTENSIONS = {'json'}
-
 #判斷檔案類型
 def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'json'}
     return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @faq_api.route('/import_faq_post', methods=['POST'])
 def import_faq_post():
+    app = Blueprint('app',__name__)
     # check if the post request has the file part
     if 'faq' not in request.files:
           flash('No file part')
@@ -253,7 +246,7 @@ def import_faq_post():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            json_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            json_url = os.path.join(app.config['FAQ_FOLDER'], filename)
             # 存檔案
             file.save(json_url)
             data_list = json.load(open(json_url,'r',encoding='utf-8'))
