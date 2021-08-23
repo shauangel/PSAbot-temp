@@ -36,7 +36,8 @@ def create_app():
 ''' --- login manager ---- '''
 def login_manager_setup():
     app = Blueprint('app', __name__)
-    login_manager = PSAbotLoginManager(app)
+    login_manager = PSAbotLoginManager()
+    login_manager.init_app(app)
     @login_manager.user_loader
     def user_loader(user_id):  
         user_now = UserModel(user_id)   

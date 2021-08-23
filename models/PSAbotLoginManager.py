@@ -16,7 +16,6 @@ step2. use decorater
 class PSAbotLoginManager(LoginManager):
     def __init__(self, app):
         super().__init__()
-        self.init_app(app)
 
 # --------------- User class ---------------
 class UserModel(UserMixin):  
