@@ -1,16 +1,9 @@
 import time, socket, sys
  
-<<<<<<< HEAD
 new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host_name = socket.gethostname()
 s_ip = socket.gethostbyname(host_name)
 #s_ip = '127.0.0.1'
-=======
-new_socket = socket.socket(socket.AF_INET, socket.SOCKET_STREAM)
-host_name = socket.gethostname()
-#s_ip = socket.gethostbyname(host_name)
-s_ip = '8.8.8.8'
->>>>>>> bba6a35d21e83769ea8f811a2e9e987cabb55e1c
 port = 55003
 
 new_socket.bind((host_name, port))
