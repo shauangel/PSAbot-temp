@@ -1,4 +1,9 @@
 import time, socket, sys
+import urllib.request
+
+external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
+
+print("This is your IP: ", external_ip)
  
 new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host_name = socket.gethostname()
