@@ -37,7 +37,7 @@ def create_app():
         return user_now
     # register app
     register_blueprint(app)
-    socketio.init_app(app)
+    socketio.init_app(app,cors_allowed_origins="*")
     return app
 
 
