@@ -161,7 +161,7 @@ function managerLogin() {
 /* ================================================= */
 /* ============== socket.io測試 ============ */
 $(document).ready(function() {
-  var socket = io.connect('https://140.121.197.130:55001');
+  var socket = io.connect(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port)
 
   socket.on('connect', function() {
       socket.emit('my_event', {data: 'I\'m connected!'});
