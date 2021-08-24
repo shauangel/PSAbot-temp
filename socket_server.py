@@ -1,10 +1,6 @@
-import socket
-import sys
-import time
-
 import time, socket, sys
  
-new_socket = socket.socket()
+new_socket = socket.socket(socket.AF_INET, socket.SOCKET_STREAM)
 host_name = socket.gethostname()
 s_ip = socket.gethostbyname(host_name)
 port = 55003
@@ -23,7 +19,7 @@ print("Connection Established. Connected From", add[0])
 
 client = (conn.recv(1024)).decode()
 print(client + "has connected.")
-conn,send(name.encode())
+conn.send(name.encode())
 
 while True:
     message = input("Me: ")
