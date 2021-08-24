@@ -2,10 +2,11 @@ import socket
 import sys
 import time
 
-socket_server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-socket_server.connect(("8.8.8.8", 80))
-ip = socket_server.getsockname()[0]
-sport = 8081
+socket_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#socket_server.connect(("8.8.8.8", 80)) #80
+#ip = socket_server.getsockname()[0]
+ip = '127.0.0.1'
+sport = 55003
 
 print("This is your IP: ", ip)
 server_host = input("Enter friend\'s IP address:")
