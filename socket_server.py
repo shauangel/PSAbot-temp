@@ -3,7 +3,6 @@ import time, socket, sys
 new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host_name = socket.gethostname()
 s_ip = socket.gethostbyname(host_name)
-#s_ip = '127.0.0.1'
 port = 55003
 
 new_socket.bind((host_name, port))
@@ -19,7 +18,7 @@ print("Received connection from", add[0])
 print("Connection Established. Connected From", add[0])
 
 client = (conn.recv(1024)).decode()
-print(client + "has connected.")
+print(client + " has connected.")
 conn.send(name.encode())
 
 while True:
