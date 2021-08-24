@@ -159,3 +159,15 @@ function managerLogin() {
 }
 
 /* ================================================= */
+/* ============== socket.io測試 ============ */
+$(document).ready(function() {
+  var socket = io.connect(head_url);
+
+  socket.on('connect', function() {
+      socket.emit('my_event', {data: 'I\'m connected!'});
+  });
+  
+  socket.on('my_response', function(msg) {
+     console.log(msg.data);
+  });
+});
