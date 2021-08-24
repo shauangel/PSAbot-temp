@@ -1,12 +1,9 @@
-import socket
-import sys
-import time
-
 import time, socket, sys
  
-new_socket = socket.socket()
+new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host_name = socket.gethostname()
 s_ip = socket.gethostbyname(host_name)
+#s_ip = '127.0.0.1'
 port = 55003
 
 new_socket.bind((host_name, port))
@@ -14,7 +11,7 @@ print("Binding successful!")
 print("This is your hostname: ", host_name)
 print("This is your IP: ", s_ip)
 
-name = input("Enter name:")
+name = input("Enter name: ")
 new_socket.listen(1)
 
 conn, add = new_socket.accept()
