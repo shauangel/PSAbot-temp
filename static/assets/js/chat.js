@@ -1,5 +1,4 @@
 /* ============== socket.io測試 ============ */
-const io = require("socket.io-client");
 const socket = io('https://soselab.asuscomm.com:55002');
 $(document).ready(function() {
     console.log('socket : ' + Object.getOwnPropertyNames(socket))
@@ -20,6 +19,7 @@ $(document).ready(function() {
   
 function join_room(){
     socket.emit('join_room' , {'id': socket.id});
+    socket.emit('room_msg' , {'id': socket.id,'msg':'hello~'});
 }
 
 function join_room2(){
