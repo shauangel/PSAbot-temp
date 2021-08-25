@@ -43,7 +43,6 @@ def create_app():
 #    models.reschedule.refresh_schedule()
 
 
-
 if __name__ == "__main__":
     # scheduler=APScheduler()
     app = create_app()
@@ -51,15 +50,19 @@ if __name__ == "__main__":
     # scheduler.init_app(app)
     # scheduler.start()
     socketio.run(app, host='0.0.0.0',port=55001, debug=True)
-    #app.run(host='0.0.0.0', port=55001)
-    
-#"192.168.111.128",port=55001
-
+    #app.run(host='0.0.0.0', port=55001)    
+    #"192.168.111.128",port=55001
 
 # ---- socketio ---- #
 from flask_socketio import emit, join_room, leave_room
+@socketio.on('connect')
+def test_connect():
+    emit('my response', {'data': 'Server say Connected'})
+    
 @socketio.on('connect_event')
 def connected_msg(msg):
     print(msg)
     emit('server_response', {'data': 'server received :' + msg['data']})
+
+
 
