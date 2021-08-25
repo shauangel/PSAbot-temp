@@ -15,7 +15,7 @@ from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
 from flask_socketio import SocketIO
 
-socketio = SocketIO()
+
 
 def create_app():
     app = Flask(__name__)
@@ -37,7 +37,6 @@ def create_app():
         return user_now
     # register app
     register_blueprint(app)
-    socketio.init_app(app,cors_allowed_origins="*")
     return app
 
 
@@ -49,6 +48,7 @@ def create_app():
 if __name__ == "__main__":
     # scheduler=APScheduler()
     app = create_app()
+    socketio = SocketIO(app,cors_allowed_origins="*")
     # scheduler.init_app(app)
     # scheduler.start()
     socketio.run(app, host='0.0.0.0',port=55001, debug=True)
