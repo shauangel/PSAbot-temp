@@ -14,7 +14,6 @@ from views import register_blueprint
 from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
 from flask_socketio import SocketIO
-import psa_socket
 
 
 def create_app():
@@ -55,4 +54,12 @@ if __name__ == "__main__":
     #app.run(host='0.0.0.0', port=55001)
     
 #"192.168.111.128",port=55001
+
+
+# ---- socketio ---- #
+from flask_socketio import emit, join_room, leave_room
+@socketio.on('connect_event')
+def connected_msg(msg):
+    print(msg)
+    emit('server_response', {'data': 'server received :' + msg['data']})
 
