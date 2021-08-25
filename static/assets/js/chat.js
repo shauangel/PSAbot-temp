@@ -19,6 +19,7 @@ $(document).ready(function() {
   
 function join_room(){
     socket.emit('join_room' , {'id': socket.id});
+    socket.emit('room_msg' , {'id': socket.id,'msg':'hello~'});
 }
 
 function join_room2(){
