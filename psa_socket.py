@@ -19,5 +19,5 @@ def connected_msg(msg):
     print('---------- connect_event -----------')
     print(type(msg))
     print(msg)
-    emit('server_response', 'received :' + msg)
+    emit('server_response',msg)
     
