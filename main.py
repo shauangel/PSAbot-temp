@@ -6,6 +6,7 @@ Created on Mon Mar 15 16:44:08 2021
 @author: linxiangling
 """
 from flask import Flask, jsonify
+
 #from flask_apscheduler import APScheduler
 #from flask_security import Security
 from flask_cors import CORS
@@ -13,7 +14,7 @@ from views import register_blueprint
 #from lib import config
 from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO,emit, join_room, leave_room
 
 
 def create_app():
@@ -38,6 +39,17 @@ def create_app():
     register_blueprint(app)
     # socket io
     socketio = SocketIO(app,cors_allowed_origins="*")
+    print('----------socket-----------')
+    @socketio.on('connect')
+    def test_connect():
+        print('connected.')
+        emit('connect', 'server says connected.')
+    
+    @socketio.on('connect_event')
+    def connected_msg(msg):
+        print(msg)
+        emit('server_response', 'received :' + msg)
+
     return (socketio, app)
 
 
@@ -54,17 +66,6 @@ if __name__ == "__main__":
     #app.run(host='0.0.0.0', port=55001)    
     #"192.168.111.128",port=55001
 
-# ---- socketio ---- #
-from flask_socketio import emit, join_room, leave_room
-@socketio.on('connect')
-def test_connect():
-    print('connected.')
-    emit('connect', 'server says connected.')
-    
-@socketio.on('connect_event')
-def connected_msg(msg):
-    print(msg)
-    emit('server_response', 'received :' + msg)
 
 
 
