@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # scheduler.init_app(app)
     # scheduler.start()
     print('socketio.run()')
-    socketio.run(app, host='0.0.0.0',port=55001, debug=True)
+    socketio.run(app, host='0.0.0.0',port=55001, debug=False)
     #app.run(host='0.0.0.0', port=55001)    
     #"192.168.111.128",port=55001
 
