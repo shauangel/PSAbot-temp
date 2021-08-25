@@ -166,9 +166,9 @@ $(document).ready(function() {
   socket.on('connect', function(msg) {
     console.log('socket.on : ' + msg);
     socket.emit('connect_event', {data: 'js say connected!'});
-    console.log('socket.emit : connect_event');
   })
+
   socket.on('server_response', function(msg) {
-      console.log('server_response : ' + typeof msg + ' ' + msg);
+      console.log('server_response : ' + typeof msg + ' ' + msg.data);
    });
 });
