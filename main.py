@@ -5,7 +5,7 @@ Created on Mon Mar 15 16:44:08 2021
 
 @author: linxiangling
 """
-from flask import Flask
+from flask import Flask, jsonify
 #from flask_apscheduler import APScheduler
 #from flask_security import Security
 from flask_cors import CORS
@@ -59,12 +59,12 @@ from flask_socketio import emit, join_room, leave_room
 @socketio.on('connect')
 def test_connect():
     print('connected.')
-    emit('connect_event', {'data': 'Server say Connected'})
+    emit('connect_event', jsonify({'data': 'Server say Connected'}))
     
 @socketio.on('connect_event')
 def connected_msg(msg):
     print(msg)
-    emit('server_response', {'data': 'server received :' + msg['data']})
+    emit('server_response', jsonify({'data': 'server received :' + msg['data']}))
 
 
 
