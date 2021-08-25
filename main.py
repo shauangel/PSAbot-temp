@@ -39,7 +39,7 @@ def create_app():
     register_blueprint(app)
     # socket io
     socketio = SocketIO(app,cors_allowed_origins="*")
-    
+    print('----------socket-----------')
     @socketio.on('connect')
     def test_connect():
         print('connected.')
