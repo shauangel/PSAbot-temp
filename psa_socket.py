@@ -27,6 +27,7 @@ def join_chat_room(data):
     print(data)
     join_room('room01')
     emit('room_msg', data['id'] + ' has entered the room.', to='room01')
+    emit('room_msg', data['id'] + ' you cannot see me.', to='room02')
     
     
     
