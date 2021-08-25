@@ -1,8 +1,12 @@
-from flask_socketio import emit, join_room, leave_room
-from main import socketio
+from flask_socketio import SocketIO,emit, join_room, leave_room
 
 
 print('----------socket-----------')
+
+socketio = SocketIO()
+def init_socketio(app):
+    socketio.init_app(app,cors_allowed_origins="*")
+    
 @socketio.on('connect')
 def test_connect():
     print('connected.')
