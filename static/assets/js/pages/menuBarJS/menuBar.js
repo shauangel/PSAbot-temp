@@ -406,67 +406,78 @@ function start() {
 
 
     setMenuBar();
-    // ---------- 個人資料 START ---------- //
-    showIdentity();
-    getUserHeadshotAndName();
-    var role = localStorage.getItem("role");
-    if (role == "facebook_user" || role == "google_user") {
-        getUserInterestTags();
+    if(session_id==undefined){
+        console.log("SESSIONID是未定義");
     }
-    // ---------- 個人資料 END ---------- //
+    else if(session_id==null){
+        console.log("SESSIONID是null");
+    }
+    else{
+        console.log("SESSIONID是other");
+    }
+    if(false){
+        // ---------- 個人資料 START ---------- //
+        showIdentity();
+        getUserHeadshotAndName();
+        var role = localStorage.getItem("role");
+        if (role == "facebook_user" || role == "google_user") {
+            getUserInterestTags();
+        }
+        // ---------- 個人資料 END ---------- //
 
 
-    localStorage.setItem("page", "home");
+        localStorage.setItem("page", "home");
 
-    $(document).ready(function () {
-        $('#action_menu_btn').click(function () {
-            $('.action_menu').toggle();
-        });
-    });
-
-
-    var role = localStorage.getItem("role");
-    if (role != "manager") {
-        // ---------- PSABot聊天室 START ---------- //
-        //到時候要用session_id
-
-        //傳session_start
-        var myURL = head_url + "session_start?sender_id=" + session_id;
-        console.log("myURL: " + myURL);
-        $.ajax({
-            url: myURL,
-            type: "GET",
-            dataType: "json",
-            async: false,
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
-                console.log("response: " + response);
-                console.log(response);
-            },
-            error: function () {
-                console.log("error");
-            }
+        $(document).ready(function () {
+            $('#action_menu_btn').click(function () {
+                $('.action_menu').toggle();
+            });
         });
 
 
-        var myURL = head_url + "welcome?sender_id=" + session_id;
-        console.log("myURL: " + myURL);
-        $.ajax({
-            url: myURL,
-            type: "GET",
-            dataType: "json",
-            async: false,
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
-                console.log("");
-                console.log(response);
-                bot(response.text)
-            },
-            error: function () {
-                console.log("error");
-            }
-        });
-        // ---------- PSABot聊天室 END ---------- //
+        var role = localStorage.getItem("role");
+        if (role != "manager") {
+            // ---------- PSABot聊天室 START ---------- //
+            //到時候要用session_id
+
+            //傳session_start
+            var myURL = head_url + "session_start?sender_id=" + session_id;
+            console.log("myURL: " + myURL);
+            $.ajax({
+                url: myURL,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    console.log("response: " + response);
+                    console.log(response);
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+
+
+            var myURL = head_url + "welcome?sender_id=" + session_id;
+            console.log("myURL: " + myURL);
+            $.ajax({
+                url: myURL,
+                type: "GET",
+                dataType: "json",
+                async: false,
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    console.log("");
+                    console.log(response);
+                    bot(response.text)
+                },
+                error: function () {
+                    console.log("error");
+                }
+            });
+            // ---------- PSABot聊天室 END ---------- //
+        }   
     }
 
 }
@@ -474,9 +485,9 @@ function start() {
 function setMenuBar() {
     var role = localStorage.getItem("role"), start, end;
     var leftManuBarPagesContent = "";
-    var setPage = ["home", "profileFrame", "postQuestionFrame", "postRowFrame", "FaqFrame", "home", "postRowFrame", "FaqFrame", "manageDataFrame"];
-    var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "fa fa-cogs", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench"];
-    var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "瀏覽FAQ", "首頁", "管理內部貼文", "管理FAQ資料", "管理資料更新數據"];
+    var setPage = ["home", "profileFrame", "postQuestionFrame", "postRowFrame", "FaqFrame", "home", "postRowFrame", "FaqFrame", "manageDataFrame", "home", "postRowFrame", "FaqFrame"];
+    var pageIcon = ["ti-home", "fa fa-user-o", "fa fa-file-text-o", "fa fa-eye", "fa fa-cogs", "ti-home", "fa fa-clipboard", "fa fa-cogs", "fa fa-wrench", "ti-home", "fa fa-eye", "fa fa-cogs"];
+    var pageName = ["首頁", "個人頁面", "發布貼文", "瀏覽貼文", "瀏覽FAQ", "首頁", "管理內部貼文", "管理FAQ資料", "管理資料更新數據", "首頁", "瀏覽貼文", "瀏覽FAQ"];
 
     if (role == "facebook_user" || role == "google_user") {
         start = 0;
@@ -485,6 +496,11 @@ function setMenuBar() {
     else if (role == "manager") {
         start = 5;
         end = 9;
+        document.getElementById("interestingTags").innerHTML = "";
+    }
+    else{
+        start = 9;
+        end = 12;
         document.getElementById("interestingTags").innerHTML = "";
     }
 
