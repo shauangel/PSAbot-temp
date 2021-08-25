@@ -27,6 +27,13 @@ def join_chat_room(data):
     print(data)
     join_room(data['room'])
     emit('room_msg', data['id'] + ' has entered ' + data['room'], to=data['room'])
+    
+@socketio.on('leave_room')
+def leave_chat_room(data):
+    print('---------- leave_room -----------')
+    print(data)
+    leave_room(data['room'])
+    emit('room_msg', data['id'] + ' has left ' + data['room'], to=data['room'])
 
 @socketio.on('send_msg')
 def send_msg(data):
