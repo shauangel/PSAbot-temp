@@ -170,7 +170,7 @@ $(document).ready(function() {
 
   socket.on('server_response', function(msg) {
       console.log('server_response : ' + typeof msg + ' ' + msg.data);
-      socket.emit('join_room' + {'id': socket.id});
+      socket.emit('join_room' , {'id': socket.id});
    });
   socket.on('room_msg', function(msg) {
     console.log('room_msg : ' + typeof msg + ' ' + msg.data);
