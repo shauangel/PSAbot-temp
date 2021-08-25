@@ -25,7 +25,6 @@ def connected_msg(msg):
 def join_chat_room(data):
     print('---------- join_room -----------')
     print(data)
-    join_chat_room('room01')
-    emit('room_msg', data['id'] + ' has entered the room.', to='room01')
+    
     
     
