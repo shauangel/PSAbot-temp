@@ -169,6 +169,6 @@ $(document).ready(function() {
     console.log('socket.emit : connect_event');
   })
   socket.on('server_response', function(msg) {
-    console.log('server_response : ' + typeof msg + ' ' + msg);
- });
+      console.log('server_response : ' + typeof msg + ' ' + msg);
+   });
 });
