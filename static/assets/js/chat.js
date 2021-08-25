@@ -1,5 +1,4 @@
 /* ============== socket.io測試 ============ */
-const io = require("socket.io-client");
 const socket = io('https://soselab.asuscomm.com:55002');
 $(document).ready(function() {
     console.log('socket : ' + Object.getOwnPropertyNames(socket))
