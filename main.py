@@ -15,7 +15,7 @@ from views import register_blueprint
 from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
 from flask_socketio import SocketIO,emit, join_room, leave_room
-from . import psa_socket
+import psa_socket
 
 socketio = SocketIO()
 
