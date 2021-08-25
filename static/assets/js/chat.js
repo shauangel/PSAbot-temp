@@ -20,3 +20,7 @@ $(document).ready(function() {
 function join_room(){
     socket.emit('join_room' , {'id': socket.id});
 }
+
+function join_room2(){
+    socket.emit('join_room2' , {'id': socket.id});
+}
