@@ -21,3 +21,10 @@ def connected_msg(msg):
     print(msg)
     emit('server_response',msg)
     
+@socketio.on('join_room')
+def join_chat_room(data):
+    room = 'room'
+    join_room('room')
+    emit('room_msg',data['id'] + ' has entered the room.', to=room)
+    
+    
