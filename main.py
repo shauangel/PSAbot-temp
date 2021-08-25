@@ -58,7 +58,8 @@ if __name__ == "__main__":
 from flask_socketio import emit, join_room, leave_room
 @socketio.on('connect')
 def test_connect():
-    emit('my response', {'data': 'Server say Connected'})
+    print('connected.')
+    emit('connect_event', {'data': 'Server say Connected'})
     
 @socketio.on('connect_event')
 def connected_msg(msg):
