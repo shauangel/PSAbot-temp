@@ -510,10 +510,20 @@ function setMenuBar() {
 
     // 登出Button
     leftManuBarPagesContent += '<li style="position: fixed; bottom: 10px; display: block;">';
-    leftManuBarPagesContent += '<a href="#" onclick="logOut()">';
+    if(role==undefined){
+       leftManuBarPagesContent += '<a href="#" onclick="returnToLogin()">';
+    }
+    else{
+       leftManuBarPagesContent += '<a href="#" onclick="logOut()">';
+    }
     leftManuBarPagesContent += '<button class="btn btn-outline" style="width: 230px; background-color: #5D478B;">';
     leftManuBarPagesContent += '<i class="fa fa-sign-out" aria-hidden="true" style="color: white;"></i>';
-    leftManuBarPagesContent += '<span data-i18n="nav.dash.main" style="color: white;">登出</span>';
+    if(role==undefined){
+        leftManuBarPagesContent += '<span data-i18n="nav.dash.main" style="color: white;">登入</span>';
+    }
+    else{
+        leftManuBarPagesContent += '<span data-i18n="nav.dash.main" style="color: white;">登出</span>';
+    }
     leftManuBarPagesContent += '</button>';
     leftManuBarPagesContent += '</a>';
     leftManuBarPagesContent += '</li>';
@@ -1097,6 +1107,11 @@ function logOut() {
     localStorage.clear();
     window.location.href = "https://soselab.asuscomm.com:55002/site/login";
 }
+
+function returnToLogin(){
+    localStorage.clear();
+    window.location.href = "https://soselab.asuscomm.com:55002/site/login";
+}
 ////////////////// 登出 END ////////////////////
 
 ////////////////// 不同頁面監聽localStorage START //////////////////
@@ -1380,7 +1395,9 @@ window.addEventListener("load", function () {
         }(document, 'script', 'facebook-jssdk'));
     }
     else {
-        console.log("有清空聊天室");
+        if(session_id==undefined){
+            document.getElementById("main-menu-header").innerHTML = "";
+        }
         document.getElementById("chatImage").innerHTML = "";//聊天圖像
         document.getElementById("chatroom").innerHTML = "";//聊天視窗
         document.getElementById("chatList").innerHTML = "";//聊天列表
