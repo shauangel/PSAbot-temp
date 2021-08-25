@@ -59,7 +59,7 @@ from flask_socketio import emit, join_room, leave_room
 @socketio.on('connect')
 def test_connect():
     print('connected.')
-    emit('connect_event', jsonify({'data': 'Server say Connected'}))
+    emit('connect', jsonify({'data': 'Server say Connected'}))
     
 @socketio.on('connect_event')
 def connected_msg(msg):
