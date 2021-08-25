@@ -161,10 +161,11 @@ function managerLogin() {
 /* ================================================= */
 /* ============== socket.io測試 ============ */
 $(document).ready(function() {
-  var socket = io.connect('http://soselab.asuscomm.com:55001',{secure: true})
+  var socket = io();
 
-  socket.on('connect', function() {
+  socket.on('connect', function(msg) {
       socket.emit('my_event', {data: 'I\'m connected!'});
+      console.log(msg.data);
   });
   
   socket.on('my_response', function(msg) {
