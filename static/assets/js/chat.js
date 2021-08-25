@@ -1,7 +1,7 @@
 /* ============== socket.io測試 ============ */
 var socket = io('https://soselab.asuscomm.com:55002')
 $(document).ready(function() {
-    console.log('socket : ' + socket.document)
+    console.log('socket : ' + Object.getOwnPropertyNames(socket))
     socket.on('connect', function(msg) {
       console.log('socket.on : ' + msg);
       socket.emit('connect_event', {data: 'js say connected!'});
