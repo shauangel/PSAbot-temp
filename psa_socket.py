@@ -25,16 +25,15 @@ def connected_msg(msg):
 def join_chat_room(data):
     print('---------- join_room -----------')
     print(data)
-    join_room('room01')
-    emit('room_msg', data['id'] + ' has entered the room01.', to='room01')
-    emit('room_msg', data['id'] + ' somebody join room01 ...', to='room02')
+    join_room(data['room'])
+    emit('room_msg', data['id'] + ' has entered ' + data['room'], to=data['room'])
 
-@socketio.on('join_room2')
-def join_chat_room02(data):
-    print('---------- join_room -----------')
+@socketio.on('send_msg')
+def send_msg(data):
+    print('---------- send_msg -----------')
     print(data)
-    join_room('room02')
-    emit('room_msg', data['id'] + ' has entered the room02.', to='room02')
-    emit('room_msg', data['id'] + ' somebody join room02 ...', to='room01')
+    emit('room_msg', '('+ data['room'] + ') ' + data['id'] + ' : ' + data['msg'], to=data['room'])
+
+
     
     
