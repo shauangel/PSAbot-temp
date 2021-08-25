@@ -5,7 +5,7 @@ Created on Mon Mar 15 16:44:08 2021
 
 @author: linxiangling
 """
-from flask import Flask, jsonify
+from flask import Flask
 
 #from flask_apscheduler import APScheduler
 #from flask_security import Security
@@ -15,7 +15,9 @@ from views import register_blueprint
 from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
 from flask_socketio import SocketIO,emit, join_room, leave_room
+from . import psa_socket
 
+socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
@@ -38,17 +40,8 @@ def create_app():
     # register app
     register_blueprint(app)
     # socket io
-    socketio = SocketIO(app,cors_allowed_origins="*")
-    print('----------socket-----------')
-    @socketio.on('connect')
-    def test_connect():
-        print('connected.')
-        emit('connect', 'server says connected.')
+    socketio.init(app,cors_allowed_origins="*")
     
-    @socketio.on('connect_event')
-    def connected_msg(msg):
-        print(msg)
-        emit('server_response', 'received :' + msg)
 
     return (socketio, app)
 
