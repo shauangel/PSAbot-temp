@@ -14,10 +14,8 @@ from views import register_blueprint
 #from lib import config
 from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
-from flask_socketio import SocketIO,emit, join_room, leave_room
-import psa_socket
 
-socketio = SocketIO()
+from psa_socket import socketio,init_socketio
 
 def create_app():
     app = Flask(__name__)
@@ -40,10 +38,10 @@ def create_app():
     # register app
     register_blueprint(app)
     # socket io
-    socketio.init_app(app,cors_allowed_origins="*")
+    init_socketio(app)
     
 
-    return (socketio, app)
+    return app
 
 
 #def refresh_schedule():
@@ -52,7 +50,7 @@ def create_app():
 
 if __name__ == "__main__":
     # scheduler=APScheduler()
-    socketio,app = create_app()
+    app = create_app()
     # scheduler.init_app(app)
     # scheduler.start()
     socketio.run(app, host='0.0.0.0',port=55001, debug=True)
