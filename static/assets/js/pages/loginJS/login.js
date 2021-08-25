@@ -163,9 +163,8 @@ function managerLogin() {
 $(document).ready(function() {
   var socket = io.connect('https://soselab.asuscomm.com:55002')
 
-  socket.on('connect', function(msg) {
+  socket.on('connect', function() {
     socket.emit('my_event', {data: 'I\'m connected!'});
-    console.log(msg.data);
 });
 
   
