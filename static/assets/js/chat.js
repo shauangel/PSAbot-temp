@@ -1,8 +1,7 @@
 /* ============== socket.io測試 ============ */
-var socket;
+var socket = io.connect('https://soselab.asuscomm.com:55002')
 $(document).ready(function() {
-    var socket = io.connect('https://soselab.asuscomm.com:55002')
-  
+    
     socket.on('connect', function(msg) {
       console.log('socket.on : ' + msg);
       socket.emit('connect_event', {data: 'js say connected!'});
@@ -16,8 +15,8 @@ $(document).ready(function() {
       console.log('room_msg : ' + typeof msg + ' ' + msg.data);
    });
    
-  });
+});
   
-  function join_room(){
+function join_room(){
     socket.emit('join_room' , {'id': socket.id});
 }
