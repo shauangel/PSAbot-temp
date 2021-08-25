@@ -27,6 +27,10 @@ function join_room2(){
     localStorage.setItem('room', 'room02');
 }
 
+function leave_room(){
+    socket.emit('leave_room' , {'id': socket.id,'room':localStorage.getItem('room')});
+}
+
 function say_hi(){
     socket.emit('send_msg' , {'id': socket.id,'room': localStorage.getItem('room'),'msg':'hello~'});
 }
