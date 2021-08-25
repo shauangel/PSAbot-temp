@@ -1,4 +1,5 @@
 from flask_socketio import SocketIO,emit, join_room, leave_room
+from flask import jsonify
 
 
 print('----------import psa socket-----------')
@@ -17,4 +18,5 @@ def test_connect():
 def connected_msg(msg):
     print('---------- connect_event -----------')
     print(msg)
-    emit('server_response', 'received :' + str(msg))
+    emit('server_response', 'received :' + jsonify(msg))
+    
