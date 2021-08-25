@@ -404,18 +404,16 @@ function start() {
     });
     // ---------- 同個頁面監聽localStorage END ---------- //
 
+    localStorage.setItem("page", "home");
 
+    $(document).ready(function () {
+        $('#action_menu_btn').click(function () {
+            $('.action_menu').toggle();
+        });
+    });
+    
     setMenuBar();
-    if(session_id==undefined){
-        console.log("SESSIONID是未定義");
-    }
-    else if(session_id==null){
-        console.log("SESSIONID是null");
-    }
-    else{
-        console.log("SESSIONID是other");
-    }
-    if(false){
+    if(session_id!=undefined){
         // ---------- 個人資料 START ---------- //
         showIdentity();
         getUserHeadshotAndName();
@@ -424,16 +422,6 @@ function start() {
             getUserInterestTags();
         }
         // ---------- 個人資料 END ---------- //
-
-
-        localStorage.setItem("page", "home");
-
-        $(document).ready(function () {
-            $('#action_menu_btn').click(function () {
-                $('.action_menu').toggle();
-            });
-        });
-
 
         var role = localStorage.getItem("role");
         if (role != "manager") {
@@ -1392,6 +1380,7 @@ window.addEventListener("load", function () {
         }(document, 'script', 'facebook-jssdk'));
     }
     else {
+        console.log("有清空聊天室");
         document.getElementById("chatImage").innerHTML = "";//聊天圖像
         document.getElementById("chatroom").innerHTML = "";//聊天視窗
         document.getElementById("chatList").innerHTML = "";//聊天列表
