@@ -1,5 +1,5 @@
 /* ============== socket.io測試 ============ */
-var socket = io.connect('https://soselab.asuscomm.com:55002')
+var socket = io('https://soselab.asuscomm.com:55002')
 $(document).ready(function() {
     
     socket.on('connect', function(msg) {
@@ -19,7 +19,7 @@ $(document).ready(function() {
   
 function join_room(){
     socket.emit('join_room' , {'id': socket.id});
-    io.to('room01').emit('room_msg', {'id':socket.id,'msg':'hello!'})
+    socket.to('room01').emit('room_msg', {'id':socket.id,'msg':'hello!'})
 }
 
 function join_room2(){
