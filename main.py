@@ -40,7 +40,7 @@ def create_app():
     # register app
     register_blueprint(app)
     # socket io
-    socketio.init(app,cors_allowed_origins="*")
+    socketio.init_app(app,cors_allowed_origins="*")
     
 
     return (socketio, app)
