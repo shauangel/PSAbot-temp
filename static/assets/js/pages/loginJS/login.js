@@ -162,6 +162,6 @@ function managerLogin() {
 
 /* ================ 訪客 START ================= */
 function visitor(){
-    window.location.href = head_url + "menuBar";
+    window.location.href = "https://soselab.asuscomm.com:55002/site/PSAbot";
 }
 /* ================ 訪客 END ================= */
