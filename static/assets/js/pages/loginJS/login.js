@@ -164,11 +164,10 @@ $(document).ready(function() {
   var socket = io.connect('https://soselab.asuscomm.com:55002')
 
   socket.on('connect', function() {
-    socket.emit('connect', {data: 'I\'m connected!'});
-});
-
+    socket.emit('connect_event', {data: 'js connected!'});
+  })
   
-  socket.on('my_response', function(msg) {
+  socket.on('server_response', function(msg) {
      console.log(msg.data);
   });
 });
