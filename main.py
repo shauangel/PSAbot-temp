@@ -36,7 +36,9 @@ def create_app():
         return user_now
     # register app
     register_blueprint(app)
-    return app
+    # socket io
+    socketio = SocketIO(app,cors_allowed_origins="*")
+    return (socketio, app)
 
 
 #def refresh_schedule():
@@ -45,8 +47,7 @@ def create_app():
 
 if __name__ == "__main__":
     # scheduler=APScheduler()
-    app = create_app()
-    socketio = SocketIO(app,cors_allowed_origins="*")
+    socketio,app = create_app()
     # scheduler.init_app(app)
     # scheduler.start()
     socketio.run(app, host='0.0.0.0',port=55001, debug=True)
