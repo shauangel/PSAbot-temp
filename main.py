@@ -14,7 +14,7 @@ from views import register_blueprint
 #from lib import config
 from os import urandom
 from models.PSAbotLoginManager import PSAbotLoginManager,UserModel
-from psa_socket import socketio,init_socketio
+from psa_socket import psa_socket
 
 def create_app():
     app = Flask(__name__)
@@ -37,7 +37,7 @@ def create_app():
     # register app
     register_blueprint(app)
     # socket io
-    init_socketio(app)
+    psa_socket.init_socketio(app)
     
 
     return app
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     app = create_app()
     # scheduler.init_app(app)
     # scheduler.start()
-    socketio.run(app, host='0.0.0.0',port=55001, debug=True)
+    psa_socket.socketio.run(app, host='0.0.0.0',port=55001)
     #app.run(host='0.0.0.0', port=55001)    
     #"192.168.111.128",port=55001
 
