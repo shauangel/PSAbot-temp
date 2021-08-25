@@ -1,5 +1,5 @@
 /* ============== socket.io測試 ============ */
-var socket = io('https://soselab.asuscomm.com:55003')
+var socket = io('https://soselab.asuscomm.com:55002')
 $(document).ready(function() {
     console.log('socket : ' + typeof socket)
     socket.on('connect', function(msg) {
