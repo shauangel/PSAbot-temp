@@ -17,6 +17,7 @@ def test_connect():
 @socketio.on('connect_event')
 def connected_msg(msg):
     print('---------- connect_event -----------')
+    print(type(msg))
     print(msg)
-    emit('server_response', 'received :' + jsonify(msg))
+    emit('server_response', 'received :' + msg)
     
