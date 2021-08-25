@@ -1,4 +1,5 @@
 /* ============== socket.io測試 ============ */
+var socket;
 $(document).ready(function() {
     var socket = io.connect('https://soselab.asuscomm.com:55002')
   
