@@ -18,13 +18,15 @@ $(document).ready(function() {
 });
   
 function join_room(){
-    socket.emit('join_room' , {'id': socket.id});
+    socket.emit('join_room' , {'id': socket.id,'room':'room01'});
+    localStorage.setItem('room', 'room01');
 }
 
 function join_room2(){
-    socket.emit('join_room2' , {'id': socket.id});
+    socket.emit('join_room' , {'id': socket.id,'room':'room02'});
+    localStorage.setItem('room', 'room02');
 }
 
 function say_hi(){
-    socket.emit('room_msg' , {'id': socket.id,'msg':'hello~'});
+    socket.emit('send_msg' , {'id': socket.id,'room': localStorage.getItem('room'),'msg':'hello~'});
 }
