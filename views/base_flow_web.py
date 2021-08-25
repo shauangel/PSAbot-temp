@@ -83,3 +83,7 @@ def FaqFrame():
 @base_flow_web.route("/manageDataFrame")
 def manageDataFrame():
     return render_template("manageDataFrame.html")
+
+@base_flow_web.route("/testsocket")
+def testSocketio():
+    return render_template("testSocketio.html")
