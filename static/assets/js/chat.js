@@ -12,7 +12,7 @@ $(document).ready(function() {
      });
   
     socket.on('room_msg', function(msg) {
-      console.log('room_msg: ' + typeof msg + ' ' + msg);
+      console.log('room_msg : ' + msg);
    });
    
 });
