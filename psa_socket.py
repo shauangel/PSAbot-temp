@@ -20,24 +20,20 @@ def join_chat_room(data):
     print('---------- client join_room -----------')
     print(data)
     join_room(data['room'])
-    emit('room_msg', {
-        'msg':
-            '(Room '+ data['room'] + ') ' + data['id'] + ' has entered room ' + data['room']}, to=data['room'])
+    emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'(has entered the room ...)'}, to=data['room'])
     
 @socketio.on('leave_room')
 def leave_chat_room(data):
     print('---------- client leave_room -----------')
     print(data)
     leave_room(data['room'])
-    emit('room_msg', {
-        'msg':
-            '(Room '+ data['room'] + ') ' + data['id'] + ' has left room ' + data['room']}, to=data['room'])
+    emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'(has left the room ...)'}, to=data['room'])
 
 @socketio.on('send_msg')
 def send_msg(data):
     print('---------- client send_msg -----------')
     print(data)
-    emit('room_msg', '(Room '+ data['room'] + ') ' + data['id'] + ' : ' + data['msg'], to=data['room'])
+    emit('room_msg', {'room': data['room'],'id':data['id'],'msg':data['msg']}, to=data['room'])
 
 
     
