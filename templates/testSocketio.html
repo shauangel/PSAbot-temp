@@ -25,13 +25,16 @@
         </div>
         <hr>
         <form class="row">
-            <div class="col-8 justify-content-center">
+            <div class="col-2 justify-content-center">
+                <input type="text" id="room_input" class="form-control" placeholder="Room number">
+            </div>
+            <div class="col-5 justify-content-center">
                 <input type="text" id="user_input" class="form-control" placeholder="請輸入訊息">
             </div>
-            <div class="col-4 justify-content-center">
+            <div class="col-5 justify-content-center">
                 <input type="button" id="send_btn" value="Submit" onclick="send_message();">
                 <input type="button" id="change_btn" value="leave room" onclick="leave_room();">
-                <input type="button" id="join_btn" value="join room" onclick="set_room();">
+                <input type="button" id="join_btn" value="join room" onclick="join_room();">
             </div>
         </form>
         <hr>
