@@ -8,7 +8,7 @@ $(document).ready(function() {
     })
 
     socket.on('room_msg', function(response) {
-      console.log('room_msg : ' + data);
+      console.log('room_msg : ' + response);
       document.getElementById("messages").innerHTML += '<li class="list-group-item">' 
                                                         + '(Room ' +  response['room'] + ') '
                                                         + '<b>' + response['id'] + '</b> : '
