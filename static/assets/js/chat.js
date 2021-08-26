@@ -20,7 +20,7 @@ function set_room(){
     room_number = window.prompt('Room number');
     console.log('current room : ' + room_number);
     join_room(room_number);
-    document.getElementById("messages").innerHTML = '<b>Socket id :</b> ' + socket.id + '<br>'
+    document.getElementById("user_info").innerHTML = '<b>Socket id :</b> ' + socket.id + '<br>'
                                                     + '<b>Room :</b> ' + room_number;
 }
 
