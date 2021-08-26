@@ -1,6 +1,6 @@
 from flask_socketio import SocketIO,emit, join_room, leave_room
 from flask import jsonify
-
+from models import chat_data
 
 print('----------import psa_socket-----------')
 
