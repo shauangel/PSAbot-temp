@@ -19,9 +19,8 @@ def test_connect():
 def join_chat_room(data):
     print('---------- client join_room -----------')
     print(data)
-    for r in data['room']:    
-        join_room(r)
-        emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has entered the room ... )'}, to=r)
+    join_room(data['room'])
+    emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has entered the room ... )'}, to=data['room'])
     
 @socketio.on('leave_room')
 def leave_chat_room(data):
