@@ -19,13 +19,14 @@ $(document).ready(function() {
 function set_room(){
     room_number = window.prompt('Room number');
     console.log('current room : ' + room_number);
+    document.getElementById("messages").innerHTML = ""
     join_room(room_number);
     document.getElementById("user_info").innerHTML = '<p><strong>Socket id :</strong> ' + socket.id + '<br><strong>Room :</strong> ' + room_number + '</p>';
 }
 
 function change_room(){
-    set_room();
     leave_room(room_number);
+    set_room();
 }
 
 function join_room(room){
@@ -34,7 +35,6 @@ function join_room(room){
 
 function leave_room(room){
     socket.emit('leave_room' , {'id': socket.id,'room':room});
-    document.getElementById("messages").innerHTML = ""
 }
 
 function send_message(){
