@@ -3,7 +3,7 @@ const socket = io('https://soselab.asuscomm.com:55002');
 var room_number;
 $(document).ready(function() {
     socket.on('connect', function(msg) {
-      console.log('connect response' + msg);
+      console.log('connect response : ' + msg);
     })
 
     socket.on('room_msg', function(data) {
@@ -11,7 +11,7 @@ $(document).ready(function() {
       document.getElementById("messages").innerHTML += '<li class="list-group-item">' + data['msg'] +'</li>';
       $("#user_input").val("");
    });
-
+   console.log(socket.id);
    set_room();
 });
 function set_room(){

@@ -19,7 +19,6 @@ def test_connect():
 def join_chat_room(data):
     print('---------- client join_room -----------')
     print(data)
-    print(data)
     join_room(data['room'])
     emit('room_msg', {
         'msg':
