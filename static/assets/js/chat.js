@@ -4,7 +4,7 @@ var room_number = [];
 $(document).ready(function() {
     socket.on('connect', function(response) {
       console.log('connect response : ' + response);
-      if(room_number == null) set_room();
+      if(room_number == null) join_room();
     })
 
     socket.on('room_msg', function(response) {
@@ -16,15 +16,13 @@ $(document).ready(function() {
       $("#user_input").val("");
    });
 });
-function set_room(){
-    room_number.push(window.prompt('Room number'));
-    join_room(room_number);
-    refresh_info();
-}
+
 
 
 function join_room(room){
-    socket.emit('join_room' , {'id': socket.id,'room':room});
+    room_number.push(window.prompt('Room number'));
+    socket.emit('join_room' , {'id': socket.id,'room':room_number});
+    refresh_info();
 }
 
 function leave_room(room){
@@ -42,5 +40,5 @@ function refresh_info(){
     document.getElementById("user_info").innerHTML = '<p><strong>Socket id :</strong> ' + socket.id + '<br><strong>Room :</strong> ' + room_number + '</p>';
 }
 function send_message(){
-    socket.emit('send_msg' , {'id': socket.id,'room': room_number,'msg': $("#user_input").val()});
+    socket.emit('send_msg' , {'id': socket.id,'room': $("#room_input").val(),'msg': $("#user_input").val()});
 }
