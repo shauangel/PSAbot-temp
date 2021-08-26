@@ -4,7 +4,7 @@ var room_number;
 $(document).ready(function() {
     socket.on('connect', function(msg) {
       console.log('connect response : ' + msg);
-      set_room();
+      if(room_number == null)set_room();
     })
 
     socket.on('room_msg', function(data) {
