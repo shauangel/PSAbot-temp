@@ -5,7 +5,9 @@
     <title>test socketio</title>
     <meta charset="utf-8">
     <!------------------------------------------------------------------------------------------------>
-    <!-- Bootstrap template -->
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <!-- Bootstrap responsive meta tag-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <!-- test socket.io -->
@@ -16,17 +18,25 @@
 <body>
     <!-- Container-fluid starts -->
     <div class="container" style="height: 100%;">
-        <div>
-            <input type="button" id="room-btn" value="join room1" onclick="join_room();">
+        <div class="row">
+            <h1>Chat room test</h1>
         </div>
-        <div>
-            <input type="button" id="room-btn" value="join room2" onclick="join_room2();">
-        </div>
-        <div>
-            <input type="button" id="room-btn" value="say hi" onclick="say_hi();">
-        </div>
-        <div>
-            <input type="button" id="room-btn" value="leave" onclick="leave_room();">
+        <form class="row">
+            <div class="col-8 justify-content-center">
+                <input type="text" id="user_input" class="form-control" placeholder="請輸入訊息">
+            </div>
+            <div class="col-4 justify-content-center">
+                <input type="button" id="send-btn" value="Submit" onclick="send_message();">
+                <input type="button" id="change-btn" value="change room" onclick="change_room();">
+            </div>
+        </form>
+        <hr>
+
+        <div class="row">
+            <div class="col justify-content-center">
+                <ul class="list-group" id="messages">
+                </ul>
+            </div>
         </div>
     </div>
 
