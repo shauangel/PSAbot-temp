@@ -106,7 +106,7 @@ def update_response_list(replier_id):
 
 """緗"""
 #新增貼文回覆通知
-def update_notification_add(user_id, replier_name, post_id):
+def update_notification_add(user_id, replier_id, post_id):
     if _db.USER_COLLECTION.find_one({'_id':user_id}) == None:
         count =0
     else:
@@ -131,7 +131,7 @@ def update_notification_add(user_id, replier_name, post_id):
                         'time': datetime.now(),
                         'detail':{
                             'post_id': post_id,
-                            'replier_name': replier_name
+                            'replier_id': replier_id
                        },
                        'new': True,
                        'check': False,

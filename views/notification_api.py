@@ -18,9 +18,9 @@ notification_api=Blueprint('notification_api', __name__)
 @notification_api.route('add_post_notification')
 def add_post_notification():
     user_id=request.values.get('user_id')
-    replier_name=request.values.get('replier_name')
+    replier_idrequest.values.get('replier_id')
     post_id=request.values.get('post_id')
-    user.update_notification_add(user_id, replier_name, post_id)
+    user.update_notification_add(user_id, replier_id, post_id)
     return jsonify({"message":"success"})
     
 #檢查是否有新通知
