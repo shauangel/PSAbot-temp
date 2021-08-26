@@ -4,7 +4,7 @@ var room_number;
 $(document).ready(function() {
     socket.on('connect', function(msg) {
       console.log('connect response : ' + msg);
-      if(room_number == null)set_room();
+      if(room_number == null) set_room();
     })
 
     socket.on('room_msg', function(data) {
@@ -32,6 +32,6 @@ function leave_room(room){
     socket.emit('leave_room' , {'id': socket.id,'room':room});
 }
 
-function send_message(msg){
-    socket.emit('send_msg' , {'id': socket.id,'room': room_number,'msg':msg});
+function send_message(){
+    socket.emit('send_msg' , {'id': socket.id,'room': room_number,'msg': $("#user_input").val()});
 }
