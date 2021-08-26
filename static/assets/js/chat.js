@@ -19,6 +19,7 @@ $(document).ready(function() {
 function set_room(){
     room_number.push(window.prompt('Room number'));
     join_room(room_number);
+    refresh_info();
 }
 
 
@@ -34,6 +35,7 @@ function leave_room(room){
             arr.splice(index, 1);
         }
     });
+    refresh_info();
 }
 
 function refresh_info(){
