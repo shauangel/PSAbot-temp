@@ -19,9 +19,10 @@ $(document).ready(function() {
 
 
 
-function join_room(room){
-    room_number.push(window.prompt('Room number'));
-    socket.emit('join_room' , {'id': socket.id,'room':room_number});
+function join_room(){
+    var room_to_join = window.prompt('Room number')
+    room_number.push(room_to_join);
+    socket.emit('join_room' , {'id': socket.id,'room':room_to_join});
     refresh_info();
 }
 
