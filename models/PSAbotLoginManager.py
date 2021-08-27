@@ -39,7 +39,7 @@ def roles_required(*roles):
     def wrapper(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
-            if session.get('role') not in roles:
+            if session['role'] not in roles:
                 return redirect(url_for('login_web.login', _scheme="https", _external=True))
             return f(*args, **kwargs)
         return wrapped
@@ -49,7 +49,7 @@ def roles_required(*roles):
 def login_required(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if session.get('user_id') is None:
+        if session['user_id'] is None:
             return redirect(url_for('login_web.login', _scheme="https", _external=True))
         return func(*args, **kwargs)
     return decorated_function
