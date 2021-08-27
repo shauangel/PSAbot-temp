@@ -100,7 +100,8 @@ def FaqFrame():
     return render_template("FaqFrame.html")
 
 @base_flow_web.route("/manageDataFrame")
-@login_required('manager')
+@login_required
+@roles_required('manager')
 def manageDataFrame():
     return render_template("manageDataFrame.html")
 
