@@ -2,6 +2,7 @@ from flask_socketio import SocketIO,emit, join_room, leave_room, close_room, roo
 from flask import session
 from models import chat_data
 from datetime import datetime
+import requests
 
 socketio = SocketIO()
 def init_socketio(app):
@@ -88,13 +89,17 @@ def create_room(data):
 
 @socketio.on('send_message')
 def send_message(data):
-    print('# ---------- client emit sent_message ...')
+    print('# ---------- client emit send_message ...')
     print(data)
     # 如果該client有在
     if data['_id'] in rooms():   
         # data : { '_id','user_id','time','type','content'}
         chat_data.insert_message(data)
         emit('received_message', data, to=data['_id'])
+        # ------------------------------------------------- #
+        # if... 訊息有 psabot ...
+        # requests.post('http://httpbin.org/post', data = my_data)
+        
     else:
         emit('received_message',
              {
