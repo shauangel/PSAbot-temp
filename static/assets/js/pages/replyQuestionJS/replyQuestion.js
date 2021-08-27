@@ -195,7 +195,7 @@ function addInnerPostAnswer(){
     }
     else{
         //----- 為了處理通知 更新資料庫 -----//
-        myURL = head_url + "add_post_notification?user_id="+postOwnerId+"&replier_name="+replierName+"&post_id="+postId;
+        myURL = head_url + "add_post_notification?user_id="+postOwnerId+"&replier_id="+replierId+"&post_id="+postId;
     //    console.log("myURL: "+myURL);
         $.ajax({
             url: myURL,
