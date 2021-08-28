@@ -43,7 +43,7 @@ def connect():
     print('# ---------- trigger connect event ...')
     # 加入使用者個人房間
     join_room(session['user_id'])
-    emit('connect', 'join room' + session['user_id'],to=session['user_id'])
+    emit('connect', session['user_id'] + 'has connected.',to=session['user_id'])
 
 # 解除連線
 @socketio.on('disconnect')
