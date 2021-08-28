@@ -50,3 +50,12 @@ def discussion_recommand_user():
         stage1_id_array = stage1_id_array[0:10]
     return jsonify({"recommand_user_id":stage1_id_array})
     
+
+# 詢問機器人建立聊天室
+@discussion_api.route('create_psabot_chat', methods=['POST'])
+def create_psabot_chat():
+    print()
+# 詢問機器人儲存聊天訊息
+@discussion_api.route('insert_psabot_chat_log', methods=['POST'])
+def insert_psabot_chat_log():
+    print()

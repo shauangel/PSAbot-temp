@@ -9,6 +9,7 @@ from google.auth.transport import requests
 # --- our models ---- #
 from models import user
 from models.PSAbotLoginManager import UserModel
+from .chat_socket import disconnect
 
 login_api = Blueprint("login_api", __name__)
 GOOGLE_OAUTH2_CLIENT_ID = '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.googleusercontent.com'
@@ -116,6 +117,7 @@ def logout():
             "msg" : "user " + current_user.get_id() + " logged out."
         }
         logout_user()
+        disconnect()
         session['user_id'] = None
         session['role'] = None
     except Exception as e :
