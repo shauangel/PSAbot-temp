@@ -95,8 +95,15 @@ def send_message(data):
     # 如果該client有在
     if data['_id'] in rooms():   
         # data : { '_id','user_id','time','type','content'}
+        chat_dict = {
+            '_id':data['_id'],
+            'user_id': data['user_id'],
+            'time': datetime.now().replace(microsecond=0),
+            'type':data['type'],
+            'content':data['content']
+        }
         chat_data.insert_message(data)
-        emit('received_message', data, to=data['_id'])
+        emit('received_message', chat_dict, to=data['_id'])
         # ------------------------------------------------- #
         # if... 訊息有 psabot ...
         # chat_data.end_chat(data['_id'],True,1)
