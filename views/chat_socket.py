@@ -102,6 +102,7 @@ def send_message(data):
         # chat_data.end_chat(data['_id'],True,1)
         # if chat_data.end_chat(data['_id'],True,0): ....
         # requests.post('http://httpbin.org/post', data = my_data)
+        # 關閉聊天室
         
     else:
         emit('received_message',
@@ -113,25 +114,25 @@ def send_message(data):
                  'content':'Client isn\'t in room ' + data['_id'] + ', can\'t send messages.'},to=data['user_id'])
 
 # 關閉聊天室(不刪除紀錄)
-@socketio.on('close_chat')
-def close_chat(data):
-    print('# ---------- client emit remove_chat ...')
-    print(data)
-    # 如果該room id有在client的room中
-    if data['_id'] in rooms():   
-        # data : { '_id','user_id','time','type','content'}
-        close_room(data['_id'])
-    else:
-        emit('received_message',
-             {
-                 '_id':data['user_id'],
-                 'user_id':'system',
-                 'time':datetime.now().replace(microsecond=0),
-                 'type':'string',
-                 'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
+# @socketio.on('close_chat')
+# def close_chat(data):
+#     print('# ---------- client emit remove_chat ...')
+#     print(data)
+#     # 如果該room id有在client的room中
+#     if data['_id'] in rooms():   
+#         # data : { '_id','user_id','time','type','content'}
+#         close_room(data['_id'])
+#     else:
+#         emit('received_message',
+#              {
+#                  '_id':data['user_id'],
+#                  'user_id':'system',
+#                  'time':datetime.now().replace(microsecond=0),
+#                  'type':'string',
+#                  'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
 
 # 取得聊天室歷史訊息
-@socketio.on('get_chat')
+@socketio.on('query_chat')
 def get_chat(data):
     chat_dict = chat_data.query_chat(data['_id'])
     # 將聊天紀錄傳給該client的user_id channel
