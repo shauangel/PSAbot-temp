@@ -77,7 +77,7 @@ def create_room(data):
     room_id = chat_data.insert_chat(chat_dict)
     # 將發問者加入聊天室
     join_room(room_id)
-    # emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has entered the room ... )'}, to=data['room'])
+    emit('received_message', {'_id':room_id}, to=data['asker']['user_id'])
 
 # 使用者加入聊天室
 @socketio.on('join_room')
