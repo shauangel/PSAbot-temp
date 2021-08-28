@@ -8,8 +8,6 @@
 * ========================================'''
 # ====== our models ===== #
 from . import _db
-from . import user
-import re
 # ======================= #
 
 
