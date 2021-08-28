@@ -68,7 +68,6 @@ def create_room(data):
         [
             {
             'user_id':data['asker']['user_id'],
-            'user_name':data['asker']['user_name'],
             'incognito':data['asker']['incognito']
             }
         ],
