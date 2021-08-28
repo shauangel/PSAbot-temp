@@ -9,41 +9,41 @@ def init_socketio(app):
     print('# ---------- init socket_io ...')
     socketio.init_app(app,cors_allowed_origins='*')
 # --------------- test socket.io --------------- #
-@socketio.on('connect')
-def test_connect():
-    print('# ---------- trigger connect event ...')
-    emit('connect', 'server says connected.')
+# @socketio.on('connect')
+# def test_connect():
+#     print('# ---------- trigger connect event ...')
+#     emit('connect', 'server says connected.')
 
    
-@socketio.on('join_room')
-def join_chat_room(data):
-    print('# ---------- client emit join_room ...')
-    print(data)
-    join_room(data['room'])
-    emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has entered the room ... )'}, to=data['room'])
+# @socketio.on('join_room')
+# def join_chat_room(data):
+#     print('# ---------- client emit join_room ...')
+#     print(data)
+#     join_room(data['room'])
+#     emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has entered the room ... )'}, to=data['room'])
     
-@socketio.on('leave_room')
-def leave_chat_room(data):
-    print('# ---------- client emit leave_room ...')
-    print(data)
-    leave_room(data['room'])
-    emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has left the room ... )'}, to=data['room'])
+# @socketio.on('leave_room')
+# def leave_chat_room(data):
+#     print('# ---------- client emit leave_room ...')
+#     print(data)
+#     leave_room(data['room'])
+#     emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has left the room ... )'}, to=data['room'])
 
-@socketio.on('send_msg')
-def send_msg(data):
-    print('# ---------- client emit send_msg ...')
-    print(data)
-    emit('room_msg', {'room': data['room'],'id':data['id'],'msg':data['msg']}, to=data['room'])
+# @socketio.on('send_msg')
+# def send_msg(data):
+#     print('# ---------- client emit send_msg ...')
+#     print(data)
+#     emit('room_msg', {'room': data['room'],'id':data['id'],'msg':data['msg']}, to=data['room'])
     
 # ---------------------------------------------- #
 # ------------------- PSAbot ------------------- #
-# # client連線
-# @socketio.on('connect')
-# def connect():
-#     print('# ---------- trigger connect event ...')
-#     # 加入使用者個人房間
-#     join_room(session['user_id'])
-#     emit('connect', 'join room' + session['user_id'],to=session['user_id'])
+# client連線
+@socketio.on('connect')
+def connect():
+    print('# ---------- trigger connect event ...')
+    # 加入使用者個人房間
+    join_room(session['user_id'])
+    emit('connect', 'join room' + session['user_id'],to=session['user_id'])
 
 # 解除連線
 @socketio.on('disconnect')
@@ -61,6 +61,7 @@ def create_room(data):
     chat_dict = {
         '_id':'',
         'tags': data['tags'],
+        'keywords': [],
         'question': data['question'],
         'time':datetime.now().replace(microsecond=0),
         'members': 
@@ -71,7 +72,8 @@ def create_room(data):
             'incognito':data['asker']['incognito']
             }
         ],
-        'chat_logs':[]
+        'chat_logs':[],
+        'end_flag':False
     }
     room_id = chat_data.insert_chat(chat_dict)
     # 將發問者加入聊天室
