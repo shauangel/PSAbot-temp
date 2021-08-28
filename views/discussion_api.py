@@ -65,7 +65,6 @@ def create_psabot_chat():
         [
             {
             'user_id':data['asker']['user_id'],
-            'user_name':data['asker']['user_name'],
             'incognito':data['asker']['incognito']
             }
         ],
