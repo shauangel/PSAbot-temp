@@ -69,7 +69,8 @@ def create_psabot_chat():
             'incognito':data['asker']['incognito']
             }
         ],
-        'chat_logs':[]
+        'chat_logs':[],
+        'end_flag':False
     }
     room_id = chat_data.insert_chat(chat_dict)
     return jsonify({"_id":room_id})

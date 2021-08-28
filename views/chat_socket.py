@@ -80,14 +80,14 @@ def create_room(data):
     join_room(room_id)
     # emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has entered the room ... )'}, to=data['room'])
 
-# # 使用者加入聊天室
-# @socketio.on('join_room')
-# def join_room(data):
-#     print('# ---------- client emit join_room ...')
-#     print(data)
-#     # data : { '_id','user_id','incognito'}
-#     chat_data.insert_member(data)
-#     join_room(data['_id'])
+# 使用者加入聊天室
+@socketio.on('join_room')
+def join_chat_room(data):
+    print('# ---------- client emit join_room ...')
+    print(data)
+    # data : { '_id','user_id','incognito'}
+    chat_data.insert_member(data)
+    join_room(data['_id'])
 
 @socketio.on('send_message')
 def send_message(data):
@@ -100,6 +100,8 @@ def send_message(data):
         emit('received_message', data, to=data['_id'])
         # ------------------------------------------------- #
         # if... 訊息有 psabot ...
+        # chat_data.end_chat(data['_id'],True,1)
+        # if chat_data.end_chat(data['_id'],True,0): ....
         # requests.post('http://httpbin.org/post', data = my_data)
         
     else:
@@ -128,4 +130,11 @@ def close_chat(data):
                  'time':datetime.now().replace(microsecond=0),
                  'type':'string',
                  'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
+
+# 取得聊天室歷史訊息
+@socketio.on('get_chat')
+def get_chat(data):
+    chat_dict = chat_data.query_chat(data['_id'])
+    # 將聊天紀錄傳給該client的user_id channel
+    emit('received_message',chat_dict,to=data['user_id'])
     

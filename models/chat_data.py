@@ -45,6 +45,14 @@ def insert_message(chat_dict):
                                           {'chat_logs':
                                            {'user_id':chat_dict['user_id'],'time':chat_dict['time'],'type':chat_dict['type'],'content':chat_dict['content']}}})
     
+# 設定end_flag
+def end_chat(chat_id,flag,setmode):
+    if setmode == 1:
+        _db.CHAT_DATA_COLLECTION.update_one({'_id':chat_id},{'$set':{'end_flag':flag}})
+        return flag
+    else:
+        return _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})['end_flag']
+
 # 刪除聊天室
 def remove_chat(chat_id):
     _db.CHAT_DATA_COLLECTION.delete_one({'_id':chat_id})
