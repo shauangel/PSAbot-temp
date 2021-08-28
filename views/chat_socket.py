@@ -45,12 +45,12 @@ def send_msg(data):
 #     join_room(session['user_id'])
 #     emit('connect', 'join room' + session['user_id'],to=session['user_id'])
 
-# # 解除連線
-# @socketio.on('disconnect')
-# def disconnect():
-#     print('# ---------- trigger disconnect event ...')
-#     # 加入使用者個人房間
-#     close_room(session['user_id'])
+# 解除連線
+@socketio.on('disconnect')
+def disconnect():
+    print('# ---------- trigger disconnect event ...')
+    # 加入使用者個人房間
+    close_room(session['user_id'])
     
 # 傳送問題資訊並建立聊天室
 @socketio.on('create_room')
