@@ -1412,7 +1412,7 @@ window.addEventListener("load", function () {
     }
     
     //----- 共同討論 START -----//
-    socket = io('https://soselab.asuscomm.com:55002');
+    socket = io.connect('https://soselab.asuscomm.com:55002');
     console.log("socket連線");
     // 監聽connect事件可確認是否連上server
     socket.on('connect', function(response) {
