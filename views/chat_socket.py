@@ -44,14 +44,13 @@ def connect():
     # 加入使用者個人房間
     user_id = request.args.get('user_id')
     join_room(user_id)
-    emit('connect', session['user_id'] + 'has connected.',to=user_id)
+    emit('connect', user_id + 'has connected.',to=user_id)
 
 # 解除連線
 @socketio.on('disconnect')
 def disconnect():
     print('# ---------- trigger disconnect event ...')
     # 加入使用者個人房間
-    close_room(session['user_id'])
     
 # 傳送問題資訊並建立聊天室
 @socketio.on('create_room')
