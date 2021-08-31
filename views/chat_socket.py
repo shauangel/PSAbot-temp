@@ -1,5 +1,5 @@
 from flask_socketio import SocketIO,emit, join_room, leave_room, close_room, rooms
-from flask import session
+from flask import session,request
 from models import chat_data
 from datetime import datetime
 import requests
@@ -42,15 +42,15 @@ def init_socketio(app):
 def connect():
     print('# ---------- trigger connect event ...')
     # 加入使用者個人房間
-    join_room(session['user_id'])
-    emit('connect', session['user_id'] + 'has connected.',to=session['user_id'])
+    user_id = request.args.get('user_id')
+    join_room(user_id)
+    emit('connect', user_id + 'has connected.',to=user_id)
 
 # 解除連線
 @socketio.on('disconnect')
 def disconnect():
     print('# ---------- trigger disconnect event ...')
     # 加入使用者個人房間
-    close_room(session['user_id'])
     
 # 傳送問題資訊並建立聊天室
 @socketio.on('create_room')
