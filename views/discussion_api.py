@@ -5,12 +5,12 @@ Created on Mon Apr 19 19:00:01 2021
 
 @author: linxiangling
 """
-
+from datetime import datetime
 import requests 
 import json
 import flask
 from flask import request, Blueprint, jsonify
-from models import user
+from models import user,chat_data
 
 discussion_api=Blueprint('discussion_api', __name__)
 
@@ -54,8 +54,35 @@ def discussion_recommand_user():
 # 詢問機器人建立聊天室
 @discussion_api.route('create_psabot_chat', methods=['POST'])
 def create_psabot_chat():
-    print()
+    data = request.get_json()
+    chat_dict = {
+        '_id':'',
+        'tags': [],
+        'keywords': data['keywords'],
+        'question': data['question'],
+        'time':datetime.now().replace(microsecond=0),
+        'members': 
+        [
+            {
+            'user_id':data['asker']['user_id'],
+            'incognito':data['asker']['incognito']
+            }
+        ],
+        'chat_logs':[],
+        'end_flag':False
+    }
+    room_id = chat_data.insert_chat(chat_dict)
+    return jsonify({"_id":room_id})
 # 詢問機器人儲存聊天訊息
 @discussion_api.route('insert_psabot_chat_log', methods=['POST'])
 def insert_psabot_chat_log():
-    print()
+    data = request.get_json()
+    chat_dict = {
+        '_id':data['_id'],
+        'user_id':data['user_id'],
+        'time':datetime.now().replace(microsecond=0),
+        'type':data['type'],
+        'content':data['type']
+    }
+    chat_data.insert_message(data)
+    return jsonify(chat_dict)

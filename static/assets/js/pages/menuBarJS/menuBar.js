@@ -1363,8 +1363,15 @@ function checkNotification(postId, index) {
     localStorage.setItem("singlePostId", postId);
     setPage("mySinglePostFrame");
 }
-
 ////////////////// 處理通知 END //////////////////
+
+
+////////////////// 共同討論 START //////////////////
+var socket;
+function discuss(){
+    
+}
+////////////////// 共同討論 END //////////////////
 
 window.addEventListener("load", function () {
     start();
@@ -1403,6 +1410,18 @@ window.addEventListener("load", function () {
         document.getElementById("chatList").innerHTML = "";//聊天列表
         document.getElementById("headerNotification").innerHTML = "";//上方通知
     }
+    
+    //----- 共同討論 START -----//
+    socket = io('https://soselab.asuscomm.com:55002');
+    console.log("socket連線");
+    $(document).ready(function() {
+        // 監聽connect事件可確認是否連上server
+        socket.on('connect', function(response) {
+          //印出server的回應
+          console.log('connect response : ' + response);
+        })
+    });
+    //----- 共同討論 END -----//
 }, false);
 
 //window.addEventListener("load", start, false);
