@@ -1368,8 +1368,19 @@ function checkNotification(postId, index) {
 
 ////////////////// 共同討論 START //////////////////
 var socket;
-function discuss(){
+function createDiscussRoom(){
+    console.log("發起");
+    var deadData = {tags:[{tag_id: "00000",tag_name: "Python"}],
+    question: "我想問python的問題", asker:{user_id: localStorage.getItem("sessionID"),incognito: false}};
     
+    socket.emit('create_room' , deadData);
+    socket.on('received_message', function(response) {
+        console.log("聊天室頻道: "+response._id);
+    })
+}
+
+function joinDiscussRoom(){
+    console.log("接受");
 }
 ////////////////// 共同討論 END //////////////////
 
@@ -1412,8 +1423,8 @@ window.addEventListener("load", function () {
     }
     
     //----- 共同討論 START -----//
-    var str = "user_id="+localStorage.getItem("sessionID");
-    socket = io('https://soselab.asuscomm.com:55002', {query: str});
+    var queryStr = "user_id="+localStorage.getItem("sessionID");
+    socket = io('https://soselab.asuscomm.com:55002', {query: queryStr});
     //監聽connect事件可確認是否連上server
     socket.on('connect', function(response) {
       //印出server的回應
