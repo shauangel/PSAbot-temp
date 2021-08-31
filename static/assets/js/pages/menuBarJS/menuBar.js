@@ -1413,7 +1413,7 @@ window.addEventListener("load", function () {
     
     //----- 共同討論 START -----//
     var str = "user_id="+localStorage.getItem("sessionID");
-    socket = io('http://127.0.0.1:3000/', {query: str});
+    socket = io('https://soselab.asuscomm.com:55002', {query: str});
     //監聽connect事件可確認是否連上server
     socket.on('connect', function(response) {
       //印出server的回應
