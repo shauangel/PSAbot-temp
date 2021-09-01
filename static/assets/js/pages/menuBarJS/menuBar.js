@@ -1384,6 +1384,8 @@ function createDiscussRoom(){
     
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
+    console.log("tags: ");
+    console.log(tags);
     $.ajax({
         url: myURL,
         type: "POST",
