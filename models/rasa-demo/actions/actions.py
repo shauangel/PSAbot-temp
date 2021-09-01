@@ -30,7 +30,7 @@ class received_discuss_tags(Action):
         return "received_discuss_tags"
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         print("received_discuss_tags")
-        selected_tags = tracker.get_slot("discuss_tags").split(':',1)[1]
+        selected_tags = tracker.get_slot("discuss_tags").split(':',1)[1][0:-11]
         reply = "接收到了 "+selected_tags+" 標籤。請說明你想討論的問題。"
         print(reply)
         dispatcher.utter_message(text=reply)
