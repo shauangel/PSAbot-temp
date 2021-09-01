@@ -44,6 +44,7 @@ def connect():
     # 加入使用者個人房間
     user_id = request.args.get('user_id')
     join_room(user_id)
+    print('client\'s rooms : ' , rooms())
     emit('connect', user_id + 'has connected.',to=user_id)
 
 # 解除連線
@@ -77,6 +78,8 @@ def create_room(data):
     room_id = chat_data.insert_chat(chat_dict)
     # 將發問者加入聊天室
     join_room(room_id)
+    print('new room id : ' + room_id)
+    print('client\'s rooms : ' , rooms())
     emit('received_message', {'_id':room_id}, to=data['asker']['user_id'])
 
 # 使用者加入聊天室
@@ -87,6 +90,7 @@ def join_chat_room(data):
     # data : { '_id','user_id','incognito'}
     chat_data.insert_member(data)
     join_room(data['_id'])
+    print('client\'s rooms : ' , rooms())
 
 @socketio.on('send_message')
 def send_message(data):
