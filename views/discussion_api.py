@@ -38,8 +38,8 @@ def discussion_recommand_user():
     #排序
     sorted_users = sorted(users, key=lambda k: k['sort_scores'], reverse=True)
     stage1_id_array = [i['_id'] for i in sorted_users]
-    #print("stage1_id_array ", stage1_id_array)
-    #print('sorted_users ', sorted_users)
+    print("stage1_id_array ", stage1_id_array)
+    print('sorted_users ', sorted_users)
     #不足十人，找更多人推薦
     if len(users) < 10:
         lacking_num = 10 - len(users)
