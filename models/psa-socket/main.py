@@ -9,7 +9,7 @@ from flask import Flask, request, abort, render_template, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms
 from os import urandom
 from datetime import datetime
-from .. import chat_data
+import chat_data
 import requests
 
 app = Flask(__name__)
