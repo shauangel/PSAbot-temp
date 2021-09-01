@@ -7,7 +7,7 @@
 - 使用collection : _db.CHAT_DATA_COLLECTION
 * ========================================'''
 # ====== our models ===== #
-from . import _db
+import _db
 # ======================= #
 
 
