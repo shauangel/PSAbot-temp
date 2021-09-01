@@ -69,8 +69,8 @@ class analyze_and_search(Action):
         print('in analyze_and_search')
         function = tracker.get_slot("function")
         print("pl(programming language):"+tracker.get_slot("pl"))
-        os = tracker.get_slot("os")[0:-7]
-        pl = tracker.get_slot("pl")[0:-7]
+        os = tracker.get_slot("os")[0:-5]
+        pl = tracker.get_slot("pl")[0:-5]
         print("pl(programming language):"+pl)
         if "錯誤訊息" in function:
             #拿到所需訊息及最後一句使用者輸入
