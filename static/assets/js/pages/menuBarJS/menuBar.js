@@ -1384,12 +1384,13 @@ function createDiscussRoom(){
     
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
-    console.log("tags: ");
-    console.log(tags);
+    data = {tags: tags};
+    console.log("data: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
-        data: JSON.stringify(tags),
+        data: JSON.stringify(data),
         async: false,
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
