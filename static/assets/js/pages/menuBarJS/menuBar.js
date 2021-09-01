@@ -1384,7 +1384,7 @@ function createDiscussRoom(){
     
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
-    data = ["00000"];
+    data = {tags: ["00000"]};
     console.log("data: ");
     console.log(data);
     $.ajax({
