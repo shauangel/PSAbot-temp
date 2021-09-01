@@ -1370,18 +1370,41 @@ function checkNotification(postId, index) {
 var socket;
 function createDiscussRoom(){
     console.log("發起");
-    var deadData = {tags:[{tag_id: "00000",tag_name: "Python"}],
+    //----- 創建一個共同討論的聊天室 START -----//
+    tags = [{tag_id: "00000",tag_name: "Python"}];
+    var data = {tags: tags,
     question: "我想問python的問題", asker:{user_id: localStorage.getItem("sessionID"),incognito: false}};
     
-    socket.emit('create_room' , deadData);
+    socket.emit('create_room' , data);
     socket.on('received_message', function(response) {
         console.log("聊天室頻道: "+response._id);
     })
+    //----- 創建一個共同討論的聊天室 END -----//
+    
+    //----- 找出匹配的人選 START -----//
+    var myURL = head_url + "discussion_recommand_user";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(tags),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("推薦人選的id");
+            console.log(response);
+        }
+    });
+    //----- 找出匹配的人選 END -----//
 }
 
 function joinDiscussRoom(){
     console.log("接受");
+    var data = {_id: "000001", user_id: localStorage.getItem("sessionID"), incognito: false};
+    socket.emit('join_room' , data);
 }
+
+function 
 ////////////////// 共同討論 END //////////////////
 
 window.addEventListener("load", function () {
