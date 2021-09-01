@@ -41,10 +41,11 @@ class fill_slot(Action):
                 reply = "請描述您遇到的問題"
             else:
                 reply = "你的function抓不到"
-        elif os == None:
-            reply = "請問您使用的是什麼作業系統？<br>若之後要修改，請輸入「我要更改作業系統」"
         else:
-            reply = "請問您使用的是什麼程式語言？<br>若之後要修改，請輸入「我要更改程式語言」"
+            if "共同討論" in function:
+                reply = "是否匿名?"
+            else:
+                reply = "請問您使用的是什麼程式語言？<br>若之後要修改，請輸入「我要更改程式語言」"
         
         dispatcher.utter_message(text=reply)
         return []
