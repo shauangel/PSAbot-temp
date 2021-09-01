@@ -28,7 +28,7 @@ def base_flow_rasa():
         if 'text' in results['events'][-2].keys():
             #print(results['events'][-2]['text'])
             lastest_bot_reply=results['events'][-2]['text']
-                        if lastest_bot_reply == "請描述您遇到的問題":
+            if lastest_bot_reply == "請描述您遇到的問題":
                 message = 'guided_QA_question,' + message
             elif lastest_bot_reply == "請貼上您的錯誤訊息":
                 message = 'error_message_question,' + message
