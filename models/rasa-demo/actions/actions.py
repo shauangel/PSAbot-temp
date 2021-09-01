@@ -29,8 +29,9 @@ class utter_received_discuss_tags(Action):
     def name(self) -> Text:
         return "utter_received_discuss_tags"
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
-        selected_tags = tracker.get_slot("selected_tags").split(':',1)[1]
+        selected_tags = tracker.get_slot("discuss_tags").split(':',1)[1]
         reply = "接收到了 "+selected_tags+" 標籤。請說明你想討論的問題。"
+        print(reply)
         dispatcher.utter_message(text=reply)
         return []
 #將整句話(問題描述、錯誤訊息)填入slot
