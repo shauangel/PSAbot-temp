@@ -1371,10 +1371,11 @@ var socket;
 function createDiscussRoom(){
     console.log("發起");
     //----- 創建一個共同討論的聊天室 START -----//
-    tags = [{tag_id: "00000",tag_name: "Python"}];
+    var tags = [{tag_id: "00000",tag_name: "Python"}];
     var data = {tags: tags,
     question: "我想問python的問題", asker:{user_id: localStorage.getItem("sessionID"),incognito: false}};
-    
+    console.log("data: ");
+    console.log(data);
     socket.emit('create_room' , data);
     socket.on('received_message', function(response) {
         console.log("聊天室頻道: "+response._id);
