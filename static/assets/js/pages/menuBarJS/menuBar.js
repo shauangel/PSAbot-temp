@@ -1404,7 +1404,6 @@ function joinDiscussRoom(){
     socket.emit('join_room' , data);
 }
 
-function 
 ////////////////// 共同討論 END //////////////////
 
 window.addEventListener("load", function () {
