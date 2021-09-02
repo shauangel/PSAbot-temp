@@ -24,17 +24,38 @@ from . import StackData
 #head_url='http://localhost:55001/api/'
 head_url='https://soselab.asuscomm.com:55002/api/'
 
-
+class popover_return_incognito(Action):
+    def name(self) -> Text:
+        return "popover_return_incognito"
+    def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
+#        affirm = ["好", "是", "匿名", "我要匿名"]
+        deny = ["不", "否", "no", "別"]
+        incognito = tracker.get_slot("discuss_together_whether_incognito").split(',',1)[1]
+        reply = "popover,是"
+        for i in deny:
+            if i in incognito:
+                reply = "popover,否"
+        dispatcher.utter_message(text=reply)
+        return []
+        
 class received_discuss_tags(Action):
     def name(self) -> Text:
         return "received_discuss_tags"
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         print("received_discuss_tags")
-        selected_tags = tracker.get_slot("discuss_tags").split(':',1)[1][0:-11]
-        reply = "接收到了 "+selected_tags+" 標籤。請說明你想討論的問題。"
-        print(reply)
+        selected_tags_id = tracker.get_slot("discuss_tags").split('：',1)[1]
+        selected_tags_array = selected_tags_id.split(',')
+        selected_tags_name=""
+        for i in selected_tags_array:
+            r = requests.get(url = head_url+'query_tag_name', params = {'tag_id':i})
+            data = r.json()
+            tag_name = data['tag_name']
+            selected_tags_name += (tag_name+', ')
+        selected_tags_name=selected_tags_name[0:-2]
+        reply = "接收到了 "+selected_tags_name+" 標籤。請說明你想討論的問題。"
         dispatcher.utter_message(text=reply)
         return []
+        
 #將整句話(問題描述、錯誤訊息)填入slot
 class fill_slot(Action):
     def name(self) -> Text:
@@ -56,7 +77,10 @@ class fill_slot(Action):
             if "共同討論" in function:
                 reply = "是否匿名?"
             else:
-                reply = "請問您使用的是什麼程式語言？<br>若之後要修改，請輸入「我要更改程式語言」"
+                if pl == None:
+                    reply = "請問您使用的是什麼程式語言？<br>若之後要修改，請輸入「我要更改程式語言」"
+                elif os == None:
+                    reply = "請問您使用的是什麼作業系統？<br>若之後要修改，請輸入「我要更改作業系統」"
         
         dispatcher.utter_message(text=reply)
         return []
@@ -69,8 +93,8 @@ class analyze_and_search(Action):
         print('in analyze_and_search')
         function = tracker.get_slot("function")
         print("pl(programming language):"+tracker.get_slot("pl"))
-        os = tracker.get_slot("os")[0:-5]
-        pl = tracker.get_slot("pl")[0:-5]
+        os = tracker.get_slot("os")[0:-10]
+        pl = tracker.get_slot("pl")[0:-10]
         print("pl(programming language):"+pl)
         if "錯誤訊息" in function:
             #拿到所需訊息及最後一句使用者輸入
@@ -95,7 +119,7 @@ class analyze_and_search(Action):
             reply = "謝謝您的等待，以下為搜尋結果的資料摘要："
             for i in range(0, len(resultpage)):
                 reply += ("<br>" + str(i+1) + ".<a href=\"" + resultpage[i] + "\">"+ result_title[i] + "</a>")
-            reply += "<br>點選摘要連結可顯示內容。<br><br>感謝回饋，歡迎下次光臨！"
+            reply += "<br>點選摘要連結可顯示內容。<br><br>希望有幫到你，歡迎下次光臨！"
 
             #reply += "<a href=\"#\" onclick=\"summary('all')\">點我查看所有答案排名</a>"
             dispatcher.utter_message(text=reply)

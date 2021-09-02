@@ -38,10 +38,10 @@ def base_flow_rasa():
                 print("discuss_together_whether_incognito")
                 message = 'discuss_together_whether_incognito,' + message
             elif "程式語言" in lastest_bot_reply:
-                message = message + '-rasaPL'
+                message = message + ' rasa_slot'
                 print("程式語言:"+message)
             elif "作業系統" in lastest_bot_reply:
-                message = message + '-rasaOS'
+                message = message + ' rasa_slot'
                 print("作業系統:"+message)
             elif "請說明你想討論的問題" in lastest_bot_reply:
                 message = 'discuss_together_question,' + message
