@@ -10,7 +10,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, ro
 from os import urandom
 from datetime import datetime
 import chat_data
-import requests
+import requests,re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = urandom(24).hex()
@@ -118,12 +118,19 @@ def send_message(data):
         chat_data.insert_message(data)
         emit('received_message', chat_dict, to=data['_id'])
         # ------------------------------------------------- #
-        # if... 訊息有 psabot ...
-        # chat_data.end_chat(data['_id'],True,1)
         # end_sentences = ['結束討論','結束共同討論','完成討論']
-        # if content in end_sentences:
-        #   
-        # requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
+        # match = re.match(r'psabot ',chat_dict['content'],flags=re.IGNORECASE)
+        # if match != None and match.span()[0] == 0: # 若是psabot開頭，丟給faq_api
+        #   payload = {'sender_id':data['user_id'],'message':(re.sub(r'psabot ','',chat_dict['content'],flags=re.IGNORECASE))}
+        #   headers = {'content-type': 'application/json'}
+        #   r = requests.post('http://localhost:5006/webhooks/rest/webhook', json=payload,headers=headers )
+        # elif chat_dict['content'] in end_sentences:
+        #   current_chat = chat_data.query_chat(data['_id'])
+        #   if data['user_id'] == current_chat['members'][0]['user_id']:
+        #       replier_id = current_chat['members'][1]['user_id']
+        #       payload = {'replier_id':replier_id,'message':'end_discuss'}
+        #       headers = {'content-type': 'application/json'}
+        #       r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
         # 關閉聊天室
         
     else:
