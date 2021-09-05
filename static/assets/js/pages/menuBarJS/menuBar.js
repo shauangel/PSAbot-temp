@@ -19,118 +19,125 @@ function changePage() {
 
 var keyWords = {};
 var needToClearBotMessage = false;
+var preMessage = "";
 
 function bot(string) {
-    //    console.log("bot送訊息");
-    //    console.log("needToClearBotMessage: "+needToClearBotMessage);
-    keyWords = {};
-
-    if (needToClearBotMessage) {
-        //        console.log("有進來清");
-        var obj = document.getElementById("willBeClear");
-        obj.innerHTML = "";
-        var objParent = obj.parentNode;
-        objParent.removeChild(obj);
-        needToClearBotMessage = false;
-        //        console.log("object: ");
-        //        console.log(obj);
+    console.log("bot的回覆: "+string);
+    //測試用
+    if(string=="請稍等，立即為您詢問其他使用者。"){
+        createDiscussRoom();
     }
-
-    var history = document.getElementById("history_message");
-    var content = history.innerHTML;
-
-
-    content += '<div ';
-    if (string.slice(0, 6) == "正在輸入訊息") {
-        needToClearBotMessage = true;
-        content += 'id="willBeClear" ';
-        //        console.log("下一次要清掉");
+    if(string==undefined){
+       bot("出現了點問題，請稍後再試～");
     }
-    content += 'class="d-flex justify-content-start mb-4">';
-    content += '<div class="img_cont_msg">';
-    content += '<img src="../static/images/iconSmall.png" class="chatImg" style="background-color: #5D478B;">';
-    content += '</div>';
-    content += '<div class="msg_cotainer"';
-    if (string.slice(0, 6) == "正在輸入訊息") {
-        //        needToClearBotMessage = true;
-        content += 'id="willBeClearString" ';
-        //        console.log("下一次要清掉");
+    //----- 設定preMessage＆處理選標籤 START -----//
+    else if(string.slice(0,7)=="popover"){
+        discuss = true;
+        language = [];
+        children = [];
+        chosenTags = [];
+        originTags = [];
+        allTags = {};
+        getLanguageTag();
+        $("#discussTags").modal('show');
+        switch(string.slice(8, string.length)){
+            case "是":
+                discussIncognito = true;
+                break;
+            case "否":
+                discussIncognito = false;
+                break;
+        }
+        preMessage = "";
     }
-    content += '>';
-    content += string;
-    // 測試用 START
-    //    content += '<div id="keywords">';
-    //    // 關鍵字的id為 0~keyword.length-1
-    //    for(var i=0; i<4; i++){
-    //        content += '<label id="';
-    //        content += i;
-    //        content += '" class="badge badge-default purpleLabel">';
-    //        content += i;
-    //        content += 'haha<button class="labelXBtn" onclick="cancleKeyWords(';
-    //        content += "'";
-    //        content += i;
-    //        content += "'";
-    //        content += ')">x</button></label>';
-    //    }
-    //    content += '</div><hr>';
-    //    
-    //    content += '<input id="addBtn" class="btn btn-primary purpleBtnInChatroom" value="新增" onclick="wantAddKeyWord()">';
-    //    content += '<input id="doneBtn"class="btn btn-primary purpleBtnInChatroom" value="完成" onclick="doneKeyWord()">';
-    // 測試用 END
+    //----- 設定preMessage＆處理選標籤 END -----//
+    
+    else{
+        keyWords = {};
+        if (needToClearBotMessage) {
+            //        console.log("有進來清");
+            var obj = document.getElementById("willBeClear");
+            obj.innerHTML = "";
+            var objParent = obj.parentNode;
+            objParent.removeChild(obj);
+            needToClearBotMessage = false;
+            //        console.log("object: ");
+            //        console.log(obj);
+        }
 
-    //    content += '<span class="msg_time">8:40 AM</span>';
-    content += '</div>';
-    content += '</div>';
+        var history = document.getElementById("history_message");
+        var content = history.innerHTML;
 
-    history.innerHTML = content;
-    history.scrollTop = history.scrollHeight;
-    // 
-    setInterval(function () {
-        if (document.getElementById("willBeClearString") != null) {
-            var botStringTemp = document.getElementById("willBeClearString").innerHTML;
-            switch (botStringTemp) {
-                case "正在輸入訊息...":
-                    botStringTemp = "正在輸入訊息.";
-                    break;
-                case '正在輸入訊息.':
-                    botStringTemp = "正在輸入訊息..";
-                    break;
-                case "正在輸入訊息..":
-                    botStringTemp = "正在輸入訊息...";
-                    break;
+
+        content += '<div ';
+        if (string.slice(0, 6) == "正在輸入訊息") {
+            needToClearBotMessage = true;
+            content += 'id="willBeClear" ';
+        }
+        content += 'class="d-flex justify-content-start mb-4">';
+        content += '<div class="img_cont_msg">';
+        content += '<img src="../static/images/iconSmall.png" class="chatImg" style="background-color: #5D478B;">';
+        content += '</div>';
+        content += '<div class="msg_cotainer"';
+        if (string.slice(0, 6) == "正在輸入訊息") {
+            content += 'id="willBeClearString" ';
+        }
+        content += '>';
+        content += string;
+
+        //    content += '<span class="msg_time">8:40 AM</span>';
+        content += '</div>';
+        content += '</div>';
+
+        history.innerHTML = content;
+        history.scrollTop = history.scrollHeight;
+        // 
+        setInterval(function () {
+            if (document.getElementById("willBeClearString") != null) {
+                var botStringTemp = document.getElementById("willBeClearString").innerHTML;
+                switch (botStringTemp) {
+                    case "正在輸入訊息...":
+                        botStringTemp = "正在輸入訊息.";
+                        break;
+                    case '正在輸入訊息.':
+                        botStringTemp = "正在輸入訊息..";
+                        break;
+                    case "正在輸入訊息..":
+                        botStringTemp = "正在輸入訊息...";
+                        break;
+                }
+                document.getElementById("willBeClearString").innerHTML = botStringTemp;
             }
-            document.getElementById("willBeClearString").innerHTML = botStringTemp;
+        }, 1000);
+        //
+
+        // 處理關鍵字 START
+        var temp = document.getElementById("keywords");
+        if (temp != null) {
+            var textArea = document.getElementById("message");
+            textArea.setAttribute("placeholder", "請點選「新增」或「完成」");
+            textArea.disabled = true;
+
+            var sendBtn = document.getElementById("sendButton");
+            sendBtn.disabled = true;
+
+            var count = temp.getElementsByTagName("label").length;
+
+            for (var i = 0; i < count; i++) {
+
+                var tempName = document.getElementById(i).textContent;
+                tempName = tempName.slice(0, -1);
+
+                keyWords[i] = tempName;
+            }
+            console.log("keywords: ");
+            console.log(keyWords);
         }
-    }, 1000);
-    //
-
-    // 處理關鍵字 START
-    var temp = document.getElementById("keywords");
-    if (temp != null) {
-        var textArea = document.getElementById("message");
-        textArea.setAttribute("placeholder", "請點選「新增」或「完成」");
-        textArea.disabled = true;
-
-        var sendBtn = document.getElementById("sendButton");
-        sendBtn.disabled = true;
-
-        var count = temp.getElementsByTagName("label").length;
-
-        for (var i = 0; i < count; i++) {
-
-            var tempName = document.getElementById(i).textContent;
-            tempName = tempName.slice(0, -1);
-
-            keyWords[i] = tempName;
-        }
-        console.log("keywords: ");
-        console.log(keyWords);
+        // 處理關鍵字 END
     }
-    // 處理關鍵字 END
 }
 
 function user(string) {
-    //    console.log("user送訊息");
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     content += '<div class="d-flex justify-content-end mb-4">';
@@ -149,6 +156,53 @@ function user(string) {
     history.scrollTop = history.scrollHeight;
 
     bot("正在輸入訊息...");
+}
+
+function send_message() {
+    var message = $("#message").val();
+
+    user(message);
+    
+    //----- 共同討論處理 START -----//
+    if(preMessage=="discuss_together_question,"){
+        discussQuestion = message;
+    }
+    message = preMessage + message;
+    //----- 共同討論處理 END -----//
+    
+    //用來清空傳出去的輸入框
+    var msg = document.getElementById("message");
+    msg.value = "";
+    sendMessageAPI(message);
+}
+
+//傳訊息給後端
+function sendMessageAPI(message){
+    //直接用session_id會undifine!!
+    session_id = localStorage.getItem("sessionID");
+    var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
+    myURL = encodeURI(myURL);
+    console.log("送出訊息: "+myURL);
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log("收到的response: ");
+            console.log(response);
+            bot(response.text);
+            //----- 設定preMessage START -----//
+            // 要確保訊息已經送出去，才能加前綴
+            if(message=="共同討論"){
+                preMessage = "discuss_together_whether_incognito,";
+            }
+            //----- 設定preMessage END -----//
+        },
+        error: function () {
+            console.log("error");
+        }
+    });
 }
 
 // 關鍵字們 START
@@ -574,40 +628,6 @@ function getUserInterestTags() {
     showChosenTags();
 }
 
-function send_message() {
-    console.log("send_message");
-    var message = $("#message").val();
-    console.log("message: " + message);
-
-    user(message);
-
-    //用來清空傳出去的輸入框
-    var msg = document.getElementById("message");
-    //    msg.innerHTML = "";
-    msg.value = ""
-    console.log("有清空");
-    //直接用session_id會undifine!!
-    session_id = localStorage.getItem("sessionID");
-    var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
-    console.log("myURL_BERFORE: " + myURL);
-    myURL = encodeURI(myURL);
-    console.log("myURL_AFTER: " + myURL);
-
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            console.log(response.text);
-            bot(response.text);
-        },
-        error: function () {
-            console.log("error");
-        }
-    });
-}
-
 function open_close() {
     if ($("#chatroom").is(':visible')) {
 
@@ -735,7 +755,7 @@ var chosenTags = [];
 var originTags = []; // 紀錄原本的使用者的tag有哪些
 // 以上4個都是放id
 var allTags = {};
-
+var discuss = false;
 
 //根據chosenTags的內容 顯示已選擇的tags
 function showChosenTags(page) {
@@ -753,8 +773,12 @@ function showChosenTags(page) {
         chosen_tag_content += "'";
         chosen_tag_content += ')">x</button></label>';
     }
-
-    document.getElementById("chosen_tag_in_modal").innerHTML = chosen_tag_content;
+    if(discuss){
+        document.getElementById("chosen_tag_in_modalDiscuss").innerHTML = chosen_tag_content;
+    }
+    else{
+        document.getElementById("chosen_tag_in_modal").innerHTML = chosen_tag_content;
+    }
 }
 
 // 顯示可選擇的語言「子」標籤
@@ -822,8 +846,12 @@ function showChildrenAndSetColor() {
     var titleContent = "";
     titleContent += '<i class="fa fa-angle-left scoreBtn" aria-hidden="true" onclick="showLanguageTag()" style="color: gray; margin-right: 5px;"></i>';
     titleContent += "上一頁";
-
-    document.getElementById("forwardPage").innerHTML = titleContent;
+    if(discuss){
+        document.getElementById("forwardPageDiscuss").innerHTML = titleContent;
+    }
+    else{
+        document.getElementById("forwardPage").innerHTML = titleContent;
+    }
     // 標題 END
 
     var content = "";
@@ -842,9 +870,12 @@ function showChildrenAndSetColor() {
         content += allTags[children[i]];
         content += "</label>";
     }
-
-    //    console.log("innerHTML: "+content);
-    document.getElementById("chose_tag").innerHTML = content;
+    if(discuss){
+        document.getElementById("chose_tagDiscuss").innerHTML = content;
+    }
+    else{
+        document.getElementById("chose_tag").innerHTML = content;
+    }
 }
 
 // 顯示可選擇的語言標籤
@@ -909,7 +940,13 @@ function getLanguageTag() {
 function showLanguageTag() {
     // 不會有上一頁的按鈕 START
     var titleContent = "";
-    document.getElementById("forwardPage").innerHTML = titleContent;
+    if(discuss){
+        document.getElementById("forwardPageDiscuss").innerHTML = titleContent;
+    }
+    else{
+        document.getElementById("forwardPage").innerHTML = titleContent;
+    }
+    
     // 不會有上一頁的按鈕 END
 
     localStorage.setItem("chooseTags", 0);
@@ -932,8 +969,12 @@ function showLanguageTag() {
         content += allTags[language[i]];
         content += '</label>';
     }
-
-    document.getElementById("chose_tag").innerHTML = content;
+    if(discuss){
+        document.getElementById("chose_tagDiscuss").innerHTML = content;
+    }
+    else{
+        document.getElementById("chose_tag").innerHTML = content;
+    }
 }
 
 // 取消選擇tag後的處理
@@ -1368,13 +1409,44 @@ function checkNotification(postId, index) {
 
 ////////////////// 共同討論 START //////////////////
 var socket;
+
+//創房間會用到的
+var discussTags=[], discussQuestion="", discussIncognito;
+
+function discussChoseTags(){
+    var message = "標籤：";
+    for(var i=0; i<chosenTags.length; i++){
+        discussTags[i] = {tag_id: chosenTags[i],tag_name: allTags[chosenTags[i]]};
+        if(i!=0){
+            message += ',';
+        }
+        message += chosenTags[i];
+    }
+    
+    sendMessageAPI(message);
+    preMessage = "discuss_together_question,";
+    
+    //清空
+    language = [];
+    children = [];
+    chosenTags = [];
+}
+
 function createDiscussRoom(){
+    console.log("討論的標籤: ");
+    console.log(discussTags);
+    
+    console.log("討論是否匿名");
+    console.log(discussIncognito);
+    
+    console.log("討論的問題: ");
+    console.log(discussQuestion);
+    
     console.log("發起");
     //----- 創建一個共同討論的聊天室 START -----//
-    var tags = [{tag_id: "00000",tag_name: "Python"}];
-    var data = {tags: tags,
-    question: "我想問python的問題", asker:{user_id: localStorage.getItem("sessionID"),incognito: false}};
-    console.log("data: ");
+    var data = {tags: discussTags,
+    question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
+    console.log("創房間的data: ");
     console.log(data);
     socket.emit('create_room' , data);
     socket.on('received_message', function(response) {
