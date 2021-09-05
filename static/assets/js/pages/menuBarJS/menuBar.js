@@ -23,14 +23,19 @@ var preMessage = "";
 
 function bot(string) {
     console.log("bot的回覆: "+string);
-    //----- 設定preMessage START -----//
+    //----- 設定preMessage＆處理選標籤 START -----//
     if(string.slice(0,7)=="popover"){
         discuss = true;
+        language = [];
+        children = [];
+        chosenTags = [];
+        originTags = [];
+        allTags = {};
         getLanguageTag();
         $("#discussTags").modal('show');
         preMessage = "";
     }
-    //----- 設定preMessage END -----//
+    //----- 設定preMessage＆處理選標籤 END -----//
     
     else{
         keyWords = {};
@@ -1387,7 +1392,8 @@ function checkNotification(postId, index) {
 var socket;
 function discussChoseTags(){
     console.log("共同討論選擇的標籤: ");
-    console.log(originTags);
+    console.log(chosenTags);
+    
     language = [];
     children = [];
     chosenTags = [];
