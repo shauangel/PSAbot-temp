@@ -36,7 +36,7 @@ def base_flow_rasa():
                 message = 'error_message_question,' + message
             elif "是否匿名" in lastest_bot_reply:
                 print("discuss_together_whether_incognito")
-                message = 'discuss_together_whether_incognito,' + message
+                message = 'whether_incognito,' + message
             elif "程式語言" in lastest_bot_reply:
                 message = message + ' rasa_slot'
                 print("程式語言:"+message)
