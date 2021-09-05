@@ -141,7 +141,7 @@ def update_notification_add_post(user_id, replier_id, post_id):
             })
 
 #新增共同討論通知
-def update_notification_add_discussion(asker_id, tags, user_id, room_id):
+def update_notification_add_discussion(asker_id, tags, user_id, room_id, incognito, question):
     if _db.USER_COLLECTION.find_one({'_id':user_id}) == None:
         count = 0
     else:
@@ -166,7 +166,9 @@ def update_notification_add_discussion(asker_id, tags, user_id, room_id):
                             'asker_id': asker_id,
                             'tag': tags,
                             'valid': True,
-                            'room_id': room_id
+                            'room_id': room_id,
+                            'incognito': incognito,
+                            'question': question
                        },
                        'new': True,
                        'check': False,
@@ -174,6 +176,7 @@ def update_notification_add_discussion(asker_id, tags, user_id, room_id):
                     },
                 },
             })
+            
 #檢查是否有新通知
 def query_notification(user_id):
     return _db.USER_COLLECTION.find_one({'_id':user_id})
