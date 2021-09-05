@@ -25,7 +25,7 @@ function bot(string) {
     console.log("bot的回覆: "+string);
     //----- 設定preMessage START -----//
     if(string.slice(0,7)=="popover"){
-        console.log("彈出選標籤的視窗");
+        discuss = true;
         $("#discussTags").modal('show');
         preMessage = "";
     }
@@ -730,7 +730,7 @@ var chosenTags = [];
 var originTags = []; // 紀錄原本的使用者的tag有哪些
 // 以上4個都是放id
 var allTags = {};
-
+var discuss = false;
 
 //根據chosenTags的內容 顯示已選擇的tags
 function showChosenTags(page) {
@@ -748,8 +748,12 @@ function showChosenTags(page) {
         chosen_tag_content += "'";
         chosen_tag_content += ')">x</button></label>';
     }
-
-    document.getElementById("chosen_tag_in_modal").innerHTML = chosen_tag_content;
+    if(discuss){
+        document.getElementById("chosen_tag_in_modalDiscuss").innerHTML = chosen_tag_content;
+    }
+    else{
+        document.getElementById("chosen_tag_in_modal").innerHTML = chosen_tag_content;
+    }
 }
 
 // 顯示可選擇的語言「子」標籤
@@ -817,8 +821,12 @@ function showChildrenAndSetColor() {
     var titleContent = "";
     titleContent += '<i class="fa fa-angle-left scoreBtn" aria-hidden="true" onclick="showLanguageTag()" style="color: gray; margin-right: 5px;"></i>';
     titleContent += "上一頁";
-
-    document.getElementById("forwardPage").innerHTML = titleContent;
+    if(discuss){
+        document.getElementById("forwardPageDiscuss").innerHTML = titleContent;
+    }
+    else{
+        document.getElementById("forwardPage").innerHTML = titleContent;
+    }
     // 標題 END
 
     var content = "";
@@ -837,9 +845,12 @@ function showChildrenAndSetColor() {
         content += allTags[children[i]];
         content += "</label>";
     }
-
-    //    console.log("innerHTML: "+content);
-    document.getElementById("chose_tag").innerHTML = content;
+    if(discuss){
+        document.getElementById("chose_tagDiscuss").innerHTML = content;
+    }
+    else{
+        document.getElementById("chose_tag").innerHTML = content;
+    }
 }
 
 // 顯示可選擇的語言標籤
@@ -904,7 +915,13 @@ function getLanguageTag() {
 function showLanguageTag() {
     // 不會有上一頁的按鈕 START
     var titleContent = "";
-    document.getElementById("forwardPage").innerHTML = titleContent;
+    if(discuss){
+        document.getElementById("forwardPageDiscuss").innerHTML = titleContent;
+    }
+    else{
+        document.getElementById("forwardPage").innerHTML = titleContent;
+    }
+    
     // 不會有上一頁的按鈕 END
 
     localStorage.setItem("chooseTags", 0);
@@ -927,8 +944,12 @@ function showLanguageTag() {
         content += allTags[language[i]];
         content += '</label>';
     }
-
-    document.getElementById("chose_tag").innerHTML = content;
+    if(discuss){
+        document.getElementById("chose_tagDiscuss").innerHTML = content;
+    }
+    else{
+        document.getElementById("chose_tag").innerHTML = content;
+    }
 }
 
 // 取消選擇tag後的處理
@@ -1363,6 +1384,16 @@ function checkNotification(postId, index) {
 
 ////////////////// 共同討論 START //////////////////
 var socket;
+function discussChoseTags(){
+    console.log("共同討論選擇的標籤: ");
+    console.log(originTags);
+    language = [];
+    children = [];
+    chosenTags = [];
+    originTags = [];
+    allTags = {};
+}
+
 function createDiscussRoom(){
     console.log("發起");
     //----- 創建一個共同討論的聊天室 START -----//
