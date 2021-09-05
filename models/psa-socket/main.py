@@ -120,8 +120,10 @@ def send_message(data):
         # ------------------------------------------------- #
         # if... 訊息有 psabot ...
         # chat_data.end_chat(data['_id'],True,1)
-        # if chat_data.end_chat(data['_id'],True,0): ....
-        # requests.post('http://httpbin.org/post', data = my_data)
+        # end_sentences = ['結束討論','結束共同討論','完成討論']
+        # if content in end_sentences:
+        #   
+        # requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
         # 關閉聊天室
         
     else:
