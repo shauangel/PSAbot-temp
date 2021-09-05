@@ -24,7 +24,10 @@ var preMessage = "";
 function bot(string) {
     console.log("bot的回覆: "+string);
     //----- 設定preMessage＆處理選標籤 START -----//
-    if(string.slice(0,7)=="popover"){
+    if(string==undefined){
+       bot("出現了點問題，請稍後再試～");
+    }
+    else if(string.slice(0,7)=="popover"){
         discuss = true;
         language = [];
         children = [];
