@@ -169,9 +169,9 @@ function send_message() {
             bot(response.text);
             //----- 設定preMessage START -----//
             // 要確保訊息已經送出去，才能加前綴
-            if(message=="共同討論"){
-                preMessage = "discuss_together_whether_incognito,";
-            }
+//            if(message=="共同討論"){
+//                preMessage = "discuss_together_whether_incognito,";
+//            }
             //----- 設定preMessage END -----//
         },
         error: function () {
