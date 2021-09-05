@@ -31,95 +31,95 @@ function bot(string) {
     }
     //----- 設定preMessage END -----//
     
-    keyWords = {};
+    else{
+        keyWords = {};
+        if (needToClearBotMessage) {
+            //        console.log("有進來清");
+            var obj = document.getElementById("willBeClear");
+            obj.innerHTML = "";
+            var objParent = obj.parentNode;
+            objParent.removeChild(obj);
+            needToClearBotMessage = false;
+            //        console.log("object: ");
+            //        console.log(obj);
+        }
 
-    if (needToClearBotMessage) {
-        //        console.log("有進來清");
-        var obj = document.getElementById("willBeClear");
-        obj.innerHTML = "";
-        var objParent = obj.parentNode;
-        objParent.removeChild(obj);
-        needToClearBotMessage = false;
-        //        console.log("object: ");
-        //        console.log(obj);
-    }
-
-    var history = document.getElementById("history_message");
-    var content = history.innerHTML;
+        var history = document.getElementById("history_message");
+        var content = history.innerHTML;
 
 
-    content += '<div ';
-    if (string.slice(0, 6) == "正在輸入訊息") {
-        needToClearBotMessage = true;
-        content += 'id="willBeClear" ';
-        //        console.log("下一次要清掉");
-    }
-    content += 'class="d-flex justify-content-start mb-4">';
-    content += '<div class="img_cont_msg">';
-    content += '<img src="../static/images/iconSmall.png" class="chatImg" style="background-color: #5D478B;">';
-    content += '</div>';
-    content += '<div class="msg_cotainer"';
-    if (string.slice(0, 6) == "正在輸入訊息") {
-        //        needToClearBotMessage = true;
-        content += 'id="willBeClearString" ';
-        //        console.log("下一次要清掉");
-    }
-    content += '>';
-    content += string;
+        content += '<div ';
+        if (string.slice(0, 6) == "正在輸入訊息") {
+            needToClearBotMessage = true;
+            content += 'id="willBeClear" ';
+            //        console.log("下一次要清掉");
+        }
+        content += 'class="d-flex justify-content-start mb-4">';
+        content += '<div class="img_cont_msg">';
+        content += '<img src="../static/images/iconSmall.png" class="chatImg" style="background-color: #5D478B;">';
+        content += '</div>';
+        content += '<div class="msg_cotainer"';
+        if (string.slice(0, 6) == "正在輸入訊息") {
+            //        needToClearBotMessage = true;
+            content += 'id="willBeClearString" ';
+            //        console.log("下一次要清掉");
+        }
+        content += '>';
+        content += string;
 
-    //    content += '<span class="msg_time">8:40 AM</span>';
-    content += '</div>';
-    content += '</div>';
+        //    content += '<span class="msg_time">8:40 AM</span>';
+        content += '</div>';
+        content += '</div>';
 
-    history.innerHTML = content;
-    history.scrollTop = history.scrollHeight;
-    // 
-    setInterval(function () {
-        if (document.getElementById("willBeClearString") != null) {
-            var botStringTemp = document.getElementById("willBeClearString").innerHTML;
-            switch (botStringTemp) {
-                case "正在輸入訊息...":
-                    botStringTemp = "正在輸入訊息.";
-                    break;
-                case '正在輸入訊息.':
-                    botStringTemp = "正在輸入訊息..";
-                    break;
-                case "正在輸入訊息..":
-                    botStringTemp = "正在輸入訊息...";
-                    break;
+        history.innerHTML = content;
+        history.scrollTop = history.scrollHeight;
+        // 
+        setInterval(function () {
+            if (document.getElementById("willBeClearString") != null) {
+                var botStringTemp = document.getElementById("willBeClearString").innerHTML;
+                switch (botStringTemp) {
+                    case "正在輸入訊息...":
+                        botStringTemp = "正在輸入訊息.";
+                        break;
+                    case '正在輸入訊息.':
+                        botStringTemp = "正在輸入訊息..";
+                        break;
+                    case "正在輸入訊息..":
+                        botStringTemp = "正在輸入訊息...";
+                        break;
+                }
+                document.getElementById("willBeClearString").innerHTML = botStringTemp;
             }
-            document.getElementById("willBeClearString").innerHTML = botStringTemp;
+        }, 1000);
+        //
+
+        // 處理關鍵字 START
+        var temp = document.getElementById("keywords");
+        if (temp != null) {
+            var textArea = document.getElementById("message");
+            textArea.setAttribute("placeholder", "請點選「新增」或「完成」");
+            textArea.disabled = true;
+
+            var sendBtn = document.getElementById("sendButton");
+            sendBtn.disabled = true;
+
+            var count = temp.getElementsByTagName("label").length;
+
+            for (var i = 0; i < count; i++) {
+
+                var tempName = document.getElementById(i).textContent;
+                tempName = tempName.slice(0, -1);
+
+                keyWords[i] = tempName;
+            }
+            console.log("keywords: ");
+            console.log(keyWords);
         }
-    }, 1000);
-    //
-
-    // 處理關鍵字 START
-    var temp = document.getElementById("keywords");
-    if (temp != null) {
-        var textArea = document.getElementById("message");
-        textArea.setAttribute("placeholder", "請點選「新增」或「完成」");
-        textArea.disabled = true;
-
-        var sendBtn = document.getElementById("sendButton");
-        sendBtn.disabled = true;
-
-        var count = temp.getElementsByTagName("label").length;
-
-        for (var i = 0; i < count; i++) {
-
-            var tempName = document.getElementById(i).textContent;
-            tempName = tempName.slice(0, -1);
-
-            keyWords[i] = tempName;
-        }
-        console.log("keywords: ");
-        console.log(keyWords);
+        // 處理關鍵字 END
     }
-    // 處理關鍵字 END
 }
 
 function user(string) {
-    //    console.log("user送訊息");
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     content += '<div class="d-flex justify-content-end mb-4">';
