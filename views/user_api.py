@@ -108,6 +108,18 @@ def update_user_interest():
         data = {"error" : e.__class__.__name__ + ":" +e.args[0]}
         print(e)
     return jsonify(data)
+
+# 編輯使用者興趣
+@user_api.route('/update_user_score', methods=['POST'])
+def update_user_score():
+    data = request.get_json()
+    try:
+        for tag in data['tag']:    
+            user.update_user_score(data['_id'],tag['tag_id'],tag['tag_name'],data['score'])
+    except Exception as e :
+        data = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+        print(e)
+    return jsonify(data)
     
 ''' 湘的 start '''
 #UPLOAD_FOLDER = '/Users/linxiangling/Documents/GitHub/PQAbot/static/images/user_img'
