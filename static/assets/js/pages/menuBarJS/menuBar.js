@@ -151,20 +151,21 @@ function send_message() {
     
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
-    msg.value = ""
-    console.log("有清空");
+    msg.value = "";
     
     //直接用session_id會undifine!!
     session_id = localStorage.getItem("sessionID");
     var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
     myURL = encodeURI(myURL);
-
+    console.log("送出訊息: "+myURL);
     $.ajax({
         url: myURL,
         type: "GET",
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+            console.log("收到的response: ");
+            console.log(response);
             bot(response.text);
             //----- 設定preMessage START -----//
             // 要確保訊息已經送出去，才能加前綴
