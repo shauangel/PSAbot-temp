@@ -33,6 +33,16 @@ function bot(string) {
         allTags = {};
         getLanguageTag();
         $("#discussTags").modal('show');
+        
+        console.log("切字串匿名: "+string.slice(9, string.length));
+        switch(string.slice(9, string.length)){
+            case "是":
+                discussIncognito = true;
+                break;
+            case "否":
+                discussIncognito = false;
+                break;
+        }
         preMessage = "";
     }
     //----- 設定preMessage＆處理選標籤 END -----//
@@ -147,13 +157,16 @@ function user(string) {
 }
 
 function send_message() {
-    console.log("send_message");
     var message = $("#message").val();
-    console.log("message: " + message);
 
     user(message);
-    // 共同討論有些要加上前綴
+    
+    //----- 共同討論處理 START -----//
+    if(preMessage=="discuss_together_question,"){
+        discussQuestion = message;
+    }
     message = preMessage + message;
+    //----- 共同討論處理 END -----//
     
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
@@ -1394,26 +1407,36 @@ function checkNotification(postId, index) {
 
 ////////////////// 共同討論 START //////////////////
 var socket;
+
+//創房間會用到的
+var discussTags=[], discussQuestion="", discussIncognito;
+
 function discussChoseTags(){
-    console.log("共同討論選擇的標籤: ");
-    console.log(chosenTags);
-    
     var message = "標籤：";
     for(var i=0; i<chosenTags.length; i++){
+        discussTags[i] = {tag_id: chosenTags[i],tag_name: allTags[chosenTags[i]]};
         if(i!=0){
             message += ',';
         }
         message += chosenTags[i];
     }
-    console.log("選擇的標籤: "+message);
+    console.log("討論的標籤: ");
+    console.log(discussTags);
+    
+    console.log("討論是否匿名");
+    console.log(discussIncognito);
+    
+    console.log("討論的問題: ");
+    console.log(discussQuestion);
+    
+    
     sendMessageAPI(message);
+    preMessage = "discuss_together_question,";
     
     //清空
     language = [];
     children = [];
     chosenTags = [];
-    originTags = [];
-    allTags = {};
 }
 
 function createDiscussRoom(){
