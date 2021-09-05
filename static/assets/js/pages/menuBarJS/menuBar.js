@@ -24,7 +24,7 @@ var preMessage = "";
 function bot(string) {
     console.log("bot的回覆: "+string);
     //----- 設定preMessage START -----//
-    if(string.slice(0,7)=="popover"){
+    if(string!=undefined && string.slice(0,7)=="popover"){
         console.log("彈出選標籤的視窗");
         $("#discussTags").modal('show');
         preMessage = "";
