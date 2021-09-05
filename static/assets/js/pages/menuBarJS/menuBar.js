@@ -1412,10 +1412,12 @@ function checkNotification(postId, index) {
 ////////////////// 共同討論 START //////////////////
 var socket;
 
-//創房間會用到的
+// 創房間會用到的
 var discussTags=[], discussQuestion="", discussIncognito, discussRoomId;
-//找推薦人會用到
+// 找推薦人會用到
 var recommandTagsId=[], recommandUsersId=[];
+// 共同討論檢查是否有人加入
+var discussRoom = {};
 
 function discussChoseTags(){
     var message = "標籤：";
@@ -1447,6 +1449,7 @@ function createDiscussRoom(){
     socket.on('received_message', function(response) {
         console.log("聊天室頻道: "+response._id);
         discussRoomId = response._id;
+        discussRoom[discussRoomId] = false;
     })
     //----- 創建一個共同討論的聊天室 END -----//
     
@@ -1471,21 +1474,42 @@ function createDiscussRoom(){
     //----- 找出匹配的人選 END -----//
     
     //----- 新增通知 START -----//
-    data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
-    myURL = head_url + "add_discussion_invitation_notification";
-//    $.ajax({
-//        url: myURL,
-//        type: "POST",
-//        data: JSON.stringify(data),
-//        async: false,
-//        dataType: "json",
-//        contentType: 'application/json; charset=utf-8',
-//        success: function(response){
-//            console.log("共同討論邀請通知");
-//            console.log(response);
-//        }
-//    });
+    // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
+    // 從第一通知發出去起 十分鐘後所有邀請失效
+    add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
+    setTimeout(function(){
+        if(discussRoom[discussRoomId]==false){
+            add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
+        }
+        setTimeout(function(){
+            if(discussRoom[discussRoomId]==false){
+                add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
+            }
+        }, 60000);
+    }, 60000);
     //----- 新增通知 END -----//
+}
+
+// 共同討論邀請通知
+// API -> add_discussion_invitation_notification
+function add_discussion_invitation_notification(recommandUsersId){
+    data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
+    console.log("共同討論邀請通知: ");
+    console.log(data);
+    myURL = head_url + "add_discussion_invitation_notification";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("共同討論邀請通知");
+            console.log(response);
+        }
+    });
+    
 }
 
 function joinDiscussRoom(){
