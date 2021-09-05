@@ -26,6 +26,7 @@ function bot(string) {
     //----- 設定preMessage START -----//
     if(string.slice(0,7)=="popover"){
         discuss = true;
+        getLanguageTag();
         $("#discussTags").modal('show');
         preMessage = "";
     }
