@@ -36,8 +36,6 @@ function bot(string) {
         allTags = {};
         getLanguageTag();
         $("#discussTags").modal('show');
-        
-        console.log("切字串匿名: "+string.slice(8, string.length));
         switch(string.slice(8, string.length)){
             case "是":
                 discussIncognito = true;
@@ -71,7 +69,6 @@ function bot(string) {
         if (string.slice(0, 6) == "正在輸入訊息") {
             needToClearBotMessage = true;
             content += 'id="willBeClear" ';
-            //        console.log("下一次要清掉");
         }
         content += 'class="d-flex justify-content-start mb-4">';
         content += '<div class="img_cont_msg">';
@@ -79,9 +76,7 @@ function bot(string) {
         content += '</div>';
         content += '<div class="msg_cotainer"';
         if (string.slice(0, 6) == "正在輸入訊息") {
-            //        needToClearBotMessage = true;
             content += 'id="willBeClearString" ';
-            //        console.log("下一次要清掉");
         }
         content += '>';
         content += string;
@@ -1423,15 +1418,6 @@ function discussChoseTags(){
         }
         message += chosenTags[i];
     }
-    console.log("討論的標籤: ");
-    console.log(discussTags);
-    
-    console.log("討論是否匿名");
-    console.log(discussIncognito);
-    
-    console.log("討論的問題: ");
-    console.log(discussQuestion);
-    
     
     sendMessageAPI(message);
     preMessage = "discuss_together_question,";
@@ -1443,12 +1429,20 @@ function discussChoseTags(){
 }
 
 function createDiscussRoom(){
+    console.log("討論的標籤: ");
+    console.log(discussTags);
+    
+    console.log("討論是否匿名");
+    console.log(discussIncognito);
+    
+    console.log("討論的問題: ");
+    console.log(discussQuestion);
+    
     console.log("發起");
     //----- 創建一個共同討論的聊天室 START -----//
-    var tags = [{tag_id: "00000",tag_name: "Python"}];
-    var data = {tags: tags,
-    question: "我想問python的問題", asker:{user_id: localStorage.getItem("sessionID"),incognito: false}};
-    console.log("data: ");
+    var data = {tags: discussTags,
+    question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
+    console.log("創房間的data: ");
     console.log(data);
     socket.emit('create_room' , data);
     socket.on('received_message', function(response) {
