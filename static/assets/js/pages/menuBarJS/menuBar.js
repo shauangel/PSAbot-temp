@@ -166,6 +166,7 @@ function send_message() {
     
     //----- 共同討論處理 START -----//
     if(preMessage=="discuss_together_question,"){
+        console.log("現在要問問題了");
         discussQuestion = message;
     }
     message = preMessage + message;
