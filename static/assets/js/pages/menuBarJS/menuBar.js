@@ -19,10 +19,17 @@ function changePage() {
 
 var keyWords = {};
 var needToClearBotMessage = false;
+var preMessage = "";
 
 function bot(string) {
-    //    console.log("bot送訊息");
-    //    console.log("needToClearBotMessage: "+needToClearBotMessage);
+    //----- 設定preMessage START -----//
+    if(string.slice(0,7)=="popover"){
+        console.log("彈出選標籤的視窗");
+        $("#discussTags").modal('show');
+        preMessage = "";
+    }
+    //----- 設定preMessage END -----//
+    
     keyWords = {};
 
     if (needToClearBotMessage) {
@@ -58,25 +65,6 @@ function bot(string) {
     }
     content += '>';
     content += string;
-    // 測試用 START
-    //    content += '<div id="keywords">';
-    //    // 關鍵字的id為 0~keyword.length-1
-    //    for(var i=0; i<4; i++){
-    //        content += '<label id="';
-    //        content += i;
-    //        content += '" class="badge badge-default purpleLabel">';
-    //        content += i;
-    //        content += 'haha<button class="labelXBtn" onclick="cancleKeyWords(';
-    //        content += "'";
-    //        content += i;
-    //        content += "'";
-    //        content += ')">x</button></label>';
-    //    }
-    //    content += '</div><hr>';
-    //    
-    //    content += '<input id="addBtn" class="btn btn-primary purpleBtnInChatroom" value="新增" onclick="wantAddKeyWord()">';
-    //    content += '<input id="doneBtn"class="btn btn-primary purpleBtnInChatroom" value="完成" onclick="doneKeyWord()">';
-    // 測試用 END
 
     //    content += '<span class="msg_time">8:40 AM</span>';
     content += '</div>';
@@ -130,6 +118,12 @@ function bot(string) {
 }
 
 function user(string) {
+    //----- 設定preMessage START -----//
+    if(string=="共同討論"){
+        preMessage = "discuss_together_whether_incognito,";
+    }
+    //----- 設定preMessage END -----//
+    
     //    console.log("user送訊息");
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
@@ -149,6 +143,42 @@ function user(string) {
     history.scrollTop = history.scrollHeight;
 
     bot("正在輸入訊息...");
+}
+
+function send_message() {
+    console.log("send_message");
+    var message = $("#message").val();
+    console.log("message: " + message);
+
+    user(message);
+    // 共同討論有些要加上前綴
+    message = preMessage + message;
+    preMessage = "";
+    
+    //用來清空傳出去的輸入框
+    var msg = document.getElementById("message");
+    msg.value = ""
+    console.log("有清空");
+    
+    //直接用session_id會undifine!!
+    session_id = localStorage.getItem("sessionID");
+    var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
+//    console.log("myURL_BERFORE: " + myURL);
+    myURL = encodeURI(myURL);
+//    console.log("myURL_AFTER: " + myURL);
+
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            bot(response.text);
+        },
+        error: function () {
+            console.log("error");
+        }
+    });
 }
 
 // 關鍵字們 START
@@ -572,40 +602,6 @@ function getUserInterestTags() {
 
     getLanguageTag();
     showChosenTags();
-}
-
-function send_message() {
-    console.log("send_message");
-    var message = $("#message").val();
-    console.log("message: " + message);
-
-    user(message);
-
-    //用來清空傳出去的輸入框
-    var msg = document.getElementById("message");
-    //    msg.innerHTML = "";
-    msg.value = ""
-    console.log("有清空");
-    //直接用session_id會undifine!!
-    session_id = localStorage.getItem("sessionID");
-    var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
-    console.log("myURL_BERFORE: " + myURL);
-    myURL = encodeURI(myURL);
-    console.log("myURL_AFTER: " + myURL);
-
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            console.log(response.text);
-            bot(response.text);
-        },
-        error: function () {
-            console.log("error");
-        }
-    });
 }
 
 function open_close() {
