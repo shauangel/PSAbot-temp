@@ -37,8 +37,8 @@ function bot(string) {
         getLanguageTag();
         $("#discussTags").modal('show');
         
-        console.log("切字串匿名: "+string.slice(9, string.length));
-        switch(string.slice(9, string.length)){
+        console.log("切字串匿名: "+string.slice(8, string.length));
+        switch(string.slice(8, string.length)){
             case "是":
                 discussIncognito = true;
                 break;
