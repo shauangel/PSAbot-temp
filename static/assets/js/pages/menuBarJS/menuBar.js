@@ -158,7 +158,11 @@ function send_message() {
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
     msg.value = "";
-    
+    sendMessageAPI(message);
+}
+
+//傳訊息給後端
+function sendMessageAPI(message){
     //直接用session_id會undifine!!
     session_id = localStorage.getItem("sessionID");
     var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
@@ -175,9 +179,9 @@ function send_message() {
             bot(response.text);
             //----- 設定preMessage START -----//
             // 要確保訊息已經送出去，才能加前綴
-//            if(message=="共同討論"){
-//                preMessage = "discuss_together_whether_incognito,";
-//            }
+            if(message=="共同討論"){
+                preMessage = "discuss_together_whether_incognito,";
+            }
             //----- 設定preMessage END -----//
         },
         error: function () {
@@ -1394,6 +1398,17 @@ function discussChoseTags(){
     console.log("共同討論選擇的標籤: ");
     console.log(chosenTags);
     
+    var message = "標籤：";
+    for(var i=0; i<chosenTags.length; i++){
+        if(i!=0){
+            message += ',';
+        }
+        message += chosenTags[i];
+    }
+    console.log("選擇的標籤: "+message);
+    sendMessageAPI(message);
+    
+    //清空
     language = [];
     children = [];
     chosenTags = [];
