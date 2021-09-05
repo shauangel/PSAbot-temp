@@ -24,7 +24,7 @@ var preMessage = "";
 function bot(string) {
     console.log("bot的回覆: "+string);
     //----- 設定preMessage START -----//
-    if(string!=undefined && string.slice(0,7)=="popover"){
+    if(string.slice(0,7)=="popover"){
         console.log("彈出選標籤的視窗");
         $("#discussTags").modal('show');
         preMessage = "";
@@ -119,12 +119,6 @@ function bot(string) {
 }
 
 function user(string) {
-    //----- 設定preMessage START -----//
-    if(string=="共同討論"){
-        preMessage = "discuss_together_whether_incognito,";
-    }
-    //----- 設定preMessage END -----//
-    
     //    console.log("user送訊息");
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
@@ -154,7 +148,6 @@ function send_message() {
     user(message);
     // 共同討論有些要加上前綴
     message = preMessage + message;
-    preMessage = "";
     
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
@@ -164,9 +157,7 @@ function send_message() {
     //直接用session_id會undifine!!
     session_id = localStorage.getItem("sessionID");
     var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
-//    console.log("myURL_BERFORE: " + myURL);
     myURL = encodeURI(myURL);
-//    console.log("myURL_AFTER: " + myURL);
 
     $.ajax({
         url: myURL,
@@ -175,6 +166,12 @@ function send_message() {
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             bot(response.text);
+            //----- 設定preMessage START -----//
+            // 要確保訊息已經送出去，才能加前綴
+            if(message=="共同討論"){
+                preMessage = "discuss_together_whether_incognito,";
+            }
+            //----- 設定preMessage END -----//
         },
         error: function () {
             console.log("error");
