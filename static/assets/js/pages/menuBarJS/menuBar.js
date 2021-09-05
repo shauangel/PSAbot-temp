@@ -23,9 +23,10 @@ var preMessage = "";
 
 function bot(string) {
     console.log("bot的回覆: "+string);
-    //測試用
+    // 共同討論完，要重啟rasa
     if(string=="請稍等，立即為您詢問其他使用者。"){
         createDiscussRoom();
+        welcomeAPI();
     }
     if(string==undefined){
        bot("出現了點問題，請稍後再試～");
@@ -165,6 +166,7 @@ function send_message() {
     
     //----- 共同討論處理 START -----//
     if(preMessage=="discuss_together_question,"){
+        console.log("現在要問問題了");
         discussQuestion = message;
     }
     message = preMessage + message;
@@ -426,6 +428,24 @@ function rank(id) {//全部的排行
 ////////////////// 聊天室 END ////////////////////
 
 ////////////////// 初始化 START////////////////////
+function welcomeAPI(){
+    var myURL = head_url + "welcome?sender_id=" + localStorage.getItem("sessionID");
+    console.log("myURL: " + myURL);
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            bot(response.text)
+        },
+        error: function () {
+            console.log("error");
+        }
+    });
+}
+
 function start() {
     //如果是第一次登入，要先跳出編輯個人資訊的頁面 START
     var role = localStorage.getItem("role");
@@ -500,24 +520,7 @@ function start() {
                 }
             });
 
-
-            var myURL = head_url + "welcome?sender_id=" + session_id;
-            console.log("myURL: " + myURL);
-            $.ajax({
-                url: myURL,
-                type: "GET",
-                dataType: "json",
-                async: false,
-                contentType: 'application/json; charset=utf-8',
-                success: function (response) {
-                    console.log("");
-                    console.log(response);
-                    bot(response.text)
-                },
-                error: function () {
-                    console.log("error");
-                }
-            });
+            welcomeAPI();
             // ---------- PSABot聊天室 END ---------- //
         }   
     }
@@ -1410,13 +1413,18 @@ function checkNotification(postId, index) {
 ////////////////// 共同討論 START //////////////////
 var socket;
 
-//創房間會用到的
-var discussTags=[], discussQuestion="", discussIncognito;
+// 創房間會用到的
+var discussTags=[], discussQuestion="", discussIncognito, discussRoomId;
+// 找推薦人會用到
+var recommandTagsId=[], recommandUsersId=[];
+// 共同討論檢查是否有人加入
+var discussRoom = {};
 
 function discussChoseTags(){
     var message = "標籤：";
     for(var i=0; i<chosenTags.length; i++){
         discussTags[i] = {tag_id: chosenTags[i],tag_name: allTags[chosenTags[i]]};
+        recommandTagsId[i] = chosenTags[i];
         if(i!=0){
             message += ',';
         }
@@ -1433,16 +1441,6 @@ function discussChoseTags(){
 }
 
 function createDiscussRoom(){
-    console.log("討論的標籤: ");
-    console.log(discussTags);
-    
-    console.log("討論是否匿名");
-    console.log(discussIncognito);
-    
-    console.log("討論的問題: ");
-    console.log(discussQuestion);
-    
-    console.log("發起");
     //----- 創建一個共同討論的聊天室 START -----//
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
@@ -1451,13 +1449,15 @@ function createDiscussRoom(){
     socket.emit('create_room' , data);
     socket.on('received_message', function(response) {
         console.log("聊天室頻道: "+response._id);
+        discussRoomId = response._id;
+        discussRoom[discussRoomId] = false;
     })
     //----- 創建一個共同討論的聊天室 END -----//
     
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
-    data = {tags: ["00000"]};
-    console.log("data: ");
+    data = {tags: recommandTagsId};
+    console.log("找推薦人送出的資料: ");
     console.log(data);
     $.ajax({
         url: myURL,
@@ -1469,9 +1469,48 @@ function createDiscussRoom(){
         success: function(response){
             console.log("推薦人選的id");
             console.log(response);
+            recommandUsersId = response;
         }
     });
     //----- 找出匹配的人選 END -----//
+    
+    //----- 新增通知 START -----//
+    // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
+    // 從第一通知發出去起 十分鐘後所有邀請失效
+    add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
+    setTimeout(function(){
+        if(discussRoom[discussRoomId]==false){
+            add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
+        }
+        setTimeout(function(){
+            if(discussRoom[discussRoomId]==false){
+                add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
+            }
+        }, 60000);
+    }, 60000);
+    //----- 新增通知 END -----//
+}
+
+// 共同討論邀請通知
+// API -> add_discussion_invitation_notification
+function add_discussion_invitation_notification(recommandUsersId){
+    data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
+    console.log("共同討論邀請通知: ");
+    console.log(data);
+    myURL = head_url + "add_discussion_invitation_notification";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("共同討論邀請通知");
+            console.log(response);
+        }
+    });
+    
 }
 
 function joinDiscussRoom(){
