@@ -33,7 +33,6 @@ function bot(string) {
     }
     //----- 設定preMessage＆處理選標籤 START -----//
     else if(string.slice(0,7)=="popover"){
-        console.log("到了popover裡面");
         discuss = true;
         language = [];
         children = [];
@@ -411,10 +410,7 @@ function clickChatroomInnerSearch(postId) {
 
 // outerSearch START
 function summary(id) {//單篇的摘要
-    console.log("單篇的摘要");
-    console.log("id: " + id);
     localStorage.setItem("summaryId", id);
-    console.log("拿到的: " + localStorage.getItem("summaryId"));
     setPage('summary_new');
 }
 
@@ -1432,7 +1428,6 @@ function discussChoseTags(){
     }
     
     preMessage = "discuss_together_question,";
-    console.log("第一次修改: "+preMessage);
     sendMessageAPI(message);
     
     //清空
@@ -1442,6 +1437,12 @@ function discussChoseTags(){
 }
 
 function createDiscussRoom(){
+    //假資料 START//
+    discussTags = {tag_id: "00000",tag_name: "Python"};
+    discussQuestion = "什麼是python?";
+    incognito = false;
+    recommandTagsId = ["00000"];
+    //假資料 END//
     //----- 創建一個共同討論的聊天室 START -----//
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
