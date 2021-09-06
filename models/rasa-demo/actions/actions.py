@@ -29,9 +29,12 @@ class ask_return_and_reward(Action):
         return "ask_return_and_reward"
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         #為回答者加積分
-        selected_tags_id = tracker.get_slot("discuss_tags").split('：',1)[1]
-        selected_tags_id.replace(" ", "")
-        selected_tags_array = selected_tags_id.split(',')
+        if tracker.get_slot("discuss_tags") != None:
+            selected_tags_id = tracker.get_slot("discuss_tags").split('：',1)[1]
+            selected_tags_id.replace(" ", "")
+            selected_tags_array = selected_tags_id.split(',')
+        else:
+            selected_tags_array = []
         replier_id = tracker.get_slot("replier_id").split(',',1)[1]
         tags=[]
         for i in selected_tags_array:
