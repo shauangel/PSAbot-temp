@@ -33,6 +33,7 @@ function bot(string) {
     }
     //----- 設定preMessage＆處理選標籤 START -----//
     else if(string.slice(0,7)=="popover"){
+        console.log("到了popover裡面");
         discuss = true;
         language = [];
         children = [];
@@ -166,7 +167,6 @@ function send_message() {
     
     //----- 共同討論處理 START -----//
     if(preMessage=="discuss_together_question,"){
-        console.log("現在要問問題了");
         discussQuestion = message;
     }
     message = preMessage + message;
@@ -184,7 +184,7 @@ function sendMessageAPI(message){
     session_id = localStorage.getItem("sessionID");
     var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
     myURL = encodeURI(myURL);
-    console.log("送出訊息: "+myURL);
+    console.log("送出訊息: "+message);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -1431,8 +1431,9 @@ function discussChoseTags(){
         message += chosenTags[i];
     }
     
-    sendMessageAPI(message);
     preMessage = "discuss_together_question,";
+    console.log("第一次修改: "+preMessage);
+    sendMessageAPI(message);
     
     //清空
     language = [];
