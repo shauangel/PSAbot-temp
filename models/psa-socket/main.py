@@ -125,9 +125,14 @@ def send_message(data):
         #   headers = {'content-type': 'application/json'}
         #   r = requests.post('http://localhost:5006/webhooks/rest/webhook', json=payload,headers=headers )
         # elif chat_dict['content'] in end_sentences:
+        #   chat_data.end_chat(chat_dict['_id'],True,1)
         #   current_chat = chat_data.query_chat(data['_id'])
         #   if data['user_id'] == current_chat['members'][0]['user_id']:
         #       replier_id = current_chat['members'][1]['user_id']
+        #       payload = {'replier_id':replier_id,'message':'end_discuss'}
+        #       headers = {'content-type': 'application/json'}
+        #       r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
+        # if chat_data.end_chat(chat_dict['_id'],True,0):
         #       payload = {'replier_id':replier_id,'message':'end_discuss'}
         #       headers = {'content-type': 'application/json'}
         #       r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )

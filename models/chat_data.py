@@ -48,8 +48,8 @@ def end_chat(chat_id,flag,setmode):
     if setmode == 1:
         _db.CHAT_DATA_COLLECTION.update_one({'_id':chat_id},{'$set':{'end_flag':flag}})
         return flag
-    else:
-        return _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})['end_flag']
+    elif setmode == 0:
+        return _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})['end_flag'] == flag
 
 # 刪除聊天室
 def remove_chat(chat_id):
