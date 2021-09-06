@@ -1438,10 +1438,10 @@ function discussChoseTags(){
 
 function createDiscussRoom(){
     //假資料 START//
-    discussTags = {tag_id: "00000",tag_name: "Python"};
-    discussQuestion = "什麼是python?";
-    incognito = false;
-    recommandTagsId = ["00000"];
+//    discussTags = {tag_id: "00000",tag_name: "Python"};
+//    discussQuestion = "什麼是python?";
+//    incognito = false;
+//    recommandTagsId = ["00000"];
     //假資料 END//
     //----- 創建一個共同討論的聊天室 START -----//
     var data = {tags: discussTags,
