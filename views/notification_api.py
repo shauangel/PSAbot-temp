@@ -42,10 +42,11 @@ def add_discussion_invitation_notification():
 @notification_api.route('check_new_notification')
 def check_new_notification():
     user_id=request.values.get('user_id')
-    notification=user.query_notification(user_id)['notification']
-    for i in notification:
-        if i['new'] == True:
-            return jsonify({"new":True})
+    if user.query_notification(user_id) != None:
+        notification=user.query_notification(user_id)['notification']
+        for i in notification:
+            if i['new'] == True:
+                return jsonify({"new":True})
     return jsonify({"new":False})
    
 #點開鈴鐺，new設false
