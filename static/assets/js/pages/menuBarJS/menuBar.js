@@ -1415,8 +1415,12 @@ function checkNotificationForPost(postId, index) {
 
 // 點選「共同討論」通知
 function checkNotificationForDiscussion(detail, index){
-    $('#discussionIncognito').modal('show');
     localStorage.setItem("discussionRoomId", detail.room_id);
+    console.log("detail: ");
+    console.log(detail);
+    console.log("local房間id: "+detail.room_id);
+    $('#discussionIncognito').modal('show');
+    
 //    socket.emit('join_room' , data);
     console.log("detail: ");
     console.log(detail);
