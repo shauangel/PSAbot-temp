@@ -26,7 +26,7 @@ function bot(string) {
     // 共同討論完，要重啟rasa
     if(string=="請稍等，立即為您詢問其他使用者。"){
         createDiscussRoom();
-        welcomeAPI();
+        setTimeout(welcomeAPI, 5000);//等一下再呼叫
     }
     if(string==undefined){
        bot("出現了點問題，請稍後再試～");
@@ -1438,10 +1438,10 @@ function discussChoseTags(){
 
 function createDiscussRoom(){
     //假資料 START//
-    discussTags = {tag_id: "00000",tag_name: "Python"};
-    discussQuestion = "什麼是python?";
-    incognito = false;
-    recommandTagsId = ["00000"];
+//    discussTags = {tag_id: "00000",tag_name: "Python"};
+//    discussQuestion = "什麼是python?";
+//    incognito = false;
+//    recommandTagsId = ["00000"];
     //假資料 END//
     //----- 創建一個共同討論的聊天室 START -----//
     var data = {tags: discussTags,
@@ -1479,10 +1479,11 @@ function createDiscussRoom(){
     //----- 新增通知 START -----//
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
+    console.log("recommandUsersId: "+recommandUsersId);
     console.log("推薦陣列長度: "+recommandUsersId.length);
     
     new Promise(function(resolve, reject){ //第一分鐘傳通知
-        console.log("第一次呼叫: "+Array.isArray(recommandUsersId));
+        console.log("第一次呼叫: "+typeof(recommandUsersId));
     }).then(function(){ //第二分鐘傳通知
             
     }).then(function(){ //第三分鐘傳通知
