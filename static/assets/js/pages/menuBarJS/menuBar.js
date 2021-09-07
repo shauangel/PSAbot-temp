@@ -1417,7 +1417,7 @@ function checkNotificationForPost(postId, index) {
 function checkNotificationForDiscussion(detail, index){
     localStorage.setItem("discussionRoomId", detail.room_id);
     console.log("detail: ");
-    console.log(detail);
+    console.log(JSON.stringify(detail));
     console.log("local房間id: "+detail.room_id);
     $('#discussionIncognito').modal('show');
     
