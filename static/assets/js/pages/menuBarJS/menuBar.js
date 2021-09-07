@@ -1320,13 +1320,15 @@ function showNotification(response) {
                 content += '\', \'';
                 content += response.result[i].id;
                 content += '\')">';
-                content += '<i class="d-flex align-self-center fa-lg fa fa-reply-all" aria-hidden="true" style="margin: 10px;"></i>';
+                content += '<i class="d-flex align-self-center fa-lg fa fa-comments-o" aria-hidden="true" style="margin: 10px;"></i>';
                 content += '<div class="media-body">';
                 content += '<p class="notification-msg">';
                 content += '有人邀請您參與共同討論<br>';
                 content += '討論內容為「';
                 content += response.result[i].detail.question;
-                content += '」</p>';
+                content += '」<br>';
+                content += '點選此處接受邀請';
+                content += '</p>';
                 content += '<span class="notification-time">';
                 content += time;
                 content += '</span>';
@@ -1413,9 +1415,13 @@ function checkNotificationForPost(postId, index) {
 
 // 點選「共同討論」通知
 function checkNotificationForDiscussion(detail, index){
+    $('#discussionIncognito').modal('show');
+    localStorage.setItem("discussionRoomId", detail.room_id);
+//    socket.emit('join_room' , data);
     console.log("detail: ");
     console.log(detail);
     console.log("index: "+index);
+    alreadyChecked(index);
 }
 ////////////////// 處理通知 END //////////////////
 
@@ -1563,10 +1569,20 @@ function add_discussion_invitation_notification(recommandUsersId){
     
 }
 
-function joinDiscussRoom(){
-    console.log("接受");
-    var data = {_id: "000001", user_id: localStorage.getItem("sessionID"), incognito: false};
-    socket.emit('join_room' , data);
+function joinDiscussRoom(incognito){
+    switch(incognito){
+        case "true":
+            incognito = true;
+            break;
+        case "false":
+            incognito = false;
+            break;
+    }
+    console.log("接受共同討論邀請");
+    var data = {_id: localStorage.getItem("discussionRoomId"), user_id: localStorage.getItem("sessionID"), incognito: incognito};
+    console.log(data);
+    localStorage.removeItem("discussionRoomId");
+//    socket.emit('join_room' , data);
 }
 
 ////////////////// 共同討論 END //////////////////
