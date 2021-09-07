@@ -1471,7 +1471,7 @@ function createDiscussRoom(){
         success: function(response){
             console.log("推薦人選的id");
             console.log(response);
-            recommandUsersId = response;
+            recommandUsersId = response.recommand_user_id;
         }
     });
     //----- 找出匹配的人選 END -----//
@@ -1482,12 +1482,39 @@ function createDiscussRoom(){
     console.log("recommandUsersId: "+recommandUsersId);
     console.log("推薦陣列長度: "+recommandUsersId.length);
     
+    var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
-        console.log("第一次呼叫: "+typeof(recommandUsersId));
+        console.log("第一分鐘傳通知");
+        if(discussRoom[discussRoomId]==false){
+            if(len<2){
+               console.log("len<2"); add_discussion_invitation_notification(recommandUsersId.slice(0, len));
+                reject();
+            }
+            else{
+               console.log("len>2");  add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
+                setTimeout(resolve, 60000);
+            }
+        }
     }).then(function(){ //第二分鐘傳通知
-            
+        console.log("第二分鐘傳通知");
+        if(discussRoom[discussRoomId]==false){
+            if(len<5){
+               console.log("len<5");  add_discussion_invitation_notification(recommandUsersId.slice(3, len));
+                reject();
+            }
+            else{
+               console.log("len>5");  add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
+                setTimeout(resolve, 60000);
+            }
+        }
     }).then(function(){ //第三分鐘傳通知
-            
+        console.log("第三分鐘傳通知");
+        if(discussRoom[discussRoomId]==false){
+            console.log("len"); 
+            add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
+        }
+    }).catch(function(){
+        console.log("長度不滿");
     })
 //    add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
 //    setTimeout(function(){
