@@ -1453,14 +1453,14 @@ function createDiscussRoom(){
         console.log("聊天室頻道: "+response._id);
         discussRoomId = response._id;
         discussRoom[discussRoomId] = false;
+        console.log("全部: "+discussRoom);
+        console.log("剛建完: "+discussRoom[discussRoomId]);
     })
     //----- 創建一個共同討論的聊天室 END -----//
     
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
     data = {tags: recommandTagsId};
-    console.log("找推薦人送出的資料: ");
-    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1469,8 +1469,6 @@ function createDiscussRoom(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("推薦人選的id");
-            console.log(response);
             recommandUsersId = response.recommand_user_id;
         }
     });
@@ -1480,11 +1478,12 @@ function createDiscussRoom(){
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
     console.log("recommandUsersId: "+recommandUsersId);
-    console.log("推薦陣列長度: "+recommandUsersId.length);
     
     var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
         console.log("第一分鐘傳通知");
+        console.log("全部: "+discussRoom);
+        console.log("1: "+discussRoom[discussRoomId]);
         if(discussRoom[discussRoomId]==false){
             if(len<2){
                console.log("len<2"); add_discussion_invitation_notification(recommandUsersId.slice(0, len));
@@ -1497,6 +1496,8 @@ function createDiscussRoom(){
         }
     }).then(function(){ //第二分鐘傳通知
         console.log("第二分鐘傳通知");
+        console.log("全部: "+discussRoom);
+        console.log("2: "+discussRoom[discussRoomId]);
         if(discussRoom[discussRoomId]==false){
             if(len<5){
                console.log("len<5");  add_discussion_invitation_notification(recommandUsersId.slice(3, len));
@@ -1509,6 +1510,8 @@ function createDiscussRoom(){
         }
     }).then(function(){ //第三分鐘傳通知
         console.log("第三分鐘傳通知");
+        console.log("全部: "+discussRoom);
+        console.log("3: "+discussRoom[discussRoomId]);
         if(discussRoom[discussRoomId]==false){
             console.log("len"); 
             add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
