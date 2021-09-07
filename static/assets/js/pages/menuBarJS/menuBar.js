@@ -1450,17 +1450,24 @@ function createDiscussRoom(){
     console.log(data);
     socket.emit('create_room' , data);
     socket.on('received_message', function(response) {
+        discussion_recommand_user();
         console.log("聊天室頻道: "+response._id);
         discussRoomId = response._id;
         discussRoom[discussRoomId] = false;
         console.log("全部: "+discussRoom);
         console.log("剛建完: "+discussRoom[discussRoomId]);
+        discussNotificationThirdTimes();
     })
     //----- 創建一個共同討論的聊天室 END -----//
-    
+
+}
+
+// 找出匹配的人選
+// API -> discussion_recommand_user
+function discussion_recommand_user(){
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
-    data = {tags: recommandTagsId};
+    var data = {tags: recommandTagsId};
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1473,8 +1480,10 @@ function createDiscussRoom(){
         }
     });
     //----- 找出匹配的人選 END -----//
-    
-    //----- 新增通知 START -----//
+}
+
+// 分三次發共同討論的通知
+function discussNotificationThirdTimes(){
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
     console.log("recommandUsersId: "+recommandUsersId);
@@ -1518,19 +1527,7 @@ function createDiscussRoom(){
         }
     }).catch(function(){
         console.log("長度不滿");
-    })
-//    add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
-//    setTimeout(function(){
-//        if(discussRoom[discussRoomId]==false){
-//            add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
-//        }
-//        setTimeout(function(){
-//            if(discussRoom[discussRoomId]==false){
-//                add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
-//            }
-//        }, 60000);
-//    }, 60000);
-    //----- 新增通知 END -----//
+    });
 }
 
 // 共同討論邀請通知
