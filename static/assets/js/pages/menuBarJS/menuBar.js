@@ -1288,44 +1288,53 @@ function showNotification(response) {
         content += '" style="background: ';
         // 是否看過 START
         if (response.result[i].check == false) {
-            //            content += '<label id="notification';
-            //            content += response.result[i].id;
-            //            content += '" class="label label-danger align-self-center">是新的</label>';
             content += '#E6E6FA;">';
         }
         else {
-            //            content += '<label id="notification';
-            //            content += response.result[i].id;
-            //            content += '" class="label label-danger align-self-center" style="background: #505458;">已看過</label>';
             content += '#FFFFFF;">';
         }
         // 是否看過 END
 
-        content += '<div class="media" onclick="checkNotification(\'';
-        content += response.result[i].detail.post_id;
-        content += '\', \'';
-        content += response.result[i].id;
-        content += '\')">';
-
-        // 拿照片 STRAT
-        //                content += '<img class="d-flex align-self-center" src="../static/images/person_4.jpg" alt="Generic placeholder image">';
-        content += '<i class="d-flex align-self-center fa-lg fa fa-reply-all" aria-hidden="true" style="margin: 10px;"></i>';
-        //                content += '<i class="d-flex align-self-center fa-lg fa fa-comments-o" aria-hidden="true" style="margin: 10px;"></i>';
-        // 拿照片 END
-
-        content += '<div class="media-body">';
-        //                    content += '<h5 class="notification-user">';
-        //                        content += response.result[i].detail.replier_name;
-        //                    content += '</h5>';
-        content += '<p class="notification-msg">';
-        content += response.result[i].detail.replier_name;
-        content += '回覆了您的貼文</p>';
-        content += '<span class="notification-time">';
-        content += time;
-        content += '</span>';
-        content += '</div>';
-        content += '</div>';
-        content += '</li>';
+        switch(response.result[i].type){
+            case "post":
+                content += '<div class="media" onclick="checkNotificationForPost(\'';
+                content += response.result[i].detail.post_id;
+                content += '\', \'';
+                content += response.result[i].id;
+                content += '\')">';
+                content += '<i class="d-flex align-self-center fa-lg fa fa-reply-all" aria-hidden="true" style="margin: 10px;"></i>';
+                content += '<div class="media-body">';
+                content += '<p class="notification-msg">';
+                content += response.result[i].detail.replier_name;
+                content += '回覆了您的貼文</p>';
+                content += '<span class="notification-time">';
+                content += time;
+                content += '</span>';
+                content += '</div>';
+                content += '</div>';
+                content += '</li>';
+                break;
+            case "discussion":
+                content += '<div class="media" onclick="checkNotificationForDiscussion(\'';
+                content += response.result[i].detail;
+                content += '\', \'';
+                content += response.result[i].id;
+                content += '\')">';
+                content += '<i class="d-flex align-self-center fa-lg fa fa-reply-all" aria-hidden="true" style="margin: 10px;"></i>';
+                content += '<div class="media-body">';
+                content += '<p class="notification-msg">';
+                content += '有人邀請您參與共同討論<br>';
+                content += '討論內容為「';
+                content += response.result[i].detail.question;
+                content += '」</p>';
+                content += '<span class="notification-time">';
+                content += time;
+                content += '</span>';
+                content += '</div>';
+                content += '</div>';
+                content += '</li>';
+                break;
+        }
     }
     document.getElementById("showNotification").innerHTML = content;
 }
@@ -1378,7 +1387,6 @@ function notNewAnymore() {
 function alreadyChecked(index) {
     $("#background" + index).css("background-color", "#FFFFF");
     var myURL = head_url + "set_notification_check?user_id=" + localStorage.getItem("sessionID") + "&id=" + index;
-    //    console.log("已經查看過了～: "+myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -1387,21 +1395,27 @@ function alreadyChecked(index) {
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             console.log("成功回傳");
-            //            console.log(response);
             notificationPage = 0;
             getNotification();
         },
         error: function () {
-            //            console.log("error");
         }
     });
 }
 
-function checkNotification(postId, index) {
+// 點選「貼文」通知
+function checkNotificationForPost(postId, index) {
     alreadyChecked(index);
     localStorage.setItem("postType", "innerPost");
     localStorage.setItem("singlePostId", postId);
     setPage("mySinglePostFrame");
+}
+
+// 點選「共同討論」通知
+function checkNotificationForDiscussion(detail, index){
+    console.log("detail: ");
+    console.log(detail);
+    console.log("index: "+index);
 }
 ////////////////// 處理通知 END //////////////////
 
@@ -1454,8 +1468,6 @@ function createDiscussRoom(){
         console.log("聊天室頻道: "+response._id);
         discussRoomId = response._id;
         discussRoom[discussRoomId] = false;
-        console.log("全部: "+discussRoom);
-        console.log("剛建完: "+discussRoom[discussRoomId]);
         discussNotificationThirdTimes();
     })
     //----- 創建一個共同討論的聊天室 END -----//
@@ -1486,7 +1498,6 @@ function discussion_recommand_user(){
 function discussNotificationThirdTimes(){
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
-    console.log("recommandUsersId: "+recommandUsersId);
     
     var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
