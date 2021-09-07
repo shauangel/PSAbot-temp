@@ -1438,10 +1438,10 @@ function discussChoseTags(){
 
 function createDiscussRoom(){
     //假資料 START//
-//    discussTags = {tag_id: "00000",tag_name: "Python"};
-//    discussQuestion = "什麼是python?";
-//    incognito = false;
-//    recommandTagsId = ["00000"];
+    discussTags = {tag_id: "00000",tag_name: "Python"};
+    discussQuestion = "什麼是python?";
+    incognito = false;
+    recommandTagsId = ["00000"];
     //假資料 END//
     //----- 創建一個共同討論的聊天室 START -----//
     var data = {tags: discussTags,
@@ -1479,17 +1479,26 @@ function createDiscussRoom(){
     //----- 新增通知 START -----//
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
-    add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
-    setTimeout(function(){
-        if(discussRoom[discussRoomId]==false){
-            add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
-        }
-        setTimeout(function(){
-            if(discussRoom[discussRoomId]==false){
-                add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
-            }
-        }, 60000);
-    }, 60000);
+    console.log("推薦陣列長度: "+recommandUsersId.length);
+    
+    new Promise(function(resolve, reject){ //第一分鐘傳通知
+        console.log("第一次呼叫: "+Array.isArray(recommandUsersId));
+    }).then(function(){ //第二分鐘傳通知
+            
+    }).then(function(){ //第三分鐘傳通知
+            
+    })
+//    add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
+//    setTimeout(function(){
+//        if(discussRoom[discussRoomId]==false){
+//            add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
+//        }
+//        setTimeout(function(){
+//            if(discussRoom[discussRoomId]==false){
+//                add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
+//            }
+//        }, 60000);
+//    }, 60000);
     //----- 新增通知 END -----//
 }
 
