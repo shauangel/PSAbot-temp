@@ -1423,7 +1423,7 @@ function checkNotificationForPost(postId, index) {
 // 點選「共同討論」通知
 function checkNotificationForDiscussion(room_id, question, index){
     localStorage.setItem("discussionRoomId", room_id);
-    localStorage.setItem("discussQuestion", question);
+    localStorage.setItem("discussionQuestion", question);
     $('#discussionIncognito').modal('show');
     alreadyChecked(index);
 }
@@ -1602,7 +1602,7 @@ function addToChatingList(discussionRoomId, discussionQuestion){
     chatingListContent += discussionRoomId;
     chatingListContent += '\')">';
         chatingListContent += '<a class="accordion-msg" href="#">';
-            chatingListContent += '<i class="fa fa-commenting-o chatImg" style="color: white;" aria-hidden="true"></i>';
+            chatingListContent += '<img src="../static/images/discussionImg.png" class="chatImg">';
             chatingListContent += discussionQuestion;
         chatingListContent += '</a>';
     chatingListContent += '</h3>';
