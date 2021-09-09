@@ -158,20 +158,14 @@ function user(string) {
     
     var chatingRoomId = localStorage.getItem("chatingRoomId");
     var sessionId = localStorage.getItem("sessionID");
+    
     if(chatingRoomId == sessionId){ // PSAbot
         bot("正在輸入訊息...");
-    }
-    else{ // 共同討論
-        var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: string};
-        socket.emit('send_message' , data);
-        console.log("送出去的共同討論: ");
-        console.log(data);
     }
 }
 
 function send_message() {
     var message = $("#message").val();
-
     user(message);
     
     //----- 共同討論處理 START -----//
@@ -184,36 +178,50 @@ function send_message() {
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
     msg.value = "";
-    sendMessageAPI(message);
+    sendMessageAPI(string);
 }
 
-//傳訊息給後端
+// 傳訊息給後端 或 socket
 function sendMessageAPI(message){
-    //直接用session_id會undifine!!
-    session_id = localStorage.getItem("sessionID");
-    var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
-    myURL = encodeURI(myURL);
-    console.log("送出訊息: "+message);
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            console.log("收到的response: ");
-            console.log(response);
-            bot(response.text);
-            //----- 設定preMessage START -----//
-            // 要確保訊息已經送出去，才能加前綴
-            if(message=="共同討論"){
-                preMessage = "discuss_together_whether_incognito,";
+    
+    var chatingRoomId = localStorage.getItem("chatingRoomId");
+    var sessionId = localStorage.getItem("sessionID");
+    
+    if(chatingRoomId == sessionId){ // PSAbot
+        //直接用session_id會undifine!!
+        session_id = localStorage.getItem("sessionID");
+        var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
+        myURL = encodeURI(myURL);
+        console.log("送出訊息: "+message);
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("收到的response: ");
+                console.log(response);
+                bot(response.text);
+                //----- 設定preMessage START -----//
+                // 要確保訊息已經送出去，才能加前綴
+                if(message=="共同討論"){
+                    preMessage = "discuss_together_whether_incognito,";
+                }
+                //----- 設定preMessage END -----//
+            },
+            error: function () {
+                console.log("error");
             }
-            //----- 設定preMessage END -----//
-        },
-        error: function () {
-            console.log("error");
-        }
-    });
+        });
+    }
+    else{ // 共同討論
+        var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: string};
+        socket.emit('send_message' , data);
+        console.log("送出去的共同討論: ");
+        console.log(data);
+    }
+    
+    
 }
 
 // 關鍵字們 START
