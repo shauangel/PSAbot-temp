@@ -19,7 +19,6 @@ function changePage() {
 
 var keyWords = {};
 var needToClearBotMessage = false;
-var preMessage = "";
 
 function bot(string) {
     console.log("bot的回覆: "+string);
@@ -31,7 +30,7 @@ function bot(string) {
     if(string==undefined){
        bot("出現了點問題，請稍後再試～");
     }
-    //----- 設定preMessage＆處理選標籤 START -----//
+    //----- 處理選標籤 START -----//
     else if(string.slice(0,7)=="popover"){
         discuss = true;
         language = [];
@@ -49,9 +48,8 @@ function bot(string) {
                 discussIncognito = false;
                 break;
         }
-        preMessage = "";
     }
-    //----- 設定preMessage＆處理選標籤 END -----//
+    //----- 處理選標籤 END -----//
     
     else{
         keyWords = {};
@@ -168,12 +166,6 @@ function send_message() {
     var message = $("#message").val();
     user(message);
     
-    //----- 共同討論處理 START -----//
-    if(preMessage=="discuss_together_question,"){
-        discussQuestion = message;
-    }
-    message = preMessage + message;
-    //----- 共同討論處理 END -----//
     
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
@@ -202,12 +194,6 @@ function sendMessageAPI(message){
                 console.log("收到的response: ");
                 console.log(response);
                 bot(response.text);
-                //----- 設定preMessage START -----//
-                // 要確保訊息已經送出去，才能加前綴
-                if(message=="共同討論"){
-                    preMessage = "discuss_together_whether_incognito,";
-                }
-                //----- 設定preMessage END -----//
             },
             error: function () {
                 console.log("error");
@@ -1499,8 +1485,6 @@ function discussChoseTags(){
         }
         message += chosenTags[i];
     }
-    
-    preMessage = "discuss_together_question,";
     sendMessageAPI(message);
     
     //清空
