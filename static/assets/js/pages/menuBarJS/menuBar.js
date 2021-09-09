@@ -19,6 +19,7 @@ function changePage() {
 
 var keyWords = {};
 var needToClearBotMessage = false;
+var needDiscussQuestion = false;
 
 function bot(string) {
     console.log("bot的回覆: "+string);
@@ -26,6 +27,9 @@ function bot(string) {
     if(string=="請稍等，立即為你詢問其他使用者。"){
         createDiscussRoom();
         setTimeout(welcomeAPI, 5000);//等一下再呼叫
+    }
+    if(string.slice(0, 4)=="接收到了"){
+        needDiscussQuestion = true;
     }
     if(string==undefined){
        bot("出現了點問題，請稍後再試～");
@@ -161,6 +165,9 @@ function user(string) {
     
     if(chatingRoomId == sessionId){ // PSAbot
         bot("正在輸入訊息...");
+    }
+    if(needDiscussQuestion){
+        discussQuestion = string;
     }
 }
 
@@ -1517,8 +1524,8 @@ function received_message(){
     socket.on('received_message', function(response) {
         console.log("房間id: "+response._id);
         console.log("是否存在: "+discussRoom[response._id] == undefined);
-        console.log("是否null: "+discussRoom[response._id] == null)
-        if(discussRoom[response._id] == undefined){ // 代表是創房間
+        console.log("是否null: "+discussRoom[response._id] == null);
+        if(discussRoom[response._id] == null){ // 代表是創房間
             var discussQuestion = localStorage.getItem("discussQuestion");
             console.log("創房間時的問題: "+discussQuestion);
             discussion_recommand_user();
