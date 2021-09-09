@@ -1584,7 +1584,7 @@ function discussNotificationThirdTimes(){
         console.log("第一分鐘傳通知");
         console.log("全部: "+discussRoom);
         console.log("1: "+discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId]["join"]==false){
+        if(discussRoom.discussRoomId["join"]==false){
             if(len<2){
                console.log("len<2"); add_discussion_invitation_notification(recommandUsersId.slice(0, len));
                 reject();
@@ -1598,7 +1598,7 @@ function discussNotificationThirdTimes(){
         console.log("第二分鐘傳通知");
         console.log("全部: "+discussRoom);
         console.log("2: "+discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId]["join"]==false){
+        if(discussRoom.discussRoomId["join"]==false){
             if(len<5){
                console.log("len<5");  add_discussion_invitation_notification(recommandUsersId.slice(3, len));
                 reject();
@@ -1612,7 +1612,7 @@ function discussNotificationThirdTimes(){
         console.log("第三分鐘傳通知");
         console.log("全部: "+discussRoom);
         console.log("3: "+discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId]["join"]==false){
+        if(discussRoom.discussRoomId["join"]==false){
             console.log("len"); 
             add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
         }
@@ -1661,7 +1661,7 @@ function joinDiscussRoom(incognito){
     console.log(data);
     
     socket.emit('join_room' , data);
-    discussRoom[discussionRoomId]["join"] = true;
+    discussRoom.discussionRoomId["join"] = true;
     
     addToChatingList(discussionRoomId, discussionQuestion);
     
