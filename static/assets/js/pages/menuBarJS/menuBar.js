@@ -424,6 +424,10 @@ function rank(id) {//全部的排行
 // 點選聊天室列表，打開其他聊天室
 function openChatroom(roomId){
     console.log("打開的房間: "+roomId);
+    console.log("房間現況: "+$("#chatroom").is(':visible'));
+    if($("#chatroom").is(':visible')){
+       open_close();
+    }
 }
 
 ////////////////// 聊天室 END ////////////////////
@@ -1479,7 +1483,8 @@ function createDiscussRoom(){
         discussRoomId = response._id;
         discussRoom[discussRoomId] = false;
         discussNotificationThirdTimes();
-        // 創發起人的房間
+        // 創發起人的聊天室列表房間
+        addToChatingList(response._id, discussQuestion);
     })
     //----- 創建一個共同討論的聊天室 END -----//
 
@@ -1556,8 +1561,6 @@ function discussNotificationThirdTimes(){
 // API -> add_discussion_invitation_notification
 function add_discussion_invitation_notification(recommandUsersId){
     data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
-    console.log("共同討論邀請通知: ");
-    console.log(data);
     myURL = head_url + "add_discussion_invitation_notification";
     $.ajax({
         url: myURL,
@@ -1596,6 +1599,7 @@ function joinDiscussRoom(incognito){
     // 創加入人的房間
 }
 
+// 把共同討論聊天室 加入聊天室列表
 function addToChatingList(discussionRoomId, discussionQuestion){
     var chatingListContent = document.getElementById("chatingList").innerHTML;
     chatingListContent += '<h3 class="card-title accordion-title" onclick="openChatroom(\'';
