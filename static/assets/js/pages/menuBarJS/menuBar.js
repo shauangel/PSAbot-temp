@@ -461,7 +461,7 @@ function received_message(){
     var chatingRoomId = localStorage.getItem("chatingRoomId");
     var userSessionId = localStorage.getItem("sessionID");
     socket.on('received_message', function(response) {
-        console.log("收到的訊息: "+response.content);
+        console.log("收到的訊息 後面: "+response.content);
         console.log("收到的共同討論: ");
         console.log(response);
         
@@ -1529,6 +1529,16 @@ function createDiscussRoom(){
         discussNotificationThirdTimes();
         // 創發起人的聊天室列表房間
         addToChatingList(response._id, discussQuestion);
+        
+        console.log("收到的訊息 後面: "+response.content);
+        console.log("收到的共同討論: ");
+        console.log(response);
+        
+        console.log("房間ID: "+response._id);
+        console.log("說話人的ID: "+response.user_id);
+        if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
+            bot(response.content);
+        }
     });
     //----- 創建一個共同討論的聊天室 END -----//
 
