@@ -1598,10 +1598,10 @@ function joinDiscussRoom(incognito){
 
 function addToChatingList(discussionRoomId, discussionQuestion){
     var chatingListContent = document.getElementById("chatingList").innerHTML;
-    chatingListContent += '<h3 class="card-title accordion-title" onclick="openChatroom(\';
+    chatingListContent += '<h3 class="card-title accordion-title" onclick="openChatroom(\'';
     chatingListContent += discussionRoomId;
     chatingListContent += '\')">';
-        chatingListContent += '<a class="accordion-msg" href="#">;
+        chatingListContent += '<a class="accordion-msg" href="#">';
             chatingListContent += '<img src="../static/images/iconSmall.png" class="chatImg">';
             chatingListContent += discussionQuestion;
         chatingListContent += '</a>';
