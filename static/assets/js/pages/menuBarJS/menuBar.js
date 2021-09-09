@@ -457,21 +457,21 @@ function openChatroom(roomId){
 }
 
 // 監聽socket.io
-function received_message(){
-    var chatingRoomId = localStorage.getItem("chatingRoomId");
-    var userSessionId = localStorage.getItem("sessionID");
-//    socket.on('received_message', function(response) {
-//        console.log("收到的訊息 後面: "+response.content);
-//        console.log("收到的共同討論: ");
-//        console.log(response);
-//        
-//        console.log("房間ID: "+response._id);
-//        console.log("說話人的ID: "+response.user_id);
-//        if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
-//            bot(response.content);
-//        }
-//    });
-}
+//function received_message(){
+//    var chatingRoomId = localStorage.getItem("chatingRoomId");
+//    var userSessionId = localStorage.getItem("sessionID");
+////    socket.on('received_message', function(response) {
+////        console.log("收到的訊息 後面: "+response.content);
+////        console.log("收到的共同討論: ");
+////        console.log(response);
+////        
+////        console.log("房間ID: "+response._id);
+////        console.log("說話人的ID: "+response.user_id);
+////        if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
+////            bot(response.content);
+////        }
+////    });
+//}
 
 ////////////////// 聊天室 END ////////////////////
 
@@ -570,6 +570,7 @@ function start() {
 
             welcomeAPI();
             localStorage.setItem("chatingRoomId", session_id);
+            received_message(); // 開始監聽
             // ---------- PSABot聊天室 END ---------- //
         }   
     }
@@ -1518,32 +1519,41 @@ function createDiscussRoom(){
     //----- 創建一個共同討論的聊天室 START -----//
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
+    localStorage.setItem("discussQuestion", discussQuestion);
 //    console.log("創房間的data: ");
 //    console.log(data);
     socket.emit('create_room' , data);
-    socket.on('received_message', function(response) {
-        discussion_recommand_user();
-        console.log("聊天室頻道: "+response._id);
-        discussRoomId = response._id;
-        discussRoom[discussRoomId] = false;
-        discussNotificationThirdTimes();
-        // 創發起人的聊天室列表房間
-        addToChatingList(response._id, discussQuestion);
-        
-        var chatingRoomId = localStorage.getItem("chatingRoomId");
-        var userSessionId = localStorage.getItem("sessionID");
-        console.log("收到的訊息 前面: "+response.content);
-        console.log("收到的共同討論: ");
-        console.log(response);
-        
-        console.log("房間ID: "+response._id);
-        console.log("說話人的ID: "+response.user_id);
-        if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
-            bot(response.content);
-        }
-    });
     //----- 創建一個共同討論的聊天室 END -----//
 
+}
+
+function received_message(){
+    socket.on('received_message', function(response) {
+        console.log("測試空的: "+discussRoom["98765"]);
+        if(discussRoom[response._id] == null){ // 代表是創房間
+            discussion_recommand_user();
+            console.log("聊天室頻道: "+response._id);
+            discussRoomId = response._id;
+            discussRoom[discussRoomId] = false;
+            discussNotificationThirdTimes();
+            // 創發起人的聊天室列表房間
+            addToChatingList(response._id, localStorage.getItem("discussQuestion"));
+            localStorage.removeItem("discussQuestion");
+        }
+        else{
+            var chatingRoomId = localStorage.getItem("chatingRoomId");
+            var userSessionId = localStorage.getItem("sessionID");
+            console.log("收到的訊息 前面: "+response.content);
+            console.log("收到的共同討論: ");
+            console.log(response);
+
+            console.log("房間ID: "+response._id);
+            console.log("說話人的ID: "+response.user_id);
+            if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
+                bot(response.content);
+            }
+        }
+    });
 }
 
 // 找出匹配的人選
@@ -1654,7 +1664,7 @@ function joinDiscussRoom(incognito){
     socket.emit('join_room' , data);
     
     addToChatingList(discussionRoomId, discussionQuestion);
-    received_message(); // 開始監聽
+    
 }
 
 // 把共同討論聊天室 加入聊天室列表
