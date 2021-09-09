@@ -1415,11 +1415,8 @@ function checkNotificationForPost(postId, index) {
 
 // 點選「共同討論」通知
 function checkNotificationForDiscussion(room_id, index){
-    localStorage.setItem("discussionRoomId", detail.room_id);
-    console.log("detail: ");
-    console.log(detail[0]);
-    console.log(detail[0].room_id);
-    console.log("local房間id: "+detail.room_id);
+    localStorage.setItem("discussionRoomId", room_id);
+    console.log("local房間id: "+room_id);
     $('#discussionIncognito').modal('show');
     
 //    socket.emit('join_room' , data);
