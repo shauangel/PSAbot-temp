@@ -1316,7 +1316,7 @@ function showNotification(response) {
                 break;
             case "discussion":
                 content += '<div class="media" onclick="checkNotificationForDiscussion(\'';
-                content += response.result[i].detail;
+                content += response.result[i].detail.room_id;
                 content += '\', \'';
                 content += response.result[i].id;
                 content += '\')">';
@@ -1414,7 +1414,7 @@ function checkNotificationForPost(postId, index) {
 }
 
 // 點選「共同討論」通知
-function checkNotificationForDiscussion(detail, index){
+function checkNotificationForDiscussion(room_id, index){
     localStorage.setItem("discussionRoomId", detail.room_id);
     console.log("detail: ");
     console.log(detail[0]);
@@ -1423,8 +1423,6 @@ function checkNotificationForDiscussion(detail, index){
     $('#discussionIncognito').modal('show');
     
 //    socket.emit('join_room' , data);
-    console.log("detail: ");
-    console.log(detail);
     console.log("index: "+index);
     alreadyChecked(index);
 }
