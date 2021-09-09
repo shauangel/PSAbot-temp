@@ -445,10 +445,12 @@ function openChatroom(roomId){
     document.getElementById("history_message").innerHTML = "";
     console.log("去拿聊天的歷史紀錄");
     if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
+        document.getElementById("chatroomTitle").innerHTML = "PSAbot";
         localStorage.setItem("chatingRoomId", localStorage.getItem("sessionID"));
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
+        document.getElementById("chatroomTitle").innerHTML = "共同討論";
         localStorage.setItem("chatingRoomId", roomId);
         document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
     }
