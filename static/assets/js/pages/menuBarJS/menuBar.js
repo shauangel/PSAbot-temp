@@ -570,7 +570,6 @@ function start() {
 
             welcomeAPI();
             localStorage.setItem("chatingRoomId", session_id);
-            received_message(); // 開始監聽
             // ---------- PSABot聊天室 END ---------- //
         }   
     }
@@ -1728,14 +1727,10 @@ window.addEventListener("load", function () {
     socket.on('connect', function(response) {
       //印出server的回應
       console.log('connect response : ' + response);
-    })
-    
-//    //test
-//    socket.on('test', function(response) {
-//        console.log("收到socket回應： "+response);
-//    });
-//    socket.emit('test' , "socket有接上");
+    });
+    received_message(); // 開始監聽
     //----- 共同討論 END -----//
+    
 }, false);
 
 //window.addEventListener("load", start, false);
