@@ -458,10 +458,18 @@ function openChatroom(roomId){
 
 // 監聽socket.io
 function received_message(){
+    var chatingRoomId = localStorage.getItem("chatingRoomId");
+    var userSessionId = localStorage.getItem("sessionID");
     socket.on('received_message', function(response) {
         console.log("收到的訊息: "+response.content);
         console.log("收到的共同討論: ");
         console.log(response);
+        
+        console.log("房間ID: "+response._id);
+        console.log("說話人的ID: "+response.user_id);
+        if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
+            bot(response.content);
+        }
     });
 }
 
