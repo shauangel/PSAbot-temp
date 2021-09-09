@@ -155,8 +155,18 @@ function user(string) {
 
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
-
-    bot("正在輸入訊息...");
+    
+    var chatingRoomId = localStorage.getItem("chatingRoomId");
+    var sessionId = localStorage.getItem("sessionID");
+    if(chatingRoomId == sessionId){ // PSAbot
+        bot("正在輸入訊息...");
+    }
+    else{ // 共同討論
+        var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: string};
+        socket.emit('send_message' , data);
+        console.log("送出去的共同討論: ");
+        console.log(data);
+    }
 }
 
 function send_message() {
@@ -425,15 +435,26 @@ function rank(id) {//全部的排行
 function openChatroom(roomId){
     
     if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
+        localStorage.setItem("chatingRoomId", localStorage.getItem("sessionID"));
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
+        localStorage.setItem("chatingRoomId", roomId);
         document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
     }
     console.log("打開的房間: "+roomId);
     if(!$("#chatroom").is(':visible')){ //沒打開 -> false
        open_close();
     }
+}
+
+// 監聽socket.io
+function received_message(){
+    socket.on('received_message', function(response) {
+        console.log("收到的訊息: "+response.content);
+        console.log("收到的共同討論: ");
+        console.log(response);
+    });
 }
 
 ////////////////// 聊天室 END ////////////////////
@@ -1480,8 +1501,8 @@ function createDiscussRoom(){
     //----- 創建一個共同討論的聊天室 START -----//
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
-    console.log("創房間的data: ");
-    console.log(data);
+//    console.log("創房間的data: ");
+//    console.log(data);
     socket.emit('create_room' , data);
     socket.on('received_message', function(response) {
         discussion_recommand_user();
@@ -1491,7 +1512,7 @@ function createDiscussRoom(){
         discussNotificationThirdTimes();
         // 創發起人的聊天室列表房間
         addToChatingList(response._id, discussQuestion);
-    })
+    });
     //----- 創建一個共同討論的聊天室 END -----//
 
 }
@@ -1602,7 +1623,7 @@ function joinDiscussRoom(incognito){
     socket.emit('join_room' , data);
     
     addToChatingList(discussionRoomId, discussionQuestion);
-    // 創加入人的房間
+    received_message(); // 開始監聽
 }
 
 // 把共同討論聊天室 加入聊天室列表
