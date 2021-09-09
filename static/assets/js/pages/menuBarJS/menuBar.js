@@ -1529,7 +1529,7 @@ function createDiscussRoom(){
 function received_message(){
     socket.on('received_message', function(response) {
         console.log("測試空的: "+discussRoom["98765"]);
-        if(discussRoom[response._id] == null){ // 代表是創房間
+        if(discussRoom[response._id] == undefined){ // 代表是創房間
             discussion_recommand_user();
             console.log("聊天室頻道: "+response._id);
             discussRoomId = response._id;
