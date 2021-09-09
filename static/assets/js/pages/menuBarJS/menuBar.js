@@ -421,6 +421,11 @@ function rank(id) {//全部的排行
 }
 // outerSearch END
 
+// 點選聊天室列表，打開其他聊天室
+function openChatroom(roomId){
+    console.log("打開的房間: "+roomId);
+}
+
 ////////////////// 聊天室 END ////////////////////
 
 ////////////////// 初始化 START////////////////////
@@ -1318,6 +1323,8 @@ function showNotification(response) {
                 content += '<div class="media" onclick="checkNotificationForDiscussion(\'';
                 content += response.result[i].detail.room_id;
                 content += '\', \'';
+                content += response.result[i].detail.question;
+                content += '\', \'';
                 content += response.result[i].id;
                 content += '\')">';
                 content += '<i class="d-flex align-self-center fa-lg fa fa-comments-o" aria-hidden="true" style="margin: 10px;"></i>';
@@ -1414,8 +1421,9 @@ function checkNotificationForPost(postId, index) {
 }
 
 // 點選「共同討論」通知
-function checkNotificationForDiscussion(room_id, index){
+function checkNotificationForDiscussion(room_id, question, index){
     localStorage.setItem("discussionRoomId", room_id);
+    localStorage.setItem("disscussQuestion", question);
     $('#discussionIncognito').modal('show');
     alreadyChecked(index);
 }
@@ -1575,11 +1583,30 @@ function joinDiscussRoom(incognito){
             incognito = false;
             break;
     }
-    var data = {_id: localStorage.getItem("discussionRoomId"), user_id: localStorage.getItem("sessionID"), incognito: incognito};
-    console.log(data);
+    var discussionRoomId = localStorage.getItem("discussionRoomId");
+    var discussionQuestion = localStorage.getItem("discussionQuestion");
     localStorage.removeItem("discussionRoomId");
-//    socket.emit('join_room' , data);
+    localStorage.removeItem("discussionQuestion");
+    var data = {_id: discussionRoomId, user_id: localStorage.getItem("sessionID"), incognito: incognito};
+    console.log(data);
+    
+    socket.emit('join_room' , data);
+    
+    addToChatingList(discussionRoomId, discussionQuestion);
     // 創加入人的房間
+}
+
+function addToChatingList(discussionRoomId, discussionQuestion){
+    var chatingListContent = document.getElementById("chatingList").innerHTML;
+    chatingListContent += '<h3 class="card-title accordion-title" onclick="openChatroom(\';
+    chatingListContent += discussionRoomId;
+    chatingListContent += '\')">';
+        chatingListContent += '<a class="accordion-msg" href="#">;
+            chatingListContent += '<img src="../static/images/iconSmall.png" class="chatImg">';
+            chatingListContent += discussionQuestion;
+        chatingListContent += '</a>';
+    chatingListContent += '</h3>';
+    document.getElementById("chatingList").innerHTML = chatingListContent;
 }
 
 ////////////////// 共同討論 END //////////////////
