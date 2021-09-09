@@ -1515,8 +1515,11 @@ function createDiscussRoom(){
 
 function received_message(){
     socket.on('received_message', function(response) {
+        console.log("房間id: "+response._id);
+        console.log("是否存在: "+discussRoom[response._id]);
         if(discussRoom[response._id] == undefined){ // 代表是創房間
             var discussQuestion = localStorage.getItem("discussQuestion");
+            console.log("創房間時的問題: "+discussQuestion);
             discussion_recommand_user();
             discussRoomId = response._id;
             discussRoom[discussRoomId] = false;
