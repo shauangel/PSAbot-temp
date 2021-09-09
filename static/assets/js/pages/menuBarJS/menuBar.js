@@ -1416,11 +1416,7 @@ function checkNotificationForPost(postId, index) {
 // 點選「共同討論」通知
 function checkNotificationForDiscussion(room_id, index){
     localStorage.setItem("discussionRoomId", room_id);
-    console.log("local房間id: "+room_id);
     $('#discussionIncognito').modal('show');
-    
-//    socket.emit('join_room' , data);
-    console.log("index: "+index);
     alreadyChecked(index);
 }
 ////////////////// 處理通知 END //////////////////
@@ -1475,6 +1471,7 @@ function createDiscussRoom(){
         discussRoomId = response._id;
         discussRoom[discussRoomId] = false;
         discussNotificationThirdTimes();
+        // 創發起人的房間
     })
     //----- 創建一個共同討論的聊天室 END -----//
 
@@ -1578,11 +1575,11 @@ function joinDiscussRoom(incognito){
             incognito = false;
             break;
     }
-    console.log("接受共同討論邀請");
     var data = {_id: localStorage.getItem("discussionRoomId"), user_id: localStorage.getItem("sessionID"), incognito: incognito};
     console.log(data);
     localStorage.removeItem("discussionRoomId");
 //    socket.emit('join_room' , data);
+    // 創加入人的房間
 }
 
 ////////////////// 共同討論 END //////////////////
