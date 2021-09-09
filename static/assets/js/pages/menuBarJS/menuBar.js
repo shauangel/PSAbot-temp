@@ -1530,7 +1530,7 @@ function received_message(){
             var discussQuestion = localStorage.getItem("discussQuestion");
             console.log("創房間時的問題: "+discussQuestion);
             discussion_recommand_user();
-            discussRoomId = response._id;
+            discussRoomId = String(response._id);
             discussRoom[discussRoomId] = {join: false, me: true, you: false};
             console.log("剛創時的物件: ");
             console.log(discussRoom);
