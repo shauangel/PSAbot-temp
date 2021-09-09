@@ -42,9 +42,11 @@ function bot(string) {
         $("#discussTags").modal('show');
         switch(string.slice(8, string.length)){
             case "是":
+                console.log("是匿名");
                 discussIncognito = true;
                 break;
             case "否":
+                console.log("不是匿名");
                 discussIncognito = false;
                 break;
         }
@@ -1513,15 +1515,14 @@ function createDiscussRoom(){
 
 function received_message(){
     socket.on('received_message', function(response) {
-        console.log("測試空的: "+discussRoom["98765"]);
         if(discussRoom[response._id] == undefined){ // 代表是創房間
+            var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
-            console.log("聊天室頻道: "+response._id);
             discussRoomId = response._id;
             discussRoom[discussRoomId] = false;
             discussNotificationThirdTimes();
             // 創發起人的聊天室列表房間
-            addToChatingList(response._id, localStorage.getItem("discussQuestion"));
+            addToChatingList(response._id, discussQuestion);
             localStorage.removeItem("discussQuestion");
         }
         else{
