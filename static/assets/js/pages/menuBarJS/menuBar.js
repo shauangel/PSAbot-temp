@@ -1527,6 +1527,8 @@ function received_message(){
         console.log("房間id: "+response._id);
         console.log("是否存在: "+discussRoom[response._id] == undefined);
         console.log("是否null: "+discussRoom[response._id] == null);
+        console.log("房間們: ");
+        console.log(discussRoom);
         if(discussRoom[response._id] == null){ // 代表是創房間
             var discussQuestion = localStorage.getItem("discussQuestion");
             console.log("創房間時的問題: "+discussQuestion);
@@ -1536,7 +1538,7 @@ function received_message(){
             discussNotificationThirdTimes();
             // 創發起人的聊天室列表房間
             addToChatingList(response._id, discussQuestion);
-//            localStorage.removeItem("discussQuestion");
+            localStorage.removeItem("discussQuestion");
         }
         else{
             var chatingRoomId = localStorage.getItem("chatingRoomId");
@@ -1663,6 +1665,7 @@ function joinDiscussRoom(incognito){
     console.log(data);
     
     socket.emit('join_room' , data);
+    discussRoom[discussionRoomId] = true;
     
     addToChatingList(discussionRoomId, discussionQuestion);
     
