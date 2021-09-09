@@ -30,10 +30,10 @@ def base_flow_rasa():
             lastest_bot_reply=results['events'][-2]['text']
             if "請描述您遇到的問題" in lastest_bot_reply:
                 print("guided_QA_question")
-                message = 'guided_QA,' + message
+                message = 'guided_QA_question,' + message
             elif "請貼上您的錯誤訊息" in lastest_bot_reply:
                 print("error_message_question")
-                message = 'error_message,' + message
+                message = 'error_message_question,' + message
             elif "是否匿名" in lastest_bot_reply:
                 print("whether_incognito")
                 message = 'whether_incognito,' + message
@@ -44,7 +44,7 @@ def base_flow_rasa():
                 message = message + ' rasa_slot'
                 print("作業系統:"+message)
             elif "請說明你想討論的問題" in lastest_bot_reply:
-                message = 'together,' + message
+                message = 'discuss_together_question,' + message
         
     payload = {'sender': sender_id, 'message': message}
     headers = {'content-type': 'application/json'}
