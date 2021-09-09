@@ -116,6 +116,7 @@ def send_message(data):
             'content':data['content']
         }
         chat_data.insert_message(chat_dict)
+        chat_dict['time'] = str(chat_dict['time'])
         emit('received_message', chat_dict, to=data['_id'])
         # ------------------------------------------------- #
         end_sentences = ['結束討論','結束共同討論','完成討論']
@@ -132,6 +133,7 @@ def send_message(data):
                         'content':r.json()[0]['message']
                     }
             chat_data.insert_message(psa_message)
+            psa_message['time'] = str(psa_message['time'])
             emit('received_message', psa_message, to=chat_dict['_id'])
             
         # 使用者欲結束聊天
@@ -161,6 +163,7 @@ def send_message(data):
                         'content':r.json()[0]['message']
                     }
                 chat_data.insert_message(psa_message)
+                psa_message['time'] = str(psa_message['time'])
                 emit('received_message', psa_message, to=chat_dict['_id'])
         # 結束聊天狀態
         if chat_data.end_chat(chat_dict['_id'],True,0):
@@ -175,6 +178,7 @@ def send_message(data):
                         'content':r.json()[0]['message']
                     }
             chat_data.insert_message(psa_message)
+            psa_message['time'] = str(psa_message['time'])
             emit('received_message', psa_message, to=chat_dict['_id'])
         
     else:
@@ -182,7 +186,7 @@ def send_message(data):
              {
                  '_id':data['user_id'],
                  'user_id':'system',
-                 'time':datetime.now().replace(microsecond=0),
+                 'time':str(datetime.now().replace(microsecond=0)),
                  'type':'string',
                  'content':'Client isn\'t in room ' + data['_id'] + ', can\'t send messages.'},to=data['user_id'])
 
@@ -200,7 +204,7 @@ def close_chat(data):
               {
                   '_id':data['user_id'],
                   'user_id':'system',
-                  'time':datetime.now().replace(microsecond=0),
+                  'time':str(datetime.now().replace(microsecond=0)),
                   'type':'string',
                   'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
 
@@ -209,6 +213,9 @@ def close_chat(data):
 def get_chat(data):
     chat_dict = chat_data.query_chat(data['_id'])
     # 將聊天紀錄傳給該client的user_id channel
+    chat_dict['time'] = str(chat_dict['time'])
+    for idx in range(0,len(chat_dict['chat_logs'])):
+        chat_dict['chat_logs'][idx]['time'] = str(chat_dict['chat_logs'][idx]['time'])
     emit('received_message',chat_dict,to=data['user_id'])
 
 
