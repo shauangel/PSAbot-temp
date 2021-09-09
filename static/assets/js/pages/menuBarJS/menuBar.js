@@ -421,6 +421,11 @@ function rank(id) {//全部的排行
 }
 // outerSearch END
 
+// 點選聊天室列表，打開其他聊天室
+function openChatroom(roomId){
+    console.log("打開的房間: "+roomId);
+}
+
 ////////////////// 聊天室 END ////////////////////
 
 ////////////////// 初始化 START////////////////////
@@ -1575,10 +1580,22 @@ function joinDiscussRoom(incognito){
             incognito = false;
             break;
     }
-    var data = {_id: localStorage.getItem("discussionRoomId"), user_id: localStorage.getItem("sessionID"), incognito: incognito};
+    var discussionRoomId = localStorage.getItem("discussionRoomId");
+    var data = {_id: discussionRoomId, user_id: localStorage.getItem("sessionID"), incognito: incognito};
     console.log(data);
     localStorage.removeItem("discussionRoomId");
-//    socket.emit('join_room' , data);
+    socket.emit('join_room' , data);
+    
+    var chatingListContent = document.getElementById("chatingList").innerHTML;
+    chatingListContent += '<h3 class="card-title accordion-title" onclick="openChatroom(\';
+    chatingListContent += discussionRoomId;
+    chatingListContent += '\')">';
+        chatingListContent += '<a class="accordion-msg" href="#">;
+            chatingListContent += '<img src="../static/images/iconSmall.png" class="chatImg">';
+            chatingListContent += "chatRoom";
+        chatingListContent += '</a>';
+    chatingListContent += '</h3>';
+    document.getElementById("chatingList").innerHTML = chatingListContent;
     // 創加入人的房間
 }
 
