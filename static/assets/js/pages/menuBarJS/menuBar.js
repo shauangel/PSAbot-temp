@@ -1,5 +1,4 @@
 //var head_url = "http://127.0.0.1/";
-var userPicSrc;
 var session_id;
 var first_start = true;
 function changePage() {
@@ -20,6 +19,8 @@ function changePage() {
 var keyWords = {};
 var needToClearBotMessage = false;
 var needDiscussQuestion = false;
+
+var ImgMe, ImgYou="../static/images/iconSmall.png";
 
 function bot(string) {
     console.log("bot的回覆: "+string);
@@ -84,7 +85,9 @@ function bot(string) {
         }
         content += 'class="d-flex justify-content-start mb-4">';
         content += '<div class="img_cont_msg">';
-        content += '<img src="../static/images/iconSmall.png" class="chatImg" style="background-color: #5D478B;">';
+        content += '<img src="';
+        content += ImgYou;
+        content += '" class="chatImg" style="background-color: #5D478B;">';
         content += '</div>';
         content += '<div class="msg_cotainer"';
         if (string.slice(0, 6) == "正在輸入訊息") {
@@ -155,7 +158,7 @@ function user(string) {
     content += '</div>';
     content += '<div class="img_cont_msg">';
     content += '<img src="';
-    content += userPicSrc;
+    content += ImgMe;
     content += '" class="chatImg">';
     content += '</div>';
     content += '</div>';
@@ -455,22 +458,22 @@ function openChatroom(roomId){
     }
 }
 
-// 監聽socket.io
-//function received_message(){
-//    var chatingRoomId = localStorage.getItem("chatingRoomId");
-//    var userSessionId = localStorage.getItem("sessionID");
-////    socket.on('received_message', function(response) {
-////        console.log("收到的訊息 後面: "+response.content);
-////        console.log("收到的共同討論: ");
-////        console.log(response);
-////        
-////        console.log("房間ID: "+response._id);
-////        console.log("說話人的ID: "+response.user_id);
-////        if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
-////            bot(response.content);
-////        }
-////    });
-//}
+function getChatroomUserImg(userId){
+    var myURL = head_url + "read_image?user_id=" + userId;
+    var imgSrc = "";
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            imgSrc = response.src;
+            
+        }
+    });
+    return imgSrc;
+}
 
 ////////////////// 聊天室 END ////////////////////
 
@@ -754,7 +757,7 @@ function getUserHeadshotAndName() {
         success: function (response) {
             console.log("成功: 拿照片（read_image）");
             img += '<img class="img-40 img-radius" alt="User-Profile-Image" src="';
-            userPicSrc = response.src;
+            ImgMe = response.src;
             img += response.src;
             img += '">';
             document.getElementById("headshot").setAttribute("src", response.src);
@@ -1540,14 +1543,14 @@ function received_message(){
             discussRoom[response._id] = true; // 代表已經有人了
             var chatingRoomId = localStorage.getItem("chatingRoomId");
             var userSessionId = localStorage.getItem("sessionID");
-            console.log("收到的訊息 前面: "+response.content);
-            console.log("收到的共同討論: ");
-            console.log(response);
             
-            console.log("房間ID: "+response._id);
-            console.log("說話人的ID: "+response.user_id);
-            if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
+            if(response._id==chatingRoomId && response.user_id!=userSessionId){     // 代表是對方說話
+                ImgYou = getChatroomUserImg(response.user_id);
                 bot(response.content);
+            }
+            else if(response._id==userSessionId){
+                // 代表在跟PSAbot說話
+                ImgYou = "../static/images/iconSmall.png";
             }
         }
     });
