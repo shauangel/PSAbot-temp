@@ -215,7 +215,7 @@ function sendMessageAPI(message){
         });
     }
     else{ // 共同討論
-        var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: string};
+        var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
         socket.emit('send_message' , data);
         console.log("送出去的共同討論: ");
         console.log(data);
