@@ -553,6 +553,7 @@ function start() {
             });
 
             welcomeAPI();
+            localStorage.setItem("chatingRoomId", session_id);
             // ---------- PSABot聊天室 END ---------- //
         }   
     }
@@ -1532,6 +1533,8 @@ function discussion_recommand_user(){
         contentType: 'application/json; charset=utf-8',
         success: function(response){
             recommandUsersId = response.recommand_user_id;
+            console.log("推薦人: ");
+            console.log(recommandUsersId);
         }
     });
     //----- 找出匹配的人選 END -----//
