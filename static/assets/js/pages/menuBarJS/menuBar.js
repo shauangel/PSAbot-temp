@@ -1528,18 +1528,16 @@ function received_message(){
         console.log(discussRoom);
         if(discussRoom[response._id] == null){ // 代表是創房間
             var discussQuestion = localStorage.getItem("discussQuestion");
-            console.log("創房間時的問題: "+discussQuestion);
             discussion_recommand_user();
-            discussRoomId = String(response._id);
-            discussRoom[discussRoomId] = {join: false, me: true, you: false};
-            console.log("剛創時的物件: ");
-            console.log(discussRoom);
+            discussRoomId = response._id;
+            discussRoom[discussRoomId] = false;
             discussNotificationThirdTimes();
             // 創發起人的聊天室列表房間
             addToChatingList(response._id, discussQuestion);
             localStorage.removeItem("discussQuestion");
         }
         else{
+            discussRoom[response._id] = true; // 代表已經有人了
             var chatingRoomId = localStorage.getItem("chatingRoomId");
             var userSessionId = localStorage.getItem("sessionID");
             console.log("收到的訊息 前面: "+response.content);
@@ -1585,11 +1583,7 @@ function discussNotificationThirdTimes(){
     var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
         console.log("第一分鐘傳通知");
-        console.log("全部: ");
-        console.log(discussRoom);
-        console.log("1: ");
-        console.log(discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId].join == false){
+        if(discussRoom[discussRoomId] == false){
             if(len<2){
                console.log("len<2"); add_discussion_invitation_notification(recommandUsersId.slice(0, len));
                 reject();
@@ -1601,11 +1595,7 @@ function discussNotificationThirdTimes(){
         }
     }).then(function(){ //第二分鐘傳通知
         console.log("第二分鐘傳通知");
-        console.log("全部: ");
-        console.log(discussRoom);
-        console.log("2: ");
-        console.log(discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId].join==false){
+        if(discussRoom[discussRoomId]==false){
             if(len<5){
                console.log("len<5");  add_discussion_invitation_notification(recommandUsersId.slice(3, len));
                 reject();
@@ -1618,9 +1608,7 @@ function discussNotificationThirdTimes(){
     }).then(function(){ //第三分鐘傳通知
         console.log("第三分鐘傳通知");
         console.log("全部: "+discussRoom);
-        console.log("3: ");
-        console.log(discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId].join==false){
+        if(discussRoom[discussRoomId]==false){
             console.log("len"); 
             add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
         }
@@ -1669,11 +1657,6 @@ function joinDiscussRoom(incognito){
     console.log(data);
     
     socket.emit('join_room' , data);
-    console.log("全部: ");
-    console.log(discussRoom);
-    console.log("物件: ");
-    console.log(discussRoom[discussionRoomId]);
-    discussRoom[discussionRoomId].join = true;
     
     addToChatingList(discussionRoomId, discussionQuestion);
     
