@@ -1662,7 +1662,9 @@ function joinDiscussRoom(incognito){
     console.log(data);
     
     socket.emit('join_room' , data);
-    discussRoom.discussionRoomId[0] = true;
+    console.log("物件: ");
+    console.log(discussRoom[discussionRoomId]);
+    discussRoom[discussionRoomId][0] = true;
     
     addToChatingList(discussionRoomId, discussionQuestion);
     
