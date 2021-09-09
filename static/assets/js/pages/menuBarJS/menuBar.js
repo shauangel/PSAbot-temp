@@ -24,9 +24,7 @@ var needDiscussQuestion = false;
 function bot(string) {
     console.log("bot的回覆: "+string);
     // 共同討論完，要重啟rasa
-    if(string==undefined){
-       bot("出現了點問題，請稍後再試～");
-    }
+    
     if(string=="請稍等，立即為你詢問其他使用者。"){
         createDiscussRoom();
         setTimeout(welcomeAPI, 5000);//等一下再呼叫
@@ -35,9 +33,12 @@ function bot(string) {
         needDiscussQuestion = true;
     }
     
+    if(string==undefined){
+       bot("出現了點問題，請稍後再試～");
+    }
     // 因為只有popover bot才不需要回覆
     //----- 處理選標籤 START -----//
-    if(string!=undefined && string.slice(0,7)=="popover"){
+    else if(string.slice(0,7)=="popover"){
         discuss = true;
         language = [];
         children = [];
