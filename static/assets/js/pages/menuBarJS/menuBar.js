@@ -441,7 +441,8 @@ function rank(id) {//全部的排行
 
 // 點選聊天室列表，打開其他聊天室
 function openChatroom(roomId){
-    
+    document.getElementById("history_message").innerHTML = "";
+    console.log("去拿聊天的歷史紀錄");
     if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
         localStorage.setItem("chatingRoomId", localStorage.getItem("sessionID"));
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
@@ -1545,7 +1546,7 @@ function received_message(){
             console.log("收到的訊息 前面: "+response.content);
             console.log("收到的共同討論: ");
             console.log(response);
-
+            
             console.log("房間ID: "+response._id);
             console.log("說話人的ID: "+response.user_id);
             if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
@@ -1629,6 +1630,8 @@ function discussNotificationThirdTimes(){
 function add_discussion_invitation_notification(recommandUsersId){
     data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
     myURL = head_url + "add_discussion_invitation_notification";
+    console.log("共同討論邀請通知: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1644,6 +1647,7 @@ function add_discussion_invitation_notification(recommandUsersId){
     
 }
 
+// 加入共同討論
 function joinDiscussRoom(incognito){
     switch(incognito){
         case "true":
@@ -1732,5 +1736,3 @@ window.addEventListener("load", function () {
     //----- 共同討論 END -----//
     
 }, false);
-
-//window.addEventListener("load", start, false);
