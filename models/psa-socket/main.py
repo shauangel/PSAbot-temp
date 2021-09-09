@@ -115,7 +115,7 @@ def send_message(data):
             'type':data['type'],
             'content':data['content']
         }
-        chat_data.insert_message(data)
+        chat_data.insert_message(chat_dict)
         emit('received_message', chat_dict, to=data['_id'])
         # ------------------------------------------------- #
         end_sentences = ['結束討論','結束共同討論','完成討論']
@@ -131,6 +131,7 @@ def send_message(data):
                         'type':'string',
                         'content':r.json()[0]['message']
                     }
+            chat_data.insert_message(psa_message)
             emit('received_message', psa_message, to=chat_dict['_id'])
             
         # 使用者欲結束聊天
@@ -151,7 +152,6 @@ def send_message(data):
                         'type':'string',
                         'content':"no triggered intent"
                     }
-                    emit('received_message', psa_message, to=chat_dict['_id'])
                 else:
                     psa_message = {
                         '_id':chat_dict['_id'],
@@ -160,7 +160,9 @@ def send_message(data):
                         'type':'string',
                         'content':r.json()[0]['message']
                     }
-                    emit('received_message', psa_message, to=chat_dict['_id'])
+                chat_data.insert_message(psa_message)
+                emit('received_message', psa_message, to=chat_dict['_id'])
+        # 結束聊天狀態
         if chat_data.end_chat(chat_dict['_id'],True,0):
             payload = {'sender': chat_dict['user_id'],'message':chat_dict['content']}
             headers = {'content-type': 'application/json'}
@@ -172,6 +174,7 @@ def send_message(data):
                         'type':'string',
                         'content':r.json()[0]['message']
                     }
+            chat_data.insert_message(psa_message)
             emit('received_message', psa_message, to=chat_dict['_id'])
         
     else:
