@@ -1530,7 +1530,9 @@ function createDiscussRoom(){
         // 創發起人的聊天室列表房間
         addToChatingList(response._id, discussQuestion);
         
-        console.log("收到的訊息 後面: "+response.content);
+        var chatingRoomId = localStorage.getItem("chatingRoomId");
+        var userSessionId = localStorage.getItem("sessionID");
+        console.log("收到的訊息 前面: "+response.content);
         console.log("收到的共同討論: ");
         console.log(response);
         
