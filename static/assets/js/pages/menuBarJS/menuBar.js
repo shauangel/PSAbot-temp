@@ -1657,7 +1657,7 @@ function joinDiscussRoom(incognito){
     console.log(data);
     
     socket.emit('join_room' , data);
-    
+    discussRoom[discussionRoomId] = true; // for 加入的人
     addToChatingList(discussionRoomId, discussionQuestion);
     
 }
