@@ -178,7 +178,7 @@ function send_message() {
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
     msg.value = "";
-    sendMessageAPI(string);
+    sendMessageAPI(message);
 }
 
 // 傳訊息給後端 或 socket
