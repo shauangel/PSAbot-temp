@@ -423,9 +423,15 @@ function rank(id) {//全部的排行
 
 // 點選聊天室列表，打開其他聊天室
 function openChatroom(roomId){
+    
+    if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
+        document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
+    }
+    else{ // 抓共同討論的紀錄
+        document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
+    }
     console.log("打開的房間: "+roomId);
-    console.log("房間現況: "+$("#chatroom").is(':visible'));
-    if($("#chatroom").is(':visible')){
+    if(!$("#chatroom").is(':visible')){ //沒打開 -> false
        open_close();
     }
 }
