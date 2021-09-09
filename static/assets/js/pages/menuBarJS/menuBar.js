@@ -31,13 +31,13 @@ function bot(string) {
         createDiscussRoom();
         setTimeout(welcomeAPI, 5000);//等一下再呼叫
     }
-    if(string.slice(0, 4)=="接收到了"){
+    if(string!=undefined && string.slice(0, 4)=="接收到了"){
         needDiscussQuestion = true;
     }
     
     // 因為只有popover bot才不需要回覆
     //----- 處理選標籤 START -----//
-    if(string.slice(0,7)=="popover"){
+    if(string!=undefined && string.slice(0,7)=="popover"){
         discuss = true;
         language = [];
         children = [];
