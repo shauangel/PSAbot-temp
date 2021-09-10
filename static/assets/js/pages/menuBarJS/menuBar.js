@@ -1557,13 +1557,12 @@ function received_message(){
             
             if(response._id==chatingRoomId && response.user_id!=userSessionId){
                 // 代表是對方說話
-                if(check_member_is_incognito(response._id, userSessionId)){
+                if(check_member_is_incognito(response._id, response.user_id)){
                     ImgYou = "../static/images/discussionImg.png";
                 }
                 else{
                     ImgYou = getChatroomUserImg(response.user_id);
                 }
-                
                 bot(response.content);
             }
             else if(response._id==userSessionId){
