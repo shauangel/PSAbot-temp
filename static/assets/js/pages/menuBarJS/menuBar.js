@@ -1546,8 +1546,15 @@ function received_message(){
             var chatingRoomId = localStorage.getItem("chatingRoomId");
             var userSessionId = localStorage.getItem("sessionID");
             
-            if(response._id==chatingRoomId && response.user_id!=userSessionId){     // 代表是對方說話
-                ImgYou = getChatroomUserImg(response.user_id);
+            if(response._id==chatingRoomId && response.user_id!=userSessionId){
+                // 代表是對方說話
+                if(check_member_is_incognito(response._id, userSessionId)){
+                    ImgYou = "../static/images/discussionImg.png";
+                }
+                else{
+                    ImgYou = getChatroomUserImg(response.user_id);
+                }
+                
                 bot(response.content);
             }
             else if(response._id==userSessionId){
@@ -1556,6 +1563,30 @@ function received_message(){
             }
         }
     });
+}
+
+// 共同討論某人是否匿名
+// API -> check_member_is_incognito
+function check_member_is_incognito(roomId, userId){
+    var incognito;
+    var data = {room_id: roomId, userId: user_id};
+    console.log(data);
+
+    var myURL = head_url + "check_member_is_incognito";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("共同討論 - 匿名");
+            console.log(response);
+            incognito = response;
+        }
+    });
+    return incognito;
 }
 
 // 找出匹配的人選
