@@ -50,7 +50,7 @@ def discussion_recommand_user():
         stage1_id_array = stage1_id_array[0:10]
     return jsonify({"recommand_user_id":stage1_id_array})
     
-
+''' --------- ditto's code --------- '''
 # 詢問機器人建立聊天室
 @discussion_api.route('create_psabot_chat', methods=['POST'])
 def create_psabot_chat():
@@ -73,6 +73,7 @@ def create_psabot_chat():
     }
     room_id = chat_data.insert_chat(chat_dict)
     return jsonify({"_id":room_id})
+
 # 詢問機器人儲存聊天訊息
 @discussion_api.route('insert_psabot_chat_log', methods=['POST'])
 def insert_psabot_chat_log():
@@ -86,3 +87,20 @@ def insert_psabot_chat_log():
     }
     chat_data.insert_message(data)
     return jsonify(chat_dict)
+
+# 聊天室是否額滿
+@discussion_api.route('/check_discussion_is_full', methods=['POST'])
+def check_discussion_is_full():
+    data = request.get_json()
+    if len(chat_data.query_chat(data['room_id'])['members']) >1:
+        return jsonify(True)
+    else:
+        return jsonify(False)
+    
+# 使用者是否匿名
+@discussion_api.route('/check_member_is_incognito', methods=['POST'])
+def check_member_is_incognito():
+    data = request.get_json()
+    for member in chat_data.query_chat(data['room_id'])['members']:
+        if member['user_id'] == data['user_id']:
+            return jsonify(member['incognito'])
