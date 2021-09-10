@@ -104,3 +104,4 @@ def check_member_is_incognito():
     for member in chat_data.query_chat(data['room_id'])['members']:
         if member['user_id'] == data['user_id']:
             return jsonify(member['incognito'])
+    return jsonify({'error':'user '+ data['user_id'] + 'does not exist in room ' + data['room_id']})
