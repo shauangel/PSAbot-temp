@@ -105,3 +105,19 @@ def check_member_is_incognito():
         if member['user_id'] == data['user_id']:
             return jsonify(member['incognito'])
     return jsonify({'error':'user '+ data['user_id'] + 'does not exist in room ' + data['room_id']})
+
+# 調整聊天室狀態
+@discussion_api.route('/change_chat_state', methods=['POST'])
+def change_chat_state():
+    data = request.get_json()
+    chat_data.change_state(data['room_id'],data['state'])
+    return jsonify(data)
+
+# 取得使用者所有聊天室
+@discussion_api.route('/query_chat_list', methods=['POST'])
+def query_chat_list():
+    data = request.get_json()
+    chat_list = chat_data.query_room_list(data['user_id'])
+    return jsonify(chat_list)
+    
+
