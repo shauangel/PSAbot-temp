@@ -444,6 +444,7 @@ function rank(id) {//全部的排行
 function openChatroom(roomId){
     document.getElementById("history_message").innerHTML = "";
     console.log("去拿聊天的歷史紀錄");
+    
     if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
         document.getElementById("chatroomTitle").innerHTML = "PSAbot";
         localStorage.setItem("chatingRoomId", localStorage.getItem("sessionID"));
@@ -453,6 +454,14 @@ function openChatroom(roomId){
         document.getElementById("chatroomTitle").innerHTML = "共同討論";
         localStorage.setItem("chatingRoomId", roomId);
         document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
+        var userId = localStorage.getItem("sessionID");
+        if(check_member_is_incognito(roomId, userId)){
+            // 是匿名
+            ImgMe = '../static/images/discussionImg.png';
+        }
+        else{ // 不是匿名
+            ImgMe = getChatroomUserImg(userId);
+        }
     }
     console.log("打開的房間: "+roomId);
     if(!$("#chatroom").is(':visible')){ //沒打開 -> false
@@ -1530,7 +1539,7 @@ function createDiscussRoom(){
 
 function received_message(){
     socket.on('received_message', function(response) {
-        console.log(discussRoom);
+//        console.log(discussRoom);
         if(discussRoom[response._id] == null){ // 代表是創房間
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
@@ -1569,7 +1578,7 @@ function received_message(){
 // API -> check_member_is_incognito
 function check_member_is_incognito(roomId, userId){
     var incognito;
-    var data = {room_id: roomId, userId: user_id};
+    var data = {room_id: roomId, user_id: userId};
     console.log(data);
 
     var myURL = head_url + "check_member_is_incognito";
