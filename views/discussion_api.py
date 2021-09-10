@@ -52,7 +52,7 @@ def discussion_recommand_user():
     
 ''' --------- ditto's code --------- '''
 # 詢問機器人建立聊天室
-@discussion_api.route('create_psabot_chat', methods=['POST'])
+@discussion_api.route('/create_psabot_chat', methods=['POST'])
 def create_psabot_chat():
     data = request.get_json()
     chat_dict = {
@@ -75,7 +75,7 @@ def create_psabot_chat():
     return jsonify({"_id":room_id})
 
 # 詢問機器人儲存聊天訊息
-@discussion_api.route('insert_psabot_chat_log', methods=['POST'])
+@discussion_api.route('/insert_psabot_chat_log', methods=['POST'])
 def insert_psabot_chat_log():
     data = request.get_json()
     chat_dict = {

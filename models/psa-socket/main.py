@@ -54,7 +54,8 @@ def create_room(data):
             }
         ],
         'chat_logs':[],
-        'end_flag':False
+        'end_flag':False,
+        'enabled':True
     }
     room_id = chat_data.insert_chat(chat_dict)
     # 將發問者加入聊天室
