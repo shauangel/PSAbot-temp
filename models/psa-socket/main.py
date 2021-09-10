@@ -181,7 +181,7 @@ def close_chat(data):
                   'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
 
 # 取得聊天室歷史訊息
-@socketio.on('query_chat')
+@socketio.on('get_chat')
 def get_chat(data):
     chat_dict = chat_data.query_chat(data['_id'])
     # 將聊天紀錄傳給該client的user_id channel
@@ -191,7 +191,7 @@ def get_chat(data):
     emit('received_message',chat_dict,to=data['user_id'])
 
 # 取得聊天室列表
-@socketio.on('query_rooms')
+@socketio.on('get_rooms')
 def get_rooms(data):
     room_ids = rooms()
     if len(room_ids) <= 2:
