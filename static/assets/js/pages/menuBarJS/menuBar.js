@@ -1530,8 +1530,8 @@ function createDiscussRoom(){
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
     localStorage.setItem("discussQuestion", discussQuestion);
-//    console.log("創房間的data: ");
-//    console.log(data);
+    console.log("創房間的data: ");
+    console.log(data);
     socket.emit('create_room' , data);
     //----- 創建一個共同討論的聊天室 END -----//
 
