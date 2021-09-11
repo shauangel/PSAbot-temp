@@ -1539,8 +1539,9 @@ function createDiscussRoom(){
 
 function received_message(){
     socket.on('received_message', function(response) {
-//        console.log(discussRoom);
+        console.log(response._id);
         if(discussRoom[response._id] == null){ // 代表是創房間
+            console.log("創建房間");
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
             discussRoomId = response._id;
@@ -1551,6 +1552,7 @@ function received_message(){
             localStorage.removeItem("discussQuestion");
         }
         else{
+            console.log("房間已滿，接受訊息");
             discussRoom[response._id] = true; // 代表已經有人了
             var chatingRoomId = localStorage.getItem("chatingRoomId");
             var userSessionId = localStorage.getItem("sessionID");
@@ -1647,10 +1649,11 @@ function discussion_recommand_user(){
 function discussNotificationThirdTimes(){
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
-    
+    console.log("房間號碼: "+discussRoomId);
     var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
         console.log("第一分鐘傳通知");
+        
         if(check_discussion_is_full(discussRoomId) == false){
             if(len<2){
 //               console.log("len<2");
