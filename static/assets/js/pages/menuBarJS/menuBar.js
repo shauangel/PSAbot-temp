@@ -1573,6 +1573,30 @@ function received_message(){
     });
 }
 
+// 共同討論是否已滿
+// API -> check_discussion_is_full
+function check_discussion_is_full(roomId){
+    var full;
+    var data = {room_id: roomId};
+    console.log(data);
+
+    var myURL = head_url + "check_discussion_is_full";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("共同討論 - 是否額滿");
+            console.log(response);
+            full = response;
+        }
+    });
+    return full;
+}
+
 // 共同討論某人是否匿名
 // API -> check_member_is_incognito
 function check_member_is_incognito(roomId, userId){
@@ -1627,9 +1651,10 @@ function discussNotificationThirdTimes(){
     var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
         console.log("第一分鐘傳通知");
-        if(discussRoom[discussRoomId] == false){
+        if(check_discussion_is_full(discussRoomId) == false){
             if(len<2){
-               console.log("len<2"); add_discussion_invitation_notification(recommandUsersId.slice(0, len));
+//               console.log("len<2");
+                add_discussion_invitation_notification(recommandUsersId.slice(0, len));
                 reject();
             }
             else{
@@ -1639,7 +1664,7 @@ function discussNotificationThirdTimes(){
         }
     }).then(function(){ //第二分鐘傳通知
         console.log("第二分鐘傳通知");
-        if(discussRoom[discussRoomId]==false){
+        if(check_discussion_is_full(discussRoomId)==false){
             if(len<5){
                console.log("len<5");  add_discussion_invitation_notification(recommandUsersId.slice(3, len));
                 reject();
@@ -1652,7 +1677,7 @@ function discussNotificationThirdTimes(){
     }).then(function(){ //第三分鐘傳通知
         console.log("第三分鐘傳通知");
         console.log("全部: "+discussRoom);
-        if(discussRoom[discussRoomId]==false){
+        if(check_discussion_is_full(discussRoomId)==false){
             console.log("len"); 
             add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
         }
