@@ -24,6 +24,9 @@ def connect():
     print('# ---------- trigger connect event ...')
     # 加入使用者個人房間
     user_id = request.args.get('user_id')
+    rooms = chat_data.query_room_list(user_id)
+    for room in rooms:
+        join_room(room['_id'])
     join_room(user_id)
     print('client\'s rooms : ' , rooms())
     emit('connect', user_id + ' has connected.',to=user_id)
