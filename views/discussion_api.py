@@ -92,10 +92,14 @@ def insert_psabot_chat_log():
 @discussion_api.route('/check_discussion_is_full', methods=['POST'])
 def check_discussion_is_full():
     data = request.get_json()
-    if len(chat_data.query_chat(data['room_id'])['members']) >1:
-        return jsonify(True)
+    chat_dict = chat_data.query_chat(data['room_id'])
+    if chat_dict != None:
+        if len(chat_dict['members']) >1:
+            return jsonify(True)
+        else:
+            return jsonify(False)
     else:
-        return jsonify(False)
+        return jsonify({"error" : 'room ID ' + data['room_id'] + ' does not exist.'})
     
 # 使用者是否匿名
 @discussion_api.route('/check_member_is_incognito', methods=['POST'])
