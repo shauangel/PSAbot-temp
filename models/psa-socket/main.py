@@ -17,44 +17,19 @@ app.config['SECRET_KEY'] = urandom(24).hex()
 socketio = SocketIO()
 socketio.init_app(app,cors_allowed_origins='*')
 
-# --------------- test socket.io --------------- #
-# @socketio.on('connect')
-# def test_connect():
-#     print('# ---------- trigger connect event ...')
-#     emit('connect', 'server says connected.')
 
-   
-# @socketio.on('join_room')
-# def join_chat_room(data):
-#     print('# ---------- client emit join_room ...')
-#     print(data)
-#     join_room(data['room'])
-#     emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has entered the room ... )'}, to=data['room'])
-    
-# @socketio.on('leave_room')
-# def leave_chat_room(data):
-#     print('# ---------- client emit leave_room ...')
-#     print(data)
-#     leave_room(data['room'])
-#     emit('room_msg', {'room': data['room'],'id':data['id'],'msg':'( has left the room ... )'}, to=data['room'])
-
-# @socketio.on('send_msg')
-# def send_msg(data):
-#     print('# ---------- client emit send_msg ...')
-#     print(data)
-#     emit('room_msg', {'room': data['room'],'id':data['id'],'msg':data['msg']}, to=data['room'])
-    
-# ---------------------------------------------- #
-# ------------------- PSAbot ------------------- #
 # client連線
 @socketio.on('connect')
 def connect():
     print('# ---------- trigger connect event ...')
     # 加入使用者個人房間
     user_id = request.args.get('user_id')
+    room_list = chat_data.query_room_list(user_id)
+    for room in room_list:
+        join_room(room['_id'])
     join_room(user_id)
     print('client\'s rooms : ' , rooms())
-    emit('connect', user_id + 'has connected.',to=user_id)
+    emit('connect', user_id + ' has connected.',to=user_id)
 
 # 解除連線
 @socketio.on('disconnect')
@@ -82,7 +57,8 @@ def create_room(data):
             }
         ],
         'chat_logs':[],
-        'end_flag':False
+        'end_flag':False,
+        'enabled':True
     }
     room_id = chat_data.insert_chat(chat_dict)
     # 將發問者加入聊天室
@@ -90,6 +66,16 @@ def create_room(data):
     print('new room id : ' + room_id)
     print('client\'s rooms : ' , rooms())
     emit('received_message', {'_id':room_id}, to=data['asker']['user_id'])
+    join_message = {
+            '_id':data['_id'],
+            'user_id': 'PSAbot',
+            'time': datetime.now().replace(microsecond=0),
+            'type':data['type'],
+            'content':'等待回答者加入...'
+    }
+    emit('received_message', chat_dict, to=data['_id'])
+    join_message['time'] = str(join_message['time'])
+    chat_data.insert_message(join_message)
 
 # 使用者加入聊天室
 @socketio.on('join_room')
@@ -97,9 +83,19 @@ def join_chat_room(data):
     print('# ---------- client emit join_room ...')
     print(data)
     # data : { '_id','user_id','incognito'}
+    question = chat_data.query_chat(data['_id'])['question']
     chat_data.insert_member(data)
     join_room(data['_id'])
-    print('client\'s rooms : ' , rooms())
+    join_message = {
+            '_id':data['_id'],
+            'user_id': 'PSAbot',
+            'time': datetime.now().replace(microsecond=0),
+            'type':data['type'],
+            'content':'本次共同討論的問題是「 '+ question +'」，可以開始討論了。討論結束後請發問者輸入「結束討論」完成本次討論。'
+    }
+    emit('received_message', join_message, to=data['_id'])
+    join_message['time'] = str(join_message['time'])
+    chat_data.insert_message(join_message)
 
 @socketio.on('send_message')
 def send_message(data):
@@ -142,7 +138,7 @@ def send_message(data):
             if data['user_id'] == current_chat['members'][0]['user_id']:
                 chat_data.end_chat(chat_dict['_id'],True,1)
                 replier_id = current_chat['members'][1]['user_id']
-                payload = {'sender': chat_dict['user_id'],'message':'end_discuss,' + replier_id}
+                payload = {'sender': chat_dict['user_id'],'message':'end_discuss,' + replier_id,'room_id':data['_id']}
                 headers = {'content-type': 'application/json'}
                 r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
                 print(r.json())
@@ -209,7 +205,7 @@ def close_chat(data):
                   'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
 
 # 取得聊天室歷史訊息
-@socketio.on('query_chat')
+@socketio.on('get_chat')
 def get_chat(data):
     chat_dict = chat_data.query_chat(data['_id'])
     # 將聊天紀錄傳給該client的user_id channel
@@ -218,6 +214,17 @@ def get_chat(data):
         chat_dict['chat_logs'][idx]['time'] = str(chat_dict['chat_logs'][idx]['time'])
     emit('received_message',chat_dict,to=data['user_id'])
 
+# 取得聊天室列表
+# @socketio.on('get_rooms')
+# def get_rooms(data):
+#     room_ids = rooms()
+#     if len(room_ids) <= 2:
+#         emit('chat_rooms',{'chat_rooms':[]},to=request.sid) 
+#     else :
+#         room_list = [
+#                         {'room_id':room_id,'question':chat_data.query_chat(room_id)['question']} 
+#                         for room_id in room_ids[2:len(room_ids)]]
+#         emit('chat_rooms',{'chat_rooms':room_list},to=data['user_id']) 
 
 if __name__ == "__main__":
     socketio.run(app,host='0.0.0.0',port=55003,debug=True)

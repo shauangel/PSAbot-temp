@@ -50,9 +50,9 @@ def discussion_recommand_user():
         stage1_id_array = stage1_id_array[0:10]
     return jsonify({"recommand_user_id":stage1_id_array})
     
-
+''' --------- ditto's code --------- '''
 # 詢問機器人建立聊天室
-@discussion_api.route('create_psabot_chat', methods=['POST'])
+@discussion_api.route('/create_psabot_chat', methods=['POST'])
 def create_psabot_chat():
     data = request.get_json()
     chat_dict = {
@@ -73,8 +73,9 @@ def create_psabot_chat():
     }
     room_id = chat_data.insert_chat(chat_dict)
     return jsonify({"_id":room_id})
+
 # 詢問機器人儲存聊天訊息
-@discussion_api.route('insert_psabot_chat_log', methods=['POST'])
+@discussion_api.route('/insert_psabot_chat_log', methods=['POST'])
 def insert_psabot_chat_log():
     data = request.get_json()
     chat_dict = {
@@ -86,3 +87,41 @@ def insert_psabot_chat_log():
     }
     chat_data.insert_message(data)
     return jsonify(chat_dict)
+
+# 聊天室是否額滿
+@discussion_api.route('/check_discussion_is_full', methods=['POST'])
+def check_discussion_is_full():
+    data = request.get_json()
+    chat_dict = chat_data.query_chat(data['room_id'])
+    if chat_dict != None:
+        if len(chat_dict['members']) >1:
+            return jsonify(True)
+        else:
+            return jsonify(False)
+    else:
+        return jsonify({"error" : 'room ID ' + data['room_id'] + ' does not exist.'})
+    
+# 使用者是否匿名
+@discussion_api.route('/check_member_is_incognito', methods=['POST'])
+def check_member_is_incognito():
+    data = request.get_json()
+    for member in chat_data.query_chat(data['room_id'])['members']:
+        if member['user_id'] == data['user_id']:
+            return jsonify(member['incognito'])
+    return jsonify({'error':'user '+ data['user_id'] + 'does not exist in room ' + data['room_id']})
+
+# 調整聊天室狀態
+@discussion_api.route('/change_chat_state', methods=['POST'])
+def change_chat_state():
+    data = request.get_json()
+    chat_data.change_state(data['room_id'],data['state'])
+    return jsonify(data)
+
+# 取得使用者所有聊天室
+@discussion_api.route('/query_chat_list', methods=['POST'])
+def query_chat_list():
+    data = request.get_json()
+    chat_list = chat_data.query_room_list(data['user_id'])
+    return jsonify(chat_list)
+    
+

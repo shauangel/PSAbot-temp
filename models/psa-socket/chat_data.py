@@ -48,9 +48,18 @@ def end_chat(chat_id,flag,setmode):
     if setmode == 1:
         _db.CHAT_DATA_COLLECTION.update_one({'_id':chat_id},{'$set':{'end_flag':flag}})
         return flag
-    else:
-        return _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})['end_flag']
+    elif setmode == 0:
+        return _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})['end_flag'] == flag
 
 # 刪除聊天室
 def remove_chat(chat_id):
     _db.CHAT_DATA_COLLECTION.delete_one({'_id':chat_id})
+    
+# 改變聊天室狀態
+def change_state(chat_id,state):
+    _db.CHAT_DATA_COLLECTION.update_one({'_id':chat_id},{'$set':{'enabled':state}})
+    
+# 取得使用者所在聊天室id,名稱
+def query_room_list(user_id):
+    return _db.CHAT_DATA_COLLECTION.aggregate([{'$match': {'members.user_id': user_id}}, 
+                                               {'$project': {'_id': 1, 'question': 1}}])

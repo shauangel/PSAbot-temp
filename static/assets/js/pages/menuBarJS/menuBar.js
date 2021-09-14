@@ -1,5 +1,4 @@
 //var head_url = "http://127.0.0.1/";
-var userPicSrc;
 var session_id;
 var first_start = true;
 function changePage() {
@@ -19,19 +18,27 @@ function changePage() {
 
 var keyWords = {};
 var needToClearBotMessage = false;
-var preMessage = "";
+var needDiscussQuestion = false;
+
+var ImgMe, ImgYou="../static/images/iconSmall.png";
 
 function bot(string) {
     console.log("bot的回覆: "+string);
     // 共同討論完，要重啟rasa
-    if(string=="請稍等，立即為您詢問其他使用者。"){
+    
+    if(string=="請稍等，立即為你詢問其他使用者。"){
         createDiscussRoom();
         setTimeout(welcomeAPI, 5000);//等一下再呼叫
     }
+    if(string!=undefined && string.slice(0, 4)=="接收到了"){
+        needDiscussQuestion = true;
+    }
+    
     if(string==undefined){
        bot("出現了點問題，請稍後再試～");
     }
-    //----- 設定preMessage＆處理選標籤 START -----//
+    // 因為只有popover bot才不需要回覆
+    //----- 處理選標籤 START -----//
     else if(string.slice(0,7)=="popover"){
         discuss = true;
         language = [];
@@ -43,15 +50,16 @@ function bot(string) {
         $("#discussTags").modal('show');
         switch(string.slice(8, string.length)){
             case "是":
+                console.log("是匿名");
                 discussIncognito = true;
                 break;
             case "否":
+                console.log("不是匿名");
                 discussIncognito = false;
                 break;
         }
-        preMessage = "";
     }
-    //----- 設定preMessage＆處理選標籤 END -----//
+    //----- 處理選標籤 END -----//
     
     else{
         keyWords = {};
@@ -77,7 +85,9 @@ function bot(string) {
         }
         content += 'class="d-flex justify-content-start mb-4">';
         content += '<div class="img_cont_msg">';
-        content += '<img src="../static/images/iconSmall.png" class="chatImg" style="background-color: #5D478B;">';
+        content += '<img src="';
+        content += ImgYou;
+        content += '" class="chatImg" style="background-color: #5D478B;">';
         content += '</div>';
         content += '<div class="msg_cotainer"';
         if (string.slice(0, 6) == "正在輸入訊息") {
@@ -148,7 +158,7 @@ function user(string) {
     content += '</div>';
     content += '<div class="img_cont_msg">';
     content += '<img src="';
-    content += userPicSrc;
+    content += ImgMe;
     content += '" class="chatImg">';
     content += '</div>';
     content += '</div>';
@@ -162,18 +172,15 @@ function user(string) {
     if(chatingRoomId == sessionId){ // PSAbot
         bot("正在輸入訊息...");
     }
+    if(needDiscussQuestion){
+        discussQuestion = string;
+    }
 }
 
 function send_message() {
     var message = $("#message").val();
     user(message);
     
-    //----- 共同討論處理 START -----//
-    if(preMessage=="discuss_together_question,"){
-        discussQuestion = message;
-    }
-    message = preMessage + message;
-    //----- 共同討論處理 END -----//
     
     //用來清空傳出去的輸入框
     var msg = document.getElementById("message");
@@ -202,12 +209,6 @@ function sendMessageAPI(message){
                 console.log("收到的response: ");
                 console.log(response);
                 bot(response.text);
-                //----- 設定preMessage START -----//
-                // 要確保訊息已經送出去，才能加前綴
-                if(message=="共同討論"){
-                    preMessage = "discuss_together_whether_incognito,";
-                }
-                //----- 設定preMessage END -----//
             },
             error: function () {
                 console.log("error");
@@ -443,13 +444,24 @@ function rank(id) {//全部的排行
 function openChatroom(roomId){
     document.getElementById("history_message").innerHTML = "";
     console.log("去拿聊天的歷史紀錄");
+    
     if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
+        document.getElementById("chatroomTitle").innerHTML = "PSAbot";
         localStorage.setItem("chatingRoomId", localStorage.getItem("sessionID"));
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
+        document.getElementById("chatroomTitle").innerHTML = "共同討論";
         localStorage.setItem("chatingRoomId", roomId);
         document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
+        var userId = localStorage.getItem("sessionID");
+        if(check_member_is_incognito(roomId, userId)){
+            // 是匿名
+            ImgMe = '../static/images/discussionImg.png';
+        }
+        else{ // 不是匿名
+            ImgMe = getChatroomUserImg(userId);
+        }
     }
     console.log("打開的房間: "+roomId);
     if(!$("#chatroom").is(':visible')){ //沒打開 -> false
@@ -457,22 +469,22 @@ function openChatroom(roomId){
     }
 }
 
-// 監聽socket.io
-//function received_message(){
-//    var chatingRoomId = localStorage.getItem("chatingRoomId");
-//    var userSessionId = localStorage.getItem("sessionID");
-////    socket.on('received_message', function(response) {
-////        console.log("收到的訊息 後面: "+response.content);
-////        console.log("收到的共同討論: ");
-////        console.log(response);
-////        
-////        console.log("房間ID: "+response._id);
-////        console.log("說話人的ID: "+response.user_id);
-////        if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
-////            bot(response.content);
-////        }
-////    });
-//}
+function getChatroomUserImg(userId){
+    var myURL = head_url + "read_image?user_id=" + userId;
+    var imgSrc = "";
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            imgSrc = response.src;
+            
+        }
+    });
+    return imgSrc;
+}
 
 ////////////////// 聊天室 END ////////////////////
 
@@ -756,7 +768,7 @@ function getUserHeadshotAndName() {
         success: function (response) {
             console.log("成功: 拿照片（read_image）");
             img += '<img class="img-40 img-radius" alt="User-Profile-Image" src="';
-            userPicSrc = response.src;
+            ImgMe = response.src;
             img += response.src;
             img += '">';
             document.getElementById("headshot").setAttribute("src", response.src);
@@ -1499,8 +1511,6 @@ function discussChoseTags(){
         }
         message += chosenTags[i];
     }
-    
-    preMessage = "discuss_together_question,";
     sendMessageAPI(message);
     
     //清空
@@ -1520,8 +1530,8 @@ function createDiscussRoom(){
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
     localStorage.setItem("discussQuestion", discussQuestion);
-//    console.log("創房間的data: ");
-//    console.log(data);
+    console.log("創房間的data: ");
+    console.log(data);
     socket.emit('create_room' , data);
     //----- 創建一個共同討論的聊天室 END -----//
 
@@ -1529,31 +1539,88 @@ function createDiscussRoom(){
 
 function received_message(){
     socket.on('received_message', function(response) {
-        console.log("測試空的: "+discussRoom["98765"]);
-        if(discussRoom[response._id] == undefined){ // 代表是創房間
+        console.log(response._id);
+        if(discussRoom[response._id] == null){ // 代表是創房間
+            console.log("創建房間");
+            var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
-            console.log("聊天室頻道: "+response._id);
             discussRoomId = response._id;
             discussRoom[discussRoomId] = false;
             discussNotificationThirdTimes();
             // 創發起人的聊天室列表房間
-            addToChatingList(response._id, localStorage.getItem("discussQuestion"));
+            addToChatingList(response._id, discussQuestion);
             localStorage.removeItem("discussQuestion");
         }
         else{
+            console.log("房間已滿，接受訊息");
+            discussRoom[response._id] = true; // 代表已經有人了
             var chatingRoomId = localStorage.getItem("chatingRoomId");
             var userSessionId = localStorage.getItem("sessionID");
-            console.log("收到的訊息 前面: "+response.content);
-            console.log("收到的共同討論: ");
-            console.log(response);
             
-            console.log("房間ID: "+response._id);
-            console.log("說話人的ID: "+response.user_id);
-            if(response._id==chatingRoomId && response.user_id!=userSessionId){ //代表需要顯示
+            if(response._id==chatingRoomId && response.user_id!=userSessionId){
+                // 代表是對方說話
+                if(check_member_is_incognito(response._id, response.user_id)){
+                    ImgYou = "../static/images/discussionImg.png";
+                }
+                else{
+                    ImgYou = getChatroomUserImg(response.user_id);
+                }
                 bot(response.content);
+            }
+            else if(response._id==userSessionId){
+                // 代表在跟PSAbot說話
+                ImgYou = "../static/images/iconSmall.png";
             }
         }
     });
+}
+
+// 共同討論是否已滿
+// API -> check_discussion_is_full
+function check_discussion_is_full(roomId){
+    var full;
+    var data = {room_id: roomId};
+    console.log(data);
+
+    var myURL = head_url + "check_discussion_is_full";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("共同討論 - 是否額滿");
+            console.log(response);
+            full = response;
+        }
+    });
+    return full;
+}
+
+// 共同討論某人是否匿名
+// API -> check_member_is_incognito
+function check_member_is_incognito(roomId, userId){
+    var incognito;
+    var data = {room_id: roomId, user_id: userId};
+    console.log(data);
+
+    var myURL = head_url + "check_member_is_incognito";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("共同討論 - 匿名");
+            console.log(response);
+            incognito = response;
+        }
+    });
+    return incognito;
 }
 
 // 找出匹配的人選
@@ -1582,15 +1649,15 @@ function discussion_recommand_user(){
 function discussNotificationThirdTimes(){
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
-    
+    console.log("房間號碼: "+discussRoomId);
     var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
         console.log("第一分鐘傳通知");
-        console.log("全部: "+discussRoom);
-        console.log("1: "+discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId]==false){
+        
+        if(check_discussion_is_full(discussRoomId) == false){
             if(len<2){
-               console.log("len<2"); add_discussion_invitation_notification(recommandUsersId.slice(0, len));
+//               console.log("len<2");
+                add_discussion_invitation_notification(recommandUsersId.slice(0, len));
                 reject();
             }
             else{
@@ -1600,9 +1667,7 @@ function discussNotificationThirdTimes(){
         }
     }).then(function(){ //第二分鐘傳通知
         console.log("第二分鐘傳通知");
-        console.log("全部: "+discussRoom);
-        console.log("2: "+discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId]==false){
+        if(check_discussion_is_full(discussRoomId)==false){
             if(len<5){
                console.log("len<5");  add_discussion_invitation_notification(recommandUsersId.slice(3, len));
                 reject();
@@ -1615,8 +1680,7 @@ function discussNotificationThirdTimes(){
     }).then(function(){ //第三分鐘傳通知
         console.log("第三分鐘傳通知");
         console.log("全部: "+discussRoom);
-        console.log("3: "+discussRoom[discussRoomId]);
-        if(discussRoom[discussRoomId]==false){
+        if(check_discussion_is_full(discussRoomId)==false){
             console.log("len"); 
             add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
         }
@@ -1665,7 +1729,7 @@ function joinDiscussRoom(incognito){
     console.log(data);
     
     socket.emit('join_room' , data);
-    
+    discussRoom[discussionRoomId] = true; // for 加入的人
     addToChatingList(discussionRoomId, discussionQuestion);
     
 }
