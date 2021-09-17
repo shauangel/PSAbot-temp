@@ -26,17 +26,17 @@ def build_initial_tag():
     third_level_tag_name=[Web_Crawing_Data_Mining, Web_frameworks, NLP, game_development, standard_libraries, GUI, Data_Processing]
     
     
-    first_level_dict = {'id':'', 'name':first_level_tag_name}
-    second_level_dict = [{'id':'', 'name':i} for i in second_level_tag_name]
-    third_level_dict = [[{'id':'', 'name':i} for i in j] for j in third_level_tag_name]
+    first_level_dict = {'id':'', 'name':first_level_tag_name, 'level':0}
+    second_level_dict = [{'id':'', 'name':i, 'level':1} for i in second_level_tag_name]
+    third_level_dict = [[{'id':'', 'name':i, 'level':2} for i in j] for j in third_level_tag_name]
     
     #建立第一層
-    tag_id = tag.insert_tag(first_level_dict['name'])
+    tag_id = tag.insert_tag(first_level_dict['name'], first_level_dict['level'])
     first_level_dict['id'] = tag_id
 
     #建立第二層
     for i in second_level_dict:
-        tag_id = tag.insert_tag(i['name'])
+        tag_id = tag.insert_tag(i['name'], i['level'])
         i['id'] = tag_id
         tag.add_child_tag(first_level_dict['id'], first_level_dict['name'], tag_id, i['name'])
 
@@ -45,7 +45,7 @@ def build_initial_tag():
     for i in third_level_dict:
         for j in i:
             print(second_level_dict[index]['id'])
-            tag_id = tag.insert_tag(j['name'])
+            tag_id = tag.insert_tag(j['name'], j['level'])
             j['id'] = tag_id
             tag.add_child_tag(second_level_dict[index]['id'], second_level_dict[index]['name'], tag_id, j['name'])
         index+=1

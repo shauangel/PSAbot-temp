@@ -8,13 +8,13 @@ Created on Fri Apr 23 21:52:20 2021
 from . import _db
 
 #新增 empty tag
-def insert_tag(tag_name):
+def insert_tag(tag_name, level):
     data=_db.TAG_COLLECTION.find()
     if data.count() != 0:
         tag_id=str(int(data.sort('_id', -1)[0]['_id'])+1).zfill(5)
     else:
         tag_id='00000'
-    tag_dict = {'_id':tag_id, 'tag':tag_name, 'child':[], 'parent':'', 'associated':[], 'usage_counter':0, 'recent_use':''}
+    tag_dict = {'_id':tag_id, 'tag':tag_name, 'child':[], 'parent':'', 'associated':[], 'usage_counter':0, 'recent_use':'', 'level':level}
     _db.TAG_COLLECTION.insert_one(tag_dict)
     return tag_id
     
