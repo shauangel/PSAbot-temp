@@ -1539,6 +1539,7 @@ function createDiscussRoom(){
 
 function received_message(){
     socket.on('received_message', function(response) {
+        console.log("收到的訊息: "+response.content);
         console.log(response._id);
         if(check_discussion_is_full(response._id) == false){ // 代表是創房間
             console.log("創建房間");
@@ -1558,15 +1559,19 @@ function received_message(){
             
             if(response._id==chatingRoomId && response.user_id!=userSessionId){
                 // 代表不是我說話
+                console.log("user_id: "+response.user_id);
                 if(response.user_id == "PSAbot"){
+                    console.log("共同討論 - PSAbot 說話");
                    // PSAbot 說話
                     ImgYou = "../static/images/iconSmall.png";
                 }
                 else if(check_member_is_incognito(response._id, response.user_id)){
+                    console.log("共同討論 - 別人說話但匿名");
                     // 別人但匿名
                     ImgYou = "../static/images/discussionImg.png";
                 }
                 else{
+                    console.log("共同討論 - 別人說話");
                     // 別人沒匿名
                     ImgYou = getChatroomUserImg(response.user_id);
                 }
@@ -1736,7 +1741,10 @@ function joinDiscussRoom(incognito){
     
     var note = "若要結束，請輸入「結束討論」<br>此次共同討論的題目為"+discussionQuestion;
     data = {_id: discussionRoomId, user_id: "PSAbot", type: "string", content: note};
+    console.log("送出去的訊息: ");
+    console.log(data);
     socket.emit('send_message' , data);
+    console.log("送完了～");
 }
 
 // 把共同討論聊天室 加入聊天室列表
