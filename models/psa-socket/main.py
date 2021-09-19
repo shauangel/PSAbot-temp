@@ -67,7 +67,7 @@ def create_room(data):
     print('client\'s rooms : ' , rooms())
     emit('received_message', {'_id':room_id}, to=data['asker']['user_id'])
     join_message = {
-            '_id':data['_id'],
+            '_id':room_id,
             'user_id': 'PSAbot',
             'time': datetime.now().replace(microsecond=0),
             'type':data['type'],
