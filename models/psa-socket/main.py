@@ -217,17 +217,6 @@ def get_chat(data):
         chat_dict['chat_logs'][idx]['time'] = str(chat_dict['chat_logs'][idx]['time'])
     emit('received_message',chat_dict,to=data['user_id'])
 
-# 取得聊天室列表
-# @socketio.on('get_rooms')
-# def get_rooms(data):
-#     room_ids = rooms()
-#     if len(room_ids) <= 2:
-#         emit('chat_rooms',{'chat_rooms':[]},to=request.sid) 
-#     else :
-#         room_list = [
-#                         {'room_id':room_id,'question':chat_data.query_chat(room_id)['question']} 
-#                         for room_id in room_ids[2:len(room_ids)]]
-#         emit('chat_rooms',{'chat_rooms':room_list},to=data['user_id']) 
 
 if __name__ == "__main__":
     socketio.run(app,host='0.0.0.0',port=55003,debug=True)
