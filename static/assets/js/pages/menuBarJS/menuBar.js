@@ -1542,6 +1542,7 @@ function received_message(){
         console.log(response._id);
         if(check_discussion_is_full(response._id) == false){ // 代表是創房間
             console.log("創建房間");
+            discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
             discussNotificationThirdTimes();
