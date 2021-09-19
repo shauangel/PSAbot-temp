@@ -26,7 +26,8 @@ def connect():
     user_id = request.args.get('user_id')
     room_list = chat_data.query_room_list(user_id)
     for room in room_list:
-        join_room(room['_id'])
+        if room['enabled']:
+            join_room(room['_id'])
     join_room(user_id)
     print('client\'s rooms : ' , rooms())
     emit('connect', user_id + ' has connected.',to=user_id)
@@ -195,6 +196,8 @@ def close_chat(data):
     if data['_id'] in rooms():   
         # data : { '_id','user_id','time','type','content'}
         close_room(data['_id'])
+        emit('received_message','關閉' + data['_id'])
+        chat_data.change_state(data['_id'],False)
     else:
         emit('received_message',
               {
