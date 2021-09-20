@@ -162,7 +162,7 @@ function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     
-    content += '<div class="d-flex justify-content-start mb-4">';
+    content += '<div class="d-flex">';
     // 加上checkbox START
     content += '<label>';
     content += '<input type="checkbox" name="chatHistory" style="float: left;" value="';
