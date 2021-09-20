@@ -78,14 +78,6 @@ function bot(string) {
         var content = history.innerHTML;
 
         
-        content += '<div>';
-        // 加上checkbox START
-        content += '<label>';
-        content += '<input type="checkbox" name="chatHistory" value="';
-        content += string;
-        content += '" checked>';
-        content += '</label>';
-        // 加上checkbox END
         
         content += '<div ';
         if (string.slice(0, 6) == "正在輸入訊息") {
@@ -93,7 +85,13 @@ function bot(string) {
             content += 'id="willBeClear" ';
         }
         content += 'class="d-flex justify-content-start mb-4">';
-        
+        content += '<label>';
+        // 加上checkbox START
+        content += '<input type="checkbox" name="chatHistory" value="';
+        content += string;
+        content += '" checked>';
+        content += '</label>';
+        // 加上checkbox END
         content += '<div class="img_cont_msg">';
         content += '<img src="';
         content += ImgYou;
@@ -109,7 +107,6 @@ function bot(string) {
         content += string;
 
         //    content += '<span class="msg_time">8:40 AM</span>';
-        content += '</div>';
         content += '</div>';
         content += '</div>';
 
@@ -165,16 +162,14 @@ function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     
-    content += '<div>';
+    content += '<div class="d-flex justify-content-end mb-12">';
     // 加上checkbox START
     content += '<label>';
-    content += '<input type="checkbox" name="chatHistory" style="float: left;" value="';
+    content += '<input type="checkbox" name="chatHistory" value="';
     content += string;
     content += '" checked>';
     content += '</label>';
     // 加上checkbox END
-    content += '<div class="d-flex justify-content-start mb-4">';
-    
     content += '<div class="msg_cotainer_send" style="float: right;">';
     content += string;
     //    content += '<span class="msg_time">8:40 AM</span>';
@@ -185,7 +180,7 @@ function user(string) {
     content += '" class="chatImg">';
     content += '</div>';
     content += '</div>';
-    content += '</div>';
+    
 
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
