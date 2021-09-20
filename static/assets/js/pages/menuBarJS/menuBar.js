@@ -1819,11 +1819,11 @@ function addCheckboxToHistory(data){
     // 處理下方的輸入框等 START
     var textArea = document.getElementById("message");
     textArea.disabled = true;
-    textArea.setAttribute("placeholder", "選擇完畢請按右下角的傳送");
+    textArea.setAttribute("placeholder", "選擇完畢請按右方的傳送");
 
     var sendBtn = document.getElementById("sendButton");
     sendBtn.disabled = false;
-    sendBtn.setAttribute("onclick", "postDiscussion()");
+    sendBtn.setAttribute("onclick", "postDiscussion('"+data+"')");
     // 處理下方的輸入框等 END
     
     // 歷史紀錄加上checkbox START
@@ -1919,8 +1919,21 @@ function addCheckboxToHistory(data){
     // 歷史紀錄加上checkbox END
 }
 
-function postDiscussion(){
-    console.log("post 共同討論");
+// 完全禁止下方輸入框
+function disabledChatroom(){
+    var textArea = document.getElementById("message");
+    textArea.disabled = true;
+    textArea.setAttribute("placeholder", "共同討論已結束");
+    var sendBtn = document.getElementById("sendButton");
+    sendBtn.disabled = true;
+}
+
+function postDiscussion(data){
+    console.log("共同討論po文: ");
+    console.log(data);
+    var val=$('input:checkbox[name="chatHistory"]:checked').val();
+    console.log("有選起來的: ");
+    console.log(val);
 }
 
 // 刪除某個房間
