@@ -37,7 +37,7 @@ function bot(string) {
     if(string==undefined){
        bot("出現了點問題，請稍後再試～");
     }
-    else if(string=="return discussion"){
+    else if(string=="return_discussion"){
         // 讓使用者選聊天記錄
         discussionHistory();
     }
@@ -1816,6 +1816,8 @@ function discussionHistory(){
     var roomId = localStorage.getItem("chatingRoomId");
     var userId = localStorage.getItem("sessionID");
     var data = {_id: roomId, user_id: userId};
+    console.log("拿聊天記錄: ");
+    console.log(data);
     socket.emit('get_chat' , data);
 }
 
