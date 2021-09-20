@@ -139,7 +139,7 @@ def send_message(data):
             if data['user_id'] == current_chat['members'][0]['user_id']:
                 chat_data.end_chat(chat_dict['_id'],True,1)
                 replier_id = current_chat['members'][1]['user_id']
-                payload = {'sender': chat_dict['user_id'],'message':'end_discuss,' + replier_id,'room_id':data['_id']}
+                payload = {'sender': chat_dict['user_id'],'message':'end_discuss,' + replier_id+','+data['_id']}
                 headers = {'content-type': 'application/json'}
                 r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
                 print(r.json())

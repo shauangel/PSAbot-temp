@@ -51,9 +51,10 @@ def base_flow_rasa():
     
     r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload, headers=headers)
     
-    print(r.json())
     if len(r.json()) == 0:
+        print("no")
         return jsonify({"message":"no triggered intent"})
     else:
+        print(r.json()[0])
         return r.json()[0]
         
