@@ -1816,8 +1816,17 @@ function discussionHistory(){
 }
 
 function addCheckboxToHistory(data){
-    console.log("加上checkbox");
-    console.log(data);
+    // 處理下方的輸入框等 START
+    var textArea = document.getElementById("message");
+    textArea.disabled = true;
+    textArea.setAttribute("placeholder", "選擇完畢請按右下角的傳送");
+
+    var sendBtn = document.getElementById("sendButton");
+    sendBtn.disabled = false;
+    sendBtn.setAttribute("onclick", "postDiscussion()");
+    // 處理下方的輸入框等 END
+    
+    // 歷史紀錄加上checkbox START
     var history = document.getElementById("history_message");
     var content = "", img = "";
     
@@ -1906,18 +1915,12 @@ function addCheckboxToHistory(data){
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
     // 重建歷史紀錄（加上checkbox）END
+    
+    // 歷史紀錄加上checkbox END
 }
 
-// 共同討論 -> 回報（發文）
-function endDiscussion(roomId){
-    
-    var textArea = document.getElementById("message");
-    textArea.disabled = false;
-    textArea.setAttribute("placeholder", "請輸入欲新增之關鍵字");
-
-    var sendBtn = document.getElementById("sendButton");
-    sendBtn.disabled = false;
-    sendBtn.setAttribute("onclick", "addKeyWord()");
+function postDiscussion(){
+    console.log("post 共同討論");
 }
 
 // 刪除某個房間
