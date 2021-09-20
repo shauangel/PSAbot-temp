@@ -1768,7 +1768,7 @@ function getChatroomList(userId){
     userId = "116287698501129823679";
     var data = {user_id: userId};
     console.log("送出data: ");
-    cosole.log(data);
+    console.log(data);
     socket.emit('query_chat_list' , data);
     socket.on('query_chat_list', function(response) {
     //印出server的回應
