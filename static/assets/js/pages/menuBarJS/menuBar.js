@@ -2026,6 +2026,8 @@ function postDiscussion(){
     var askerName = idReturnName(askerId);
     var title = receivedData.question;
     var question = discussionPostContent(receivedData.chat_logs, indexVal);
+    console.log("問題是: ");
+    console.log(question);
     var tag = receivedData.tags;
     var time = receivedData.time;
     // 準備po文的資料 END
@@ -2041,6 +2043,7 @@ function postDiscussion(){
     });
     localStorage.removeItem("chatLogs");
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
+    console.log(data);
 }
 
 // 刪除某個房間
