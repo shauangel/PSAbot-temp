@@ -127,7 +127,7 @@ def send_message(data):
                         'user_id': 'PSAbot',
                         'time': datetime.now().replace(microsecond=0),
                         'type':'string',
-                        'content':r.json()[0]['message']
+                        'content':r.json()[0]['text']
                     }
             chat_data.insert_message(psa_message)
             psa_message['time'] = str(psa_message['time'])
@@ -157,7 +157,7 @@ def send_message(data):
                         'user_id': 'PSAbot',
                         'time': datetime.now().replace(microsecond=0),
                         'type':'string',
-                        'content':r.json()[0]['message']
+                        'content':r.json()[0]['text']
                     }
                 chat_data.insert_message(psa_message)
                 psa_message['time'] = str(psa_message['time'])
@@ -172,7 +172,7 @@ def send_message(data):
                         'user_id': 'PSAbot',
                         'time': datetime.now().replace(microsecond=0),
                         'type':'string',
-                        'content':r.json()[0]['message']
+                        'content':r.json()[0]['text']
                     }
             chat_data.insert_message(psa_message)
             psa_message['time'] = str(psa_message['time'])
