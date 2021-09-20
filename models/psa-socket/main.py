@@ -26,7 +26,8 @@ def connect():
     user_id = request.args.get('user_id')
     room_list = chat_data.query_room_list(user_id)
     for room in room_list:
-        join_room(room['_id'])
+        if room['enabled']:
+            join_room(room['_id'])
     join_room(user_id)
     print('client\'s rooms : ' , rooms())
     emit('connect', user_id + ' has connected.',to=user_id)
@@ -67,7 +68,7 @@ def create_room(data):
     print('client\'s rooms : ' , rooms())
     emit('received_message', {'_id':room_id}, to=data['asker']['user_id'])
     join_message = {
-            '_id':data['_id'],
+            '_id':room_id,
             'user_id': 'PSAbot',
             'time': datetime.now().replace(microsecond=0),
             'type':data['type'],
@@ -195,6 +196,8 @@ def close_chat(data):
     if data['_id'] in rooms():   
         # data : { '_id','user_id','time','type','content'}
         close_room(data['_id'])
+        emit('received_message','關閉' + data['_id'])
+        chat_data.change_state(data['_id'],False)
     else:
         emit('received_message',
               {
@@ -214,17 +217,6 @@ def get_chat(data):
         chat_dict['chat_logs'][idx]['time'] = str(chat_dict['chat_logs'][idx]['time'])
     emit('received_message',chat_dict,to=data['user_id'])
 
-# 取得聊天室列表
-# @socketio.on('get_rooms')
-# def get_rooms(data):
-#     room_ids = rooms()
-#     if len(room_ids) <= 2:
-#         emit('chat_rooms',{'chat_rooms':[]},to=request.sid) 
-#     else :
-#         room_list = [
-#                         {'room_id':room_id,'question':chat_data.query_chat(room_id)['question']} 
-#                         for room_id in room_ids[2:len(room_ids)]]
-#         emit('chat_rooms',{'chat_rooms':room_list},to=data['user_id']) 
 
 if __name__ == "__main__":
     socketio.run(app,host='0.0.0.0',port=55003,debug=True)

@@ -123,5 +123,12 @@ def query_chat_list():
     data = request.get_json()
     chat_list = chat_data.query_room_list(data['user_id'])
     return jsonify(chat_list)
+
+# 刪除聊天室資料
+@discussion_api.route('/remove_chat', methods=['POST'])
+def remove_chat():
+    data = request.get_json()
+    chat_data.remove_chat(data['_id'])
+    return jsonify(data)
     
 
