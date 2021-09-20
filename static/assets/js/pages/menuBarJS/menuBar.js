@@ -1571,6 +1571,7 @@ function received_message(){
             // 需要重新顯示聊天記錄（加上checkbox）
             console.log("顯示聊天記錄");
             console.log(response.chat_logs);
+            localStorage.setItem("chatLogs", JSON.stringify(response));
             addCheckboxToHistory(response.chat_logs);
         }
         else if(check_discussion_is_full(response._id) == false){ // 代表是創房間
@@ -1816,7 +1817,6 @@ function discussionHistory(){
 }
 
 function addCheckboxToHistory(data){
-    localStorage.setItem("chatLogs", JSON.stringify(data));
     // 處理下方的輸入框等 START
     var textArea = document.getElementById("message");
     textArea.disabled = true;
@@ -1945,7 +1945,7 @@ function postDiscussion(){
         console.log(this.value);
         
         console.log("內容為: ");
-        console.log(data[this.value].content);
+        console.log(data.chat_logs[this.value].content);
     });
     localStorage.removeItem("data");
 }
