@@ -130,5 +130,12 @@ def remove_chat():
     data = request.get_json()
     chat_data.remove_chat(data['_id'])
     return jsonify(data)
+
+# 取得聊天室tag
+@discussion_api.route('/query_chat_tag', methods=['POST'])
+def query_chat_tag():
+    data = request.get_json()
+    tags = chat_data.query_chat(data['_id'])['tags']
+    return jsonify(tags)
     
 
