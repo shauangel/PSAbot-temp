@@ -74,8 +74,8 @@ def create_room(data):
             'type':'string',
             'content':'等待回答者加入...'
     }
-    emit('received_message', chat_dict, to=room_id)
     join_message['time'] = str(join_message['time'])
+    emit('received_message', chat_dict, to=room_id)
     chat_data.insert_message(join_message)
 
 # 使用者加入聊天室
