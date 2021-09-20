@@ -165,7 +165,7 @@ function user(string) {
     content += '<div class="d-flex justify-content-end mb-4">';
     // 加上checkbox START
     content += '<label>';
-    content += '<input type="checkbox" name="chatHistory" value="';
+    content += '<input type="checkbox" name="chatHistory" style="float: left;" value="';
     content += string;
     content += '" checked>';
     content += '</label>';
