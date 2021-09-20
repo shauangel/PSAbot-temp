@@ -71,7 +71,7 @@ def create_room(data):
             '_id':room_id,
             'user_id': 'PSAbot',
             'time': datetime.now().replace(microsecond=0),
-            'type':data['type'],
+            'type':'string',
             'content':'等待回答者加入...'
     }
     emit('received_message', chat_dict, to=data['_id'])
