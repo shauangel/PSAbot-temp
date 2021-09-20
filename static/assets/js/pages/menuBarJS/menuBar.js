@@ -85,8 +85,8 @@ function bot(string) {
             content += 'id="willBeClear" ';
         }
         content += 'class="d-flex justify-content-start mb-4">';
-        // 加上checkbox START
         content += '<label>';
+        // 加上checkbox START
         content += '<input type="checkbox" name="chatHistory" value="';
         content += string;
         content += '" checked>';
@@ -162,10 +162,10 @@ function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     
-    content += '<div class="d-flex">';
+    content += '<div class="d-flex justify-content-end mb-12">';
     // 加上checkbox START
     content += '<label>';
-    content += '<input type="checkbox" name="chatHistory" style="float: left;" value="';
+    content += '<input type="checkbox" name="chatHistory" value="';
     content += string;
     content += '" checked>';
     content += '</label>';
