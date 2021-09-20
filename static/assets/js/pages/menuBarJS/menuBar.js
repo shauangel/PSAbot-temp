@@ -28,7 +28,7 @@ function bot(string) {
     
     if(string=="請稍等，立即為你詢問其他使用者。"){
         createDiscussRoom();
-        setTimeout(welcomeAPI, 5000);//等一下再呼叫
+        //setTimeout(welcomeAPI, 5000);//等一下再呼叫
     }
     if(string!=undefined && string.slice(0, 4)=="接收到了"){
         needDiscussQuestion = true;
@@ -36,6 +36,10 @@ function bot(string) {
     
     if(string==undefined){
        bot("出現了點問題，請稍後再試～");
+    }
+    else if(string=="return_discussion"){
+        // 讓使用者選聊天記錄
+        discussionHistory();
     }
     // 因為只有popover bot才不需要回覆
     //----- 處理選標籤 START -----//
@@ -85,12 +89,13 @@ function bot(string) {
             content += 'id="willBeClear" ';
         }
         content += 'class="d-flex justify-content-start mb-4">';
-        content += '<label>';
+        
         // 加上checkbox START
-        content += '<input type="checkbox" name="chatHistory" value="';
-        content += string;
-        content += '" checked>';
-        content += '</label>';
+//        content += '<label>';
+//        content += '<input type="checkbox" name="chatHistory" value="';
+//        content += string;
+//        content += '" checked>';
+//        content += '</label>';
         // 加上checkbox END
         content += '<div class="img_cont_msg">';
         content += '<img src="';
@@ -162,19 +167,21 @@ function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     //d-flex justify-content-end mb-4
-    content += '<div class="mb-4">';
+    content += '<div class="d-flex justify-content-end mb-4">';
     // 加上checkbox START
-    content += '<label>';
-    content += '<input type="checkbox" name="chatHistory" value="';
-    content += string;
-    content += '" checked>';
-    content += '</label>';
+//    content += '<label>';
+//    content += '<input type="checkbox" name="chatHistory" value="';
+//    content += string;
+//    content += '" checked>';
+//    content += '</label>';
     // 加上checkbox END
-    content += '<div class="msg_cotainer_send" style="float: right;">';
+    
+    content += '<div class="msg_cotainer_send">';
     content += string;
     //    content += '<span class="msg_time">8:40 AM</span>';
     content += '</div>';
-    content += '<div class="img_cont_msg" style="float: right;">';
+    
+    content += '<div class="img_cont_msg">';
     content += '<img src="';
     content += ImgMe;
     content += '" class="chatImg">';
@@ -1560,7 +1567,12 @@ function received_message(){
     socket.on('received_message', function(response) {
         console.log("收到的訊息: "+response.content);
         console.log(response._id);
-        if(check_discussion_is_full(response._id) == false){ // 代表是創房間
+        if(response.chat_logs!=null){ // 代表是去拿聊天記錄
+            // 需要重新顯示聊天記錄（加上checkbox）
+            console.log("顯示聊天記錄");
+            console.log(response.chat_logs);
+        }
+        else if(check_discussion_is_full(response._id) == false){ // 代表是創房間
             console.log("創建房間");
             discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
@@ -1796,6 +1808,17 @@ function getChatroomList(userId){
             deleteChatroom(response._id);
         }
     });
+}
+
+// 拿到聊天記錄
+// socket -> get_chat
+function discussionHistory(){
+    var roomId = localStorage.getItem("chatingRoomId");
+    var userId = localStorage.getItem("sessionID");
+    var data = {_id: roomId, user_id: userId};
+    console.log("拿聊天記錄: ");
+    console.log(data);
+    socket.emit('get_chat' , data);
 }
 
 // 共同討論 -> 回報（發文）
