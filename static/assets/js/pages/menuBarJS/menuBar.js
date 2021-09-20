@@ -78,17 +78,19 @@ function bot(string) {
         var content = history.innerHTML;
 
         
-        content += '<label ';
+        
+        content += '<div ';
         if (string.slice(0, 6) == "正在輸入訊息") {
             needToClearBotMessage = true;
             content += 'id="willBeClear" ';
         }
-        content += '>';
-        content += '<div class="d-flex justify-content-start mb-4">';
+        content += 'class="d-flex justify-content-start mb-4">';
         // 加上checkbox START
+        content += '<label>';
         content += '<input type="checkbox" name="chatHistory" value="';
         content += string;
         content += '" checked>';
+        content += '</label>';
         // 加上checkbox END
         content += '<div class="img_cont_msg">';
         content += '<img src="';
@@ -107,7 +109,6 @@ function bot(string) {
         //    content += '<span class="msg_time">8:40 AM</span>';
         content += '</div>';
         content += '</div>';
-        content += '</label>';
 
         history.innerHTML = content;
         history.scrollTop = history.scrollHeight;
@@ -161,12 +162,13 @@ function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     
-    content += '<label>';
     content += '<div class="d-flex justify-content-end mb-4">';
     // 加上checkbox START
+    content += '<label>';
     content += '<input type="checkbox" name="chatHistory" value="';
     content += string;
     content += '" checked>';
+    content += '</label>';
     // 加上checkbox END
     content += '<div class="msg_cotainer_send">';
     content += string;
@@ -178,7 +180,6 @@ function user(string) {
     content += '" class="chatImg">';
     content += '</div>';
     content += '</div>';
-    content += '</label>';
     
 
     history.innerHTML = content;
