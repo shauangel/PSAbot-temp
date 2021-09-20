@@ -20,8 +20,6 @@ from . import TextAnalyze
 from .OuterSearch import outerSearch
 ##摘要
 from . import StackData
-#聊天室模組
-from ... import chat_data
 
 #head_url='http://localhost:55001/api/'
 head_url='https://soselab.asuscomm.com:55002/api/'
@@ -44,7 +42,7 @@ class ask_return_and_reward(Action):
         print("replier_id: "+replier_id)
         print("room_id: "+room_id)
         #加分！
-        tags = chat_data.query_chat(room_id)['tags']
+        
 #        tags=[]
 #        for i in selected_tags_array:
 #            r = requests.get(url = head_url+'query_tag_name', params = {'tag_id':i})
