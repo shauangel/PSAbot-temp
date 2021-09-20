@@ -1765,7 +1765,7 @@ function addToChatingList(discussionRoomId, discussionQuestion){
 // 拿到某人的聊天室列表
 // socket -> query_chat_list
 function getChatroomList(userId){
-    userId = "116287698501129823679";
+    userId = localStorage.getItem("sessionID");
     var data = {user_id: userId};
     console.log("送出data: ");
     console.log(data);
