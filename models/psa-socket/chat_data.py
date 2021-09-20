@@ -62,4 +62,4 @@ def change_state(chat_id,state):
 # 取得使用者所在聊天室id,名稱
 def query_room_list(user_id):
     return _db.CHAT_DATA_COLLECTION.aggregate([{'$match': {'members.user_id': user_id}}, 
-                                               {'$project': {'_id': 1, 'question': 1}}])
+                                               {'$project': {'_id': 1, 'question': 1,'enabled':1}}])
