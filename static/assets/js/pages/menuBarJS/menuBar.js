@@ -1565,6 +1565,8 @@ function createDiscussRoom(){
 
 function received_message(){
     socket.on('received_message', function(response) {
+        var userSessionId = localStorage.getItem("sessionID");
+        
         console.log("收到的訊息: "+response.content);
         console.log(response._id);
         if(response.chat_logs!=null){ // 代表是去拿聊天記錄
@@ -1572,7 +1574,14 @@ function received_message(){
             console.log("顯示聊天記錄");
             console.log(response.chat_logs);
             localStorage.setItem("chatLogs", JSON.stringify(response));
-            addCheckboxToHistory(response.chat_logs);
+            console.log("asker是誰: ");
+            console.log(response.members[0].user_id);
+            if(response.members[0].user_id == userSessionId){
+                addCheckboxToHistory(response.chat_logs);
+            }
+            else{
+                disabledChatroom();
+            }
         }
         else if(check_discussion_is_full(response._id) == false){ // 代表是創房間
             console.log("創建房間");
@@ -1588,7 +1597,6 @@ function received_message(){
             console.log("房間已滿，接受訊息");
             
             var chatingRoomId = localStorage.getItem("chatingRoomId");
-            var userSessionId = localStorage.getItem("sessionID");
             
             if(response._id==chatingRoomId && response.user_id!=userSessionId){
                 // 代表不是我說話
