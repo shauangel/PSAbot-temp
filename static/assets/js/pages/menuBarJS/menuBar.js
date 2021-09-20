@@ -167,7 +167,7 @@ function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
     //d-flex justify-content-end mb-4
-    content += '<div class="mb-4">';
+    content += '<div class="d-flex justify-content-end mb-4">';
     // 加上checkbox START
 //    content += '<label>';
 //    content += '<input type="checkbox" name="chatHistory" value="';
@@ -175,17 +175,17 @@ function user(string) {
 //    content += '" checked>';
 //    content += '</label>';
     // 加上checkbox END
-    content += '<div class="img_cont_msg" style="float: right;">';
-    content += '<img src="';
-    content += ImgMe;
-    content += '" class="chatImg">';
-    content += '</div>';
     
-    content += '<div class="msg_cotainer_send" style="float: right;">';
+    content += '<div class="msg_cotainer_send">';
     content += string;
     //    content += '<span class="msg_time">8:40 AM</span>';
     content += '</div>';
     
+    content += '<div class="img_cont_msg">';
+    content += '<img src="';
+    content += ImgMe;
+    content += '" class="chatImg">';
+    content += '</div>';
     content += '</div>';
     
 
@@ -1567,7 +1567,7 @@ function received_message(){
     socket.on('received_message', function(response) {
         console.log("收到的訊息: "+response.content);
         console.log(response._id);
-        if(response.chat_logs.length!=0){ // 代表是去拿聊天記錄
+        if(response.chat_logs!=null){ // 代表是去拿聊天記錄
             // 需要重新顯示聊天記錄（加上checkbox）
             console.log("顯示聊天記錄");
             console.log(response.chat_logs);
