@@ -1840,23 +1840,23 @@ function addCheckboxToHistory(data){
         if(data[i].user_id == userId){ //代表是自己說話
             
             // 沒有label START
-            var temp = '<div class="d-flex justify-content-end mb-4">';
-            temp += '<div class="msg_cotainer_send">';
-            temp += data[i].content;
-            temp += '</div>';
-            temp += '<div class="img_cont_msg">';
-            temp += '<img src="';
-            temp += img;
-            temp += '" class="chatImg">';
-            temp += '</div>';
-            temp += '</div>';
+//            var temp = '<div class="d-flex justify-content-end mb-4">';
+//            temp += '<div class="msg_cotainer_send">';
+//            temp += data[i].content;
+//            temp += '</div>';
+//            temp += '<div class="img_cont_msg">';
+//            temp += '<img src="';
+//            temp += img;
+//            temp += '" class="chatImg">';
+//            temp += '</div>';
+//            temp += '</div>';
             // 沒有label END
             
             // 加上checkbox START
             content += '<div class="mb-4">';
             content += '<label>';
             content += '<input type="checkbox" name="chatHistory" value="';
-            content += temp;
+            content += i;
             content += '" checked>';
             content += '</label>';
             content += '<div class="img_cont_msg" style="float: right;">';
@@ -1872,23 +1872,23 @@ function addCheckboxToHistory(data){
         }
         else{
             // 沒有label的 START
-            var temp = '<div class="d-flex justify-content-start mb-4">';
-            temp += '<div class="img_cont_msg">';
-            temp += '<img src="';
-            temp += img;
-            temp += '" class="chatImg" style="background-color: #5D478B;">';
-            temp += '</div>';
-            temp += '<div class="msg_cotainer">';
-            temp += data[i].content;
-            temp += '</div>';
-            temp += '</div>';
+//            var temp = '<div class="d-flex justify-content-start mb-4">';
+//            temp += '<div class="img_cont_msg">';
+//            temp += '<img src="';
+//            temp += img;
+//            temp += '" class="chatImg" style="background-color: #5D478B;">';
+//            temp += '</div>';
+//            temp += '<div class="msg_cotainer">';
+//            temp += data[i].content;
+//            temp += '</div>';
+//            temp += '</div>';
             // 沒有label的 END
             
             // 加上checkbox START
             content += '<div class="d-flex justify-content-start mb-4">';
             content += '<label>';
             content += '<input type="checkbox" name="chatHistory" value="';
-            content += temp;
+            content += i;
             content += '" checked>';
             content += '</label>';
             content += '<div class="img_cont_msg">';
