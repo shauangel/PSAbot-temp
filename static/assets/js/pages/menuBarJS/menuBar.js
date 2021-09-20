@@ -1934,6 +1934,16 @@ function postDiscussion(data){
     var val=$('input:checkbox[name="chatHistory"]:checked').val();
     console.log("有選起來的: ");
     console.log(val);
+    
+    var indexVal = new Array();
+    $('input[name="chatHistory"]:checkbox:checked').each(function(i) {
+        indexVal[i] = this.value;
+        console.log("index為: ");
+        console.log(this.value);
+        
+        console.log("內容為: ");
+        console.log(data[this.value].content);
+    });
 }
 
 // 刪除某個房間
