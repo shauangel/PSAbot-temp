@@ -78,6 +78,10 @@ function bot(string) {
         var content = history.innerHTML;
 
         content += '<label>';
+        // 加上checkbox
+        content += '<input type="checkbox" name="chatHistory" value="';
+        content += string;
+        content += '" checked>';
         content += '<div ';
         if (string.slice(0, 6) == "正在輸入訊息") {
             needToClearBotMessage = true;
@@ -90,10 +94,7 @@ function bot(string) {
         content += '" class="chatImg" style="background-color: #5D478B;">';
         content += '</div>';
         
-        // 加上checkbox
-        content += '<input type="checkbox" name="chatHistory" value="';
-        content += string;
-        content += '" checked>';
+        
         content += '<div class="msg_cotainer"';
         if (string.slice(0, 6) == "正在輸入訊息") {
             content += 'id="willBeClearString" ';
