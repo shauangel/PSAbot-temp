@@ -161,8 +161,8 @@ function bot(string) {
 function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
-    
-    content += '<div class="d-flex justify-content-end mb-12">';
+    //d-flex justify-content-end mb-4
+    content += '<div class="">';
     // 加上checkbox START
     content += '<label>';
     content += '<input type="checkbox" name="chatHistory" value="';
