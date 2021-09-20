@@ -77,18 +77,27 @@ function bot(string) {
         var history = document.getElementById("history_message");
         var content = history.innerHTML;
 
-
+        
+        
         content += '<div ';
         if (string.slice(0, 6) == "正在輸入訊息") {
             needToClearBotMessage = true;
             content += 'id="willBeClear" ';
         }
         content += 'class="d-flex justify-content-start mb-4">';
+        content += '<label>';
+        // 加上checkbox START
+        content += '<input type="checkbox" name="chatHistory" value="';
+        content += string;
+        content += '" checked>';
+        // 加上checkbox END
         content += '<div class="img_cont_msg">';
         content += '<img src="';
         content += ImgYou;
         content += '" class="chatImg" style="background-color: #5D478B;">';
         content += '</div>';
+        
+        
         content += '<div class="msg_cotainer"';
         if (string.slice(0, 6) == "正在輸入訊息") {
             content += 'id="willBeClearString" ';
@@ -98,6 +107,8 @@ function bot(string) {
 
         //    content += '<span class="msg_time">8:40 AM</span>';
         content += '</div>';
+        
+        content += '</label>'
         content += '</div>';
 
         history.innerHTML = content;
@@ -151,7 +162,14 @@ function bot(string) {
 function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
+    
     content += '<div class="d-flex justify-content-end mb-4">';
+    content += '<label>';
+    // 加上checkbox START
+    content += '<input type="checkbox" name="chatHistory" value="';
+    content += string;
+    content += '" checked>';
+    // 加上checkbox END
     content += '<div class="msg_cotainer_send">';
     content += string;
     //    content += '<span class="msg_time">8:40 AM</span>';
@@ -161,7 +179,9 @@ function user(string) {
     content += ImgMe;
     content += '" class="chatImg">';
     content += '</div>';
+    content += '</label>';
     content += '</div>';
+    
 
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
@@ -1761,7 +1781,6 @@ function addToChatingList(discussionRoomId, discussionQuestion){
     document.getElementById("chatingList").innerHTML = chatingListContent;
 }
 
-
 // 拿到某人的聊天室列表
 // socket -> query_chat_list
 function getChatroomList(userId){
@@ -1778,6 +1797,18 @@ function getChatroomList(userId){
             deleteChatroom(response._id);
         }
     });
+}
+
+// 共同討論 -> 回報（發文）
+function endDiscussion(roomId){
+    
+    var textArea = document.getElementById("message");
+    textArea.disabled = false;
+    textArea.setAttribute("placeholder", "請輸入欲新增之關鍵字");
+
+    var sendBtn = document.getElementById("sendButton");
+    sendBtn.disabled = false;
+    sendBtn.setAttribute("onclick", "addKeyWord()");
 }
 
 // 刪除某個房間

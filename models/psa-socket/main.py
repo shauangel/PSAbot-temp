@@ -71,10 +71,10 @@ def create_room(data):
             '_id':room_id,
             'user_id': 'PSAbot',
             'time': datetime.now().replace(microsecond=0),
-            'type':data['type'],
+            'type':'string',
             'content':'等待回答者加入...'
     }
-    emit('received_message', chat_dict, to=data['_id'])
+    emit('received_message', chat_dict, to=room_id)
     join_message['time'] = str(join_message['time'])
     chat_data.insert_message(join_message)
 
@@ -91,7 +91,7 @@ def join_chat_room(data):
             '_id':data['_id'],
             'user_id': 'PSAbot',
             'time': datetime.now().replace(microsecond=0),
-            'type':data['type'],
+            'type':'string',
             'content':'本次共同討論的問題是「 '+ question +'」，可以開始討論了。討論結束後請發問者輸入「結束討論」完成本次討論。'
     }
     emit('received_message', join_message, to=data['_id'])
@@ -127,7 +127,7 @@ def send_message(data):
                         'user_id': 'PSAbot',
                         'time': datetime.now().replace(microsecond=0),
                         'type':'string',
-                        'content':r.json()[0]['message']
+                        'content':r.json()[0]['text']
                     }
             chat_data.insert_message(psa_message)
             psa_message['time'] = str(psa_message['time'])
@@ -157,7 +157,7 @@ def send_message(data):
                         'user_id': 'PSAbot',
                         'time': datetime.now().replace(microsecond=0),
                         'type':'string',
-                        'content':r.json()[0]['message']
+                        'content':r.json()[0]['text']
                     }
                 chat_data.insert_message(psa_message)
                 psa_message['time'] = str(psa_message['time'])
@@ -172,7 +172,7 @@ def send_message(data):
                         'user_id': 'PSAbot',
                         'time': datetime.now().replace(microsecond=0),
                         'type':'string',
-                        'content':r.json()[0]['message']
+                        'content':r.json()[0]['text']
                     }
             chat_data.insert_message(psa_message)
             psa_message['time'] = str(psa_message['time'])
@@ -188,24 +188,24 @@ def send_message(data):
                  'content':'Client isn\'t in room ' + data['_id'] + ', can\'t send messages.'},to=data['user_id'])
 
 # 關閉聊天室(不刪除紀錄)
-@socketio.on('close_chat')
-def close_chat(data):
-    print('# ---------- client emit remove_chat ...')
-    print(data)
-    # 如果該room id有在client的room中
-    if data['_id'] in rooms():   
-        # data : { '_id','user_id','time','type','content'}
-        close_room(data['_id'])
-        emit('received_message','關閉' + data['_id'])
-        chat_data.change_state(data['_id'],False)
-    else:
-        emit('received_message',
-              {
-                  '_id':data['user_id'],
-                  'user_id':'system',
-                  'time':str(datetime.now().replace(microsecond=0)),
-                  'type':'string',
-                  'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
+# @socketio.on('close_chat')
+# def close_chat(data):
+#     print('# ---------- client emit remove_chat ...')
+#     print(data)
+#     # 如果該room id有在client的room中
+#     if data['_id'] in rooms():   
+#         # data : { '_id','user_id','time','type','content'}
+#         close_room(data['_id'])
+#         emit('received_message','關閉' + data['_id'])
+#         chat_data.change_state(data['_id'],False)
+#     else:
+#         emit('received_message',
+#               {
+#                   '_id':data['user_id'],
+#                   'user_id':'system',
+#                   'time':str(datetime.now().replace(microsecond=0)),
+#                   'type':'string',
+#                   'content':'Client isn\'t in room ' + data['_id'] + ', can\'t close the chat.'},to=data['user_id'])
 
 # 取得聊天室歷史訊息
 @socketio.on('get_chat')
