@@ -1769,13 +1769,6 @@ function joinDiscussRoom(incognito){
     
     socket.emit('join_room' , data);
     addToChatingList(discussionRoomId, discussionQuestion);
-    
-    var note = "若要結束，請輸入「結束討論」<br>此次共同討論的題目為"+discussionQuestion;
-    data = {_id: discussionRoomId, user_id: "PSAbot", type: "string", content: note};
-    console.log("送出去的訊息: ");
-    console.log(data);
-    socket.emit('send_message' , data);
-    console.log("送完了～");
 }
 
 // 把共同討論聊天室 加入聊天室列表

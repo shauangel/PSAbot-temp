@@ -74,8 +74,8 @@ def create_room(data):
             'type':'string',
             'content':'等待回答者加入...'
     }
-    emit('received_message', chat_dict, to=room_id)
     join_message['time'] = str(join_message['time'])
+    emit('received_message', chat_dict, to=room_id)
     chat_data.insert_message(join_message)
 
 # 使用者加入聊天室
@@ -94,8 +94,8 @@ def join_chat_room(data):
             'type':'string',
             'content':'本次共同討論的問題是「 '+ question +'」，可以開始討論了。討論結束後請發問者輸入「結束討論」完成本次討論。'
     }
-    emit('received_message', join_message, to=data['_id'])
     join_message['time'] = str(join_message['time'])
+    emit('received_message', join_message, to=data['_id'])
     chat_data.insert_message(join_message)
 
 @socketio.on('send_message')
