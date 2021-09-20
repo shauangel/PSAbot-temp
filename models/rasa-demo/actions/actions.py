@@ -42,13 +42,14 @@ class ask_return_and_reward(Action):
         print("replier_id: "+replier_id)
         print("room_id: "+room_id)
         #加分！
+        
 #        tags=[]
 #        for i in selected_tags_array:
 #            r = requests.get(url = head_url+'query_tag_name', params = {'tag_id':i})
 #            data = r.json()
 #            tag_name = data['tag_name']
 #            tags.append({'tag_id':i, 'tag_name':tag_name})
-#        requests.post(head_url+'update_user_score', json={'_id':replier_id, 'tag':tags, 'score':3})
+        requests.post(head_url+'update_user_score', json={'_id':replier_id, 'tag':tags, 'score':3})
         
         reply="請問你願意回報此問題嗎？（僅限提問者回覆）"
         dispatcher.utter_message(text=reply)

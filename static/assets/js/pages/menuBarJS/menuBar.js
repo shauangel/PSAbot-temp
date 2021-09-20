@@ -90,6 +90,7 @@ function bot(string) {
         content += '<input type="checkbox" name="chatHistory" value="';
         content += string;
         content += '" checked>';
+        content += '</label>';
         // 加上checkbox END
         content += '<div class="img_cont_msg">';
         content += '<img src="';
@@ -107,8 +108,6 @@ function bot(string) {
 
         //    content += '<span class="msg_time">8:40 AM</span>';
         content += '</div>';
-        
-        content += '</label>'
         content += '</div>';
 
         history.innerHTML = content;
@@ -162,24 +161,24 @@ function bot(string) {
 function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
-    
-    content += '<div class="d-flex justify-content-end mb-4">';
-    content += '<label>';
+    //d-flex justify-content-end mb-4
+    content += '<div class="mb-4">';
     // 加上checkbox START
+    content += '<label>';
     content += '<input type="checkbox" name="chatHistory" value="';
     content += string;
     content += '" checked>';
+    content += '</label>';
     // 加上checkbox END
-    content += '<div class="msg_cotainer_send">';
+    content += '<div class="msg_cotainer_send" style="float: right;">';
     content += string;
     //    content += '<span class="msg_time">8:40 AM</span>';
     content += '</div>';
-    content += '<div class="img_cont_msg">';
+    content += '<div class="img_cont_msg" style="float: right;">';
     content += '<img src="';
     content += ImgMe;
     content += '" class="chatImg">';
     content += '</div>';
-    content += '</label>';
     content += '</div>';
     
 
