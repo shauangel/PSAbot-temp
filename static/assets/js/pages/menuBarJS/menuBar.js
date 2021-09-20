@@ -78,16 +78,18 @@ function bot(string) {
         var content = history.innerHTML;
 
         content += '<label>';
-        // 加上checkbox
-        content += '<input type="checkbox" name="chatHistory" value="';
-        content += string;
-        content += '" checked>';
+        
         content += '<div ';
         if (string.slice(0, 6) == "正在輸入訊息") {
             needToClearBotMessage = true;
             content += 'id="willBeClear" ';
         }
         content += 'class="d-flex justify-content-start mb-4">';
+        // 加上checkbox START
+        content += '<input type="checkbox" name="chatHistory" value="';
+        content += string;
+        content += '" checked>';
+        // 加上checkbox END
         content += '<div class="img_cont_msg">';
         content += '<img src="';
         content += ImgYou;
