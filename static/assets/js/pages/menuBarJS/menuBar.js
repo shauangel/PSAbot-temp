@@ -162,7 +162,13 @@ function bot(string) {
 function user(string) {
     var history = document.getElementById("history_message");
     var content = history.innerHTML;
+    content += '<label>';
     content += '<div class="d-flex justify-content-end mb-4">';
+    // 加上checkbox START
+    content += '<input type="checkbox" name="chatHistory" value="';
+    content += string;
+    content += '" checked>';
+    // 加上checkbox END
     content += '<div class="msg_cotainer_send">';
     content += string;
     //    content += '<span class="msg_time">8:40 AM</span>';
@@ -173,6 +179,7 @@ function user(string) {
     content += '" class="chatImg">';
     content += '</div>';
     content += '</div>';
+    content += '</label>';
 
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
