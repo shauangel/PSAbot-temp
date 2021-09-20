@@ -1761,6 +1761,44 @@ function addToChatingList(discussionRoomId, discussionQuestion){
     document.getElementById("chatingList").innerHTML = chatingListContent;
 }
 
+
+// 拿到某人的聊天室列表
+// socket -> query_chat_list
+function getChatroomList(userId){
+    userId = "116287698501129823679";
+    socket.on('query_chat_list', function(response) {
+    //印出server的回應
+        console.log("房間id: ");
+        for(var i=0; i<response.length; i++){
+            console.log(response._id);
+            deleteChatroom(response._id);
+        }
+    });
+}
+
+// 刪除某個房間
+// API -> remove_chat
+function deleteChatroom(roomId){
+    var data = {_id: roomId};
+    
+    console.log("刪除的是: "+roomId);
+
+    var myURL = head_url + "remove_chat";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("成功: 刪除房間");
+        },
+        error: function(response){
+            console.log("失敗: 刪除房間");
+        }
+    });
+}
 ////////////////// 共同討論 END //////////////////
 
 window.addEventListener("load", function () {
