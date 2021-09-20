@@ -170,15 +170,17 @@ function user(string) {
     content += '" checked>';
     content += '</label>';
     // 加上checkbox END
-    content += '<div class="msg_cotainer_send" style="float: right;">';
-    content += string;
-    //    content += '<span class="msg_time">8:40 AM</span>';
-    content += '</div>';
     content += '<div class="img_cont_msg" style="float: right;">';
     content += '<img src="';
     content += ImgMe;
     content += '" class="chatImg">';
     content += '</div>';
+    
+    content += '<div class="msg_cotainer_send" style="float: right;">';
+    content += string;
+    //    content += '<span class="msg_time">8:40 AM</span>';
+    content += '</div>';
+    
     content += '</div>';
     
 
