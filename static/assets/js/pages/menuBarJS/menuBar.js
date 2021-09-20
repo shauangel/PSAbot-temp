@@ -1566,16 +1566,15 @@ function createDiscussRoom(){
 function received_message(){
     socket.on('received_message', function(response) {
         var userSessionId = localStorage.getItem("sessionID");
-        
-        console.log("收到的訊息: "+response.content);
-        console.log(response._id);
+//        console.log("收到的訊息: "+response.content);
+//        console.log(response._id);
         if(response.chat_logs!=null){ // 代表是去拿聊天記錄
             // 需要重新顯示聊天記錄（加上checkbox）
-            console.log("顯示聊天記錄");
-            console.log(response.chat_logs);
+//            console.log("顯示聊天記錄");
+//            console.log(response.chat_logs);
             localStorage.setItem("chatLogs", JSON.stringify(response));
-            console.log("asker是誰: ");
-            console.log(response.members[0].user_id);
+//            console.log("asker是誰: ");
+//            console.log(response.members[0].user_id);
             if(response.members[0].user_id == userSessionId){
                 addCheckboxToHistory(response.chat_logs);
             }
@@ -1584,7 +1583,7 @@ function received_message(){
             }
         }
         else if(check_discussion_is_full(response._id) == false){ // 代表是創房間
-            console.log("創建房間");
+//            console.log("創建房間");
             discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
@@ -1594,7 +1593,7 @@ function received_message(){
             localStorage.removeItem("discussQuestion");
         }
         else{
-            console.log("房間已滿，接受訊息");
+//            console.log("房間已滿，接受訊息");
             
             var chatingRoomId = localStorage.getItem("chatingRoomId");
             
@@ -1602,17 +1601,17 @@ function received_message(){
                 // 代表不是我說話
                 console.log("user_id: "+response.user_id);
                 if(response.user_id == "PSAbot"){
-                    console.log("共同討論 - PSAbot 說話");
+//                    console.log("共同討論 - PSAbot 說話");
                    // PSAbot 說話
                     ImgYou = "../static/images/iconSmall.png";
                 }
                 else if(check_member_is_incognito(response._id, response.user_id)){
-                    console.log("共同討論 - 別人說話但匿名");
+//                    console.log("共同討論 - 別人說話但匿名");
                     // 別人但匿名
                     ImgYou = "../static/images/discussionImg.png";
                 }
                 else{
-                    console.log("共同討論 - 別人說話");
+//                    console.log("共同討論 - 別人說話");
                     // 別人沒匿名
                     ImgYou = getChatroomUserImg(response.user_id);
                 }
@@ -1937,25 +1936,111 @@ function disabledChatroom(){
     sendBtn.disabled = true;
 }
 
+// 給userId回傳姓名
+function idReturnName(userId){
+    var data = {_id: userId}, name = "";
+    
+    var myURL = head_url + "query_user_profile";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            name = response.name;
+        }
+    });
+    return name;
+}
+
+// 處理要po文的字串
+function discussionPostContent(data, indexVal){
+    // 歷史紀錄加上checkbox START
+    var history = document.getElementById("history_message");
+    var content = "", img = "";
+    
+    var userId = localStorage.getItem("sessionID");
+    var userImgs = [];
+    var userIds = [];
+    var i;
+    for(var j=0; j<indexVal.length; j++){
+        i = indexVal[j];
+        // 先去處理照片的部分 START
+        var temp = userIds.indexOf(data[i].user_id);
+        if(temp == -1){ //代表還拿到照片
+            userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
+            img = userImgs[userImgs.length-1];
+        }
+        else{
+            img = userImgs[temp];
+        }
+        // 先去處理照片的部分 END
+        
+        // 重建歷史紀錄（加上checkbox）START
+        if(data[i].user_id == userId){ //代表是自己說話
+            
+            // 沒有label START
+            content += '<div class="d-flex justify-content-end mb-4">';
+            content += '<div class="msg_cotainer_send">';
+            content += data[i].content;
+            content += '</div>';
+            content += '<div class="img_cont_msg">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg">';
+            content += '</div>';
+            content += '</div>';
+            // 沒有label END
+
+        }
+        else{
+            // 沒有label的 START
+            content += '<div class="d-flex justify-content-start mb-4">';
+            content += '<div class="img_cont_msg">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg" style="background-color: #5D478B;">';
+            content += '</div>';
+            content += '<div class="msg_cotainer">';
+            content += data[i].content;
+            content += '</div>';
+            content += '</div>';
+            // 沒有label的 END
+        }
+    }
+    history.innerHTML = content;
+    history.scrollTop = history.scrollHeight;
+    return content;
+    // 重建歷史紀錄（加上checkbox）END
+}
+
 function postDiscussion(){
     console.log("共同討論po文: ");
-    var data = localStorage.getItem("chatLogs");
-    data = JSON.parse(data);
-    console.log(data);
-    var val=$('input:checkbox[name="chatHistory"]:checked').val();
-    console.log("有選起來的: ");
-    console.log(val);
+    var receivedData = localStorage.getItem("chatLogs");
+    receivedData = JSON.parse(receivedData);
+    console.log(receivedData);
+    // 準備po文的資料 START
+    var askerId = receivedData.members[0].user_id;
+    var askerName = idReturnName(askerId);
+    var title = receivedData.question;
+    var question = discussionPostContent(receivedData.chat_logs, indexVal);
+    var tag = receivedData.tags;
+    var time = receivedData.time;
+    // 準備po文的資料 END
     
     var indexVal = new Array();
     $('input[name="chatHistory"]:checkbox:checked').each(function(i) {
         indexVal[i] = this.value;
-        console.log("index為: ");
-        console.log(this.value);
-        
-        console.log("內容為: ");
-        console.log(data.chat_logs[this.value].content);
+//        console.log("index為: ");
+//        console.log(this.value);
+//        
+//        console.log("內容為: ");
+//        console.log(receivedData.chat_logs[this.value].content);
     });
-    localStorage.removeItem("data");
+    localStorage.removeItem("chatLogs");
+    var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
 }
 
 // 刪除某個房間
