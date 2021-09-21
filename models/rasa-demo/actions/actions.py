@@ -42,7 +42,7 @@ class ask_return_and_reward(Action):
         print("replier_id: "+replier_id)
         print("room_id: "+room_id)
         #加分！
-        response = requests.post(head_url+'query_chat_tag', json={'_id':replier_id})
+        response = requests.post(head_url+'query_chat_tag', json={'_id':room_id})
         tags = json.loads(response.text)
         print("tags: ")
         print(tags)
