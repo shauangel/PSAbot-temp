@@ -119,22 +119,6 @@ def send_message(data):
         # ------------------------------------------------- #
         end_sentences = ['結束討論','結束共同討論','完成討論']
         match = re.match(r'psabot ',chat_dict['content'],flags=re.IGNORECASE)
-        # 結束聊天狀態
-        if chat_data.end_chat(chat_dict['_id'],True,0):
-            payload = {'sender': chat_dict['user_id'],'message':chat_dict['content']}
-            headers = {'content-type': 'application/json'}
-            r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers)
-            psa_message = {
-                        '_id':chat_dict['_id'],
-                        'user_id': 'PSAbot',
-                        'time': datetime.now().replace(microsecond=0),
-                        'type':'string',
-                        'content':r.json()[0]['text']
-                    }
-            if r.json()[0]['text'] != 'return_discussion':
-                chat_data.insert_message(psa_message)
-            psa_message['time'] = str(psa_message['time'])
-            emit('received_message', psa_message, to=chat_dict['_id'])
         if match != None and match.span()[0] == 0: # 若是psabot開頭，丟給faq_api
             payload = {'sender':data['user_id'],'message':(re.sub(r'psabot ','',chat_dict['content'],flags=re.IGNORECASE))}
             headers = {'content-type': 'application/json'}
@@ -176,11 +160,26 @@ def send_message(data):
                         'type':'string',
                         'content':r.json()[0]['text']
                     }
-                if r.json()[0]['text'] != 'return_discussion':
+                if len(r.json())!= 0 and r.json()[0]['text'] != 'return_discussion':
                     chat_data.insert_message(psa_message)
                 psa_message['time'] = str(psa_message['time'])
                 emit('received_message', psa_message, to=chat_dict['_id'])
-        
+         # 結束聊天狀態
+        elif chat_data.end_chat(chat_dict['_id'],True,0):
+            payload = {'sender': chat_dict['user_id'],'message':chat_dict['content']}
+            headers = {'content-type': 'application/json'}
+            r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers)
+            psa_message = {
+                        '_id':chat_dict['_id'],
+                        'user_id': 'PSAbot',
+                        'time': datetime.now().replace(microsecond=0),
+                        'type':'string',
+                        'content':r.json()[0]['text']
+                    }
+            if len(r.json())!= 0 and r.json()[0]['text'] != 'return_discussion':
+                chat_data.insert_message(psa_message)
+            psa_message['time'] = str(psa_message['time'])
+            emit('received_message', psa_message, to=chat_dict['_id'])
         
     else:
         emit('received_message',
