@@ -2025,7 +2025,7 @@ function postDiscussion(){
     var askerId = receivedData.members[0].user_id;
     var askerName = idReturnName(askerId);
     var title = receivedData.question;
-    var question = discussionPostContent(receivedData.chat_logs, indexVal);
+    var question;
     console.log("問題是: ");
     console.log(question);
     var tag = receivedData.tags;
@@ -2041,6 +2041,7 @@ function postDiscussion(){
 //        console.log("內容為: ");
 //        console.log(receivedData.chat_logs[this.value].content);
     });
+    question = discussionPostContent(receivedData.chat_logs, indexVal);
     localStorage.removeItem("chatLogs");
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
     console.log(data);
