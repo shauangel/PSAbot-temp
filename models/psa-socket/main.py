@@ -143,7 +143,7 @@ def send_message(data):
                 payload = {'sender': chat_dict['user_id'],'message':'end_discuss,' + replier_id+','+data['_id']}
                 headers = {'content-type': 'application/json'}
                 r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
-                print(r.json())
+                print('rasa response :',r.json())
                 if len(r.json()) == 0:
                     psa_message = {
                         '_id':chat_dict['_id'],
@@ -169,6 +169,7 @@ def send_message(data):
             payload = {'sender': chat_dict['user_id'],'message':chat_dict['content']}
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers)
+            print(print('rasa response :',r.json()))
             psa_message = {
                         '_id':chat_dict['_id'],
                         'user_id': 'PSAbot',
