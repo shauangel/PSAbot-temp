@@ -125,6 +125,9 @@ def send_message(data):
             print(payload)
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5006/webhooks/rest/webhook', json=payload,headers=headers )
+            msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+            print('tracker :',msg_tracker)
+            print('rasa response :',r.json())
             psa_message = {
                         '_id':chat_dict['_id'],
                         'user_id': 'PSAbot',
@@ -147,6 +150,8 @@ def send_message(data):
                 print('send request to rasa 5005:',payload)
                 headers = {'content-type': 'application/json'}
                 r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
+                msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+                print('tracker :',msg_tracker)
                 print('rasa response :',r.json())
                 if len(r.json()) == 0:
                     psa_message = {
@@ -175,6 +180,8 @@ def send_message(data):
             print('send request to rasa 5005:',payload)
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers)
+            msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+            print('tracker :',msg_tracker)
             print('rasa response :',r.json())
             psa_message = {
                         '_id':chat_dict['_id'],
