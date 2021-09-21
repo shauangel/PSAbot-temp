@@ -175,7 +175,7 @@ def send_message(data):
             print('send request to rasa 5005:',payload)
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers)
-            print(print('rasa response :',r.json()))
+            print('rasa response :',r.json())
             psa_message = {
                         '_id':chat_dict['_id'],
                         'user_id': 'PSAbot',
