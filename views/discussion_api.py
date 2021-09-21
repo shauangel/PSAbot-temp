@@ -135,7 +135,7 @@ def remove_chat():
 @discussion_api.route('/query_chat_tag', methods=['POST'])
 def query_chat_tag():
     data = request.get_json()
-    tags = chat_data.query_chat(data['_id'])['tags']
+    tags = chat_data.query_chat(data['room_id'])['tags']
     return jsonify(tags)
     
 
