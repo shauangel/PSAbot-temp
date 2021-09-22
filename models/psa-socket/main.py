@@ -11,6 +11,7 @@ from os import urandom
 from datetime import datetime
 import chat_data
 import requests,re
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = urandom(24).hex()
@@ -120,9 +121,14 @@ def send_message(data):
         end_sentences = ['結束討論','結束共同討論','完成討論']
         match = re.match(r'psabot ',chat_dict['content'],flags=re.IGNORECASE)
         if match != None and match.span()[0] == 0: # 若是psabot開頭，丟給faq_api
+            print('# ---------- 傳送訊息給 rasa faq 機器人 ...')
             payload = {'sender':data['user_id'],'message':(re.sub(r'psabot ','',chat_dict['content'],flags=re.IGNORECASE))}
+            print(payload)
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5006/webhooks/rest/webhook', json=payload,headers=headers )
+            msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+            #print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
+            print('rasa response :',r.json())
             psa_message = {
                         '_id':chat_dict['_id'],
                         'user_id': 'PSAbot',
@@ -136,14 +142,18 @@ def send_message(data):
             
         # 使用者欲結束聊天
         elif chat_dict['content'] in end_sentences:
+            print('# ---------- 觸發結束共同討論 ...')
             current_chat = chat_data.query_chat(data['_id'])
             if data['user_id'] == current_chat['members'][0]['user_id']:
                 chat_data.end_chat(chat_dict['_id'],True,1)
                 replier_id = current_chat['members'][1]['user_id']
-                payload = {'sender': chat_dict['user_id'],'message':'end_discuss,' + replier_id+','+data['_id']}
+                payload = {'sender': chat_dict['user_id'],'message':'end_discuss,' + replier_id+',' + data['_id']}
+                print('send request to rasa 5005:',payload)
                 headers = {'content-type': 'application/json'}
                 r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
-                print(r.json())
+                msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+                #print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
+                print('rasa response :',r.json())
                 if len(r.json()) == 0:
                     psa_message = {
                         '_id':chat_dict['_id'],
@@ -166,9 +176,14 @@ def send_message(data):
                 emit('received_message', psa_message, to=chat_dict['_id'])
          # 結束聊天狀態
         elif chat_data.end_chat(chat_dict['_id'],True,0):
+            print('# ---------- 結束共同討論狀態中 ...')
             payload = {'sender': chat_dict['user_id'],'message':chat_dict['content']}
+            print('send request to rasa 5005:',payload)
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers)
+            msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+            #print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
+            print('rasa response :',r.json())
             psa_message = {
                         '_id':chat_dict['_id'],
                         'user_id': 'PSAbot',
