@@ -2017,7 +2017,6 @@ function discussionPostContent(data, indexVal){
 }
 
 function postDiscussion(){
-    console.log("共同討論po文: ");
     var receivedData = localStorage.getItem("chatLogs");
     receivedData = JSON.parse(receivedData);
     console.log(receivedData);
@@ -2026,8 +2025,6 @@ function postDiscussion(){
     var askerName = idReturnName(askerId);
     var title = receivedData.question;
     var question;
-    console.log("問題是: ");
-    console.log(question);
     var tag = receivedData.tags;
     var time = receivedData.time;
     // 準備po文的資料 END
@@ -2044,7 +2041,28 @@ function postDiscussion(){
     question = discussionPostContent(receivedData.chat_logs, indexVal);
     localStorage.removeItem("chatLogs");
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
+    console.log("共同討論po文: ");
     console.log(data);
+    
+    var myURL = head_url + "insert_inner_post";
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("成功: 發布貼文（insert_inner_post）");
+                console.log(response);
+                
+            },
+            error: function(response){
+                console.log("失敗: 發布貼文（insert_inner_post）");
+                console.log(response);
+                window.alert("發布貼文 失敗！\n請再試一次");
+            }
+        });
 }
 
 // 刪除某個房間
