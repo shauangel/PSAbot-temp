@@ -97,6 +97,7 @@ function bot(string) {
 //        content += '" checked>';
 //        content += '</label>';
         // 加上checkbox END
+        console.log("用照片");
         content += '<div class="img_cont_msg">';
         content += '<img src="';
         content += ImgYou;
@@ -1566,15 +1567,9 @@ function createDiscussRoom(){
 function received_message(){
     socket.on('received_message', function(response) {
         var userSessionId = localStorage.getItem("sessionID");
-//        console.log("收到的訊息: "+response.content);
-//        console.log(response._id);
         if(response.chat_logs!=null){ // 代表是去拿聊天記錄
             // 需要重新顯示聊天記錄（加上checkbox）
-//            console.log("顯示聊天記錄");
-//            console.log(response.chat_logs);
             localStorage.setItem("chatLogs", JSON.stringify(response));
-//            console.log("asker是誰: ");
-//            console.log(response.members[0].user_id);
             if(response.members[0].user_id == userSessionId){
                 addCheckboxToHistory(response.chat_logs);
             }
@@ -1601,23 +1596,24 @@ function received_message(){
                 // 代表不是我說話
                 console.log("user_id: "+response.user_id);
                 if(response.user_id == "PSAbot"){
-//                    console.log("共同討論 - PSAbot 說話");
+                    console.log("共同討論 - PSAbot 說話");
                    // PSAbot 說話
                     ImgYou = "../static/images/iconSmall.png";
                 }
                 else if(check_member_is_incognito(response._id, response.user_id)){
-//                    console.log("共同討論 - 別人說話但匿名");
+                    console.log("共同討論 - 別人說話但匿名");
                     // 別人但匿名
                     ImgYou = "../static/images/discussionImg.png";
                 }
                 else{
-//                    console.log("共同討論 - 別人說話");
+                    console.log("共同討論 - 別人說話");
                     // 別人沒匿名
                     ImgYou = getChatroomUserImg(response.user_id);
                 }
                 bot(response.content);
             }
-            else if(response._id==userSessionId){
+            else if(response._id == userSessionId){
+                console.log("在跟PSAbot說話");
                 // 代表在跟PSAbot說話
                 ImgYou = "../static/images/iconSmall.png";
             }
