@@ -1570,6 +1570,9 @@ function received_message(){
         console.log(response);
         var userSessionId = localStorage.getItem("sessionID");
         if(response.chat_logs!=null){ // 代表是去拿聊天記錄
+            // 暫時先這樣 START
+            change_chat_state(response._id);
+            // 暫時先這樣 END
             // 需要重新顯示聊天記錄（加上checkbox）
             localStorage.setItem("chatLogs", JSON.stringify(response));
             if(response.members[0].user_id == userSessionId){
@@ -1846,6 +1849,7 @@ function getChatroomList(userId){
             // 開始重整前 都先清空
             document.getElementById("chatingList").innerHTML = "";
             //印出server的回應
+            addToChatingList(userId, "PSAbot");
             for(var i=0; i<response.length; i++){
                 addToChatingList(response[i]._id, response[i].question);
             }
@@ -2102,6 +2106,27 @@ function postDiscussion(){
             var sendBtn = document.getElementById("sendButton");
             sendBtn.disabled = true;
             // 處理下方的輸入框等 END
+        },
+        error: function(response){
+        }
+    });
+}
+
+// 停止監聽共同討論聊天室
+// API -> change_chat_state
+function change_chat_state(roomId){
+    var data = {room_id: roomId, state: false};
+    console.log(data);
+
+    var myURL = head_url + "change_chat_state";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
         },
         error: function(response){
         }
