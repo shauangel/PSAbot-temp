@@ -2078,23 +2078,26 @@ function postDiscussion(){
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
     
     var myURL = head_url + "insert_inner_post";
-        $.ajax({
-            url: myURL,
-            type: "POST",
-            data: JSON.stringify(data),
-            async: false,
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function(response){
-//                console.log("成功: 發布貼文（insert_inner_post）");
-//                console.log(response);
-            },
-            error: function(response){
-//                console.log("失敗: 發布貼文（insert_inner_post）");
-//                console.log(response);
-//                window.alert("發布貼文 失敗！\n請再試一次");
-            }
-        });
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            // 處理下方的輸入框等 START
+            var textArea = document.getElementById("message");
+            textArea.disabled = true;
+            textArea.setAttribute("placeholder", "已成功發布貼文，可至個人頁面查詢");
+
+            var sendBtn = document.getElementById("sendButton");
+            sendBtn.disabled = true;
+            // 處理下方的輸入框等 END
+        },
+        error: function(response){
+        }
+    });
 }
 
 // 刪除某個房間
