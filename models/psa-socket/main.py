@@ -5,13 +5,12 @@ Created on Wed Sep  1 16:38:24 2021
 @author: jacknahu
 """
 
-from flask import Flask, request, abort, render_template, jsonify
-from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms
+from flask import Flask, request
+from flask_socketio import SocketIO, emit, join_room, rooms
 from os import urandom
 from datetime import datetime
 import chat_data
 import requests,re
-import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = urandom(24).hex()
