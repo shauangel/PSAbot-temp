@@ -1570,6 +1570,11 @@ function received_message(){
         console.log(response);
         var userSessionId = localStorage.getItem("sessionID");
         if(response.chat_logs!=null){ // 代表是去拿聊天記錄
+            //--- 單純顯示 START ---//
+            // 要跟灣龍討論
+            //--- 單純顯示 END ---//
+            
+            //--- 因為結束討論 START ---//
             // 暫時先這樣 START
             change_chat_state(response._id);
             // 暫時先這樣 END
@@ -1581,6 +1586,7 @@ function received_message(){
             else{
                 disabledChatroom();
             }
+            //--- 因為結束討論 END ---//
         }
         else if(response.user_id == null){ // 代表是創房間
             console.log("回覆的id: "+response._id);
