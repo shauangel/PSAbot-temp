@@ -1564,7 +1564,6 @@ function createDiscussRoom(){
 
 }
 
-var times=0;
 function received_message(){
     socket.on('received_message', function(response) {
         console.log("收到的訊息是: ");
@@ -1581,8 +1580,6 @@ function received_message(){
             }
         }
         else if(response.user_id == null){ // 代表是創房間
-            console.log("第"+times+"次進來！");
-            times += 1;
             console.log("回覆的id: "+response._id);
             discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
@@ -1697,7 +1694,6 @@ function discussion_recommand_user(){
 
 // 分三次發共同討論的通知
 function discussNotificationThirdTimes(){
-    console.log("配合第"+times+"次");
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
     var len = recommandUsersId.length;
@@ -1822,13 +1818,24 @@ function getChatroomList(userId){
     var data = {user_id: userId};
     console.log("送出data: ");
     console.log(data);
-    socket.emit('query_chat_list' , data);
-    socket.on('query_chat_list', function(response) {
-        console.log("某人的聊天室列表: ");
-        console.log(response);
-    //印出server的回應
-        for(var i=0; i<response.length; i++){
-            addToChatingList(response[i]._id, response[i].question);
+    
+    var 
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log("某人的聊天室列表: ");
+            console.log(response);
+        //印出server的回應
+            for(var i=0; i<response.length; i++){
+                addToChatingList(response[i]._id, response[i].question);
+            }
+        },
+        error: function(response){
         }
     });
 }
