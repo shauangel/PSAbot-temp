@@ -1808,7 +1808,15 @@ function addToChatingList(discussionRoomId, discussionQuestion){
     chatingListContent += discussionRoomId;
     chatingListContent += '\')">';
         chatingListContent += '<a class="accordion-msg" href="#">';
-            chatingListContent += '<img src="../static/images/discussionImg.png" class="chatImg">';
+            
+            if(discussionRoomId==localStorage.getItem("sessionID")){
+                // 代表是跟PSAbot
+                chatingListContent += '<img src="../static/images/iconSmall.png" class="chatImg">';
+            }
+            else{
+                // 代表是共同討論
+                chatingListContent += '<img src="../static/images/discussionImg.png" class="chatImg">';
+            }
             chatingListContent += discussionQuestion;
         chatingListContent += '</a>';
     chatingListContent += '</h3>';
