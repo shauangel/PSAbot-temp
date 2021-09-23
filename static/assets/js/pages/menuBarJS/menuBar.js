@@ -497,19 +497,24 @@ function openChatroom(roomId){
 }
 
 function getChatroomUserImg(userId){
-    var myURL = head_url + "read_image?user_id=" + userId;
     var imgSrc = "";
-    $.ajax({
-        url: myURL,
-        type: "GET",
-        dataType: "json",
-        async: false,
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-            imgSrc = response.src;
-            
-        }
-    });
+    if(userId == "PSAbot"){
+        imgSrc = "../static/images/iconSmall.png";
+    }
+    else{
+        var myURL = head_url + "read_image?user_id=" + userId;
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            dataType: "json",
+            async: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                imgSrc = response.src;
+
+            }
+        });
+    }
     return imgSrc;
 }
 
@@ -1837,8 +1842,8 @@ function addToChatingList(discussionRoomId, discussionQuestion){
 function getChatroomList(userId){
 //    userId = localStorage.getItem("sessionID");
     var data = {user_id: userId};
-    console.log("送出data: ");
-    console.log(data);
+//    console.log("送出data: ");
+//    console.log(data);
     
     var myURL = head_url + "query_chat_list";
     console.log("myURL: "+myURL);
@@ -1850,8 +1855,8 @@ function getChatroomList(userId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("某人的聊天室列表: ");
-            console.log(response);
+//            console.log("某人的聊天室列表: ");
+//            console.log(response);
             // 開始重整前 都先清空
             document.getElementById("chatingList").innerHTML = "";
             //印出server的回應
@@ -1897,7 +1902,7 @@ function addCheckboxToHistory(data){
     for(var i=0; i<data.length; i++){
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
-        if(temp == -1){ //代表還拿到照片
+        if(temp == -1){ //代表還沒拿到照片
             userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
             img = userImgs[userImgs.length-1];
         }
