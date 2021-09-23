@@ -1567,6 +1567,8 @@ function createDiscussRoom(){
 var times=0;
 function received_message(){
     socket.on('received_message', function(response) {
+        console.log("收到的訊息是: ");
+        console.log(response);
         var userSessionId = localStorage.getItem("sessionID");
         if(response.chat_logs!=null){ // 代表是去拿聊天記錄
             // 需要重新顯示聊天記錄（加上checkbox）
