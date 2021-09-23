@@ -1586,6 +1586,7 @@ function received_message(){
             discussion_recommand_user();
             discussNotificationThirdTimes();
             // 重整發起人的聊天室列表
+            console.log("從創房間的新增");
             getChatroomList(userSessionId);
             localStorage.removeItem("discussQuestion");
         }
@@ -2165,8 +2166,10 @@ window.addEventListener("load", function () {
     socket.on('connect', function(response) {
       //印出server的回應
       console.log('connect response : ' + response);
-        received_message(); // 開始監聽
-        getChatroomList(userId);
+        if(response != undefined){
+            received_message(); // 開始監聽
+            getChatroomList(userId);
+        }
     });
     //----- 共同討論 END -----//
     
