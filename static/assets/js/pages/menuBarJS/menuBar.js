@@ -1846,6 +1846,7 @@ function getChatroomList(userId){
             // 開始重整前 都先清空
             document.getElementById("chatingList").innerHTML = "";
             //印出server的回應
+            addToChatingList(userId, "PSAbot");
             for(var i=0; i<response.length; i++){
                 addToChatingList(response[i]._id, response[i].question);
             }
