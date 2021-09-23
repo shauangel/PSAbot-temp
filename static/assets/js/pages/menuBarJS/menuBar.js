@@ -1564,6 +1564,7 @@ function createDiscussRoom(){
 
 }
 
+var times=0;
 function received_message(){
     socket.on('received_message', function(response) {
         var userSessionId = localStorage.getItem("sessionID");
@@ -1578,8 +1579,9 @@ function received_message(){
             }
         }
         else if(response.user_id == null){ // 代表是創房間
+            console.log("第"+times+"次進來！");
+            times += 1;
             console.log("回覆的id: "+response._id);
-            console.log("創建房間? "+check_discussion_is_full(response._id));
             discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
@@ -1683,8 +1685,8 @@ function discussion_recommand_user(){
         contentType: 'application/json; charset=utf-8',
         success: function(response){
             recommandUsersId = response.recommand_user_id;
-            console.log("推薦人: ");
-            console.log(recommandUsersId);
+//            console.log("推薦人: ");
+//            console.log(recommandUsersId);
         }
     });
     //----- 找出匹配的人選 END -----//
@@ -1693,18 +1695,17 @@ function discussion_recommand_user(){
 
 // 分三次發共同討論的通知
 function discussNotificationThirdTimes(){
+    console.log("配合第"+times+"次");
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
     var len = recommandUsersId.length;
-    setTimeout(function(){
-        discussionNotificationJudge(0, 3, len, discussRoomId);
-    }, 60000);
+    discussionNotificationJudge(0, 3, len, discussRoomId);
     setTimeout(function(){
         discussionNotificationJudge(3, 6, len, discussRoomId);
-    }, 120000);
+    }, 60000);
     setTimeout(function(){
         discussionNotificationJudge(6, 10, len, discussRoomId);
-    }, 180000);
+    }, 120000);
     
 //    new Promise(function(resolve, reject){ //第一分鐘傳通知
 //        console.log("第一分鐘傳通知");
