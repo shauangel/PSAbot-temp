@@ -2123,7 +2123,8 @@ window.addEventListener("load", function () {
     }
     
     //----- 共同討論 START -----//
-    var queryStr = "user_id="+localStorage.getItem("sessionID");
+    var userId = localStorage.getItem("sessionID");
+    var queryStr = "user_id="+userId;
     socket = io('https://soselab.asuscomm.com:55002', {query: queryStr});
     //監聽connect事件可確認是否連上server
     socket.on('connect', function(response) {
@@ -2131,6 +2132,7 @@ window.addEventListener("load", function () {
       console.log('connect response : ' + response);
     });
     received_message(); // 開始監聽
+    getChatroomList(userId);
     //----- 共同討論 END -----//
     
 }, false);
