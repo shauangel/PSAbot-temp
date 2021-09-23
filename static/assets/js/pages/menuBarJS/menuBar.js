@@ -1689,47 +1689,67 @@ function discussion_recommand_user(){
     //----- 找出匹配的人選 END -----//
 }
 
+
 // 分三次發共同討論的通知
 function discussNotificationThirdTimes(){
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
     var len = recommandUsersId.length;
+    setTimeout(function(){
+        discussionNotificationJudge(0, 3, len, discussRoomId);
+    }, 60000);
+    setTimeout(function(){
+        discussionNotificationJudge(3, 6, len, discussRoomId);
+    }, 120000);
+    setTimeout(function(){
+        discussionNotificationJudge(6, 10, len, discussRoomId);
+    }, 180000);
     
-    
-    
-    new Promise((resolve, reject) => { //第一分鐘傳通知
-        console.log("第一分鐘傳通知");
-        
-        if(check_discussion_is_full(discussRoomId) == false){
-            if(len<2){
-                add_discussion_invitation_notification(recommandUsersId.slice(0, len));
-                reject();
-            }
-            else{ 
-                add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
-                setTimeout(resolve, 60000);
-            }
+//    new Promise(function(resolve, reject){ //第一分鐘傳通知
+//        console.log("第一分鐘傳通知");
+//        
+//        if(check_discussion_is_full(discussRoomId) == false){
+//            if(len<2){
+//                add_discussion_invitation_notification(recommandUsersId.slice(0, len));
+//                reject();
+//            }
+//            else{ 
+//                add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
+//                setTimeout(resolve, 60000);
+//            }
+//        }
+//    }).then(function(){ //第二分鐘傳通知
+//        console.log("第二分鐘傳通知");
+//        if(check_discussion_is_full(discussRoomId)==false){
+//            if(len<5){
+//                add_discussion_invitation_notification(recommandUsersId.slice(3, len));
+//                reject();
+//            }
+//            else{add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
+//                setTimeout(resolve, 60000);
+//            }
+//        }
+//    }).then(function(){ //第三分鐘傳通知
+////        console.log("第三分鐘傳通知");
+//        if(check_discussion_is_full(discussRoomId)==false){
+//            console.log("len"); 
+//            add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
+//        }
+//    }).catch(function(){
+//        console.log("長度不滿");
+//    });
+}
+
+function discussionNotificationJudge(start, end, len, discussRoomId){
+    console.log("start_end: "+start+" "+end);
+    if(check_discussion_is_full(discussRoomId) == false){
+        if(len<end){
+            add_discussion_invitation_notification(recommandUsersId.slice(start, len));
         }
-    }).then( () => { //第二分鐘傳通知
-        console.log("第二分鐘傳通知");
-        if(check_discussion_is_full(discussRoomId)==false){
-            if(len<5){
-                add_discussion_invitation_notification(recommandUsersId.slice(3, len));
-                reject();
-            }
-            else{add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
-                setTimeout(resolve, 60000);
-            }
+        else{ 
+            add_discussion_invitation_notification(recommandUsersId.slice(start, end));
         }
-    }).then( () => { //第三分鐘傳通知
-        console.log("第三分鐘傳通知");
-        if(check_discussion_is_full(discussRoomId)==false){
-            console.log("len"); 
-            add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
-        }
-    }).catch( () => {
-        console.log("長度不滿");
-    });
+    }
 }
 
 // 共同討論邀請通知
