@@ -1578,7 +1578,8 @@ function received_message(){
             }
         }
         else if(check_discussion_is_full(response._id) == false){ // 代表是創房間
-//            console.log("創建房間");
+            console.log("回覆的id: "+response._id);
+            console.log("創建房間? "+check_discussion_is_full(response._id));
             discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
