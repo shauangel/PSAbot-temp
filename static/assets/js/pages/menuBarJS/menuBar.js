@@ -1797,6 +1797,8 @@ function getChatroomList(userId){
     console.log(data);
     socket.emit('query_chat_list' , data);
     socket.on('query_chat_list', function(response) {
+        console.log("某人的聊天室列表: ");
+        console.log(response);
     //印出server的回應
         for(var i=0; i<response.length; i++){
             addToChatingList(response[i]._id, response[i].question);
