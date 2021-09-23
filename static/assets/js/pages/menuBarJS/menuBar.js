@@ -1583,8 +1583,8 @@ function received_message(){
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
             discussNotificationThirdTimes();
-            // 創發起人的聊天室列表房間
-            addToChatingList(response._id, discussQuestion);
+            // 重整發起人的聊天室列表
+            getChatroomList(userSessionId);
             localStorage.removeItem("discussQuestion");
         }
         else{
@@ -1734,8 +1734,8 @@ function discussNotificationThirdTimes(){
 function add_discussion_invitation_notification(recommandUsersId){
     data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
     myURL = head_url + "add_discussion_invitation_notification";
-    console.log("共同討論邀請通知: ");
-    console.log(data);
+//    console.log("共同討論邀請通知: ");
+//    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1744,8 +1744,8 @@ function add_discussion_invitation_notification(recommandUsersId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("共同討論邀請通知");
-            console.log(response);
+//            console.log("共同討論邀請通知");
+//            console.log(response);
         }
     });
     
@@ -1763,17 +1763,19 @@ function joinDiscussRoom(incognito){
     }
     var discussionRoomId = localStorage.getItem("discussionRoomId");
     var discussionQuestion = localStorage.getItem("discussionQuestion");
+    var userId = localStorage.getItem("sessionID");
     localStorage.removeItem("discussionRoomId");
     localStorage.removeItem("discussionQuestion");
-    var data = {_id: discussionRoomId, user_id: localStorage.getItem("sessionID"), incognito: incognito};
+    var data = {_id: discussionRoomId, user_id: userId, incognito: incognito};
     console.log(data);
     
     socket.emit('join_room' , data);
-    addToChatingList(discussionRoomId, discussionQuestion);
+    getChatroomList(userId);
 }
 
 // 把共同討論聊天室 加入聊天室列表
 function addToChatingList(discussionRoomId, discussionQuestion){
+    console.log("聊天室列表新增: "+discussionQuestion);
     var chatingListContent = document.getElementById("chatingList").innerHTML;
     chatingListContent += '<h3 class="card-title accordion-title" onclick="openChatroom(\'';
     chatingListContent += discussionRoomId;
@@ -1789,17 +1791,15 @@ function addToChatingList(discussionRoomId, discussionQuestion){
 // 拿到某人的聊天室列表
 // socket -> query_chat_list
 function getChatroomList(userId){
-    userId = localStorage.getItem("sessionID");
+//    userId = localStorage.getItem("sessionID");
     var data = {user_id: userId};
     console.log("送出data: ");
     console.log(data);
     socket.emit('query_chat_list' , data);
     socket.on('query_chat_list', function(response) {
     //印出server的回應
-        console.log("房間id: ");
         for(var i=0; i<response.length; i++){
-            console.log(response._id);
-            deleteChatroom(response._id);
+            addToChatingList(response[i]._id, response[i].question);
         }
     });
 }
