@@ -1734,8 +1734,8 @@ function discussNotificationThirdTimes(){
 function add_discussion_invitation_notification(recommandUsersId){
     data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
     myURL = head_url + "add_discussion_invitation_notification";
-//    console.log("共同討論邀請通知: ");
-//    console.log(data);
+    console.log("共同討論邀請通知: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
