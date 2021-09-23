@@ -1820,6 +1820,7 @@ function getChatroomList(userId){
     console.log(data);
     
     var myURL = head_url + "query_chat_list";
+    console.log("myURL: "+myURL);
     $.ajax({
         url: myURL,
         type: "POST",
