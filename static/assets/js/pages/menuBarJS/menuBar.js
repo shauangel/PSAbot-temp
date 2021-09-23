@@ -1693,19 +1693,17 @@ function discussion_recommand_user(){
 function discussNotificationThirdTimes(){
     // 要先發3個 等一分鐘 再發3個 等一分鐘 再發剩下的4個
     // 從第一通知發出去起 十分鐘後所有邀請失效
-    console.log("房間號碼: "+discussRoomId);
     var len = recommandUsersId.length;
     new Promise(function(resolve, reject){ //第一分鐘傳通知
         console.log("第一分鐘傳通知");
         
         if(check_discussion_is_full(discussRoomId) == false){
             if(len<2){
-//               console.log("len<2");
                 add_discussion_invitation_notification(recommandUsersId.slice(0, len));
                 reject();
             }
-            else{
-               console.log("len>2");  add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
+            else{ 
+                add_discussion_invitation_notification(recommandUsersId.slice(0, 3));
                 setTimeout(resolve, 60000);
             }
         }
@@ -1713,17 +1711,15 @@ function discussNotificationThirdTimes(){
         console.log("第二分鐘傳通知");
         if(check_discussion_is_full(discussRoomId)==false){
             if(len<5){
-               console.log("len<5");  add_discussion_invitation_notification(recommandUsersId.slice(3, len));
+                add_discussion_invitation_notification(recommandUsersId.slice(3, len));
                 reject();
             }
-            else{
-               console.log("len>5");  add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
+            else{add_discussion_invitation_notification(recommandUsersId.slice(3, 6));
                 setTimeout(resolve, 60000);
             }
         }
     }).then(function(){ //第三分鐘傳通知
-        console.log("第三分鐘傳通知");
-        console.log("全部: "+discussRoom);
+//        console.log("第三分鐘傳通知");
         if(check_discussion_is_full(discussRoomId)==false){
             console.log("len"); 
             add_discussion_invitation_notification(recommandUsersId.slice(6, 10));
