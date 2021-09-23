@@ -2130,9 +2130,9 @@ window.addEventListener("load", function () {
     socket.on('connect', function(response) {
       //印出server的回應
       console.log('connect response : ' + response);
+        received_message(); // 開始監聽
+        getChatroomList(userId);
     });
-    received_message(); // 開始監聽
-    getChatroomList(userId);
     //----- 共同討論 END -----//
     
 }, false);
