@@ -43,7 +43,7 @@ def disconnect():
 def create_room(data):
     # data: {'question':'',tags:[],'asker':{'user_id':'','user_name':'','incognito':''}}
     print('# ---------- client emit create_room ...')
-    print(data)
+    print('client send data : ',data)
     chat_dict = {
         '_id':'',
         'tags': data['tags'],
@@ -67,6 +67,8 @@ def create_room(data):
     print('new room id : ' + room_id)
     print('client\'s rooms : ' , rooms())
     emit('received_message', {'_id':room_id}, to=data['asker']['user_id'])
+    print('# ---------- server emit room id to client ...')
+    print('server send data : ',{'_id':room_id})
     join_message = {
             '_id':room_id,
             'user_id': 'PSAbot',
@@ -77,13 +79,15 @@ def create_room(data):
     chat_data.insert_message(join_message)
     join_message['time'] = str(join_message['time'])
     emit('received_message', join_message, to=room_id)
+    print('# ---------- server emit join_message to chat room ' + room_id +' ...')
+    print('server send data : ',join_message)
     
 
 # 使用者加入聊天室
 @socketio.on('join_room')
 def join_chat_room(data):
     print('# ---------- client emit join_room ...')
-    print(data)
+    print('client send data : ',data)
     # data : { '_id','user_id','incognito'}
     question = chat_data.query_chat(data['_id'])['question']
     chat_data.insert_member(data)
@@ -98,11 +102,13 @@ def join_chat_room(data):
     chat_data.insert_message(join_message)
     join_message['time'] = str(join_message['time'])
     emit('received_message', join_message, to=data['_id'])
+    print('# ---------- server emit join_message to chat room ' + data['_id'] +' ...')
+    print('server send data : ',join_message)
 
 @socketio.on('send_message')
 def send_message(data):
     print('# ---------- client emit send_message ...')
-    print(data)
+    print('client send data : ',data)
     # 如果該client有在
     if data['_id'] in rooms():   
         # data : { '_id','user_id','time','type','content'}
@@ -116,6 +122,8 @@ def send_message(data):
         chat_data.insert_message(chat_dict)
         chat_dict['time'] = str(chat_dict['time'])
         emit('received_message', chat_dict, to=data['_id'])
+        print('# ---------- server emit message to chat room ' + data['_id'] +' ...')
+        print('server send data : ',chat_dict)
         # ------------------------------------------------- #
         end_sentences = ['結束討論','結束共同討論','完成討論']
         match = re.match(r'psabot ',chat_dict['content'],flags=re.IGNORECASE)
@@ -125,8 +133,8 @@ def send_message(data):
             print(payload)
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5006/webhooks/rest/webhook', json=payload,headers=headers )
-            msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
-            #print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
+            # msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+            # print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
             print('rasa response :',r.json())
             psa_message = {
                         '_id':chat_dict['_id'],
@@ -138,6 +146,8 @@ def send_message(data):
             chat_data.insert_message(psa_message)
             psa_message['time'] = str(psa_message['time'])
             emit('received_message', psa_message, to=chat_dict['_id'])
+            print('# ---------- server emit message to chat room ' + chat_dict['_id'] +' ...')
+            print('server send data : ',psa_message)
             
         # 使用者欲結束聊天
         elif chat_dict['content'] in end_sentences:
@@ -150,8 +160,8 @@ def send_message(data):
                 print('send request to rasa 5005:',payload)
                 headers = {'content-type': 'application/json'}
                 r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers )
-                msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
-                #print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
+                # msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+                # print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
                 print('rasa response :',r.json())
                 if len(r.json()) == 0:
                     psa_message = {
@@ -173,6 +183,8 @@ def send_message(data):
                     chat_data.insert_message(psa_message)
                 psa_message['time'] = str(psa_message['time'])
                 emit('received_message', psa_message, to=chat_dict['_id'])
+                print('# ---------- server emit message to chat room ' + chat_dict['_id'] +' ...')
+                print('server send data : ',psa_message)
          # 結束聊天狀態
         elif chat_data.end_chat(chat_dict['_id'],True,0):
             print('# ---------- 結束共同討論狀態中 ...')
@@ -180,8 +192,8 @@ def send_message(data):
             print('send request to rasa 5005:',payload)
             headers = {'content-type': 'application/json'}
             r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload,headers=headers)
-            msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
-            #print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
+            # msg_tracker = requests.get('http://localhost:5005/conversations/'+ chat_dict['user_id'] + '/tracker')
+            # print('tracker :',json.dumps(msg_tracker.json(), indent = 1))
             print('rasa response :',r.json())
             psa_message = {
                         '_id':chat_dict['_id'],
@@ -194,12 +206,14 @@ def send_message(data):
                 chat_data.insert_message(psa_message)
             psa_message['time'] = str(psa_message['time'])
             emit('received_message', psa_message, to=chat_dict['_id'])
+            print('# ---------- server emit message to chat room ' + chat_dict['_id'] +' ...')
+            print('server send data : ',psa_message)
         
     else:
         emit('received_message',
              {
                  '_id':data['user_id'],
-                 'user_id':'system',
+                 'user_id':'PSAbot',
                  'time':str(datetime.now().replace(microsecond=0)),
                  'type':'string',
                  'content':'Client isn\'t in room ' + data['_id'] + ', can\'t send messages.'},to=data['user_id'])
@@ -214,7 +228,8 @@ def get_chat(data):
     for idx in range(0,len(chat_dict['chat_logs'])):
         chat_dict['chat_logs'][idx]['time'] = str(chat_dict['chat_logs'][idx]['time'])
     emit('received_message',chat_dict,to=data['user_id'])
-
+    print('# ---------- server emit message to client ...')
+    print('server send data : ',chat_dict)
 
 if __name__ == "__main__":
     socketio.run(app,host='0.0.0.0',port=55003,debug=True)

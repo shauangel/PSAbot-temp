@@ -1794,7 +1794,10 @@ function joinDiscussRoom(incognito){
     console.log(data);
     
     socket.emit('join_room' , data);
-    getChatroomList(userId);
+    // 等加進去以後再拿
+    setTimeout(function(){
+        getChatroomList(userId);
+    }, 2000);
 }
 
 // 把共同討論聊天室 加入聊天室列表
@@ -1832,7 +1835,9 @@ function getChatroomList(userId){
         success: function(response){
             console.log("某人的聊天室列表: ");
             console.log(response);
-        //印出server的回應
+            // 開始重整前 都先清空
+            document.getElementById("chatingList").innerHTML = "";
+            //印出server的回應
             for(var i=0; i<response.length; i++){
                 addToChatingList(response[i]._id, response[i].question);
             }
@@ -2071,28 +2076,28 @@ function postDiscussion(){
     question = discussionPostContent(receivedData.chat_logs, indexVal);
     localStorage.removeItem("chatLogs");
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
-    console.log("共同討論po文: ");
-    console.log(data);
     
     var myURL = head_url + "insert_inner_post";
-        $.ajax({
-            url: myURL,
-            type: "POST",
-            data: JSON.stringify(data),
-            async: false,
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function(response){
-                console.log("成功: 發布貼文（insert_inner_post）");
-                console.log(response);
-                
-            },
-            error: function(response){
-                console.log("失敗: 發布貼文（insert_inner_post）");
-                console.log(response);
-                window.alert("發布貼文 失敗！\n請再試一次");
-            }
-        });
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            // 處理下方的輸入框等 START
+            var textArea = document.getElementById("message");
+            textArea.disabled = true;
+            textArea.setAttribute("placeholder", "已成功發布貼文，可至個人頁面查詢");
+
+            var sendBtn = document.getElementById("sendButton");
+            sendBtn.disabled = true;
+            // 處理下方的輸入框等 END
+        },
+        error: function(response){
+        }
+    });
 }
 
 // 刪除某個房間
