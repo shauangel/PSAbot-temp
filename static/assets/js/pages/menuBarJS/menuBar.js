@@ -1569,6 +1569,7 @@ function createDiscussRoom(){
 
 }
 
+var chatLogs;
 function received_message(){
     socket.on('received_message', function(response) {
         console.log("收到的訊息是: ");
@@ -1584,7 +1585,8 @@ function received_message(){
             change_chat_state(response._id);
             // 暫時先這樣 END
             // 需要重新顯示聊天記錄（加上checkbox）
-            localStorage.setItem("chatLogs", JSON.stringify(response));
+            chatLogs = response;
+            //localStorage.setItem("chatLogs", JSON.stringify(response));
             if(response.members[0].user_id == userSessionId){
                 addCheckboxToHistory(response.chat_logs);
             }
@@ -2075,7 +2077,8 @@ function discussionPostContent(data, indexVal){
 }
 
 function postDiscussion(){
-    var receivedData = localStorage.getItem("chatLogs");
+    //var receivedData = localStorage.getItem("chatLogs");
+    var receivedData = chatLogs;
     receivedData = JSON.parse(receivedData);
     console.log(receivedData);
     // 準備po文的資料 START
@@ -2097,7 +2100,7 @@ function postDiscussion(){
 //        console.log(receivedData.chat_logs[this.value].content);
     });
     question = discussionPostContent(receivedData.chat_logs, indexVal);
-    localStorage.removeItem("chatLogs");
+    //localStorage.removeItem("chatLogs");
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
     
     var myURL = head_url + "insert_inner_post";
