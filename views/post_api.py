@@ -45,8 +45,9 @@ def query_inner_post_list_by_tag():
 @post_api.route('/insert_inner_post', methods=['POST'])
 def insert_inner_post():
     data = request.get_json()
+    print("out")
     try:
-        
+        print("in")
         post_dict = {
             '_id' : '',
             'asker_id' : data['asker_id'],
