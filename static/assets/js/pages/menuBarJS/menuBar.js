@@ -2113,7 +2113,8 @@ function postDiscussion(){
     question = discussionPostContent(receivedData.chat_logs, indexVal);
     //localStorage.removeItem("chatLogs");
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
-    
+    console.log("送出的po文資料為: ");
+    console.log(data);
     var myURL = head_url + "insert_inner_post";
     $.ajax({
         url: myURL,
