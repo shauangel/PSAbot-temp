@@ -2017,7 +2017,8 @@ function idReturnName(userId){
 
 // 處理要po文的字串
 function discussionPostContent(data, indexVal){
-    // 歷史紀錄加上checkbox START
+    console.log("indexValue: ");
+    console.log(indexVal);
     var history = document.getElementById("history_message");
     var content = "", img = "";
     
@@ -2038,7 +2039,7 @@ function discussionPostContent(data, indexVal){
         }
         // 先去處理照片的部分 END
         
-        // 重建歷史紀錄（加上checkbox）START
+        // 重建歷史紀錄 START
         if(data[i].user_id == userId){ //代表是自己說話
             
             // 沒有label START
@@ -2073,7 +2074,7 @@ function discussionPostContent(data, indexVal){
     history.innerHTML = content;
     history.scrollTop = history.scrollHeight;
     return content;
-    // 重建歷史紀錄（加上checkbox）END
+    // 重建歷史紀錄 END
 }
 
 function postDiscussion(){
