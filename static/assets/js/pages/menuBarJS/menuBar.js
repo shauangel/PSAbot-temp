@@ -489,6 +489,7 @@ function openChatroom(roomId){
         else{ // 不是匿名
             ImgMe = getChatroomUserImg(userId);
         }
+        // 去拿歷史紀錄並顯示
     }
     console.log("打開的房間: "+roomId);
     if(!$("#chatroom").is(':visible')){ //沒打開 -> false
@@ -2080,7 +2081,7 @@ function discussionPostContent(data, indexVal){
 function postDiscussion(){
     //var receivedData = localStorage.getItem("chatLogs");
     var receivedData = chatLogs;
-    receivedData = JSON.parse(receivedData);
+    //receivedData = JSON.parse(receivedData);
     console.log(receivedData);
     // 準備po文的資料 START
     var askerId = receivedData.members[0].user_id;
