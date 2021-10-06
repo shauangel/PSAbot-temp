@@ -39,6 +39,7 @@ function bot(string) {
     }
     else if(string=="return_discussion"){
         // 讓使用者選聊天記錄
+        getHistoryReason = "checkbox";
         discussionHistory();
     }
     // 因為只有popover bot才不需要回覆
@@ -489,7 +490,8 @@ function openChatroom(roomId){
         else{ // 不是匿名
             ImgMe = getChatroomUserImg(userId);
         }
-        // 去拿歷史紀錄並顯示
+        getHistoryReason = "show";
+        discussionHistory();//去拿聊天記錄，剩下的socket會處理
     }
     console.log("打開的房間: "+roomId);
     if(!$("#chatroom").is(':visible')){ //沒打開 -> false
@@ -1571,6 +1573,7 @@ function createDiscussRoom(){
 }
 
 var chatLogs;
+var getHistoryReason;//show, checkbox
 function received_message(){
     socket.on('received_message', function(response) {
         console.log("收到的訊息是: ");
@@ -1578,23 +1581,31 @@ function received_message(){
         var userSessionId = localStorage.getItem("sessionID");
         if(response.chat_logs!=null){ // 代表是去拿聊天記錄
             //--- 單純顯示 START ---//
+            if(getHistoryReason=="show"){
+                var indexVal = new Array();
+                for(var i=0; i<response.chat_logs.length; i++){
+                    indexVal.push(i);
+                }
+                discussionPostContent(response.chat_logs, indexVal);
+            }
             // 要跟灣龍討論
             //--- 單純顯示 END ---//
-            
-            //--- 因為結束討論 START ---//
-            // 暫時先這樣 START
-            change_chat_state(response._id);
-            // 暫時先這樣 END
-            // 需要重新顯示聊天記錄（加上checkbox）
-            chatLogs = response;
-            //localStorage.setItem("chatLogs", JSON.stringify(response));
-            if(response.members[0].user_id == userSessionId){
-                addCheckboxToHistory(response.chat_logs);
-            }
             else{
-                disabledChatroom();
+                //--- 因為結束討論 START ---//
+                // 暫時先這樣 START
+                change_chat_state(response._id);
+                // 暫時先這樣 END
+                // 需要重新顯示聊天記錄（加上checkbox）
+                chatLogs = response;
+                //localStorage.setItem("chatLogs", JSON.stringify(response));
+                if(response.members[0].user_id == userSessionId){
+                    addCheckboxToHistory(response.chat_logs);
+                }
+                else{
+                    disabledChatroom();
+                }
+                //--- 因為結束討論 END ---//
             }
-            //--- 因為結束討論 END ---//
         }
         else if(response.user_id == null){ // 代表是創房間
             console.log("回覆的id: "+response._id);
@@ -2018,8 +2029,6 @@ function idReturnName(userId){
 
 // 處理要po文的字串
 function discussionPostContent(data, indexVal){
-    console.log("indexValue: ");
-    console.log(indexVal);
     var history = document.getElementById("history_message");
     var content = "", img = "";
     
