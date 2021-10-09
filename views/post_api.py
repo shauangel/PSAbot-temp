@@ -47,28 +47,21 @@ def insert_inner_post():
     data = request.get_json()
     print("out")
     try:
-        print("in")
-        post_dict = {
+        d = {
             '_id' : '',
-            'asker_id' : data['asker_id'],
-            'asker_name' : data['asker_name'],
-            'title' : data['title'],
-            'question' : data['question'],
-            'edit' : data['edit'],
             'answer' : [],
             'keyword' : [],
-            'tag' : data['tag'],
             'time' : datetime.now().replace(microsecond=0),
-            'incognito' :data['incognito'],
             'score' : [],
             'view_count' : 0
         }
+        data.update(d)
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
-        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
-        inner_post.insert_post(post_dict)
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question'].replace('\n', '').replace('\r', ''))
+        data['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
+        inner_post.insert_post(data)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
     return jsonify(post_dict)
