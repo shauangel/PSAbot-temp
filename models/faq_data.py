@@ -100,7 +100,7 @@ def insert_faq(data_dict,data_type):
         if len(data_dict['tags']) != 0:
             for tag in data_dict['tags']:
                 _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':data_dict['time']},
-                                                                     '$inc':{'usage_counter':1}})
+                                                                     '$inc':{'usage_counter':1.5}})
     # FAQ加入資料庫
     _db.FAQ_DATA_COLLECTION.insert_one(data_dict)
 # 匯入FAQ
@@ -126,7 +126,7 @@ def import_faq(data_list,data_type):
             if len(data_dict['tags']) != 0:
                 for tag in data_dict['tags']:
                     _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':data_dict['time']},
-                                                                         '$inc':{'usage_counter':1}})
+                                                                         '$inc':{'usage_counter':1.5}})
     # 加入多筆資料
     _db.FAQ_DATA_COLLECTION.insert_many(data_list)
     
@@ -141,7 +141,7 @@ def insert_answer(data_dict):
     _db.FAQ_DATA_COLLECTION.update({'_id':faq_id},{'$push':{'answers':data_dict}})
     # 更新tag count
     for tag in target_faq['tags']:
-        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':1}})
+        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':1.5}})
 
 def update_answer(data_dict):
     _db.FAQ_DATA_COLLECTION.update({'_id':data_dict['faq_id'],'answers.answer_id':data_dict['answer_id']},
@@ -155,7 +155,7 @@ def remove_answer(data_dict):
                                   {'$pull':{'answers':{'answer_id':data_dict['answer_id']}}})
     # 扣掉tag count
     for tag in tags:
-        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter': -1}})
+        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter': -1.5}})
     
 # 查看單篇FAQ
 def query_faq_post(faq_id):
@@ -243,10 +243,10 @@ def update_faq(data_dict):
     target_faq = _db.FAQ_DATA_COLLECTION.find_one({'_id':data_dict['_id']})
     # 更新tags，扣除舊tag計數
     for tag in target_faq['tags']:
-         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':-1}})
+         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':-1.5}})
     for tag in data_dict['tags']:
         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':data_dict['time']},
-                                                             '$inc':{'usage_counter':1}})
+                                                             '$inc':{'usage_counter':1.5}})
     #更新資料庫FAQ
     _db.FAQ_DATA_COLLECTION.update_one({'_id':target_faq['_id']},{'$set':
                                                                   {
@@ -265,7 +265,7 @@ def remove_faq(faq_id):
     target_faq = _db.FAQ_DATA_COLLECTION.find_one({'_id':faq_id})
     # 移除tag計數
     for tag in target_faq['tags']:
-         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':-1}})
+         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter':-1.5}})
     _db.FAQ_DATA_COLLECTION.delete_one({'_id':faq_id})
 
 #if __name__ == "__main__":
