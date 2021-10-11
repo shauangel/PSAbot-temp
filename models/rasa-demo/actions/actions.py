@@ -28,30 +28,18 @@ class ask_return_and_reward(Action):
     def name(self) -> Text:
         return "ask_return_and_reward"
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
-        #為回答者加積分
-#        if tracker.get_slot("discuss_tags") != None:
-#            selected_tags_id = tracker.get_slot("discuss_tags").split('：',1)[1]
-#            selected_tags_id = selected_tags_id.replace(" ", "")
-#            selected_tags_array = selected_tags_id.split(',')
-#        else:
-#            selected_tags_array = []
-        #拿到tags
+        #拿到replier_id, room_id
         replier_id_room_id = tracker.get_slot("replier_id").split(',')
         replier_id = replier_id_room_id[1]
         room_id = replier_id_room_id[2]
         print("replier_id: "+replier_id)
         print("room_id: "+room_id)
-        #加分！
+        #拿到tags
         response = requests.post(head_url+'query_chat_tag', json={'_id':room_id})
         tags = json.loads(response.text)
         print("tags: ")
         print(tags)
-#        tags=[]
-#        for i in selected_tags_array:
-#            r = requests.get(url = head_url+'query_tag_name', params = {'tag_id':i})
-#            data = r.json()
-#            tag_name = data['tag_name']
-#            tags.append({'tag_id':i, 'tag_name':tag_name})
+        #為回答者加積分
         requests.post(head_url+'update_user_score', json={'_id':replier_id, 'tag':tags, 'score':3})
         
         reply="請問你願意回報此問題嗎？（僅限提問者回覆）"
