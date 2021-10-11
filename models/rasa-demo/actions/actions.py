@@ -216,6 +216,7 @@ class analyze_and_search(Action):
             print(qkey)
             resultpage = outerSearch(qkey, 10, 0)
             #內部搜尋
+            print("qkey: ", qkey)
             response = requests.post(head_url+'query_inner_search', json={'keywords':qkey})
     #        print("內部搜尋的結果: ", response.text)
     
