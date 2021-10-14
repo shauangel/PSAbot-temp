@@ -140,6 +140,8 @@ function start(){
                 
                 questionTitle = response.title;
                 if(response.is_discuss){ // 共同討論
+                    console.log("response: ");
+                    console.log(response);
                     questionContent = addCheckboxToHistory(response.chat_logs, response.edit);
                 }
                 else{
