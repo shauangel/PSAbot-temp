@@ -59,8 +59,9 @@ def insert_inner_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question'].replace('\n', '').replace('\r', ''))
-        data['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
+        if not data['is_disscuss']:
+            target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question'].replace('\n', '').replace('\r', ''))
+            data['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         inner_post.insert_post(data)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
