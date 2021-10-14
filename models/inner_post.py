@@ -94,12 +94,8 @@ def insert_post(post_dict):
     user.update_post_list(post_dict['asker_id'])
     # 更新每個tag 的 usage_counter,recent_use
     for tag in post_dict['tag']:
-        target_tag = _db.TAG_COLLECTION.find_one({'_id':tag['tag_id']})
-        new_data = {
-            'recent_use': post_dict['time'],
-            'usage_counter':target_tag['usage_counter'] + 1
-        }
-        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':new_data})
+        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':post_dict['time']},
+                                                             '$inc':{'usage_counter':1}})
         # 使用者相關標籤積分 + 2
         user.update_user_score(post_dict['asker_id'],tag['tag_id'],tag['tag_name'],2)
 
@@ -138,11 +134,8 @@ def insert_response(response_dict):
     user.update_response_list(response_dict['replier_id'])
     # 更新每個tag 的 usage_counter,recent_use
     for tag in target_post['tag']:
-        target_tag = _db.TAG_COLLECTION.find_one({'_id':tag['tag_id']})
-        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},
-            {'$set':{
-                'recent_use':response_dict['time'],
-                'usage_counter':target_tag['usage_counter'] + 1}})
+        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':response_dict['time']},
+                                                             '$inc':{'usage_counter':1}})
         # 使用者相關標籤積分 + 1
         user.update_user_score(response_dict['replier_id'],tag['tag_id'],tag['tag_name'], 1)
     
