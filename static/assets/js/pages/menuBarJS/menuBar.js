@@ -2087,6 +2087,8 @@ function discussionPostContent(data, indexVal){
     // 重建歷史紀錄 END
 }
 
+
+// 把共同討論的內容發布
 function postDiscussion(){
     //var receivedData = localStorage.getItem("chatLogs");
     var receivedData = chatLogs;
@@ -2110,9 +2112,10 @@ function postDiscussion(){
 //        console.log("內容為: ");
 //        console.log(receivedData.chat_logs[this.value].content);
     });
-    question = discussionPostContent(receivedData.chat_logs, indexVal);
+    question = indexVal;
+    //question = discussionPostContent(receivedData.chat_logs, indexVal);
     //localStorage.removeItem("chatLogs");
-    var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false};
+    var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false, is_discuss: true};
     console.log("送出的po文資料為: ");
     console.log(data);
     var myURL = head_url + "insert_inner_post";
