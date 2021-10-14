@@ -64,8 +64,8 @@ def insert_inner_post():
             data['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         inner_post.insert_post(data)
     except Exception as e :
-        post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
-    return jsonify(post_dict)
+        data = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+    return jsonify(data)
 
 # 編輯內部貼文
 @post_api.route('/update_inner_post', methods=['POST'])
