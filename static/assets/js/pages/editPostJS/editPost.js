@@ -204,7 +204,7 @@ function addCheckboxToHistory(roomId, indexVal){
             content += i;
             content += '"';
             console.log("i: "+i+" indexVal: " + indexVal +"有選？ "+indexVal.indexOf(i));
-            console.log("有選？ "+indexVal.indexOf(i));
+            console.log("有選？ "+indexVal.indexOf(i.toString()));
             if(indexVal.indexOf(i)!=-1){
                 content += 'checked';
             }
@@ -227,7 +227,13 @@ function addCheckboxToHistory(roomId, indexVal){
             content += '<label>';
             content += '<input type="checkbox" name="chatHistory" value="';
             content += i;
-            content += '" checked>';
+            content += '"';
+            console.log("i: "+i+" indexVal: " + indexVal +"有選？ "+indexVal.indexOf(i));
+            console.log("有選？ "+indexVal.indexOf(i.toString()));
+            if(indexVal.indexOf(i)!=-1){
+                content += 'checked';
+            }
+            content += '>';
             content += '</label>';
             content += '<div class="img_cont_msg">';
             content += '<img src="';
