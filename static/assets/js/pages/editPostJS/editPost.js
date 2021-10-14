@@ -148,7 +148,12 @@ function start(){
             }
             
             document.getElementById("title").setAttribute("value", questionTitle);
-            document.getElementById("replyContent").innerHTML = questionContent;
+            if(response.is_discuss){ // 共同討論
+                document.getElementById("postContent").innerHTML = questionContent;
+            }
+            else{
+                document.getElementById("replyContent").innerHTML = questionContent;
+            }
         },
         error: function(){
 //            console.log("失敗: 拿單篇貼文（query_inner_post）");
@@ -162,6 +167,8 @@ function addCheckboxToHistory(data, indexVal){
     var userId = localStorage.getItem("sessionID");
     var userImgs = [];
     var userIds = [];
+    console.log("data: ");
+    console.log(data);
     for(var i=0; i<data.length; i++){
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
