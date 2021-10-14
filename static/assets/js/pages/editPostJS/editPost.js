@@ -228,6 +228,7 @@ function addCheckboxToHistory(roomId, indexVal){
             content += '<input type="checkbox" name="chatHistory" value="';
             content += i;
             content += '"';
+            console.log(indexVal);
             console.log("i: "+i+" indexVal: " + indexVal +"有選？ "+indexVal.indexOf(i));
             console.log("有選？ "+indexVal.indexOf(i.toString()));
             if(indexVal.indexOf(i)!=-1){
