@@ -94,6 +94,7 @@ function addCodeArea(){
 var userId, postId, title, question, tag, time, incognito;//內部貼文用
 var data;//FAQ用
 var questionTitle, questionContent;
+var isDiscussion = false;
 
 //var forwardPage = localStorage.getItem("forwardPage");//manageFAQsFram
 var postType = localStorage.getItem("postType");
@@ -121,17 +122,12 @@ function start(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("成功: 拿單篇貼文（query_inner_post）");
-//            console.log(response);
-            
             if(postType=="faq"){
                 data = response;
                 delete data["keywords"];
                 delete data["view_count"];
                 questionTitle = data.question.title;
                 questionContent = data.question.edit;
-//                console.log("拿到的data: ");
-//                console.log(data);
             }
             else{
                 keyword = response.keyword;
@@ -139,30 +135,142 @@ function start(){
                 incognito = response.incognito;
                 
                 questionTitle = response.title;
-                questionContent = response.edit;
+                if(response.is_discuss){ // 共同討論
+                    isDiscussion = true;
+                    questionContent = addCheckboxToHistory(response.room_id, response.edit);
+                }
+                else{
+                    questionContent = response.edit;
+                }
             }
             
             document.getElementById("title").setAttribute("value", questionTitle);
-            document.getElementById("replyContent").innerHTML = questionContent;
+            if(response.is_discuss){ // 共同討論
+                document.getElementById("postContent").innerHTML = questionContent;
+            }
+            else{
+                document.getElementById("replyContent").innerHTML = questionContent;
+            }
         },
         error: function(){
-//            console.log("失敗: 拿單篇貼文（query_inner_post）");
         }
     });
+}
+
+function addCheckboxToHistory(roomId, indexVal){
+    // 先去拿聊天紀錄
+    var data = {_id: roomId}, temp;
+    var myURL = head_url + "query_chat";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log(response);
+            data = response.chat_logs;
+            
+        },
+        error: function(response){
+        }
+    });
+    var content = "", img = "";
+    
+    var userId = localStorage.getItem("sessionID");
+    var userImgs = [];
+    var userIds = [];
+    console.log("data: ");
+    console.log(data);
+    for(var i=0; i<data.length; i++){
+        // 先去處理照片的部分 START
+        var temp = userIds.indexOf(data[i].user_id);
+        if(temp == -1){ //代表還沒拿到照片
+            userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
+            img = userImgs[userImgs.length-1];
+        }
+        else{
+            img = userImgs[temp];
+        }
+        // 先去處理照片的部分 END
+        
+        if(data[i].user_id == userId){ //代表是自己說話
+            
+            // 加上checkbox START
+            content += '<div class="mb-4">';
+            content += '<label>';
+            content += '<input type="checkbox" name="chatHistory" value="';
+            content += i;
+            content += '"';
+            console.log("有選？ "+indexVal.includes(i.toString()));
+            if(indexVal.includes(i.toString())){
+                content += 'checked';
+            }
+            content += '>';
+            content += '</label>';
+            content += '<div class="img_cont_msg" style="float: right;">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg">';
+            content += '</div>';
+            content += '<div class="msg_cotainer_send" style="float: right;">';
+            content += data[i].content;
+            content += '</div>';
+            content += '</div>';
+            // 加上checkbox END
+        }
+        else{
+            // 加上checkbox START
+            content += '<div class="d-flex justify-content-start mb-4">';
+            content += '<label>';
+            content += '<input type="checkbox" name="chatHistory" value="';
+            content += i;
+            content += '"';
+            console.log("有選？ "+indexVal.includes(i.toString()));
+            if(indexVal.includes(i.toString())){
+                content += 'checked';
+            }
+            content += '>';
+            content += '</label>';
+            content += '<div class="img_cont_msg">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg" style="background-color: #5D478B;">';
+            content += '</div>';
+            content += '<div class="msg_cotainer">';
+            content += data[i].content;
+            content += '</div>';
+            content += '</div>';
+            // 加上checkbox END
+        }
+    }
+    return content;
 }
 ////////////// 拿貼文資料＆顯示 END //////////////
 
 
 ////////////// 儲存貼文 START //////////////
 function save(){
+    var edit;
     console.log("儲存前faq: ");
     console.log(data);
     postId = localStorage.getItem("singlePostId");
     userId = localStorage.getItem("sessionID");
     title = $("#title").val();
-//    question = $("#question").val();
-    question = showReplyContent("save");
-    var edit = $("#replyContent").val();
+    
+    if(isDiscussion){
+        var indexVal = new Array();
+        $('input[name="chatHistory"]:checkbox:checked').each(function(i) {
+            indexVal[i] = this.value;
+        });
+        question = indexVal;
+        edit = indexVal;
+    }
+    else{
+        question = showReplyContent("save");
+        edit = $("#replyContent").val();
+    }
     // 時間
     time = new Date().toJSON();
     time = time.slice(0, 23);
@@ -196,13 +304,10 @@ function save(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("成功: 編輯貼文");
             console.log(response);
             setPage('mySinglePostFrame');
         },
         error: function(response){
-//            console.log("失敗: 編輯");
-//            console.log(response);
             window.alert("編輯失敗！\n請再試一次");
         }
     });
