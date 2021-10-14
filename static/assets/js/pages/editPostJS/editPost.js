@@ -121,17 +121,12 @@ function start(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("成功: 拿單篇貼文（query_inner_post）");
-//            console.log(response);
-            
             if(postType=="faq"){
                 data = response;
                 delete data["keywords"];
                 delete data["view_count"];
                 questionTitle = data.question.title;
                 questionContent = data.question.edit;
-//                console.log("拿到的data: ");
-//                console.log(data);
             }
             else{
                 keyword = response.keyword;
@@ -158,7 +153,6 @@ function start(){
             }
         },
         error: function(){
-//            console.log("失敗: 拿單篇貼文（query_inner_post）");
         }
     });
 }
@@ -209,6 +203,7 @@ function addCheckboxToHistory(roomId, indexVal){
             content += '<input type="checkbox" name="chatHistory" value="';
             content += i;
             content += '"';
+            console.log("i: "+i+" indexVal: " + indexVal +"有選？ "+indexVal.indexOf(i));
             console.log("有選？ "+indexVal.indexOf(i));
             if(indexVal.indexOf(i)!=-1){
                 content += 'checked';
