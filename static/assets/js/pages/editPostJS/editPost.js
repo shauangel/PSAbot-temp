@@ -204,7 +204,7 @@ function addCheckboxToHistory(roomId, indexVal){
             content += i;
             content += '"';
             console.log("有選？ "+indexVal.includes(i.toString()));
-            if(indexVal.includes(i)){
+            if(indexVal.includes(i.toString())){
                 content += 'checked';
             }
             content += '>';
@@ -228,7 +228,7 @@ function addCheckboxToHistory(roomId, indexVal){
             content += i;
             content += '"';
             console.log("有選？ "+indexVal.includes(i.toString()));
-            if(indexVal.includes(i)){
+            if(indexVal.includes(i.toString())){
                 content += 'checked';
             }
             content += '>';
