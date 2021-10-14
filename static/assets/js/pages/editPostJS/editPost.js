@@ -142,7 +142,7 @@ function start(){
                 if(response.is_discuss){ // 共同討論
                     console.log("response: ");
                     console.log(response);
-                    questionContent = addCheckboxToHistory(response.chat_logs, response.edit);
+                    questionContent = addCheckboxToHistory(response.room_id, response.edit);
                 }
                 else{
                     questionContent = response.edit;
@@ -163,7 +163,25 @@ function start(){
     });
 }
 
-function addCheckboxToHistory(data, indexVal){
+function addCheckboxToHistory(roomId, indexVal){
+    // 先去拿聊天紀錄
+    var data = {_id: roomId}, temp;
+    var myURL = head_url + "query_chat";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log(response);
+            data = response.chat_logs;
+            
+        },
+        error: function(response){
+        }
+    });
     var content = "", img = "";
     
     var userId = localStorage.getItem("sessionID");
