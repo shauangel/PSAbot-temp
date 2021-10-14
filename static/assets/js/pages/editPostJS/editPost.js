@@ -139,7 +139,12 @@ function start(){
                 incognito = response.incognito;
                 
                 questionTitle = response.title;
-                questionContent = response.edit;
+                if(response.is_discuss){ // 共同討論
+                    questionContent = addCheckboxToHistory(response.chat_logs, response.edit);
+                }
+                else{
+                    questionContent = response.edit;
+                }
             }
             
             document.getElementById("title").setAttribute("value", questionTitle);
@@ -149,6 +154,72 @@ function start(){
 //            console.log("失敗: 拿單篇貼文（query_inner_post）");
         }
     });
+}
+
+function addCheckboxToHistory(data, indexVal){
+    var content = "", img = "";
+    
+    var userId = localStorage.getItem("sessionID");
+    var userImgs = [];
+    var userIds = [];
+    for(var i=0; i<data.length; i++){
+        // 先去處理照片的部分 START
+        var temp = userIds.indexOf(data[i].user_id);
+        if(temp == -1){ //代表還沒拿到照片
+            userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
+            img = userImgs[userImgs.length-1];
+        }
+        else{
+            img = userImgs[temp];
+        }
+        // 先去處理照片的部分 END
+        
+        if(data[i].user_id == userId){ //代表是自己說話
+            
+            // 加上checkbox START
+            content += '<div class="mb-4">';
+            content += '<label>';
+            content += '<input type="checkbox" name="chatHistory" value="';
+            content += i;
+            content += '"';
+            console.log("有選？ "+indexVal.indexOf(i));
+            if(indexVal.indexOf(i)!=-1){
+                content += 'checked';
+            }
+            content += '>';
+            content += '</label>';
+            content += '<div class="img_cont_msg" style="float: right;">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg">';
+            content += '</div>';
+            content += '<div class="msg_cotainer_send" style="float: right;">';
+            content += data[i].content;
+            content += '</div>';
+            content += '</div>';
+            // 加上checkbox END
+        }
+        else{
+            // 加上checkbox START
+            content += '<div class="d-flex justify-content-start mb-4">';
+            content += '<label>';
+            content += '<input type="checkbox" name="chatHistory" value="';
+            content += i;
+            content += '" checked>';
+            content += '</label>';
+            content += '<div class="img_cont_msg">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg" style="background-color: #5D478B;">';
+            content += '</div>';
+            content += '<div class="msg_cotainer">';
+            content += data[i].content;
+            content += '</div>';
+            content += '</div>';
+            // 加上checkbox END
+        }
+    }
+    return content;
 }
 ////////////// 拿貼文資料＆顯示 END //////////////
 
