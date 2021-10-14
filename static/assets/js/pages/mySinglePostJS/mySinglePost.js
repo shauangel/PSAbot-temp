@@ -335,7 +335,7 @@ function showQuestion(response){
             title = response.title;
             question = response.question;
             tags = response.tag;
-            isDiscussion = response.is_discussion;
+            isDiscussion = response.is_discuss;
             break;
     }
     //----- 檢查是哪種貼文（faq vs inner） END -----//
