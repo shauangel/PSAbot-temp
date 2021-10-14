@@ -94,6 +94,7 @@ function addCodeArea(){
 var userId, postId, title, question, tag, time, incognito;//內部貼文用
 var data;//FAQ用
 var questionTitle, questionContent;
+var isDiscussion = false;
 
 //var forwardPage = localStorage.getItem("forwardPage");//manageFAQsFram
 var postType = localStorage.getItem("postType");
@@ -135,8 +136,7 @@ function start(){
                 
                 questionTitle = response.title;
                 if(response.is_discuss){ // 共同討論
-                    console.log("response: ");
-                    console.log(response);
+                    isDiscussion = true;
                     questionContent = addCheckboxToHistory(response.room_id, response.edit);
                 }
                 else{
@@ -252,14 +252,25 @@ function addCheckboxToHistory(roomId, indexVal){
 
 ////////////// 儲存貼文 START //////////////
 function save(){
+    var edit;
     console.log("儲存前faq: ");
     console.log(data);
     postId = localStorage.getItem("singlePostId");
     userId = localStorage.getItem("sessionID");
     title = $("#title").val();
-//    question = $("#question").val();
-    question = showReplyContent("save");
-    var edit = $("#replyContent").val();
+    
+    if(isDiscussion){
+        var indexVal = new Array();
+        $('input[name="chatHistory"]:checkbox:checked').each(function(i) {
+            indexVal[i] = this.value;
+        });
+        question = indexVal;
+        edit = indexVal;
+    }
+    else{
+        question = showReplyContent("save");
+        edit = $("#replyContent").val();
+    }
     // 時間
     time = new Date().toJSON();
     time = time.slice(0, 23);
@@ -293,13 +304,10 @@ function save(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("成功: 編輯貼文");
             console.log(response);
             setPage('mySinglePostFrame');
         },
         error: function(response){
-//            console.log("失敗: 編輯");
-//            console.log(response);
             window.alert("編輯失敗！\n請再試一次");
         }
     });
