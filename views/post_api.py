@@ -59,7 +59,7 @@ def insert_inner_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        if not data['is_discuss']:
+        if "is_discuss" in data and not data['is_discuss']:
             target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question'].replace('\n', '').replace('\r', ''))
             data['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         inner_post.insert_post(data)
@@ -84,7 +84,8 @@ def update_inner_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        if not data['is_discuss']:
+        target_post = inner_post.query_post(data['_id'])
+        if "is_discuss" in target_post and not target_post['is_discuss']:
             target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
             post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         inner_post.update_post(post_dict)
