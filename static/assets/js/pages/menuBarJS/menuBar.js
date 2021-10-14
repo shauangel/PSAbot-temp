@@ -2087,7 +2087,6 @@ function discussionPostContent(data, indexVal){
     // 重建歷史紀錄 END
 }
 
-
 // 把共同討論的內容發布
 function postDiscussion(){
     //var receivedData = localStorage.getItem("chatLogs");
