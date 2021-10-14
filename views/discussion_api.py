@@ -144,4 +144,8 @@ def query_chat_tag():
     tags = chat_data.query_chat(data['_id'])['tags']
     return jsonify(tags)
     
-
+@discussion_api.route('/query_chat', methods=['POST'])
+def query_chat():
+    data = request.get_json()
+    chat_dict = chat_data.query_chat(data['_id'])
+    return jsonify(chat_dict)
