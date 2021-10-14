@@ -419,7 +419,8 @@ function showQuestion(response){
             //----- 貼文內容 START -----//
             content += '<div>';
                 content += '<span>';
-                if(isDiscussion){ // 是共同討論
+    console.log("共同討論？ "+isDiscussion);
+                if(isDiscussion==true){ // 是共同討論
                     question = discussionPostContent(response.room_id, question);
                 }
                 else{ // 不是共同討論
