@@ -22,6 +22,10 @@ def insert_chat(chat_dict):
         biggest_chat_id = int(all_chat.limit(1).sort('_id',-1)[0]['_id'])
         chat_dict['_id'] = str(biggest_chat_id + 1).zfill(6)
         
+    if len(chat_dict['tags']) != 0:
+        for tag in chat_dict['tags']:
+            _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':chat_dict['time']},
+                                                                         '$inc':{'usage_counter':1}})
     _db.CHAT_DATA_COLLECTION.insert_one(chat_dict)
     return chat_dict['_id']
 
@@ -53,6 +57,11 @@ def end_chat(chat_id,flag,setmode):
 
 # 刪除聊天室
 def remove_chat(chat_id):
+    chat_dict = _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})
+    if len(chat_dict['tags']) != 0:
+        for tag in chat_dict['tags']:
+            _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':chat_dict['time']},
+                                                                         '$inc':{'usage_counter':-1}})
     _db.CHAT_DATA_COLLECTION.delete_one({'_id':chat_id})
     
 # 改變聊天室狀態
