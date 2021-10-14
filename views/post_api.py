@@ -84,8 +84,9 @@ def update_inner_post():
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
-        target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
-        post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
+        if not data['is_discuss']:
+            target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
+            post_dict['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
         inner_post.update_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
