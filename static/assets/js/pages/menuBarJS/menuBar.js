@@ -2115,7 +2115,7 @@ function postDiscussion(){
     });
     question = indexVal;
     
-    var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false, is_discuss: true, roomId: room_id};
+    var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false, is_discuss: true, room_id: roomId};
     console.log("送出的po文資料為: ");
     console.log(data);
     var myURL = head_url + "insert_inner_post";
