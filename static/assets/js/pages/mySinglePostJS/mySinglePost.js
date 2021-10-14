@@ -323,7 +323,7 @@ function thumbs(score, answerId, targetUserId){
 function showQuestion(response){
     console.log("出使資料: ");
     console.log(response);
-    var id, title, question, tags, time;
+    var id, title, question, tags, time, isDiscussion=false;
     //----- 檢查是哪種貼文（faq vs inner） START -----//
     switch(postType){
         case "faq":
@@ -335,6 +335,7 @@ function showQuestion(response){
             title = response.title;
             question = response.question;
             tags = response.tag;
+            isDiscussion = response.is_discussion;
             break;
     }
     //----- 檢查是哪種貼文（faq vs inner） END -----//
@@ -418,7 +419,12 @@ function showQuestion(response){
             //----- 貼文內容 START -----//
             content += '<div>';
                 content += '<span>';
-                question = question.replaceAll('\n', '<br>');
+                if(isDiscussion){ // 是共同討論
+                    question = discussionPostContent(response.room_id, question);
+                }
+                else{ // 不是共同討論
+                    question = question.replaceAll('\n', '<br>');
+                }
                 content += question;
                 content += '</span>';
             content += '</div>';
@@ -717,6 +723,82 @@ function showAnswers(response){
 
     document.getElementById("response").innerHTML = content;
     hljs.highlightAll();
+}
+
+// 處理共同討論的innerPost
+function discussionPostContent(roomId, indexVal){
+    // 先去拿聊天紀錄
+    var data = {_id: roomId}, temp;
+    var myURL = head_url + "query_chat";
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            console.log(response);
+            data = response.chat_logs;
+            
+        },
+        error: function(response){
+        }
+    });
+    
+    var content = "", img = "";
+    
+    var userId = localStorage.getItem("sessionID");
+    var userImgs = [];
+    var userIds = [];
+    var i;
+    for(var j=0; j<indexVal.length; j++){
+        i = indexVal[j];
+        // 先去處理照片的部分 START
+        var temp = userIds.indexOf(data[i].user_id);
+        if(temp == -1){ //代表還拿到照片
+            userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
+            img = userImgs[userImgs.length-1];
+        }
+        else{
+            img = userImgs[temp];
+        }
+        // 先去處理照片的部分 END
+        
+        // 重建歷史紀錄 START
+        if(data[i].user_id == userId){ //代表是自己說話
+            
+            // 沒有label START
+            content += '<div class="d-flex justify-content-end mb-4">';
+            content += '<div class="msg_cotainer_send">';
+            content += data[i].content;
+            content += '</div>';
+            content += '<div class="img_cont_msg">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg">';
+            content += '</div>';
+            content += '</div>';
+            // 沒有label END
+
+        }
+        else{
+            // 沒有label的 START
+            content += '<div class="d-flex justify-content-start mb-4">';
+            content += '<div class="img_cont_msg">';
+            content += '<img src="';
+            content += img;
+            content += '" class="chatImg" style="background-color: #5D478B;">';
+            content += '</div>';
+            content += '<div class="msg_cotainer">';
+            content += data[i].content;
+            content += '</div>';
+            content += '</div>';
+            // 沒有label的 END
+        }
+    }
+    return content;
+    // 重建歷史紀錄 END
 }
 
 function start(){

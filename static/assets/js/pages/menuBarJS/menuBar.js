@@ -499,27 +499,27 @@ function openChatroom(roomId){
     }
 }
 
-function getChatroomUserImg(userId){
-    var imgSrc = "";
-    if(userId == "PSAbot"){
-        imgSrc = "../static/images/iconSmall.png";
-    }
-    else{
-        var myURL = head_url + "read_image?user_id=" + userId;
-        $.ajax({
-            url: myURL,
-            type: "GET",
-            dataType: "json",
-            async: false,
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
-                imgSrc = response.src;
-
-            }
-        });
-    }
-    return imgSrc;
-}
+//function getChatroomUserImg(userId){
+//    var imgSrc = "";
+//    if(userId == "PSAbot"){
+//        imgSrc = "../static/images/iconSmall.png";
+//    }
+//    else{
+//        var myURL = head_url + "read_image?user_id=" + userId;
+//        $.ajax({
+//            url: myURL,
+//            type: "GET",
+//            dataType: "json",
+//            async: false,
+//            contentType: 'application/json; charset=utf-8',
+//            success: function (response) {
+//                imgSrc = response.src;
+//
+//            }
+//        });
+//    }
+//    return imgSrc;
+//}
 
 ////////////////// 聊天室 END ////////////////////
 
@@ -2027,7 +2027,7 @@ function idReturnName(userId){
     return name;
 }
 
-// 處理要po文的字串
+// 處理要po文的字串 ＆＆ 重建歷史紀錄
 function discussionPostContent(data, indexVal){
     var history = document.getElementById("history_message");
     var content = "", img = "";
@@ -2101,6 +2101,7 @@ function postDiscussion(){
     var question;
     var tag = receivedData.tags;
     var time = receivedData.time;
+    var roomId = localStorage.getItem("chatingRoomId");
     // 準備po文的資料 END
     
     var indexVal = new Array();
@@ -2113,9 +2114,8 @@ function postDiscussion(){
 //        console.log(receivedData.chat_logs[this.value].content);
     });
     question = indexVal;
-    //question = discussionPostContent(receivedData.chat_logs, indexVal);
-    //localStorage.removeItem("chatLogs");
-    var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false, is_discuss: true};
+    
+    var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false, is_discuss: true, roomId: room_id};
     console.log("送出的po文資料為: ");
     console.log(data);
     var myURL = head_url + "insert_inner_post";

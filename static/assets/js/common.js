@@ -79,3 +79,26 @@ $("textarea").keydown(function(e) {
     }
 });
 // 處理textarea裡面 tab的問題 END
+
+// 拿到某個人的大頭照
+function getChatroomUserImg(userId){
+    var imgSrc = "";
+    if(userId == "PSAbot"){
+        imgSrc = "../static/images/iconSmall.png";
+    }
+    else{
+        var myURL = head_url + "read_image?user_id=" + userId;
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            dataType: "json",
+            async: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                imgSrc = response.src;
+
+            }
+        });
+    }
+    return imgSrc;
+}
