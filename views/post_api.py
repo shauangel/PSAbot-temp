@@ -46,26 +46,26 @@ def query_inner_post_list_by_tag():
 def insert_inner_post():
     data = request.get_json()
     print("out")
-    try:
-        d = {
-            '_id' : '',
-            'answer' : [],
-            'keyword' : [],
-            'time' : datetime.now().replace(microsecond=0),
-            'score' : [],
-            'view_count' : 0
-        }
-        data.update(d)
-        # 呼叫文字分析模組進行分析
-        textAnalyzer = TextAnalyze()
-        # 去除code
-        if not data['is_discuss']:
-            target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question'].replace('\n', '').replace('\r', ''))
-            data['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
-        inner_post.insert_post(data)
-    except Exception as e :
-        post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
-    return jsonify(post_dict)
+    # try:
+    d = {
+        '_id' : '',
+        'answer' : [],
+        'keyword' : [],
+        'time' : datetime.now().replace(microsecond=0),
+        'score' : [],
+        'view_count' : 0
+    }
+    data.update(d)
+    # 呼叫文字分析模組進行分析
+    textAnalyzer = TextAnalyze()
+    # 去除code
+    if not data['is_discuss']:
+        target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question'].replace('\n', '').replace('\r', ''))
+        data['keyword'] = textAnalyzer.contentPreProcess(target_content)[0]
+    inner_post.insert_post(data)
+    # except Exception as e :
+        # post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+    return jsonify(data)
 
 # 編輯內部貼文
 @post_api.route('/update_inner_post', methods=['POST'])
