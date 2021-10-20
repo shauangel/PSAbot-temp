@@ -238,8 +238,7 @@ def remove_post(post_id):
     for response in response_list:
         user.update_response_list(response['replier_id'])
     
-    
-
+  
 '''湘的'''
 #內部搜尋
 def query_inner_search(keywords):
