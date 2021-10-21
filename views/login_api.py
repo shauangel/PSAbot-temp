@@ -113,7 +113,7 @@ def password_sign_in():
 def logout():
     try:
         msg = {
-            "msg" : "user " + current_user.get_id() + " logged out."
+            "msg" : "user " + current_user.get_id() + " is logged out."
         }
         logout_user()
         session['user_id'] = None
