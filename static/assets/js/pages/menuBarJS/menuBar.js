@@ -381,8 +381,8 @@ function doneKeyWord() {
     // outerSearch END
 
     //innerSearch START
-    var myURL = head_url + "query_inner_search";
-    console.log("myURL: " + myURL);
+//    var myURL = head_url + "query_inner_search";
+//    console.log("myURL: " + myURL);
     var tempKeywords = []
     for (var id in keyWords) {
         sendKeyWords += ",";
@@ -1305,6 +1305,7 @@ function listenNotification() {
         // 每5秒去檢查一次
         setInterval(function () {
             var myURL = head_url + "check_new_notification?user_id=" + localStorage.getItem("sessionID");
+            console.log("HTTP GET - check_new_notification的URL: "+myURL);
             $.ajax({
                 url: myURL,
                 type: "GET",
@@ -1312,6 +1313,8 @@ function listenNotification() {
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
+                    console.log("check_new_notification的回覆: ");
+                    console.log(response);
                     if (response.new == true) {
                         $("#newNotification").addClass("badge bg-c-pink");
                         notificationPage = 0;
@@ -1447,6 +1450,7 @@ function showNotification(response) {
 // 拿通知
 function getNotification() {
     var myURL = head_url + "check_notification_content?user_id=" + localStorage.getItem("sessionID") + "&page=" + notificationPage;
+    console.log("HTTP GET - check_notification_content的URL: "+myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -1454,8 +1458,8 @@ function getNotification() {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            //            console.log("通知列表: ");
-            //            console.log(response);
+            console.log("check_notification_content的回覆: ");
+            console.log(response);
             showNotification(response);
         },
         error: function () {
@@ -1469,6 +1473,7 @@ function notNewAnymore() {
     $("#newNotification").removeClass("badge bg-c-pink");
     var myURL = head_url + "set_notification_new";
     var data = { user_id: localStorage.getItem("sessionID"), id: notificationIndex };
+    console.log("HTTP POST - set_notification_new的URL: "+myURL);
     console.log("data: ");
     console.log(data);
     $.ajax({
@@ -1479,7 +1484,7 @@ function notNewAnymore() {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log("成功set_notification_new");
+            console.log("set_notification_new的回覆: ");
             console.log(response);
         },
         error: function (response) {
@@ -1786,7 +1791,7 @@ function discussionNotificationJudge(start, end, len, discussRoomId){
 function add_discussion_invitation_notification(recommandUsersId){
     data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
     myURL = head_url + "add_discussion_invitation_notification";
-    console.log("共同討論邀請通知: ");
+    console.log("HTTP POST - add_discussion_invitation_notification的URL: "+myURL);
     console.log(data);
     $.ajax({
         url: myURL,
@@ -1796,8 +1801,8 @@ function add_discussion_invitation_notification(recommandUsersId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("共同討論邀請通知");
-//            console.log(response);
+            console.log("add_discussion_invitation_notification的回覆: ");
+            console.log(response);
         }
     });
     

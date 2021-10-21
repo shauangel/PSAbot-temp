@@ -112,6 +112,22 @@ function deletePostOrAnswer(){
             error: function(response){
             }
         });
+        
+        var myURL = head_url + "delete_notification?post_id="+postId;
+        console.log("HTTP GET - delete_notification的URL: "+myURL);
+        $.ajax({
+            url: myURL,
+            type: "GET",
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function(response){
+                console.log("delete_notification的回覆: ");
+                console.log(response)
+            },
+            error: function(response){
+            }
+        });
     }
     //--- innerPost貼文 END ---//
     
