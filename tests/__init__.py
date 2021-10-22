@@ -14,7 +14,7 @@ class SettingBase(TestCase):
         response = self.client.post(url_for('login_api.facebook_sign_in'),
                                      follow_redirects=True,
                                     data=json.dumps({
-                                        '_id': self.user_id,
+                                        'id': self.user_id,
                                         'name': self.name
 
                                     }),content_type="application/json")
