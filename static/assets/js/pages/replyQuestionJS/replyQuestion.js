@@ -196,7 +196,7 @@ function addInnerPostAnswer(){
     else{
         //----- 為了處理通知 更新資料庫 -----//
         myURL = head_url + "add_post_notification?user_id="+postOwnerId+"&replier_id="+replierId+"&post_id="+postId;
-    //    console.log("myURL: "+myURL);
+        console.log("HTTP GET - add_post_notification的URL: "+myURL);
         $.ajax({
             url: myURL,
             type: "GET",
@@ -204,6 +204,8 @@ function addInnerPostAnswer(){
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             success: function(response){
+                console.log("add_post_notification的回覆: ");
+                console.log(response);
             },
             error: function(response){
                 console.log(response);
