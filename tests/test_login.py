@@ -1,7 +1,7 @@
 from . import SettingBase
 from flask import url_for
 class CheckLoginAPI(SettingBase):
-    def facebook_sign_in(self):
+    def test_facebook_sign_in(self):
         self.user_id = '4257031614316957'
         self.name = '謝宛蓉'
         response = self.signin()
