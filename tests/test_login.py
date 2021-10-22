@@ -6,4 +6,4 @@ class CheckLoginAPI(SettingBase):
         self.name = '謝宛蓉'
         response = self.signin()
         print(response.data)
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
