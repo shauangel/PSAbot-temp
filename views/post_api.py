@@ -45,7 +45,6 @@ def query_inner_post_list_by_tag():
 @post_api.route('/insert_inner_post', methods=['POST'])
 def insert_inner_post():
     data = request.get_json()
-    print("out")
     try:
         d = {
             '_id' : '',
@@ -55,6 +54,8 @@ def insert_inner_post():
             'score' : [],
             'view_count' : 0
         }
+        if len(data['question']) == 0 or len(data['title']) == 0:
+            return jsonify({'message': '貼文內容或標題不得為空 !'})
         data.update(d)
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
@@ -86,6 +87,8 @@ def update_inner_post():
             'keyword' : [],
             'time' : datetime.now().replace(microsecond=0)
         }
+        if len(data['question']) == 0 or len(data['title']) == 0:
+            return jsonify({'message': '貼文內容或標題不得為空 !'})
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
@@ -139,6 +142,8 @@ def insert_inner_post_response():
             "score":[],
             "incognito":data['incognito']
         }
+        if len(data['response']) == 0:
+            return jsonify({'message': '回覆內容不得為空 !'})
         inner_post.insert_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -157,6 +162,8 @@ def update_inner_post_response():
             "edit" : data['edit'],
             "time" : datetime.now().replace(microsecond=0)
         }
+        if len(data['response']) == 0:
+            return jsonify({'message': '回覆內容不得為空 !'})
         inner_post.update_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}  
