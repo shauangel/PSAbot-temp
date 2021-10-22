@@ -1383,6 +1383,15 @@ function showNotification(response) {
     }
     for (var i = 0; i < response.result.length; i++) {
         // 共同討論失效
+        console.log("result: ");
+        console.log(response.result[i]);
+        
+        console.log("detail: ");
+        console.log(response.result[i].detail);
+        
+        console.log("id: ");
+        console.log(response.result[i].id);
+        
         if(response.result[i].detail.valid == true){
             setTimeout(function(){
                 disableNotification(response.result[i].id);
