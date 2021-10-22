@@ -1385,7 +1385,7 @@ function showNotification(response) {
         // 共同討論失效
         if(response.result[i].detail.valid == true){
             setTimeout(function(){
-                disableNotification(response.result[i].detail.id);
+                disableNotification(response.result[i].id);
             }, 5000);
             
         }
