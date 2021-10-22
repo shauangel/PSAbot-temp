@@ -1385,13 +1385,10 @@ function showNotification(response) {
         var idOfNotification = response.result[i].id;
         // 共同討論失效
         
-        console.log("id: ");
-        console.log(response.result[i].id);
-        
         if(response.result[i].detail.valid == true){
             setTimeout(function(){
                 disableNotification(idOfNotification);
-            }, 5000);
+            }, 6000000);
             
         }
         
