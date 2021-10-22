@@ -1342,6 +1342,24 @@ function moreNotification() {
     }
 }
 
+function disableNotification(index){
+    var myURL = head_url + "disable_discussion_invatation?user_id=" + localStorage.getItem("sessionID") + "&id=" + index;
+    console.log("HTTP GET - disable_discussion_invatation的URL: "+myURL);
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log("disable_discussion_invatation: ");
+            console.log(response);
+        },
+        error: function () {
+        }
+    });
+}
+
 // 顯示通知
 function showNotification(response) {
     console.log("收到的通知: ");
@@ -1364,6 +1382,14 @@ function showNotification(response) {
         notificationEnd = true;
     }
     for (var i = 0; i < response.result.length; i++) {
+        // 共同討論失效
+        if(response.result[i].detail.valid == true){
+            setTimeout(function(){
+                disableNotification(response.result[i].detail.id);
+            }, 5000);
+            
+        }
+        
         notificationIndex.push(response.result[i].id);
 
         var now = new Date();
@@ -1450,7 +1476,6 @@ function showNotification(response) {
 // 拿通知
 function getNotification() {
     var myURL = head_url + "check_notification_content?user_id=" + localStorage.getItem("sessionID") + "&page=" + notificationPage;
-    console.log("HTTP GET - check_notification_content的URL: "+myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -1458,8 +1483,6 @@ function getNotification() {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log("check_notification_content的回覆: ");
-            console.log(response);
             showNotification(response);
         },
         error: function () {
@@ -1497,6 +1520,7 @@ function notNewAnymore() {
 function alreadyChecked(index) {
     $("#background" + index).css("background-color", "#FFFFF");
     var myURL = head_url + "set_notification_check?user_id=" + localStorage.getItem("sessionID") + "&id=" + index;
+    console.log("HTTP GET - set_notification_check的URL: "+myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -1504,7 +1528,8 @@ function alreadyChecked(index) {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log("成功回傳");
+            console.log("set_notification_check的回覆: ");
+            console.log(response);
             notificationPage = 0;
             getNotification();
         },
