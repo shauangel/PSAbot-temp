@@ -346,6 +346,7 @@ def query_inner_search(keywords):
                 if j.lower() in lower_keywords:
                     count_key += 1
             i['matches_keyword'] = count_key
+            print(i)
             for j in i['tag']:
                 if j['tag_name'].lower() in lower_keywords:
                     count_tag += 1

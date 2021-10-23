@@ -388,9 +388,11 @@ function doneKeyWord() {
         tempKeywords.push(keyWords[id]);
     }
     var data = { keywords: tempKeywords };
-    console.log(data);
+    
 
     var myURL = head_url + "query_inner_search";
+    console.log("HTTP POST - query_inner_search的URL: "+myURL);
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
