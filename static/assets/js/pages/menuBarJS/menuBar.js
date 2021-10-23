@@ -2128,6 +2128,7 @@ function postDiscussion(){
     //var receivedData = localStorage.getItem("chatLogs");
     var receivedData = chatLogs;
     //receivedData = JSON.parse(receivedData);
+    console.log("共同討論拿到的全部資料: ");
     console.log(receivedData);
     // 準備po文的資料 START
     var askerId = receivedData.members[0].user_id;
@@ -2135,7 +2136,8 @@ function postDiscussion(){
     var title = receivedData.question;
     var question;
     var tag = receivedData.tags;
-    console.log("tag的型態: "+tag);
+    console.log("tag的型態: ");
+    console.log(tag);
     var time = receivedData.time;
     var roomId = localStorage.getItem("chatingRoomId");
     // 準備po文的資料 END
