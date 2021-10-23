@@ -23,7 +23,7 @@ class SettingBase(TestCase):
                                          follow_redirects=True,
                                         data=json.dumps({
                                             '_id': self.user_id,
-                                            'password': self.name
+                                            'password': self.password
                                         }),content_type="application/json")
         return response
         
