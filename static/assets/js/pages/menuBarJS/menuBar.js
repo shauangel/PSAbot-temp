@@ -246,6 +246,8 @@ function sendMessageAPI(message){
     }
     else{ // 共同討論
         var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
+        console.log("socket - send_message的input");
+        console.log(data);
         socket.emit('send_message' , data);
         console.log("送出去的共同討論: ");
         console.log(data);
@@ -1600,7 +1602,7 @@ function createDiscussRoom(){
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
     localStorage.setItem("discussQuestion", discussQuestion);
-    console.log("創房間的data: ");
+    console.log("socket - create_room的input: ");
     console.log(data);
     socket.emit('create_room' , data);
     //----- 創建一個共同討論的聊天室 END -----//
@@ -1692,9 +1694,12 @@ function received_message(){
 function check_discussion_is_full(roomId){
     var full;
     var data = {room_id: roomId};
-    console.log(data);
+    
 
     var myURL = head_url + "check_discussion_is_full";
+    console.log("HTTP POST - check_discussion_is_full的URL: "+myURL);
+    console.log("check_discussion_is_full的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1703,7 +1708,7 @@ function check_discussion_is_full(roomId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("共同討論 - 是否額滿");
+            console.log("check_discussion_is_full的output");
             console.log(response);
             full = response;
         }
@@ -1716,9 +1721,11 @@ function check_discussion_is_full(roomId){
 function check_member_is_incognito(roomId, userId){
     var incognito;
     var data = {room_id: roomId, user_id: userId};
-    console.log(data);
 
     var myURL = head_url + "check_member_is_incognito";
+    console.log("HTTP POST - check_member_is_incognito的URL: "+myURL);
+    console.log("check_member_is_incognito的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1727,6 +1734,7 @@ function check_member_is_incognito(roomId, userId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("check_member_is_incognito的output: ");
             incognito = response;
         }
     });
@@ -1855,6 +1863,7 @@ function joinDiscussRoom(incognito){
     localStorage.removeItem("discussionRoomId");
     localStorage.removeItem("discussionQuestion");
     var data = {_id: discussionRoomId, user_id: userId, incognito: incognito};
+    console.log("socket - join_room的input: ");
     console.log(data);
     
     socket.emit('join_room' , data);
@@ -1896,7 +1905,9 @@ function getChatroomList(userId){
 //    console.log(data);
     
     var myURL = head_url + "query_chat_list";
-    console.log("myURL: "+myURL);
+    console.log("HTTP POST - query_chat_list的URL: "+myURL);
+    console.log("query_chat_list的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1905,8 +1916,8 @@ function getChatroomList(userId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("某人的聊天室列表: ");
-//            console.log(response);
+            console.log("query_chat_list的output: ");
+            console.log(response);
             // 開始重整前 都先清空
             document.getElementById("chatingList").innerHTML = "";
             //印出server的回應
@@ -2208,6 +2219,9 @@ function deleteChatroom(roomId){
     console.log("刪除的是: "+roomId);
 
     var myURL = head_url + "remove_chat";
+    console.log("HTTP POST - remove_chat的URL: "+myURL);
+    console.log("remove_chat的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -2216,7 +2230,8 @@ function deleteChatroom(roomId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("成功: 刪除房間");
+            console.log("remove_chat的output: ");
+            console.log(response);
         },
         error: function(response){
             console.log("失敗: 刪除房間");
