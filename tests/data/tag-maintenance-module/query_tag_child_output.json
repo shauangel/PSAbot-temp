@@ -1,0 +1,32 @@
+{
+    "tag_child": [
+        {
+            "tag_id": "00001",
+            "tag_name": "Web Crawling / Data Mining"
+        },
+        {
+            "tag_id": "00002",
+            "tag_name": "Web frameworks"
+        },
+        {
+            "tag_id": "00003",
+            "tag_name": "NLP"
+        },
+        {
+            "tag_id": "00004",
+            "tag_name": "game development"
+        },
+        {
+            "tag_id": "00005",
+            "tag_name": "standard libraries"
+        },
+        {
+            "tag_id": "00006",
+            "tag_name": "GUI"
+        },
+        {
+            "tag_id": "00007",
+            "tag_name": "Data processing"
+        }
+    ]
+}

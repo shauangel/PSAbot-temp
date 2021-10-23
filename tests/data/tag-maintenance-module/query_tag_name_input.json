@@ -1,0 +1,7 @@
+// HTTP GET
+// URL: https://soselab.asuscomm.com:55002/api/query_tag_name?tag_id=00000
+// tag_api.query_tag_name
+
+{
+	"tag_id" : "00000"
+}
