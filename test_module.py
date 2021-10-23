@@ -1,5 +1,6 @@
 import unittest
 from tests.test_login import CheckLoginAPI
+from tests.test_chatbot_module import CheckChatbotModule
 
 
 
