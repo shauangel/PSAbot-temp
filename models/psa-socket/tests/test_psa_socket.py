@@ -18,6 +18,7 @@ class TestSocketIO(unittest.TestCase):
         pass
 
     def test_connect(self):
-        client = socketio.test_client(app, query_string='?user_id=testing')
-        self.assertEqual(client.get_received(),'1')
+        client = socketio.test_client(app, query_string='?user_id=test_user')
+        # client.get_received()[0]['args'] == 'test_user has connected.'
+        self.assertEqual(client.get_received()[0]['args'],'test_user has connected.')
         
