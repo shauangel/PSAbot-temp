@@ -11,14 +11,20 @@ class SettingBase(TestCase):
         return create_app()
         
     def signin(self):
-        response = self.client.post(url_for('login_api.facebook_sign_in'),
-                                     follow_redirects=True,
-                                    data=json.dumps({
-                                        'id': self.user_id,
-                                        'name': self.name
-
-                                    }),content_type="application/json")
-
+        if self.role != 'manager':
+            response = self.client.post(url_for('login_api.facebook_sign_in'),
+                                         follow_redirects=True,
+                                        data=json.dumps({
+                                            'id': self.user_id,
+                                            'name': self.name
+                                        }),content_type="application/json")
+        else:
+            response = self.client.post(url_for('login_api.password_sign_in'),
+                                         follow_redirects=True,
+                                        data=json.dumps({
+                                            '_id': self.user_id,
+                                            'password': self.name
+                                        }),content_type="application/json")
         return response
         
     def logout(self):
