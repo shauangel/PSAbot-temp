@@ -361,7 +361,7 @@ function doneKeyWord() {
     // 傳給rasa START
     var sessionId = localStorage.getItem("sessionID");
     var myURL = head_url + "keywords?sender_id=" + sessionId + "&keywords=" + sendKeyWords;
-    console.log("myURL: " + myURL);
+    console.log("HTTP GET - keywords的URL: " + myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -370,7 +370,7 @@ function doneKeyWord() {
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             console.log("outerSearch");
-            console.log("response: ");
+            console.log("keywords的回覆: ");
             console.log(response);
         },
         error: function () {
@@ -381,8 +381,6 @@ function doneKeyWord() {
     // outerSearch END
 
     //innerSearch START
-//    var myURL = head_url + "query_inner_search";
-//    console.log("myURL: " + myURL);
     var tempKeywords = []
     for (var id in keyWords) {
         sendKeyWords += ",";
@@ -526,7 +524,7 @@ function openChatroom(roomId){
 ////////////////// 初始化 START////////////////////
 function welcomeAPI(){
     var myURL = head_url + "welcome?sender_id=" + localStorage.getItem("sessionID");
-    console.log("myURL: " + myURL);
+    console.log("HTTP GET - welcome的URL: " + myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -534,6 +532,8 @@ function welcomeAPI(){
         async: false,
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+            console.log("welcome的回覆: ");
+            console.log(response);
             bot(response.text)
         },
         error: function () {
@@ -600,7 +600,7 @@ function start() {
 
             //傳session_start
             var myURL = head_url + "session_start?sender_id=" + session_id;
-            console.log("myURL: " + myURL);
+            console.log("HTTP GET - session_start的URL: " + myURL);
             $.ajax({
                 url: myURL,
                 type: "GET",
@@ -608,7 +608,7 @@ function start() {
                 async: false,
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
-                    console.log("response: " + response);
+                    console.log("session_start的回覆: ");
                     console.log(response);
                 },
                 error: function () {
@@ -1385,13 +1385,10 @@ function showNotification(response) {
         var idOfNotification = response.result[i].id;
         // 共同討論失效
         
-        console.log("id: ");
-        console.log(response.result[i].id);
-        
         if(response.result[i].detail.valid == true){
             setTimeout(function(){
                 disableNotification(idOfNotification);
-            }, 5000);
+            }, 6000000);
             
         }
         
@@ -1738,6 +1735,7 @@ function check_member_is_incognito(roomId, userId){
 function discussion_recommand_user(){
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
+    console.log("HTTP POST - discussion_recommand_user的URL: "+myURL);
     var data = {tags: recommandTagsId};
     $.ajax({
         url: myURL,
@@ -1747,9 +1745,9 @@ function discussion_recommand_user(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("discussion_recommand_user的回覆: ");
+            console.log(response);
             recommandUsersId = response.recommand_user_id;
-//            console.log("推薦人: ");
-//            console.log(recommandUsersId);
         }
     });
     //----- 找出匹配的人選 END -----//
