@@ -34,7 +34,14 @@ def insert_member(chat_dict):
 
 # 取得聊天紀錄
 def query_chat(chat_id):
-    return _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})
+    chat = _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})
+    psa_chat = _db.CHAT_DATA_COLLECTION.find_one({'psabot_room_id':chat_id})
+    if chat != None:
+        return chat
+    elif psa_chat != None:
+        return psa_chat
+    else:
+        return None
 
 # 新增一則訊息到紀錄
 def insert_message(chat_dict):
@@ -52,8 +59,11 @@ def end_chat(chat_id,flag,setmode):
         return _db.CHAT_DATA_COLLECTION.find_one({'_id':chat_id})['end_flag'] == flag
 
 # 刪除聊天室
-def remove_chat(chat_id):
-    _db.CHAT_DATA_COLLECTION.delete_one({'_id':chat_id})
+def remove_chat(id_dict):
+    if len(id_dict['_id']) != 0 and len(id_dict['user_id']) == 0:
+        _db.CHAT_DATA_COLLECTION.delete_one({'_id':id_dict['_id']})
+    if len(id_dict['user_id']) != 0 and len(id_dict['_id']) == 0:
+        _db.CHAT_DATA_COLLECTION.delete_one({'psabot_room_id':id_dict['user_id']})
     
 # 改變聊天室狀態
 def change_state(chat_id,state):
@@ -63,3 +73,16 @@ def change_state(chat_id,state):
 def query_room_list(user_id):
     return [ room for room in _db.CHAT_DATA_COLLECTION.aggregate([{'$match': {'members.user_id': user_id}}, 
                                                {'$project': {'_id': 1, 'question': 1,'enabled':1}}])]
+
+# 建立機器人聊天室紀錄
+def insert_psabot_chat(chat_dict):
+    if _db.CHAT_DATA_COLLECTION.find_one({'psabot_room_id':chat_dict['psabot_room_id']}) == None:
+        insert_chat(chat_dict)
+        
+
+# 新增機器人聊天室訊息
+def insert_psabot_message(chat_dict):
+    _db.CHAT_DATA_COLLECTION.update_one({'psabot_room_id':chat_dict['user_id']},
+                                         {'$push':
+                                          {'chat_logs':
+                                           {'user_id':chat_dict['user_id'],'time':chat_dict['time'],'type':chat_dict['type'],'content':chat_dict['content']}}})
