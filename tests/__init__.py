@@ -1,6 +1,7 @@
 from flask_testing import TestCase
 from flask import url_for
 from main import create_app
+from views.TextAnalyze import TextAnalyze
 import json
 
 #這邊是測試的基礎設置，先不要動
