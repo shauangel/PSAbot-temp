@@ -6,9 +6,7 @@ from views.TextAnalyze import TextAnalyze
 # ======================================== #
 
 class CheckTextAnalyzeModule(SettingBase):
-    def test_user_login_4(self):
-        self.user_id = 'PSABOTMANAGER'
-        self.password = '456'
-        self.role = 'manager'
-        response = self.signin()
-        self.assertEqual(response.json, {'_id': 'invalid.','role':''})
+    def test_call_method(self):
+        textAnalyzer = TextAnalyze()
+        textAnalyzer.contentPreProcess('I will use this sentence to test the Text Analyze Module.')[0]
+        self.assertEqual('1','1')
