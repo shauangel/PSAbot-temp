@@ -426,15 +426,15 @@ def query_inner_search(keywords):
             """  """
             
             #print(sorted_top_ten_post_dict_array)
-            # ''' --- tag usage_count --- '''
-            # top_ten_id = [i['_id'] for i in sorted_top_ten_post_dict_array]
-            # for i in top_ten_id:
-            #     tag_list = _db.INNER_POST_COLLECTION.find_one({'_id':i})['tag']
-            #     for tag in tag_list:
-            #         _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':datetime.now().replace(microsecond=0)},
-            #                                                              '$inc':{'usage_counter':0.5}})
+            ''' --- tag usage_count --- '''
+            top_ten_id = [i['_id'] for i in sorted_top_ten_post_dict_array]
+            for i in top_ten_id:
+                tag_list = _db.INNER_POST_COLLECTION.find_one({'_id':i})['tag']
+                for tag in tag_list:
+                    _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$set':{'recent_use':datetime.now().replace(microsecond=0)},
+                                                                          '$inc':{'usage_counter':0.5}})
             
-            # ''' ----------------------- '''
+            ''' ----------------------- '''
             return [i['_id'] for i in sorted_top_ten_post_dict_array]
     else:
         #print([])
