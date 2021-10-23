@@ -1242,7 +1242,7 @@ function logOut() {
     $.ajax({
         type: 'GET',
         url: head_url + 'logout',
-        success: function () {
+        success: function (response) {
             console.log('flask logout.')
         }
     });

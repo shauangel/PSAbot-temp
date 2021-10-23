@@ -63,7 +63,7 @@ function checkLoginState() {
               localStorage.setItem("sessionID", response_data['_id']);
               localStorage.setItem("role", "facebook_user");
               localStorage.setItem("first_login", response_data['first_login']);
-              //window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+              window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
               //慈 END
             },
             error: function (xhr, status, error) {
@@ -121,7 +121,7 @@ function userChanged(googleUser) {
         localStorage.setItem("role", "google_user");
         localStorage.setItem("first_login", response_data['first_login']);
         //慈 START
-        //window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+        window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
         //慈 END
         console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.')
       },
@@ -138,7 +138,6 @@ function managerLogin() {
     var password = document.getElementById("inputPassword").value;
     console.log('user :' + user + ' ,password: ' + password);
     var myURL = head_url + 'password_sign_in';
-    console.log("HTTP POST - password_sign_in的URL: "+myURL);
     $.ajax({
     type: "POST",
     url: myURL,
@@ -149,9 +148,6 @@ function managerLogin() {
     dataType: "json",
     contentType: 'application/json; charset=utf-8',
     success: function (response_data) {
-
-        console.log("password_sign_in的回覆: ");
-        console.log(response_data)
         if (response_data['_id'] == 'invalid.') {
             alert('帳號或密碼錯誤');
         }
@@ -160,7 +156,7 @@ function managerLogin() {
             localStorage.setItem("sessionID", response_data['_id']);
             localStorage.setItem("role", response_data['role']);
             console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.');
-            //window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+            window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
         }
     },
     error: function (xhr, status, error) {
