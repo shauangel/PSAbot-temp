@@ -1,0 +1,97 @@
+{
+    "tag_info": [
+        {
+            "parent": "",
+            "score": 41,
+            "tag_name": "Python"
+        },
+        {
+            "parent": {
+                "tag_id": "00000",
+                "tag_name": "Python"
+            },
+            "score": 3,
+            "tag_name": "Web Crawling / Data Mining"
+        },
+        {
+            "parent": {
+                "tag_id": "00001",
+                "tag_name": "Web Crawling / Data Mining"
+            },
+            "score": 3,
+            "tag_name": "Selenium"
+        },
+        {
+            "parent": {
+                "tag_id": "00007",
+                "tag_name": "Data processing"
+            },
+            "score": 4,
+            "tag_name": "Pandas"
+        },
+        {
+            "parent": {
+                "tag_id": "00001",
+                "tag_name": "Web Crawling / Data Mining"
+            },
+            "score": 1,
+            "tag_name": "Scrapy"
+        },
+        {
+            "parent": {
+                "tag_id": "00002",
+                "tag_name": "Web frameworks"
+            },
+            "score": 6,
+            "tag_name": "Django"
+        },
+        {
+            "parent": {
+                "tag_id": "00004",
+                "tag_name": "game development"
+            },
+            "score": 3,
+            "tag_name": "Panda3D"
+        },
+        {
+            "parent": {
+                "tag_id": "00007",
+                "tag_name": "Data processing"
+            },
+            "score": 2,
+            "tag_name": "SciPy"
+        },
+        {
+            "parent": {
+                "tag_id": "00007",
+                "tag_name": "Data processing"
+            },
+            "score": 2,
+            "tag_name": "NumPy"
+        },
+        {
+            "parent": {
+                "tag_id": "00006",
+                "tag_name": "GUI"
+            },
+            "score": 5,
+            "tag_name": "Tkinter"
+        },
+        {
+            "parent": {
+                "tag_id": "00007",
+                "tag_name": "Data processing"
+            },
+            "score": 2,
+            "tag_name": "matplotlib"
+        },
+        {
+            "parent": {
+                "tag_id": "00007",
+                "tag_name": "Data processing"
+            },
+            "score": 3,
+            "tag_name": "TensorFlow"
+        }
+    ]
+}
