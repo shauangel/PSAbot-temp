@@ -92,7 +92,6 @@ function deleteEpmtyNode(){
 // 把用不到的第二層刪除(呼叫deleteEmptyNode)
 function getUserTag(){
     var myURL = head_url+"query_user_tag?user_id="+localStorage.getItem("sessionID");
-    
     $.ajax({
         url: myURL,
         type: "GET",
@@ -100,8 +99,6 @@ function getUserTag(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("使用者的tag: ");
-            console.log(response);
             for(var i=0; i<response.tag_info.length; i++){
                 //檢查是否為第三層，是則buildThirdLevel，否則直接改一、二層node score
                 if(secondLevelName.includes(response.tag_info[i].tag_name)) {
