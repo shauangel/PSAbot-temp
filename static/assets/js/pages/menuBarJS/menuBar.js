@@ -2135,6 +2135,7 @@ function postDiscussion(){
     var title = receivedData.question;
     var question;
     var tag = receivedData.tags;
+    console.log("tag的型態: "+tag);
     var time = receivedData.time;
     var roomId = localStorage.getItem("chatingRoomId");
     // 準備po文的資料 END
