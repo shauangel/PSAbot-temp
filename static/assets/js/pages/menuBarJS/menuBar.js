@@ -227,6 +227,7 @@ function sendMessageAPI(message){
         session_id = localStorage.getItem("sessionID");
         var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
         myURL = encodeURI(myURL);
+        console.log("HTTP GET - base_flow_rasa的URL: "+myURL);
         console.log("送出訊息: "+message);
         $.ajax({
             url: myURL,
@@ -234,7 +235,7 @@ function sendMessageAPI(message){
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
-                console.log("收到的response: ");
+                console.log("base_flow_rasa的回覆: ");
                 console.log(response);
                 bot(response.text);
             },
