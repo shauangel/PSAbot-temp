@@ -63,7 +63,8 @@ def remove_chat(id_dict):
     if len(id_dict['_id']) != 0 and len(id_dict['user_id']) == 0:
         _db.CHAT_DATA_COLLECTION.delete_one({'_id':id_dict['_id']})
     if len(id_dict['user_id']) != 0 and len(id_dict['_id']) == 0:
-        _db.CHAT_DATA_COLLECTION.delete_one({'psabot_room_id':id_dict['user_id']})
+        # psabot 聊天室刪除只會清除聊天紀錄
+        _db.CHAT_DATA_COLLECTION.update_one({'psabot_room_id':id_dict['user_id']},{'$set':{'chat_logs':[]}})
     
 # 改變聊天室狀態
 def change_state(chat_id,state):
