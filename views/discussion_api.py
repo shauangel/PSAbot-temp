@@ -82,12 +82,6 @@ def insert_psabot_chat_log():
     chat_data.insert_psabot_message(chat_dict)
     return jsonify({'message':'新增成功'})
 
-# 取得機器人聊天室紀錄
-@discussion_api.route('/query_psabot_chat', methods=['POST'])
-def query_psabot_chat():
-    data = request.get_json()
-    chat_dict = chat_data.query_psabot_chat(data['user_id'])
-    return jsonify(chat_dict)
 
 # 聊天室是否額滿
 @discussion_api.route('/check_discussion_is_full', methods=['POST'])
