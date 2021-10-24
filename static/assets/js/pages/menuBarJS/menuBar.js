@@ -1272,6 +1272,25 @@ window.onload = function(){
 }
 ////////////////// 登出 START ////////////////////
 function logOut() {
+    if(localStorage.getItem('role')!="manager"){
+       var myURL = head_url + "remove_chat";
+        var data = {user_id : session_id, _id: ""};
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("create_psabot_chat的回覆: ");
+                console.log(response);
+            },
+            error: function (response) {
+            }
+        });
+    }
+    
     if (localStorage.getItem('role') == 'google_user') {
         gapi.auth2.getAuthInstance().signOut().then(function () {
             console.log('Google User signed out.');
