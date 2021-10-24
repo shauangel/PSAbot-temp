@@ -75,8 +75,6 @@ function bot(string) {
             var objParent = obj.parentNode;
             objParent.removeChild(obj);
             needToClearBotMessage = false;
-            //        console.log("object: ");
-            //        console.log(obj);
         }
 
         var history = document.getElementById("history_message");
@@ -227,21 +225,34 @@ function sendMessageAPI(message){
         session_id = localStorage.getItem("sessionID");
         var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
         myURL = encodeURI(myURL);
-        console.log("HTTP GET - base_flow_rasa的URL: "+myURL);
-        console.log("送出訊息: "+message);
         $.ajax({
             url: myURL,
             type: "GET",
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
-                console.log("base_flow_rasa的回覆: ");
-                console.log(response);
                 bot(response.text);
             },
             error: function () {
                 console.log("error");
             }
+        });
+        
+        myURL = head_url + "insert_psabot_chat_log";
+        var data = {user_id:sessionId, type:"string", content:message};
+        $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log("insert_psabot_chat_log的response:");
+            console.log(response);
+        },
+        error: function (response) {
+        }
         });
     }
     else{ // 共同討論
@@ -475,10 +486,25 @@ function rank(id) {//全部的排行
 function openChatroom(roomId){
     document.getElementById("history_message").innerHTML = "";
     console.log("去拿聊天的歷史紀錄");
-    
-    if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
+    var sessionId = localStorage.getItem("sessionID");
+    if(roomId==sessionId){ // 抓PSAbot的紀錄
+        var myURL = head_url + "query_chat";
+        var data = {"_id":sessionId};
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("query_chat的response:");
+                console.log(response);
+            },
+            error: function (response) {
+            }
+        });
         document.getElementById("chatroomTitle").innerHTML = "PSAbot";
-        localStorage.setItem("chatingRoomId", localStorage.getItem("sessionID"));
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
@@ -561,9 +587,24 @@ function start() {
     //    localStorage.setItem("sessionID", 4444);
 
     // 這個是一般使用者
-    //    localStorage.setItem("role", "generalUser");
-    //    localStorage.setItem("sessionID", 123);
     var session_id = localStorage.getItem("sessionID");
+    // 先建立聊天室的聊天記錄
+    var myURL = head_url + "create_psabot_chat";
+    var data = {user_id : session_id};
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log("create_psabot_chat的回覆: ");
+            console.log(response);
+        },
+        error: function (response) {
+        }
+    });
 
     // ---------- 同個頁面監聽localStorage START ---------- //
     var orignalSetItem = localStorage.setItem;
@@ -1232,6 +1273,25 @@ window.onload = function(){
 }
 ////////////////// 登出 START ////////////////////
 function logOut() {
+    if(localStorage.getItem('role')!="manager"){
+       var myURL = head_url + "remove_chat";
+        var data = {user_id : session_id, _id: ""};
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("create_psabot_chat的回覆: ");
+                console.log(response);
+            },
+            error: function (response) {
+            }
+        });
+    }
+    
     if (localStorage.getItem('role') == 'google_user') {
         gapi.auth2.getAuthInstance().signOut().then(function () {
             console.log('Google User signed out.');
@@ -1634,7 +1694,6 @@ function received_message(){
                 // 暫時先這樣 END
                 // 需要重新顯示聊天記錄（加上checkbox）
                 chatLogs = response;
-                //localStorage.setItem("chatLogs", JSON.stringify(response));
                 if(response.members[0].user_id == userSessionId){
                     addCheckboxToHistory(response.chat_logs);
                 }
@@ -1645,13 +1704,11 @@ function received_message(){
             }
         }
         else if(response.user_id == null){ // 代表是創房間
-            console.log("回覆的id: "+response._id);
             discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
             discussNotificationThirdTimes();
             // 重整發起人的聊天室列表
-            console.log("從創房間的新增");
             getChatroomList(userSessionId);
             localStorage.removeItem("discussQuestion");
         }
@@ -1899,10 +1956,7 @@ function addToChatingList(discussionRoomId, discussionQuestion){
 // 拿到某人的聊天室列表
 // socket -> query_chat_list
 function getChatroomList(userId){
-//    userId = localStorage.getItem("sessionID");
     var data = {user_id: userId};
-//    console.log("送出data: ");
-//    console.log(data);
     
     var myURL = head_url + "query_chat_list";
     console.log("HTTP POST - query_chat_list的URL: "+myURL);
@@ -1937,8 +1991,6 @@ function discussionHistory(){
     var roomId = localStorage.getItem("chatingRoomId");
     var userId = localStorage.getItem("sessionID");
     var data = {_id: roomId, user_id: userId};
-    console.log("拿聊天記錄: ");
-    console.log(data);
     socket.emit('get_chat' , data);
 }
 
@@ -1975,19 +2027,6 @@ function addCheckboxToHistory(data){
         // 重建歷史紀錄（加上checkbox）START
         if(data[i].user_id == userId){ //代表是自己說話
             
-            // 沒有label START
-//            var temp = '<div class="d-flex justify-content-end mb-4">';
-//            temp += '<div class="msg_cotainer_send">';
-//            temp += data[i].content;
-//            temp += '</div>';
-//            temp += '<div class="img_cont_msg">';
-//            temp += '<img src="';
-//            temp += img;
-//            temp += '" class="chatImg">';
-//            temp += '</div>';
-//            temp += '</div>';
-            // 沒有label END
-            
             // 加上checkbox START
             content += '<div class="mb-4">';
             content += '<label>';
@@ -2007,19 +2046,6 @@ function addCheckboxToHistory(data){
             // 加上checkbox END
         }
         else{
-            // 沒有label的 START
-//            var temp = '<div class="d-flex justify-content-start mb-4">';
-//            temp += '<div class="img_cont_msg">';
-//            temp += '<img src="';
-//            temp += img;
-//            temp += '" class="chatImg" style="background-color: #5D478B;">';
-//            temp += '</div>';
-//            temp += '<div class="msg_cotainer">';
-//            temp += data[i].content;
-//            temp += '</div>';
-//            temp += '</div>';
-            // 沒有label的 END
-            
             // 加上checkbox START
             content += '<div class="d-flex justify-content-start mb-4">';
             content += '<label>';
