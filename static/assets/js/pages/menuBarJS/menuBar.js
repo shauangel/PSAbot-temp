@@ -253,6 +253,7 @@ function sendMessageAPI(message){
         },
         error: function (response) {
         }
+        });
     }
     else{ // 共同討論
         var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
