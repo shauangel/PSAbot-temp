@@ -189,6 +189,7 @@ class analyze_and_search(Action):
         elif "引導式" in function:
             #拿到所需訊息及最後一句使用者輸入
             question_or_error_message = tracker.latest_message.get('text')
+            print('question_or_error_message: ', question_or_error_message)
             question_or_error_message = question_or_error_message.split(',',1)[1]
             print(question_or_error_message)
             
