@@ -45,7 +45,6 @@ def query_inner_post_list_by_tag():
 @post_api.route('/insert_inner_post', methods=['POST'])
 def insert_inner_post():
     data = request.get_json()
-    print("out")
     try:
         d = {
             '_id' : '',
@@ -55,6 +54,8 @@ def insert_inner_post():
             'score' : [],
             'view_count' : 0
         }
+        if len(data['question']) == 0 or len(data['title']) == 0:
+            return jsonify({'message': '貼文內容或標題不得為空 !'})
         data.update(d)
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
@@ -64,9 +65,9 @@ def insert_inner_post():
             # 取得分析過的關鍵字
             keyword_list = textAnalyzer.contentPreProcess(target_content)[0]
             # 計算出現次數
-            data['keyword'] = [ {"word":k,
-                                 "count":target_content.lower().count(k) } for k in keyword_list ]
-            # data['keyword'] = [ { k:0 } for k in keyword_list ]
+            # data['keyword'] = [ {"word":k,
+            #                      "count":target_content.lower().count(k) } for k in keyword_list ]
+            data['keyword'] = keyword_list
         inner_post.insert_post(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -86,6 +87,8 @@ def update_inner_post():
             'keyword' : [],
             'time' : datetime.now().replace(microsecond=0)
         }
+        if len(data['question']) == 0 or len(data['title']) == 0:
+            return jsonify({'message': '貼文內容或標題不得為空 !'})
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
@@ -93,8 +96,8 @@ def update_inner_post():
         if "is_discuss" in target_post and not target_post['is_discuss']:
             target_content = re.sub(r'<pre>.*?</pre>', ' ', post_dict['question'].replace('\n', '').replace('\r', ''))
             keyword_list = textAnalyzer.contentPreProcess(target_content)[0]
-            post_dict['keyword'] = [ {"word":k,
-                                      "count":target_content.lower().count(k) } for k in keyword_list ]
+            # post_dict['keyword'] = [ {"word":k,
+            #                           "count":target_content.lower().count(k) } for k in keyword_list ]
             # if type(target_post['keyword'][0]) is dict:
             #     new_keyword_list = [ { k:0 } for k in keyword_list ]
             #     # 若原本有該keyword，要記錄舊的count
@@ -107,7 +110,7 @@ def update_inner_post():
             #     post_dict['keyword'] = new_keyword_list
             # else:
             #     post_dict['keyword'] = [ { k:0 } for k in keyword_list ]
-                    
+            post_dict['keyword'] = keyword_list     
         inner_post.update_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -139,6 +142,8 @@ def insert_inner_post_response():
             "score":[],
             "incognito":data['incognito']
         }
+        if len(data['response']) == 0:
+            return jsonify({'message': '回覆內容不得為空 !'})
         inner_post.insert_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
@@ -157,6 +162,8 @@ def update_inner_post_response():
             "edit" : data['edit'],
             "time" : datetime.now().replace(microsecond=0)
         }
+        if len(data['response']) == 0:
+            return jsonify({'message': '回覆內容不得為空 !'})
         inner_post.update_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}  

@@ -18,6 +18,7 @@ function setLocalStorage(id){
 function start(){
     localStorage.removeItem("singlePostId");
     var myURL = head_url + "query_hot_post";
+    console.log("HTTP GET - query_hot_post的URL: "+myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -25,10 +26,15 @@ function start(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("query_hot_post的回覆: ");
             console.log(response);
+            
             for(var i=0; i<response.hot_post.length; i++){
                 var getTitleURL = head_url+"query_inner_post";
+                console.log("HTTP POST - query_inner_post的URL: "+getTitleURL);
                 var data = {_id: response.hot_post[i]}
+                console.log("query_inner_post的input: ");
+                console.log(data);
                 $.ajax({
                     url: getTitleURL,
                     type: "POST",
@@ -37,7 +43,7 @@ function start(){
                     dataType: "json",
                     contentType: 'application/json; charset=utf-8',
                     success: function(response){
-                        console.log("拿到的熱門貼文");
+                        console.log("query_inner_post的回覆: ");
                         console.log(response);
                         if(i>2){
                             titles.push(new title(response.title, "#545058", response._id));
@@ -50,9 +56,7 @@ function start(){
                     }
                 });
             }
-            console.log(response.hot_post.length);
             if(response.hot_post.length!=0){
-                console.log("有進來");
                setTimeout(function(){
                     document.getElementById("titleDiv").innerHTML = '<i id="trophy" class="fa fa-code" aria-hidden="true" style="color: #545058; font-size: 25px; height: 5%; margin-top: 15px; margin-left: 15px; margin-right: 5px;"></i><span id="questionName">今日排行榜</span>';
 

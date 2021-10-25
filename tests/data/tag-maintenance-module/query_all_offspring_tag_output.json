@@ -1,0 +1,296 @@
+{
+    "tags": [
+        {
+            "tag_id": "00001",
+            "tag_name": "Web Crawling / Data Mining"
+        },
+        {
+            "tag_id": "00002",
+            "tag_name": "Web frameworks"
+        },
+        {
+            "tag_id": "00003",
+            "tag_name": "NLP"
+        },
+        {
+            "tag_id": "00004",
+            "tag_name": "game development"
+        },
+        {
+            "tag_id": "00005",
+            "tag_name": "standard libraries"
+        },
+        {
+            "tag_id": "00006",
+            "tag_name": "GUI"
+        },
+        {
+            "tag_id": "00007",
+            "tag_name": "Data processing"
+        },
+        {
+            "tag_id": "00008",
+            "tag_name": "Requests"
+        },
+        {
+            "tag_id": "00009",
+            "tag_name": "LXML"
+        },
+        {
+            "tag_id": "00010",
+            "tag_name": "BeautifulSoup"
+        },
+        {
+            "tag_id": "00011",
+            "tag_name": "Selenium"
+        },
+        {
+            "tag_id": "00012",
+            "tag_name": "Scrapy"
+        },
+        {
+            "tag_id": "00013",
+            "tag_name": "urlib2"
+        },
+        {
+            "tag_id": "00014",
+            "tag_name": "PySpider"
+        },
+        {
+            "tag_id": "00015",
+            "tag_name": "MechanicalSoup"
+        },
+        {
+            "tag_id": "00016",
+            "tag_name": "Django"
+        },
+        {
+            "tag_id": "00017",
+            "tag_name": "Pyramid"
+        },
+        {
+            "tag_id": "00018",
+            "tag_name": "TurboGears"
+        },
+        {
+            "tag_id": "00019",
+            "tag_name": "Tornado"
+        },
+        {
+            "tag_id": "00020",
+            "tag_name": "web2py"
+        },
+        {
+            "tag_id": "00021",
+            "tag_name": "Zope"
+        },
+        {
+            "tag_id": "00022",
+            "tag_name": "Flask"
+        },
+        {
+            "tag_id": "00023",
+            "tag_name": "Bottle"
+        },
+        {
+            "tag_id": "00024",
+            "tag_name": "CherrPy"
+        },
+        {
+            "tag_id": "00025",
+            "tag_name": "Falcon"
+        },
+        {
+            "tag_id": "00026",
+            "tag_name": "Hug"
+        },
+        {
+            "tag_id": "00027",
+            "tag_name": "Grok"
+        },
+        {
+            "tag_id": "00028",
+            "tag_name": "BlueBream"
+        },
+        {
+            "tag_id": "00029",
+            "tag_name": "Quixote"
+        },
+        {
+            "tag_id": "00030",
+            "tag_name": "NLTK"
+        },
+        {
+            "tag_id": "00031",
+            "tag_name": "TextBlob"
+        },
+        {
+            "tag_id": "00032",
+            "tag_name": "CoreNLP"
+        },
+        {
+            "tag_id": "00033",
+            "tag_name": "Gensim"
+        },
+        {
+            "tag_id": "00034",
+            "tag_name": "spaCy"
+        },
+        {
+            "tag_id": "00035",
+            "tag_name": "polyglot"
+        },
+        {
+            "tag_id": "00036",
+            "tag_name": "Pattern"
+        },
+        {
+            "tag_id": "00037",
+            "tag_name": "PyNLPI"
+        },
+        {
+            "tag_id": "00038",
+            "tag_name": "SciKit-Learn"
+        },
+        {
+            "tag_id": "00039",
+            "tag_name": "jieba"
+        },
+        {
+            "tag_id": "00040",
+            "tag_name": "monpa"
+        },
+        {
+            "tag_id": "00041",
+            "tag_name": "Vocabulary"
+        },
+        {
+            "tag_id": "00042",
+            "tag_name": "Quepy"
+        },
+        {
+            "tag_id": "00043",
+            "tag_name": "Pygame"
+        },
+        {
+            "tag_id": "00044",
+            "tag_name": "PyKyra"
+        },
+        {
+            "tag_id": "00045",
+            "tag_name": "Pyglet"
+        },
+        {
+            "tag_id": "00046",
+            "tag_name": "PyOpenGL"
+        },
+        {
+            "tag_id": "00047",
+            "tag_name": "Panda3D"
+        },
+        {
+            "tag_id": "00048",
+            "tag_name": "Cocos2d"
+        },
+        {
+            "tag_id": "00049",
+            "tag_name": "Python-Ogre"
+        },
+        {
+            "tag_id": "00050",
+            "tag_name": "Ren'Py"
+        },
+        {
+            "tag_id": "00051",
+            "tag_name": "Tkinter"
+        },
+        {
+            "tag_id": "00052",
+            "tag_name": "wxPython"
+        },
+        {
+            "tag_id": "00053",
+            "tag_name": "Kivy"
+        },
+        {
+            "tag_id": "00054",
+            "tag_name": "Libavg"
+        },
+        {
+            "tag_id": "00055",
+            "tag_name": "pyQT"
+        },
+        {
+            "tag_id": "00056",
+            "tag_name": "PySimpleGUI"
+        },
+        {
+            "tag_id": "00057",
+            "tag_name": "Pyforms"
+        },
+        {
+            "tag_id": "00058",
+            "tag_name": "Wax"
+        },
+        {
+            "tag_id": "00059",
+            "tag_name": "PySide"
+        },
+        {
+            "tag_id": "00060",
+            "tag_name": "NumPy"
+        },
+        {
+            "tag_id": "00061",
+            "tag_name": "SciPy"
+        },
+        {
+            "tag_id": "00062",
+            "tag_name": "Pandas"
+        },
+        {
+            "tag_id": "00063",
+            "tag_name": "Keras"
+        },
+        {
+            "tag_id": "00064",
+            "tag_name": "SciKit-Learn"
+        },
+        {
+            "tag_id": "00065",
+            "tag_name": "PyTorch"
+        },
+        {
+            "tag_id": "00066",
+            "tag_name": "TensorFlow"
+        },
+        {
+            "tag_id": "00067",
+            "tag_name": "XGBoost"
+        },
+        {
+            "tag_id": "00068",
+            "tag_name": "matplotlib"
+        },
+        {
+            "tag_id": "00069",
+            "tag_name": "Seaborn"
+        },
+        {
+            "tag_id": "00070",
+            "tag_name": "Bokeh"
+        },
+        {
+            "tag_id": "00071",
+            "tag_name": "Plotly"
+        },
+        {
+            "tag_id": "00072",
+            "tag_name": "pydot"
+        },
+        {
+            "tag_id": "00073",
+            "tag_name": "Statsmodels"
+        }
+    ]
+}

@@ -18,7 +18,7 @@ notification_api=Blueprint('notification_api', __name__)
 @notification_api.route('add_post_notification')
 def add_post_notification():
     user_id=request.values.get('user_id')
-    replier_idrequest.values.get('replier_id')
+    replier_id=request.values.get('replier_id')
     post_id=request.values.get('post_id')
     user.update_notification_add_post(user_id, replier_id, post_id)
     return jsonify({"message":"success"})
@@ -83,6 +83,6 @@ def delete_notification():
 @notification_api.route('disable_discussion_invatation', methods=['get'])
 def disable_discussion_invatation():
     user_id=request.values.get('user_id')
-    id==request.values.get('id')    #index
+    id=request.values.get('id')    #index
     return jsonify({"message":"success"})
     

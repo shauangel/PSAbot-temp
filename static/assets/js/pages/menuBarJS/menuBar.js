@@ -75,8 +75,6 @@ function bot(string) {
             var objParent = obj.parentNode;
             objParent.removeChild(obj);
             needToClearBotMessage = false;
-            //        console.log("object: ");
-            //        console.log(obj);
         }
 
         var history = document.getElementById("history_message");
@@ -227,24 +225,40 @@ function sendMessageAPI(message){
         session_id = localStorage.getItem("sessionID");
         var myURL = head_url + "base_flow_rasa?message=" + message + "&sender_id=" + session_id;
         myURL = encodeURI(myURL);
-        console.log("送出訊息: "+message);
         $.ajax({
             url: myURL,
             type: "GET",
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
-                console.log("收到的response: ");
-                console.log(response);
                 bot(response.text);
             },
             error: function () {
                 console.log("error");
             }
         });
+        
+        myURL = head_url + "insert_psabot_chat_log";
+        var data = {user_id:sessionId, type:"string", content:message};
+        $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log("insert_psabot_chat_log的response:");
+            console.log(response);
+        },
+        error: function (response) {
+        }
+        });
     }
     else{ // 共同討論
         var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
+        console.log("socket - send_message的input");
+        console.log(data);
         socket.emit('send_message' , data);
         console.log("送出去的共同討論: ");
         console.log(data);
@@ -361,7 +375,7 @@ function doneKeyWord() {
     // 傳給rasa START
     var sessionId = localStorage.getItem("sessionID");
     var myURL = head_url + "keywords?sender_id=" + sessionId + "&keywords=" + sendKeyWords;
-    console.log("myURL: " + myURL);
+    console.log("HTTP GET - keywords的URL: " + myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -370,7 +384,7 @@ function doneKeyWord() {
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             console.log("outerSearch");
-            console.log("response: ");
+            console.log("keywords的回覆: ");
             console.log(response);
         },
         error: function () {
@@ -381,17 +395,17 @@ function doneKeyWord() {
     // outerSearch END
 
     //innerSearch START
-    var myURL = head_url + "query_inner_search";
-    console.log("myURL: " + myURL);
     var tempKeywords = []
     for (var id in keyWords) {
         sendKeyWords += ",";
         tempKeywords.push(keyWords[id]);
     }
     var data = { keywords: tempKeywords };
-    console.log(data);
+    
 
     var myURL = head_url + "query_inner_search";
+    console.log("HTTP POST - query_inner_search的URL: "+myURL);
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -472,10 +486,25 @@ function rank(id) {//全部的排行
 function openChatroom(roomId){
     document.getElementById("history_message").innerHTML = "";
     console.log("去拿聊天的歷史紀錄");
-    
-    if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
+    var sessionId = localStorage.getItem("sessionID");
+    if(roomId==sessionId){ // 抓PSAbot的紀錄
+        var myURL = head_url + "query_chat";
+        var data = {"_id":sessionId};
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("query_chat的response:");
+                console.log(response);
+            },
+            error: function (response) {
+            }
+        });
         document.getElementById("chatroomTitle").innerHTML = "PSAbot";
-        localStorage.setItem("chatingRoomId", localStorage.getItem("sessionID"));
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
@@ -526,7 +555,7 @@ function openChatroom(roomId){
 ////////////////// 初始化 START////////////////////
 function welcomeAPI(){
     var myURL = head_url + "welcome?sender_id=" + localStorage.getItem("sessionID");
-    console.log("myURL: " + myURL);
+    console.log("HTTP GET - welcome的URL: " + myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -534,6 +563,8 @@ function welcomeAPI(){
         async: false,
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
+            console.log("welcome的回覆: ");
+            console.log(response);
             bot(response.text)
         },
         error: function () {
@@ -556,9 +587,24 @@ function start() {
     //    localStorage.setItem("sessionID", 4444);
 
     // 這個是一般使用者
-    //    localStorage.setItem("role", "generalUser");
-    //    localStorage.setItem("sessionID", 123);
     var session_id = localStorage.getItem("sessionID");
+    // 先建立聊天室的聊天記錄
+    var myURL = head_url + "create_psabot_chat";
+    var data = {user_id : session_id};
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log("create_psabot_chat的回覆: ");
+            console.log(response);
+        },
+        error: function (response) {
+        }
+    });
 
     // ---------- 同個頁面監聽localStorage START ---------- //
     var orignalSetItem = localStorage.setItem;
@@ -600,7 +646,7 @@ function start() {
 
             //傳session_start
             var myURL = head_url + "session_start?sender_id=" + session_id;
-            console.log("myURL: " + myURL);
+            console.log("HTTP GET - session_start的URL: " + myURL);
             $.ajax({
                 url: myURL,
                 type: "GET",
@@ -608,7 +654,7 @@ function start() {
                 async: false,
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
-                    console.log("response: " + response);
+                    console.log("session_start的回覆: ");
                     console.log(response);
                 },
                 error: function () {
@@ -1227,6 +1273,25 @@ window.onload = function(){
 }
 ////////////////// 登出 START ////////////////////
 function logOut() {
+    if(localStorage.getItem('role')!="manager"){
+       var myURL = head_url + "remove_chat";
+        var data = {user_id : session_id, _id: ""};
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log("create_psabot_chat的回覆: ");
+                console.log(response);
+            },
+            error: function (response) {
+            }
+        });
+    }
+    
     if (localStorage.getItem('role') == 'google_user') {
         gapi.auth2.getAuthInstance().signOut().then(function () {
             console.log('Google User signed out.');
@@ -1241,7 +1306,7 @@ function logOut() {
     $.ajax({
         type: 'GET',
         url: head_url + 'logout',
-        success: function () {
+        success: function (response) {
             console.log('flask logout.')
         }
     });
@@ -1305,6 +1370,7 @@ function listenNotification() {
         // 每5秒去檢查一次
         setInterval(function () {
             var myURL = head_url + "check_new_notification?user_id=" + localStorage.getItem("sessionID");
+            console.log("HTTP GET - check_new_notification的URL: "+myURL);
             $.ajax({
                 url: myURL,
                 type: "GET",
@@ -1312,6 +1378,8 @@ function listenNotification() {
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
+                    console.log("check_new_notification的回覆: ");
+                    console.log(response);
                     if (response.new == true) {
                         $("#newNotification").addClass("badge bg-c-pink");
                         notificationPage = 0;
@@ -1339,6 +1407,24 @@ function moreNotification() {
     }
 }
 
+function disableNotification(index){
+    var myURL = head_url + "disable_discussion_invatation?user_id=" + localStorage.getItem("sessionID") + "&id=" + index;
+    console.log("HTTP GET - disable_discussion_invatation的URL: "+myURL);
+    $.ajax({
+        url: myURL,
+        type: "GET",
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log("disable_discussion_invatation: ");
+            console.log(response);
+        },
+        error: function () {
+        }
+    });
+}
+
 // 顯示通知
 function showNotification(response) {
     console.log("收到的通知: ");
@@ -1361,6 +1447,16 @@ function showNotification(response) {
         notificationEnd = true;
     }
     for (var i = 0; i < response.result.length; i++) {
+        var idOfNotification = response.result[i].id;
+        // 共同討論失效
+        
+        if(response.result[i].detail.valid == true){
+            setTimeout(function(){
+                disableNotification(idOfNotification);
+            }, 6000000);
+            
+        }
+        
         notificationIndex.push(response.result[i].id);
 
         var now = new Date();
@@ -1454,8 +1550,6 @@ function getNotification() {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            //            console.log("通知列表: ");
-            //            console.log(response);
             showNotification(response);
         },
         error: function () {
@@ -1469,6 +1563,7 @@ function notNewAnymore() {
     $("#newNotification").removeClass("badge bg-c-pink");
     var myURL = head_url + "set_notification_new";
     var data = { user_id: localStorage.getItem("sessionID"), id: notificationIndex };
+    console.log("HTTP POST - set_notification_new的URL: "+myURL);
     console.log("data: ");
     console.log(data);
     $.ajax({
@@ -1479,7 +1574,7 @@ function notNewAnymore() {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log("成功set_notification_new");
+            console.log("set_notification_new的回覆: ");
             console.log(response);
         },
         error: function (response) {
@@ -1492,6 +1587,7 @@ function notNewAnymore() {
 function alreadyChecked(index) {
     $("#background" + index).css("background-color", "#FFFFF");
     var myURL = head_url + "set_notification_check?user_id=" + localStorage.getItem("sessionID") + "&id=" + index;
+    console.log("HTTP GET - set_notification_check的URL: "+myURL);
     $.ajax({
         url: myURL,
         type: "GET",
@@ -1499,7 +1595,8 @@ function alreadyChecked(index) {
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log("成功回傳");
+            console.log("set_notification_check的回覆: ");
+            console.log(response);
             notificationPage = 0;
             getNotification();
         },
@@ -1565,7 +1662,7 @@ function createDiscussRoom(){
     var data = {tags: discussTags,
     question: discussQuestion, asker:{user_id: localStorage.getItem("sessionID"),incognito: discussIncognito}};
     localStorage.setItem("discussQuestion", discussQuestion);
-    console.log("創房間的data: ");
+    console.log("socket - create_room的input: ");
     console.log(data);
     socket.emit('create_room' , data);
     //----- 創建一個共同討論的聊天室 END -----//
@@ -1597,7 +1694,6 @@ function received_message(){
                 // 暫時先這樣 END
                 // 需要重新顯示聊天記錄（加上checkbox）
                 chatLogs = response;
-                //localStorage.setItem("chatLogs", JSON.stringify(response));
                 if(response.members[0].user_id == userSessionId){
                     addCheckboxToHistory(response.chat_logs);
                 }
@@ -1608,13 +1704,11 @@ function received_message(){
             }
         }
         else if(response.user_id == null){ // 代表是創房間
-            console.log("回覆的id: "+response._id);
             discussRoomId = response._id;
             var discussQuestion = localStorage.getItem("discussQuestion");
             discussion_recommand_user();
             discussNotificationThirdTimes();
             // 重整發起人的聊天室列表
-            console.log("從創房間的新增");
             getChatroomList(userSessionId);
             localStorage.removeItem("discussQuestion");
         }
@@ -1657,9 +1751,12 @@ function received_message(){
 function check_discussion_is_full(roomId){
     var full;
     var data = {room_id: roomId};
-    console.log(data);
+    
 
     var myURL = head_url + "check_discussion_is_full";
+    console.log("HTTP POST - check_discussion_is_full的URL: "+myURL);
+    console.log("check_discussion_is_full的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1668,7 +1765,7 @@ function check_discussion_is_full(roomId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("共同討論 - 是否額滿");
+            console.log("check_discussion_is_full的output");
             console.log(response);
             full = response;
         }
@@ -1681,9 +1778,11 @@ function check_discussion_is_full(roomId){
 function check_member_is_incognito(roomId, userId){
     var incognito;
     var data = {room_id: roomId, user_id: userId};
-    console.log(data);
 
     var myURL = head_url + "check_member_is_incognito";
+    console.log("HTTP POST - check_member_is_incognito的URL: "+myURL);
+    console.log("check_member_is_incognito的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1692,6 +1791,7 @@ function check_member_is_incognito(roomId, userId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("check_member_is_incognito的output: ");
             incognito = response;
         }
     });
@@ -1703,6 +1803,7 @@ function check_member_is_incognito(roomId, userId){
 function discussion_recommand_user(){
     //----- 找出匹配的人選 START -----//
     var myURL = head_url + "discussion_recommand_user";
+    console.log("HTTP POST - discussion_recommand_user的URL: "+myURL);
     var data = {tags: recommandTagsId};
     $.ajax({
         url: myURL,
@@ -1712,9 +1813,9 @@ function discussion_recommand_user(){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+            console.log("discussion_recommand_user的回覆: ");
+            console.log(response);
             recommandUsersId = response.recommand_user_id;
-//            console.log("推薦人: ");
-//            console.log(recommandUsersId);
         }
     });
     //----- 找出匹配的人選 END -----//
@@ -1786,7 +1887,7 @@ function discussionNotificationJudge(start, end, len, discussRoomId){
 function add_discussion_invitation_notification(recommandUsersId){
     data = {asker_id: localStorage.getItem("sessionID"), tags: discussTags, recommand_users: recommandUsersId, room_id: discussRoomId, incognito: discussIncognito, question: discussQuestion};
     myURL = head_url + "add_discussion_invitation_notification";
-    console.log("共同討論邀請通知: ");
+    console.log("HTTP POST - add_discussion_invitation_notification的URL: "+myURL);
     console.log(data);
     $.ajax({
         url: myURL,
@@ -1796,8 +1897,8 @@ function add_discussion_invitation_notification(recommandUsersId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("共同討論邀請通知");
-//            console.log(response);
+            console.log("add_discussion_invitation_notification的回覆: ");
+            console.log(response);
         }
     });
     
@@ -1819,6 +1920,7 @@ function joinDiscussRoom(incognito){
     localStorage.removeItem("discussionRoomId");
     localStorage.removeItem("discussionQuestion");
     var data = {_id: discussionRoomId, user_id: userId, incognito: incognito};
+    console.log("socket - join_room的input: ");
     console.log(data);
     
     socket.emit('join_room' , data);
@@ -1854,13 +1956,12 @@ function addToChatingList(discussionRoomId, discussionQuestion){
 // 拿到某人的聊天室列表
 // socket -> query_chat_list
 function getChatroomList(userId){
-//    userId = localStorage.getItem("sessionID");
     var data = {user_id: userId};
-//    console.log("送出data: ");
-//    console.log(data);
     
     var myURL = head_url + "query_chat_list";
-    console.log("myURL: "+myURL);
+    console.log("HTTP POST - query_chat_list的URL: "+myURL);
+    console.log("query_chat_list的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -1869,8 +1970,8 @@ function getChatroomList(userId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-//            console.log("某人的聊天室列表: ");
-//            console.log(response);
+            console.log("query_chat_list的output: ");
+            console.log(response);
             // 開始重整前 都先清空
             document.getElementById("chatingList").innerHTML = "";
             //印出server的回應
@@ -1890,8 +1991,6 @@ function discussionHistory(){
     var roomId = localStorage.getItem("chatingRoomId");
     var userId = localStorage.getItem("sessionID");
     var data = {_id: roomId, user_id: userId};
-    console.log("拿聊天記錄: ");
-    console.log(data);
     socket.emit('get_chat' , data);
 }
 
@@ -1928,19 +2027,6 @@ function addCheckboxToHistory(data){
         // 重建歷史紀錄（加上checkbox）START
         if(data[i].user_id == userId){ //代表是自己說話
             
-            // 沒有label START
-//            var temp = '<div class="d-flex justify-content-end mb-4">';
-//            temp += '<div class="msg_cotainer_send">';
-//            temp += data[i].content;
-//            temp += '</div>';
-//            temp += '<div class="img_cont_msg">';
-//            temp += '<img src="';
-//            temp += img;
-//            temp += '" class="chatImg">';
-//            temp += '</div>';
-//            temp += '</div>';
-            // 沒有label END
-            
             // 加上checkbox START
             content += '<div class="mb-4">';
             content += '<label>';
@@ -1960,19 +2046,6 @@ function addCheckboxToHistory(data){
             // 加上checkbox END
         }
         else{
-            // 沒有label的 START
-//            var temp = '<div class="d-flex justify-content-start mb-4">';
-//            temp += '<div class="img_cont_msg">';
-//            temp += '<img src="';
-//            temp += img;
-//            temp += '" class="chatImg" style="background-color: #5D478B;">';
-//            temp += '</div>';
-//            temp += '<div class="msg_cotainer">';
-//            temp += data[i].content;
-//            temp += '</div>';
-//            temp += '</div>';
-            // 沒有label的 END
-            
             // 加上checkbox START
             content += '<div class="d-flex justify-content-start mb-4">';
             content += '<label>';
@@ -2092,6 +2165,7 @@ function postDiscussion(){
     //var receivedData = localStorage.getItem("chatLogs");
     var receivedData = chatLogs;
     //receivedData = JSON.parse(receivedData);
+    console.log("共同討論拿到的全部資料: ");
     console.log(receivedData);
     // 準備po文的資料 START
     var askerId = receivedData.members[0].user_id;
@@ -2099,6 +2173,8 @@ function postDiscussion(){
     var title = receivedData.question;
     var question;
     var tag = receivedData.tags;
+    console.log("tag的型態: ");
+    console.log(tag);
     var time = receivedData.time;
     var roomId = localStorage.getItem("chatingRoomId");
     // 準備po文的資料 END
@@ -2169,6 +2245,9 @@ function deleteChatroom(roomId){
     console.log("刪除的是: "+roomId);
 
     var myURL = head_url + "remove_chat";
+    console.log("HTTP POST - remove_chat的URL: "+myURL);
+    console.log("remove_chat的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
@@ -2177,7 +2256,8 @@ function deleteChatroom(roomId){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            console.log("成功: 刪除房間");
+            console.log("remove_chat的output: ");
+            console.log(response);
         },
         error: function(response){
             console.log("失敗: 刪除房間");

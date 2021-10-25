@@ -47,14 +47,17 @@ function checkLoginState() {
           console.log(response);
           //              console.log("傳到後端的: "+response);
           // 取得使用者資料丟到後端
+            var myURL = head_url + 'facebook_sign_in';
+            console.log("HTTP POST - facebook_sign_in的URL: "+myURL);
           $.ajax({
             type: "POST",
-            url: head_url + 'facebook_sign_in',
+            url: myURL,
             data: JSON.stringify(response),
             async: false,
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             success: function (response_data) {
+                console.log("facebook_sign_in的回覆: ");
               console.log(response_data);
               //慈 START
               localStorage.setItem("sessionID", response_data['_id']);
@@ -99,15 +102,21 @@ function userChanged(googleUser) {
   if (googleUser.getId() != null) {
     //傳送access token至後端驗證
     console.log('user changed. id: ' + googleUser.getId())
+      
+      var myURL = head_url + 'google_sign_in';
+      console.log("HTTP POST - google_sign_in的URL: "+myURL);
     $.ajax({
       type: "POST",
-      url: head_url + 'google_sign_in',
+      url: myURL,
       data: JSON.stringify({
         'id_token': googleUser.getAuthResponse().id_token
       }),
       dataType: "json",
       contentType: 'application/json; charset=utf-8',
       success: function (response_data) {
+          console.log("google_sign_in的回覆: ");
+          console.log(response_data);
+          
         localStorage.setItem("sessionID", response_data['_id']);
         localStorage.setItem("role", "google_user");
         localStorage.setItem("first_login", response_data['first_login']);
@@ -125,12 +134,13 @@ function userChanged(googleUser) {
 /* ================================================= */
 /* ================ Manager Sign in ================= */
 function managerLogin() {
-  var user = document.getElementById("inputUser").value;
-  var password = document.getElementById("inputPassword").value;
-  console.log('user :' + user + ' ,password: ' + password)
-  $.ajax({
+    var user = document.getElementById("inputUser").value;
+    var password = document.getElementById("inputPassword").value;
+    console.log('user :' + user + ' ,password: ' + password);
+    var myURL = head_url + 'password_sign_in';
+    $.ajax({
     type: "POST",
-    url: head_url + 'password_sign_in',
+    url: myURL,
     data: JSON.stringify({
       '_id': user,
       'password': password,
@@ -138,23 +148,21 @@ function managerLogin() {
     dataType: "json",
     contentType: 'application/json; charset=utf-8',
     success: function (response_data) {
-      console.log(response_data)
-      if (response_data['_id'] == 'invalid.') {
-        alert('帳號或密碼錯誤');
-      }
-      else if (response_data['_id'] == user) {
-        console.log(response_data)
-        localStorage.setItem("sessionID", response_data['_id']);
-        localStorage.setItem("role", response_data['role']);
-        console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.');
-        window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
-      }
-
+        if (response_data['_id'] == 'invalid.') {
+            alert('帳號或密碼錯誤');
+        }
+        else if (response_data['_id'] == user) {
+            console.log(response_data)
+            localStorage.setItem("sessionID", response_data['_id']);
+            localStorage.setItem("role", response_data['role']);
+            console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.');
+            window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+        }
     },
     error: function (xhr, status, error) {
       console.log('get_data: ' + xhr.responseText + status + ',error_msg: ' + error);
     }
-  });
+    });
 
 }
 /* ================================================= */

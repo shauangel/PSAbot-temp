@@ -63,36 +63,25 @@ def create_psabot_chat():
     data = request.get_json()
     chat_dict = {
         '_id':'',
-        'tags': [],
-        'keywords': data['keywords'],
-        'question': data['question'],
-        'time':datetime.now().replace(microsecond=0),
-        'members': 
-        [
-            {
-            'user_id':data['asker']['user_id'],
-            'incognito':data['asker']['incognito']
-            }
-        ],
+        'psabot_room_id': data['user_id'],
         'chat_logs':[],
-        'end_flag':False
     }
-    room_id = chat_data.insert_chat(chat_dict)
-    return jsonify({"_id":room_id})
+    chat_data.insert_psabot_chat(chat_dict)
+    return jsonify({'message':'新增成功'})
 
 # 詢問機器人儲存聊天訊息
-@discussion_api.route('/insert_psabot_chat_log', methods=['POST'])
+@discussion_api.route('/insert_psabot_message', methods=['POST'])
 def insert_psabot_chat_log():
     data = request.get_json()
     chat_dict = {
-        '_id':data['_id'],
         'user_id':data['user_id'],
         'time':datetime.now().replace(microsecond=0),
         'type':data['type'],
         'content':data['type']
     }
-    chat_data.insert_message(data)
-    return jsonify(chat_dict)
+    chat_data.insert_psabot_message(chat_dict)
+    return jsonify({'message':'新增成功'})
+
 
 # 聊天室是否額滿
 @discussion_api.route('/check_discussion_is_full', methods=['POST'])
@@ -134,7 +123,7 @@ def query_chat_list():
 @discussion_api.route('/remove_chat', methods=['POST'])
 def remove_chat():
     data = request.get_json()
-    chat_data.remove_chat(data['_id'])
+    chat_data.remove_chat(data)
     return jsonify(data)
 
 # 取得聊天室tag

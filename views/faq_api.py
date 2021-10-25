@@ -101,6 +101,8 @@ def insert_faq_post():
                         "time" : datetime.now().replace(microsecond=0),
                         "view_count" : 0
         }
+        if len(data['question']['content']) == 0 or len(data['question']['title'])==0:
+            return jsonify({'message':'FAQ標題或內容不得為空 !'})
         # 呼叫文字分析模組進行分析
         textAnalyzer = TextAnalyze()
         # 去除code
@@ -166,6 +168,8 @@ def insert_faq_answer():
             'score':[],
             "_id":""
         }
+        if len(data['content']) == 0:
+            return jsonify({'message':'FAQ解答內容不得為空 !'})
         faq_data.insert_answer(answer_dict)
     except Exception as e :
         answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -182,6 +186,8 @@ def update_faq_answer():
             'edit':data['edit'],
             'vote':int(data['vote']),
         }
+        if len(data['content']) == 0:
+            return jsonify({'message':'FAQ解答內容不得為空 !'})
         faq_data.update_answer(answer_dict)
     except Exception as e :
         answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
@@ -210,6 +216,8 @@ def update_faq_post():
         target_content = re.sub(r'<pre>.*?</pre>', ' ', data['question']['content'].replace('\n', '').replace('\r', ''))
         data.update({'keywords' : textAnalyzer.contentPreProcess(target_content)[0]})
         data.update({'time': datetime.now().replace(microsecond=0)})
+        if len(data['question']['content']) == 0 or len(data['question']['title'])==0:
+            return jsonify({'message':'FAQ標題或內容不得為空 !'})
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
