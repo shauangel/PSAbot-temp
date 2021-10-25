@@ -78,7 +78,7 @@ class error_message_search(Action):
         reply = "謝謝您的等待，以下為搜尋結果的資料摘要："
         for i in range(0, len(resultpage)):
             reply += ("<br>" + str(i+1) + ".<a href=\"" + resultpage[i] + "\">"+ result_title[i] + "</a>")
-        reply += "<br>點選摘要連結可顯示內容。<br><br>是否要繼續搜尋？"
+        reply += "<br>點選摘要連結可顯示內容。<br><br>希望有幫到你，歡迎下次光臨！透過左邊目錄查看更多功能。"
 
         #reply += "<a href=\"#\" onclick=\"summary('all')\">點我查看所有答案排名</a>"
         dispatcher.utter_message(text=reply)
