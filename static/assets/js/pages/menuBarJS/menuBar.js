@@ -2227,17 +2227,17 @@ function removeChat(){
     var sessionId = localStorage.getItem("sessionID");
     var data;
     if(roomId == sessionId){
-        data = {user_id : sessionId, _id: ""};
+        data = {"user_id" : sessionId, "_id": ""};
     }
     else{
-        data = {user_id : "", _id: roomId};
+        data = {"user_id" : "", "_id": roomId};
     }
     console.log("remove_chat的input: ");
     console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
-        data: JSON.stringify(data),
+        data: data,
         async: false,
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
