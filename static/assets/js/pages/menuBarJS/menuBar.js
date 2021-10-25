@@ -27,15 +27,18 @@ function bot(string) {
     // 共同討論完，要重啟rasa
     
     if(string=="請稍等，立即為你詢問其他使用者。"){
+        insert_psabot_message(string);
         createDiscussRoom();
         //setTimeout(welcomeAPI, 5000);//等一下再呼叫
     }
     if(string!=undefined && string.slice(0, 4)=="接收到了"){
+        insert_psabot_message(string);
         needDiscussQuestion = true;
     }
     
     if(string==undefined){
-       bot("出現了點問題，請稍後再試～");
+        bot("出現了點問題，請稍後再試～");
+        insert_psabot_message("出現了點問題，請稍後再試～");
     }
     else if(string=="return_discussion"){
         // 讓使用者選聊天記錄
@@ -69,7 +72,6 @@ function bot(string) {
     else{
         keyWords = {};
         if (needToClearBotMessage) {
-            //        console.log("有進來清");
             var obj = document.getElementById("willBeClear");
             obj.innerHTML = "";
             var objParent = obj.parentNode;
@@ -238,9 +240,25 @@ function sendMessageAPI(message){
             }
         });
         
-        myURL = head_url + "insert_psabot_message";
-        var data = {user_id:sessionId, type:"string", content:message};
-        $.ajax({
+        insert_psabot_message(message);
+    }
+    else{ // 共同討論
+        var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
+        console.log("socket - send_message的input");
+        console.log(data);
+        socket.emit('send_message' , data);
+        console.log("送出去的共同討論: ");
+        console.log(data);
+    }
+    
+    
+}
+
+// API -> insert_psabot_message
+function insert_psabot_message(message){
+    var myURL = head_url + "insert_psabot_message";
+    var data = {user_id:sessionId, type:"string", content:message};
+    $.ajax({
         url: myURL,
         type: "POST",
         data: JSON.stringify(data),
@@ -253,18 +271,7 @@ function sendMessageAPI(message){
         },
         error: function (response) {
         }
-        });
-    }
-    else{ // 共同討論
-        var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
-        console.log("socket - send_message的input");
-        console.log(data);
-        socket.emit('send_message' , data);
-        console.log("送出去的共同討論: ");
-        console.log(data);
-    }
-    
-    
+    });
 }
 
 // 關鍵字們 START
@@ -500,6 +507,12 @@ function openChatroom(roomId){
             success: function (response) {
                 console.log("query_chat的response:");
                 console.log(response);
+                
+                var indexVal = new Array();
+                for(var i=0; i<response.chat_logs.length; i++){
+                    indexVal.push(i);
+                }
+                discussionPostContent(response.chat_logs, indexVal);
             },
             error: function (response) {
             }
