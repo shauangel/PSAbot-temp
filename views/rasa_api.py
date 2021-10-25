@@ -41,11 +41,11 @@ def session_start():
 def keywords():
     sender_id=request.values.get('sender_id')
     keywords=request.values.get('keywords')
-    print('sender_id'+sender_id)
+    #print('sender_id'+sender_id)
     payload = {'sender': sender_id, 'message': keywords}
     headers = {'content-type': 'application/json'}
     r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload, headers=headers)
-    print(r.json())
+    #print(r.json())
     return jsonify({"message":"get_keywords success"})
     
 #ask_os_api=Blueprint('ask_os_api', __name__)
