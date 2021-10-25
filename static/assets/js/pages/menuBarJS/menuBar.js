@@ -238,7 +238,7 @@ function sendMessageAPI(message){
             }
         });
         
-        myURL = head_url + "insert_psabot_chat_log";
+        myURL = head_url + "insert_psabot_message";
         var data = {user_id:sessionId, type:"string", content:message};
         $.ajax({
         url: myURL,
@@ -248,7 +248,7 @@ function sendMessageAPI(message){
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-            console.log("insert_psabot_chat_log的response:");
+            console.log("insert_psabot_message的response:");
             console.log(response);
         },
         error: function (response) {
