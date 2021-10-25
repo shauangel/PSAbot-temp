@@ -77,7 +77,7 @@ def insert_psabot_chat_log():
         'user_id':data['user_id'],
         'time':datetime.now().replace(microsecond=0),
         'type':data['type'],
-        'content':data['type']
+        'content':data['content']
     }
     chat_data.insert_psabot_message(chat_dict)
     return jsonify({'message':'新增成功'})
