@@ -191,10 +191,11 @@ class analyze_and_search(Action):
             question_or_error_message = tracker.latest_message.get('text')
             #print('question_or_error_message: ', question_or_error_message)
             if question_or_error_message == "是":
-                print('guided_QA_question: ', tracker.get_slot("guided_QA_question"))
+                question_or_error_message = tracker.get_slot("guided_QA_question")
+                #print('guided_QA_question: ', tracker.get_slot("guided_QA_question"))
             else:
                 question_or_error_message = question_or_error_message.split(',',1)[1]
-            print(question_or_error_message)
+            #print(question_or_error_message)
             
             #宣告文字分析器
             textAnalyzer = TextAnalyze.TextAnalyze()
