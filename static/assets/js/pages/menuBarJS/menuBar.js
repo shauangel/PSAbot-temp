@@ -2225,19 +2225,19 @@ function removeChat(){
     var myURL = head_url + "remove_chat";
     var roomId = localStorage.getItem("discussionRoomId");
     var sessionId = localStorage.getItem("sessionID");
-    var data;
+    var data, space = "";
     if(roomId == sessionId){
-        data = {"user_id" : sessionId, "_id": ""};
+        data = {user_id : sessionId, _id: space};
     }
     else{
-        data = {"user_id" : "", "_id": roomId};
+        data = {user_id : space, _id: roomId};
     }
     console.log("remove_chat的input: ");
     console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
-        data: data,
+        data: JSON.stringify(data),
         async: false,
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
