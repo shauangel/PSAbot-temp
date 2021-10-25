@@ -1273,24 +1273,6 @@ window.onload = function(){
 }
 ////////////////// 登出 START ////////////////////
 function logOut() {
-    if(localStorage.getItem('role')!="manager"){
-       var myURL = head_url + "remove_chat";
-        var data = {user_id : session_id, _id: ""};
-        $.ajax({
-            url: myURL,
-            type: "POST",
-            data: JSON.stringify(data),
-            async: false,
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            success: function (response) {
-                console.log("create_psabot_chat的回覆: ");
-                console.log(response);
-            },
-            error: function (response) {
-            }
-        });
-    }
     
     if (localStorage.getItem('role') == 'google_user') {
         gapi.auth2.getAuthInstance().signOut().then(function () {
@@ -2237,17 +2219,19 @@ function change_chat_state(roomId){
     });
 }
 
-// 刪除某個房間
-// API -> remove_chat
-function deleteChatroom(roomId){
-    var data = {_id: roomId};
-    
-    console.log("刪除的是: "+roomId);
-
+// 清空聊天記錄
+// API -> 
+function removeChat(){
     var myURL = head_url + "remove_chat";
-    console.log("HTTP POST - remove_chat的URL: "+myURL);
-    console.log("remove_chat的input: ");
-    console.log(data);
+    var roomId = localStorage.getItem("discussionRoomId");
+    var sessionId = localStorage.getItem("sessionID");
+    var data;
+    if(roomId == sessionId){
+        data = {user_id : sessionId, _id: ""};
+    }
+    else{
+        data = {user_id : "", _id: roomId};
+    }
     $.ajax({
         url: myURL,
         type: "POST",
@@ -2255,12 +2239,11 @@ function deleteChatroom(roomId){
         async: false,
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
-        success: function(response){
-            console.log("remove_chat的output: ");
+        success: function (response) {
+            console.log("remove_chat的回覆: ");
             console.log(response);
         },
-        error: function(response){
-            console.log("失敗: 刪除房間");
+        error: function (response) {
         }
     });
 }
