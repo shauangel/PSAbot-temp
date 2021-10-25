@@ -2223,14 +2223,14 @@ function change_chat_state(roomId){
 // API -> 
 function removeChat(){
     var myURL = head_url + "remove_chat";
-    var roomId = localStorage.getItem("discussionRoomId");
+    var roomId = localStorage.getItem("chatingRoomId");
     var sessionId = localStorage.getItem("sessionID");
-    var data, space = "";
+    var data;
     if(roomId == sessionId){
-        data = {user_id : sessionId, _id: space};
+        data = {user_id : sessionId, _id: ""};
     }
     else{
-        data = {user_id : space, _id: roomId};
+        data = {user_id : "", _id: roomId};
     }
     console.log("remove_chat的input: ");
     console.log(data);
