@@ -8,5 +8,7 @@ from views.TextAnalyze import TextAnalyze
 class CheckTextAnalyzeModule(SettingBase):
     def test_call_method(self):
         textAnalyzer = TextAnalyze()
-        textAnalyzer.contentPreProcess('I will use this sentence to test the Text Analyze Module.')[0]
-        self.assertEqual('1','1')
+        with open('data/text-analyze-module/test_content_pre_process_input.json', 'r', encoding = 'utf-8') as file:
+            text_input = json.load(file)
+        
+        self.assertEqual(textAnalyzer.contentPreProcess(text_input['text'])[0],'1')
