@@ -12,4 +12,4 @@ class CheckTextAnalyzeModule(SettingBase):
         with open('data/text-analyze-module/test_content_pre_process_input.json', 'r', encoding = 'utf-8') as file:
             text_input = json.load(file)
         
-        self.assertEqual(textAnalyzer.contentPreProcess(text_input['text'])[0],'1')
+        self.assertEqual(textAnalyzer.keywordExtraction(text_input['text'])[0],'1')
