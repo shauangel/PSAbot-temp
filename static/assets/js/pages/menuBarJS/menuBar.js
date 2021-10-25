@@ -2232,6 +2232,8 @@ function removeChat(){
     else{
         data = {user_id : "", _id: roomId};
     }
+    console.log("remove_chat的input: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
