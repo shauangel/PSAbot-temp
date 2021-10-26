@@ -358,7 +358,7 @@ function doneKeyWord() {
     document.getElementById("doneBtn").removeAttribute("id");
 
 
-    var sendKeyWords = "keywords";
+    var sendKeyWords = "keywords_for_guided_QA";
     for (var id in keyWords) {
         sendKeyWords += ",";
         sendKeyWords += keyWords[id];
@@ -369,8 +369,6 @@ function doneKeyWord() {
     for (var i = 0; i < keyWordsBtn.length; i++) {
         keyWordsBtn[i].disabled = true;
     }
-    console.log("keyWordsBtn");
-    console.log(keyWordsBtn);
 
     document.getElementById("keywords").removeAttribute("id");
 
