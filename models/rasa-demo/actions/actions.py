@@ -52,8 +52,8 @@ class error_message_search(Action):
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         function = tracker.get_slot("function")
         print("pl(programming language):"+tracker.get_slot("pl"))
-        os = tracker.get_slot("os")[0:-10]
-        pl = tracker.get_slot("pl")[0:-10]
+        os = tracker.get_slot("os")[0:-13]
+        pl = tracker.get_slot("pl")[0:-13]
         print("pl(programming language):"+pl)
         error_message_search_time = int(tracker.get_slot("error_message_search_time"))
         #拿到所需訊息及最後一句使用者輸入
@@ -155,8 +155,8 @@ class analyze_and_search(Action):
         print('in analyze_and_search')
         function = tracker.get_slot("function")
         print("pl(programming language):"+tracker.get_slot("pl"))
-        os = tracker.get_slot("os")[0:-10]
-        pl = tracker.get_slot("pl")[0:-10]
+        os = tracker.get_slot("os")[0:-13]
+        pl = tracker.get_slot("pl")[0:-13]
         print("pl(programming language):"+pl)
         if "錯誤訊息" in function:
             #拿到所需訊息及最後一句使用者輸入
