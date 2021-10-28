@@ -46,7 +46,7 @@ def keywords():
     headers = {'content-type': 'application/json'}
     r = requests.post('http://localhost:5005/webhooks/rest/webhook', json=payload, headers=headers)
     print('keywords json: ', r.json()[0])
-    return jsonify({"message":"get_keywords success"})
+    return r.json()[0]
     
 #ask_os_api=Blueprint('ask_os_api', __name__)
 #@ask_os_api.route('ask_os')

@@ -337,6 +337,9 @@ class outer_search(Action):
         keywords = keywords.split(',',1)[1]
         print(keywords)
         
+        #宣告文字分析器
+        textAnalyzer = TextAnalyze.TextAnalyze()
+            
         qkey = keywords.split(',')
         #外部搜尋結果（URL）
         resultpage = outerSearch(qkey, 10, 0)
@@ -354,8 +357,14 @@ class outer_search(Action):
         #取得block排名
         result = TextAnalyze.blockRanking(stack_items, qkey)
         #print(result)
+        for i in stack_items:
+            i['question']['abstract'] = str(textAnalyzer.textSummarization(i['question']['abstract']))
+            for ans in i['answers']:
+                ans['abstract'] = str(textAnalyzer.textSummarization(ans['abstract']))
+                    
         temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
         block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+        
         print(temp_data_id_list.text)
         print(block_rank_id.text)
         t_data_list = json.loads(temp_data_id_list.text)
@@ -370,6 +379,7 @@ class outer_search(Action):
         reply += "<br>點選摘要連結可顯示內容。<br>"
         reply += "<a href=\"#\" onclick=\"rank('" + blocks[0] + "')\">點我查看所有答案排名</a>"
         reply += "<br><br>是否要繼續搜尋？"
+        
+        print("繼續搜尋reply：", reply)
         dispatcher.utter_message(text=reply)
-       
         return []
