@@ -370,6 +370,8 @@ class outer_search(Action):
         reply += "<br>點選摘要連結可顯示內容。<br>"
         reply += "<a href=\"#\" onclick=\"rank('" + blocks[0] + "')\">點我查看所有答案排名</a>"
         reply += "<br><br>是否要繼續搜尋？"
+        
+        print("繼續搜尋reply：", reply)
         dispatcher.utter_message(text=reply)
        
         return []
