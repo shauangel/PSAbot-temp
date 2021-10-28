@@ -1,6 +1,3 @@
-// HTTP - GET
-// URL: base_flow_rasa的URL: https://soselab.asuscomm.com:55002/api/base_flow_rasa?message=%E5%BC%95%E5%B0%8E%E5%BC%8F%E5%95%8F%E7%AD%94&sender_id=116287698501129823679
-
 {
 	"message" : "引導式問答",
 	"sender_id" : "116287698501129823679"

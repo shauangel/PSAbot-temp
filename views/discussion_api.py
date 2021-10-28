@@ -71,7 +71,7 @@ def create_psabot_chat():
 
 # 詢問機器人儲存聊天訊息
 @discussion_api.route('/insert_psabot_message', methods=['POST'])
-def insert_psabot_chat_log():
+def insert_psabot_message():
     data = request.get_json()
     chat_dict = {
         'user_id':data['user_id'],

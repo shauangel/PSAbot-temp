@@ -52,8 +52,8 @@ class error_message_search(Action):
     def run(self, dispatcher, tracker, domain) -> List[Dict[Text, Any]]:
         function = tracker.get_slot("function")
         print("pl(programming language):"+tracker.get_slot("pl"))
-        os = tracker.get_slot("os")[0:-10]
-        pl = tracker.get_slot("pl")[0:-10]
+        os = tracker.get_slot("os")[0:-13]
+        pl = tracker.get_slot("pl")[0:-13]
         print("pl(programming language):"+pl)
         error_message_search_time = int(tracker.get_slot("error_message_search_time"))
         #拿到所需訊息及最後一句使用者輸入
@@ -78,7 +78,7 @@ class error_message_search(Action):
         reply = "謝謝您的等待，以下為搜尋結果的資料摘要："
         for i in range(0, len(resultpage)):
             reply += ("<br>" + str(i+1) + ".<a href=\"" + resultpage[i] + "\">"+ result_title[i] + "</a>")
-        reply += "<br>點選摘要連結可顯示內容。<br><br>是否要繼續搜尋？"
+        reply += "<br>點選摘要連結可顯示內容。<br><br>希望有幫到你，歡迎下次光臨！透過左邊目錄查看更多功能。"
 
         #reply += "<a href=\"#\" onclick=\"summary('all')\">點我查看所有答案排名</a>"
         dispatcher.utter_message(text=reply)
@@ -155,8 +155,8 @@ class analyze_and_search(Action):
         print('in analyze_and_search')
         function = tracker.get_slot("function")
         print("pl(programming language):"+tracker.get_slot("pl"))
-        os = tracker.get_slot("os")[0:-10]
-        pl = tracker.get_slot("pl")[0:-10]
+        os = tracker.get_slot("os")[0:-13]
+        pl = tracker.get_slot("pl")[0:-13]
         print("pl(programming language):"+pl)
         if "錯誤訊息" in function:
             #拿到所需訊息及最後一句使用者輸入
@@ -189,9 +189,11 @@ class analyze_and_search(Action):
         elif "引導式" in function:
             #拿到所需訊息及最後一句使用者輸入
             question_or_error_message = tracker.latest_message.get('text')
-            print('question_or_error_message: ', question_or_error_message)
             question_or_error_message = question_or_error_message.split(',',1)[1]
-            print(question_or_error_message)
+#            if question_or_error_message == "是":
+#                question_or_error_message = tracker.get_slot("guided_QA_question").split(',',1)[1]
+#            else:
+#                question_or_error_message = question_or_error_message.split(',',1)[1]
             
             #宣告文字分析器
             textAnalyzer = TextAnalyze.TextAnalyze()

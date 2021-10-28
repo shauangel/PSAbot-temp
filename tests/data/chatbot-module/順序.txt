@@ -1,0 +1,14 @@
+1. create_psabot_chat
+2. remove_chat
+3. session_start
+4. welcome
+5. base_flow_rasa
+6. insert_psabot_message
+7. query_chat
+
+// 其實我後來發現只有四個順序很重要，其他都沒差
+// create_psabot_chat一定要第一個
+// 剩下三個一定要
+// remove_chat
+// insert_psabot_message
+// query_chat
