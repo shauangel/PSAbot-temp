@@ -394,6 +394,7 @@ function doneKeyWord() {
             console.log("outerSearch");
             console.log("keywords的回覆: ");
             console.log(response);
+            bot(response.message)
         },
         error: function () {
             console.log("error");
@@ -435,7 +436,7 @@ function doneKeyWord() {
     });
     */
     //innerSearch END
-    bot(content);
+    //bot(content);
 }
 // 關鍵字們 END
 
