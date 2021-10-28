@@ -364,7 +364,7 @@ class outer_search(Action):
         #每篇title
         result_title = [item['question']['title'] for item in stack_items]
         
-        reply += "謝謝您的等待，以下為搜尋結果的資料摘要："
+        reply = "謝謝您的等待，以下為搜尋結果的資料摘要："
         for i in range(0, len(t_data_list)):
             reply += ("<br>" + str(i+1) + ".<a href=\"#\" onclick=\"summary('" + t_data_list[i] + "')\">" + result_title[i] + "</a>")
         reply += "<br>點選摘要連結可顯示內容。<br>"
