@@ -394,7 +394,7 @@ function doneKeyWord() {
             console.log("outerSearch");
             console.log("keywords的回覆: ");
             console.log(response);
-            bot(response.message)
+            bot(response.text);
         },
         error: function () {
             console.log("error");
