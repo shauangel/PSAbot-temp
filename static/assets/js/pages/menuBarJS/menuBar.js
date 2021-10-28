@@ -256,6 +256,7 @@ function sendMessageAPI(message){
 
 // API -> insert_psabot_message
 function insert_psabot_message(message){
+    var sessionId = localStorage.getItem("sessionID");
     var myURL = head_url + "insert_psabot_message";
     var data = {user_id:sessionId, type:"string", content:message};
     $.ajax({
