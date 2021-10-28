@@ -39,6 +39,7 @@ function bot(string) {
     if(string==undefined){
         bot("出現了點問題，請稍後再試～");
         insert_psabot_message("出現了點問題，請稍後再試～");
+        welcomeAPI();
     }
     else if(string=="return_discussion"){
         // 讓使用者選聊天記錄
@@ -409,7 +410,7 @@ function doneKeyWord() {
     }
     var data = { keywords: tempKeywords };
     
-
+    /*
     var myURL = head_url + "query_inner_search";
     console.log("HTTP POST - query_inner_search的URL: "+myURL);
     console.log(data);
@@ -432,6 +433,7 @@ function doneKeyWord() {
             console.log(response);
         }
     });
+    */
     //innerSearch END
     bot(content);
 }
