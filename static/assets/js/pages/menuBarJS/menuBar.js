@@ -381,6 +381,7 @@ function doneKeyWord() {
     // 傳給rasa START
     var sessionId = localStorage.getItem("sessionID");
     var myURL = head_url + "keywords?sender_id=" + sessionId + "&keywords=" + sendKeyWords;
+    
     console.log("HTTP GET - keywords的URL: " + myURL);
     $.ajax({
         url: myURL,
