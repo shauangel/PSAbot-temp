@@ -423,7 +423,9 @@ function doneKeyWord() {
         success: function (response) {
             console.log("成功: 內部貼文搜尋（query_inner_search）");
             console.log(response);
-            content = innerSearch(response, content);
+            if(response.inner_search_result!=null){
+                content = innerSearch(response, content);
+            }
         },
         error: function (response) {
             console.log("失敗: 內部貼文搜尋（query_inner_search）");
