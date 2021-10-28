@@ -337,6 +337,9 @@ class outer_search(Action):
         keywords = keywords.split(',',1)[1]
         print(keywords)
         
+        #宣告文字分析器
+        textAnalyzer = TextAnalyze.TextAnalyze()
+            
         qkey = keywords.split(',')
         #外部搜尋結果（URL）
         resultpage = outerSearch(qkey, 10, 0)
