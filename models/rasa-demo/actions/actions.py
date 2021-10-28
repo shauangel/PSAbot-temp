@@ -354,8 +354,14 @@ class outer_search(Action):
         #取得block排名
         result = TextAnalyze.blockRanking(stack_items, qkey)
         #print(result)
+        for i in stack_items:
+            i['question']['abstract'] = str(textAnalyzer.textSummarization(i['question']['abstract']))
+            for ans in i['answers']:
+                ans['abstract'] = str(textAnalyzer.textSummarization(ans['abstract']))
+                    
         temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
         block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+        
         print(temp_data_id_list.text)
         print(block_rank_id.text)
         t_data_list = json.loads(temp_data_id_list.text)
@@ -373,5 +379,4 @@ class outer_search(Action):
         
         print("繼續搜尋reply：", reply)
         dispatcher.utter_message(text=reply)
-       
         return []
