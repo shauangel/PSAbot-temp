@@ -86,6 +86,7 @@ def parseStackData(url_list):
             continue
         if len(query_ids) > 5:
             break
+    print(query_ids)
     question = site.fetch('questions', filter='withbody', ids=query_ids)['items']
     answers = site.fetch('questions/{ids}/answers', filter='withbody', ids=query_ids, sort='votes', order='desc')['items']
     ctg_ans = {}
