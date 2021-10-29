@@ -362,8 +362,8 @@ class outer_search(Action):
             for ans in i['answers']:
                 ans['abstract'] = str(textAnalyzer.textSummarization(ans['abstract']))
                     
-        temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"})
-        block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"})
+        temp_data_id_list = requests.post(head_url + 'insert_cache', json={'data' : stack_items[0:5], 'type' : "temp_data"}, verify=False)
+        block_rank_id = requests.post(head_url + 'insert_cache', json={'data': result, 'type' : "blocks_rank"}, verify=False)
         
         print(temp_data_id_list.text)
         print(block_rank_id.text)
