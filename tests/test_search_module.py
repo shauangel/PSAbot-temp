@@ -14,6 +14,7 @@ class CheckTextAnalyzeModule(SettingBase):
         self.assertEqual(response.json,output)
     
     def test_keywords(self):
+        self.maxDiff = None
         response = self.client.get(url_for('rasa_api.keywords')+ "?sender_id=116287698501129823679&keywords=keywords_for_guided_QA,flask",follow_redirects=True)
         with open('data/search-module/keywords_output.json', 'r', encoding = 'utf-8') as file:
             output = json.load(file)
