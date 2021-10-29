@@ -13,8 +13,8 @@ from itertools import chain
 
 #文字分析模組 - stackoverflow外部資料 & PQAbot系統內部資料
 class TextAnalyze:
-    
-    STOPWORDS = list(STOP_WORDS)               ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
+    ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
+    STOPWORDS = list(STOP_WORDS) + ['use']
     POS_TAG = ['PROPN', 'ADJ', 'NOUN', 'VERB'] ##欲留下的詞類
     
     def __init__(self):
@@ -48,7 +48,7 @@ class TextAnalyze:
         lemma = list(dict.fromkeys(lemma))    #reduce duplicate words
         
         ###Step 4. reduce stopwords & puncuation
-        flitered_token = [ word for word in lemma if not nlp.vocab[word].is_stop ]
+        flitered_token = [ word for word in lemma if not nlp.vocab[word].is_stop or in STOPWORDS ]
         
         return flitered_token, doc
     

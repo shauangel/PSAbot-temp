@@ -80,6 +80,7 @@ def parseStackData(url_list):
     for url in url_list:
         try:
             url_id = PurePosixPath(urlparse(unquote(url)).path).parts[2]
+            pre_test = int(url_id) + 1
             query_ids.append(url_id)
         except:
             continue
