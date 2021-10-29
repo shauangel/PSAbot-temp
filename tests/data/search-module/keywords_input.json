@@ -1,0 +1,8 @@
+// HTTP - GET
+// URL: https://soselab.asuscomm.com:55002/api/keywords?sender_id=116287698501129823679&keywords=keywords_for_guided_QA,falsk
+// @rasa_api.keywords
+
+{
+    "sender_id" : "116287698501129823679",
+    "keywords" : "keywords_for_guided_QA,falsk"
+}
