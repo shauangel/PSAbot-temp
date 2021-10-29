@@ -48,7 +48,7 @@ class TextAnalyze:
         lemma = list(dict.fromkeys(lemma))    #reduce duplicate words
         
         ###Step 4. reduce stopwords & puncuation
-        flitered_token = [ word for word in lemma if not nlp.vocab[word].is_stop or word in STOPWORDS ]
+        flitered_token = [ word for word in lemma if not nlp.vocab[word].is_stop or word in self.STOPWORDS ]
         
         return flitered_token, doc
     
