@@ -1190,6 +1190,7 @@ function save() {
             console.log("檔名: ");
             console.log(userImgName);
             var myURL = head_url + "save_user_img";
+            console.log("save_user_img的URL: "+myURL);
 
             fetch(myURL, {
                 method: 'POST',
