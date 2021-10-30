@@ -1185,7 +1185,10 @@ function save() {
         let form = new FormData();
         if (document.getElementById("headshotBtn").files[0] != null) {
             form.append("img", document.getElementById("headshotBtn").files[0], userImgName);
-
+            console.log("檔案： ");
+            console.log(document.getElementById("headshotBtn").files[0]);
+            console.log("檔名: ");
+            console.log(userImgName);
             var myURL = head_url + "save_user_img";
 
             fetch(myURL, {
@@ -1198,6 +1201,8 @@ function save() {
                 console.log(result); // 得到 {name: "oxxo", age: 18, text: "你的名字是 oxxo，年紀 18 歲～"}
             });
         }
+        console.log("儲存照片form: ");
+        console.log(form);
 
         myURL = head_url + "update_user_profile";
 
