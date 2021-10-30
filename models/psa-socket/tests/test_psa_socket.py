@@ -18,8 +18,13 @@ class TestSocketIO(unittest.TestCase):
     def test_emit(self):
         client = connect_client('test_user2')
         client.get_received()
-        client.emit('test_user2', {'a': 'b'})
+        client.emit('send_message', {
+            '_id':'test_user2',
+            'user_id': 'test_user2',
+            'type':'string',
+            'content':'test'
+            })
         received = client.get_received()
-        self.assertEqual(received[0], 'test_user2')
+        self.assertEqual(received[0], 'received_message')
         # self.assertEqual(received[0]['name'], 'test_user2')
         # self.assertEqual(received[0]['args'][0]['a'], 'b')
