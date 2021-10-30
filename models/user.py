@@ -50,7 +50,7 @@ def update_user(update_dict):
         for post in user_data['record']['posts']:
             _db.INNER_POST_COLLECTION.update_one({'_id':post['_id']},{'$set':{'asker_name':update_dict['name']}})
         # 更改所有回覆的名字
-        for post in user_data['record']['response']:
+        for post in user_data['record']['responses']:
             _db.INNER_POST_COLLECTION.update({'_id':post['_id']},
                                              {'$set':{'answer.$[elem].replier_name':update_dict['name']}},
                                              {'arrayFilters': [{ "elem.replier_id": update_dict['_id']}]},multi=True)
