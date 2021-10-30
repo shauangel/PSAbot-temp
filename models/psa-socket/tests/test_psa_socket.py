@@ -25,8 +25,8 @@ class TestSocketIO(unittest.TestCase):
         
     def test_create_room(self):
         client = connect_client('116287698501129823679')
-        json_input = get_file_input('realtime-discussion', 'create_room')
-        json_output = get_file_output('realtime-discussion', 'create_room')
+        json_input = get_file_input('realtime-discussion-module', 'create_room')
+        json_output = get_file_output('realtime-discussion-module', 'create_room')
         client.emit('create_room', json_input)
         received = client.get_received()
         self.assertEqual(received[0]['name'], 'received_message')
@@ -34,15 +34,15 @@ class TestSocketIO(unittest.TestCase):
         
     def test_join_room(self):
         client = connect_client('4168365173258689')
-        json_input = get_file_input('realtime-discussion', 'join_room')
+        json_input = get_file_input('realtime-discussion-module', 'join_room')
         client.emit('join_room', json_input)
         received = client.get_received()
         self.assertEqual(received[0]['name'], 'received_message')
         
     def test_send_message(self):
         client = connect_client('116287698501129823679')
-        json_input = get_file_input('realtime-discussion', 'send_message')
-        json_output = get_file_output('realtime-discussion', 'send_message')
+        json_input = get_file_input('realtime-discussion-module', 'send_message')
+        json_output = get_file_output('realtime-discussion-module', 'send_message')
         client.emit('send_message', json_input)
         received = client.get_received()
         self.assertEqual(received[0]['name'], 'received_message')
