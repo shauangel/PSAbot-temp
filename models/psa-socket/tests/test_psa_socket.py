@@ -18,11 +18,9 @@ class TestSocketIO(unittest.TestCase):
     def test_emit(self):
         client = connect_client('test_user2')
         client.get_received()
-        client.emit('send_message', {
-            '_id':'test_user2',
-            'user_id': 'test_user2',
-            'type':'string',
-            'content':'test'
+        client.emit('get_chat', {
+            '_id':"000001",
+            'user_id':'test_user2'
             })
         received = client.get_received()
         self.assertEqual(received[0], 'received_message')
