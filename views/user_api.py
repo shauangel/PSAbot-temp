@@ -87,15 +87,15 @@ def query_user_skill():
 @user_api.route('/update_user_profile', methods=['POST'])
 def update_user_profile():
     data = request.get_json()
-    try:
-        user_profile = {
-            '_id' : data['_id'],
-            'name': data['name'],
-        }
-        user.update_user(user_profile)
-    except Exception as e :
-        user_profile = {"error" : e.__class__.__name__ + ":" +e.args[0]}
-        print(e)
+    # try:
+    user_profile = {
+        '_id' : data['_id'],
+        'name': data['name'],
+    }
+    user.update_user(user_profile)
+    # except Exception as e :
+        # user_profile = {"error" : e.__class__.__name__ + ":" +e.args[0]}
+        # print(e)
     return jsonify(user_profile)
 
 # 編輯使用者興趣
