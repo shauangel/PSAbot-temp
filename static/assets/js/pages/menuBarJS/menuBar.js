@@ -1195,6 +1195,11 @@ function save() {
                 body: form,
                 async: false,
             }).then(res => {
+                console.log("上傳照片後的response");
+                console.log(res);
+                
+                console.log("上傳照片後的response JSON");
+                console.log(res.json());
                 return res.json();   // 使用 json() 可以得到 json 物件
             }).then(result => {
                 console.log(result); // 得到 {name: "oxxo", age: 18, text: "你的名字是 oxxo，年紀 18 歲～"}
