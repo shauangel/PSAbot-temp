@@ -1,0 +1,7 @@
+// HTTP - GET
+// URL: https://soselab.asuscomm.com:55002/api/check_notification_content?user_id=116287698501129823679&page=0
+
+{
+	"user_id" : "116287698501129823679",
+	"page" : "0"
+}

@@ -80,11 +80,13 @@ def parseStackData(url_list):
     for url in url_list:
         try:
             url_id = PurePosixPath(urlparse(unquote(url)).path).parts[2]
+            pre_test = int(url_id) + 1
             query_ids.append(url_id)
         except:
             continue
         if len(query_ids) > 5:
             break
+    print(query_ids)
     question = site.fetch('questions', filter='withbody', ids=query_ids)['items']
     answers = site.fetch('questions/{ids}/answers', filter='withbody', ids=query_ids, sort='votes', order='desc')['items']
     ctg_ans = {}

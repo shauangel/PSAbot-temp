@@ -1,0 +1,8 @@
+// HTTP - GET
+// URL: https://soselab.asuscomm.com:55002/api/add_post_notification?user_id=4028146397302662&replier_id=116287698501129823679&post_id=000015
+
+{
+	"user_id" : "4028146397302662",
+	"replier_id" : "116287698501129823679",
+	"post_id" : "000015"
+}

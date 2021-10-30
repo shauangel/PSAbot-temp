@@ -1,0 +1,7 @@
+// HTTP - GET
+// URL: https://soselab.asuscomm.com:55002/api/disable_discussion_invatation?user_id=116287698501129823679&id=45
+
+{
+	"user_id" : "116287698501129823679",
+	"id" : 45
+}

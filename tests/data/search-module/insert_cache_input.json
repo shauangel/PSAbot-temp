@@ -1,0 +1,63 @@
+{"data": [
+    {
+        "id": 60152433, 
+        "content": "Not entirely sure how you have your profile configured or your specific environment variables but it is very common to use Virtual Environments. nvenv is built into python which will create a contained \"environment\" for your project.  You can create a virtual environment by calling   This will create a folder in your current directory which you have to source.  This should change your terminal line to show you are in the environment. Then you can check to ensure you're using python three.  You will notice you now need to reinstall all of your packages you want to use. That's because this is all self contained.  Once your pip install all of your packages again, and run your code while the virtual environment is activated, all python scripts will revert to this python version you created the environment with. It was creates specifically for times like this.  So if you want to follow along in your terminal, you can do the following. The dollar sign signifies a new command into the terminal and doesn't need to be entered.  Then I created a small file called app.py with the following contents Then running  starts the application in python3 Changing the alias in your ~/.bash_profile just changes the call when your personally type python into your terminal. It does not change where applications and programs will search for python. They use your environment variables and current the default python installation is python2.  You can also change what interpreter your python script looks for by using a shebang line as the first line of your file or",
+        "link": "https://stackoverflow.com/questions/60146945/how-to-prevent-osx-from-using-python-flask-2-7", 
+        "score": 0.6648545795550153
+    }, 
+    {
+        "id": 60150591, 
+        "content": "You should try creating a virtual environment to check if this solves your problem there's a varietey to achieve this, but most of them consist of creating a venv -> activating the venv and then starting the python program while the venv is active Side-note: An IDE like Pycharm can be configured to activate the venv automatically to run your local server, using the \"Configurations\" dialog.",
+        "link": "https://stackoverflow.com/questions/60146945/how-to-prevent-osx-from-using-python-flask-2-7",
+        "score": 0.6469080422464744
+    },
+    {
+        "id": 52360878,
+        "content": "If your using mac terminal then check the python version which is linked to pip. Suppose for example if pip is linked to python version 2.7 use  else if python version is 3.0 and above By using these commands you can check is flask is installed and if so for which python version",
+        "link": "https://stackoverflow.com/questions/18490922/flask-import-error-python",
+        "score": 0.6436676443410065
+    }, 
+    {
+        "id": 67310838,
+        "content": "It is all because you haven't installed the module. It wouldn't really run without installing. So you would have to install it. The issue here is that I don't use MAC so I can't explain but I have found a video that would explain it to you. Link: https://www.youtube.com/watch?v=yBdZZGPpYxg Watch the video. In the video they explain how to install requests module. You can simply write flask instead to requests while they tell you how to install. Hope this helps. If still this doesn't make sense, please ask me in the comments. :) Thank You! :D",
+        "link": "https://stackoverflow.com/questions/67310790/import-flask-not-working-on-my-macbook-pro-m1-chip",
+        "score": 0.6350089778314876
+    },
+    {
+        "id": 53274448,
+        "content": "This gets into the vagaries of networking. Change to and try again.  When you tried to pass --port=0.0.0.0 to your app, the option was ignored, since your app isn't parsing options. The flask runner does parse them. On the Mac side, the invocation would be I don't know what the equivalent would be on Windows.",
+        "link": "https://stackoverflow.com/questions/53273344/flask-server-visible-when-hosted-on-macbook-but-not-when-hosted-on-windows-desk",
+        "score": 0.6178166879738249
+    }, 
+    {
+        "id": 64414864,
+        "content": "The line: is creating a dict from string and looks for the key process_key. The key is not in the dict so the KeyError is raised. Look at the code of server.py line 159 and see how to avoid the issue.",
+        "link": "https://stackoverflow.com/questions/64346488/how-to-solve-this-error-when-running-python-flask-on-macos",
+        "score": 0.6077398577469181
+    }, 
+    {
+        "id": 44345951,
+        "content": "$ pip install virtualenv Create virtualenv: $ virtualenv venv Activate virtual environment: $ source venv/bin/activate Make sure your terminal like this: (venv) user@username: Installing flask\n\n\npip install flask\n\nAnd you can import flask without error :)\nTo deactivate, just type:\n\ndeactivate\n\n pip install flask And you can import flask without error :) To deactivate, just type: deactivate",
+        "link": "https://stackoverflow.com/questions/18490922/flask-import-error-python",
+        "score": 0.5964686434491209
+    }, 
+    {
+        "id": 18493622,
+        "content": "uninstall the package and then reinstall it again using pip \" pip install Flask \"  after that use this command to import the package: edit:\nare you using virtualenv ? if not then i recommend you to install it first \nuse this command:",
+        "link": "https://stackoverflow.com/questions/18490922/flask-import-error-python",
+        "score": 0.5582935756337336
+    }, 
+    {
+        "id": 56992428,
+        "content": "Mac OS does not have apt-get in the terminal.  Follow this guide for directions on how to install pip on mac.  You can also reference this stack overflow question",
+        "link": "https://stackoverflow.com/questions/56992323/installing-python3-pip-flask-on-macos-mojave-10-14-5",
+        "score": 0.5557458453117595
+    }, 
+    {
+        "id": 18490985,
+        "content": "The module is called flask:",
+        "link": "https://stackoverflow.com/questions/18490922/flask-import-error-python",
+        "score": 0.35419823736925693
+    }], 
+    "type": "blocks_rank"
+}
