@@ -18,7 +18,7 @@ def write_testing(self,api_name,data_folder,function_name):
     response = self.client.post(url_for(api_name +'.' + function_name) ,
                                 data = json.dumps(text_input), content_type="application/json")
     with open('data/' + data_folder + '/' + function_name + '_output.json', 'w', encoding = 'utf-8') as file:
-        json.dumps(response.data,file)
+        json.dump(response.data,file)
     with open('data/' + data_folder + '/' + function_name + '_output.json', 'r', encoding = 'utf-8') as file:
         output = json.load(file)
     
@@ -41,7 +41,7 @@ class CheckUserFunctionModule(SettingBase):
         response = self.client.post(url_for('user_api.query_user_skill') ,
                                     data = json.dumps(text_input), content_type="application/json")
         with open('data/user-function-module/query_user_skill_output.json', 'w', encoding = 'utf-8') as file:
-            output = json.dumps(response.json,file)
+            output = json.dump(response.json,file)
         with open('data/user-function-module/query_user_skill_output.json', 'r', encoding = 'utf-8') as file:
             output = json.load(file)
         
