@@ -1,0 +1,6 @@
+// HTTP - GET
+// URL: https://soselab.asuscomm.com:55002/api/delete_notification?post_id=000059
+
+{
+	"post_id" : "000059"
+}

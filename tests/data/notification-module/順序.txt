@@ -1,0 +1,18 @@
+// check_notification_content 一定要第一個
+1. check_notification_content
+
+
+// add要在delete前
+2. add_post_notification
+3. delete_notification
+
+
+// add要在delete前
+4. add_discussion_invitation_notification
+5. disable_discussion_invatation
+
+
+// 剩下就沒差了～
+6. check_new_notification
+7. set_notification_new
+8. set_notification_check
