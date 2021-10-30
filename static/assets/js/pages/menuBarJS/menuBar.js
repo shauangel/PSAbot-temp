@@ -1185,9 +1185,10 @@ function save() {
         let form = new FormData();
         if (document.getElementById("headshotBtn").files[0] != null) {
             form.append("img", document.getElementById("headshotBtn").files[0], userImgName);
-            
-            console.log("儲存照片form: ");
-            console.log(form);
+            console.log("檔案： ");
+            console.log(document.getElementById("headshotBtn").files[0]);
+            console.log("檔名: ");
+            console.log(userImgName);
             var myURL = head_url + "save_user_img";
 
             fetch(myURL, {
@@ -1195,16 +1196,13 @@ function save() {
                 body: form,
                 async: false,
             }).then(res => {
-                console.log("上傳照片後的response");
-                console.log(res);
-                
-                console.log("上傳照片後的response JSON");
-                console.log(res.json());
                 return res.json();   // 使用 json() 可以得到 json 物件
             }).then(result => {
                 console.log(result); // 得到 {name: "oxxo", age: 18, text: "你的名字是 oxxo，年紀 18 歲～"}
             });
         }
+        console.log("儲存照片form: ");
+        console.log(form);
 
         myURL = head_url + "update_user_profile";
 
