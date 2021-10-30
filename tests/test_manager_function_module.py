@@ -41,7 +41,7 @@ class CheckManagerFunctionModule(SettingBase):
         post_testing(self,'faq_api','manager-function-module','adjust_faq_update')
     @pytest.mark.order6
     def test_query_faq_list(self):
-        post_testing(self,'faq_api','manager-function-module','query_faq_list')
+        write_testing(self,'faq_api','manager-function-module','query_faq_list')
     @pytest.mark.order7
     def test_query_faq_list_by_string(self):
         write_testing(self,'faq_api','manager-function-module','query_faq_list_by_string')
