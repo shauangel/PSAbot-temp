@@ -1,0 +1,10 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/insert_faq_answer
+// @faq_api.insert_faq_answer
+
+{
+    "faq_id":"000094",
+    "content":"新增answer",
+    "edit":"新增answer",
+    "vote":0
+}

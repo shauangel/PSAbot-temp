@@ -1,0 +1,8 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/delete_inner_post
+// @post_api.delete_inner_post
+
+{
+    "_id": "000055",
+    "asker_id" : "116287698501129823679"
+}

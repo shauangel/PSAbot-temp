@@ -1,0 +1,8 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/delete_faq_answer
+// @faq_api.delete_faq_answer
+
+{
+    "faq_id" : "000094",
+    "answer_id" : "000001"
+}

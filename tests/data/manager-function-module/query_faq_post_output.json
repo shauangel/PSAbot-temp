@@ -1,0 +1,46 @@
+{
+    "_id": "000045",
+    "answers": [
+        {
+            "answer_id": 466376,
+            "content": "<p><code>datetime.strptime</code> is the main routine for parsing strings into datetimes. It can handle all sorts of formats, with the format determined by a format string you give it:</p>\n<pre><code class=\"python\">from datetime import datetime\n\ndatetime_object = datetime.strptime('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p')\n</code></pre>\n<p>The resulting <code>datetime</code> object is timezone-naive.</p>\n<p>Links:</p>\n<ul>\n<li><p>Python documentation for <code>strptime</code>: <a href=\"https://docs.python.org/2/library/datetime.html#datetime.datetime.strptime\" rel=\"noreferrer\" title=\"datetime.datetime.strptime\">Python 2</a>, <a href=\"https://docs.python.org/3/library/datetime.html#datetime.datetime.strptime\" rel=\"noreferrer\">Python 3</a></p></li>\n<li><p>Python documentation for <code>strptime</code>/<code>strftime</code> format strings: <a href=\"https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior\" rel=\"noreferrer\" title=\"strftime-and-strptime-behavior\">Python 2</a>, <a href=\"https://docs.python.org/3/library/datetime.html#strftime-and-strptime-behavior\" rel=\"noreferrer\">Python 3</a></p></li>\n<li><p><a href=\"http://strftime.org/\" rel=\"noreferrer\">strftime.org</a> is also a really nice reference for strftime</p></li>\n</ul>\n<p>Notes:</p>\n<ul>\n<li><code>strptime</code> = \"string parse time\"</li>\n<li><code>strftime</code> = \"string format time\"</li>\n<li>Pronounce it out loud today &amp; you won't have to search for it again in 6 months.</li>\n</ul>\n",
+            "edit": "",
+            "score": [],
+            "vote": 3906
+        }
+    ],
+    "keywords": [
+        "huge",
+        "list",
+        "date",
+        "time",
+        "string",
+        "shove",
+        "proper",
+        "datetime",
+        "field",
+        "database",
+        "need",
+        "magic",
+        "real",
+        "object",
+        "django",
+        "orm",
+        "use",
+        "sql",
+        "conversion",
+        "insert"
+    ],
+    "link": "https://stackoverflow.com/questions/466345/converting-string-into-datetime",
+    "question": {
+        "content": "<p>I've got a huge list of date-times like this as strings:</p>\n<pre><code class=\"python\">Jun 1 2005  1:33PM\nAug 28 1999 12:00AM\n</code></pre>\n<p>I'm going to be shoving these back into proper datetime fields in a database so I need to magic them into real datetime objects. </p>\n<p>This is going through Django's ORM so I can't use SQL to do the conversion on insert.</p>\n",
+        "edit": "",
+        "id": 466345,
+        "score": [],
+        "title": "Converting string into datetime",
+        "vote": 2507
+    },
+    "tags": [],
+    "time": "Wed, 11 Aug 2021 00:13:58 GMT",
+    "view_count": 0
+}

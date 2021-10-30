@@ -1,0 +1,25 @@
+// Manager Function Module
+
+1. delete_inner_post_response // id: 000079
+2. delete_inner_post // id: 000055
+3. query_faq_update 
+4. adjust_faq_update 
+
+// 查看faq
+5. query_faq_post 
+6. query_faq_list 
+7. query_faq_list_by_string 
+8. query_faq_list_by_tag
+
+// faq貼文
+9. insert_faq_post ！！一定會錯，因為有時間！！ // id: 000094
+10. import_faq_post （先跳過）
+11. update_faq_post ！！一定會錯，因為有時間！！ // id: 000094
+
+// faq回覆
+12. insert_faq_answer // post_id: 000094, answer_id: 00002
+13. update_faq_answer // post_id: 000094, answer_id: 00001
+14. delete_faq_answer // post_id: 000094, answer_id: 00001
+
+// 最後再刪貼文
+15. delete_faq_post

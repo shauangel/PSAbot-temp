@@ -1,0 +1,9 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/delete_inner_post_response
+// @post_api.delete_inner_post_response
+
+{
+    "_id": "000002",
+    "post_id": "000079",
+    "replier_id": "116287698501129823679"
+}

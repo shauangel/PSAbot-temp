@@ -1,0 +1,8 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/adjust_faq_update
+// @faq_api.adjust_faq_update
+
+{
+    "num": 20,
+    "cycle": 30
+}

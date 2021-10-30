@@ -1,0 +1,132 @@
+{
+    "faq_count": 92,
+    "faq_list": [
+        {
+            "_id": "000080",
+            "keywords": [
+                "find",
+                "class",
+                "create",
+                "instance",
+                "object",
+                "python",
+                "function",
+                "base",
+                "derive",
+                "think",
+                "inspect",
+                "module",
+                "help",
+                "want",
+                "parse",
+                "member",
+                "sure",
+                "information"
+            ],
+            "question": {
+                "title": "Getting the class name of an instance?",
+                "vote": 1691
+            },
+            "score": 1,
+            "tags": [],
+            "time": "Wed, 11 Aug 2021 00:13:58 GMT",
+            "view_count": 0
+        },
+        {
+            "_id": "000087",
+            "keywords": [
+                "json",
+                "file",
+                "write",
+                "script",
+                "print",
+                "data",
+                "program",
+                "raise",
+                "exception",
+                "parse",
+                "extract",
+                "value"
+            ],
+            "question": {
+                "title": "Why can&#39;t Python parse this JSON data?",
+                "vote": 1499
+            },
+            "score": 0,
+            "tags": [],
+            "time": "Wed, 11 Aug 2021 00:13:58 GMT",
+            "view_count": 0
+        },
+        {
+            "_id": "000045",
+            "keywords": [
+                "huge",
+                "list",
+                "date",
+                "time",
+                "string",
+                "shove",
+                "proper",
+                "datetime",
+                "field",
+                "database",
+                "need",
+                "magic",
+                "real",
+                "object",
+                "django",
+                "orm",
+                "use",
+                "sql",
+                "conversion",
+                "insert"
+            ],
+            "question": {
+                "title": "Converting string into datetime",
+                "vote": 2507
+            },
+            "score": 0,
+            "tags": [],
+            "time": "Wed, 11 Aug 2021 00:13:58 GMT",
+            "view_count": 0
+        },
+        {
+            "_id": "000004",
+            "keywords": [
+                "python",
+                "metaclasse",
+                "use"
+            ],
+            "question": {
+                "title": "What are metaclasses in Python?",
+                "vote": 6284
+            },
+            "score": 0,
+            "tags": [],
+            "time": "Wed, 11 Aug 2021 00:13:58 GMT",
+            "view_count": 0
+        },
+        {
+            "_id": "000074",
+            "keywords": [
+                "way",
+                "delete",
+                "item",
+                "dictionary",
+                "python",
+                "return",
+                "copy",
+                "modify",
+                "original"
+            ],
+            "question": {
+                "title": "Delete an element from a dictionary",
+                "vote": 1756
+            },
+            "score": 0,
+            "tags": [],
+            "time": "Wed, 11 Aug 2021 00:13:58 GMT",
+            "view_count": 0
+        }
+    ]
+}

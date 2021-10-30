@@ -182,7 +182,7 @@ def delete_inner_post_response():
         inner_post.remove_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}  
-    return jsonify(response_dict)
+    return jsonify({"message":"更新成功"})
 
 # 對貼文按讚
 @post_api.route('/like_inner_post',methods=['POST'])
@@ -225,7 +225,7 @@ def delete_inner_post():
     except Exception as e :
         data = {"error" : e.__class__.__name__ + ":" +e.args[0]}
         print(e)
-    return jsonify(data)
+    return jsonify({"message":"更新成功"})
 
 #內部搜尋
 @post_api.route('query_inner_search', methods=['POST'])
