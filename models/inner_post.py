@@ -177,7 +177,7 @@ def update_score(score_dict):
         if any(s['user_id'] == score_dict['user'] for s in target_post['score']):
             original_score_record = next(s for s in target_post['score'] if s['user_id'] == score_dict['user'])
             if original_score_record['score'] == score_dict['score']:
-                _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'score.user_id': score_dict['user']},{'$pull':{'score.$':original_score_record}})
+                _db.INNER_POST_COLLECTION.update_one({'_id':score_dict['post_id'],'score.user_id': score_dict['user']},{'$pull':{'score':original_score_record}})
                 for tag in target_post['tag']:
                     user.update_user_score(target_post['asker_id'],tag['tag_id'],tag['tag_name'],-original_score_record['score'])
             else:

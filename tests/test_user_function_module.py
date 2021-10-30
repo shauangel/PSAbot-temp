@@ -12,6 +12,18 @@ def post_testing(self,api_name,data_folder,function_name):
                                 data = json.dumps(text_input), content_type="application/json")
     self.assertEqual(response.json,output)
 
+def write_testing(self,api_name,data_folder,function_name):
+    with open('data/' + data_folder + '/' + function_name + '_input.json', 'r', encoding = 'utf-8') as file:
+            text_input = json.load(file)
+    response = self.client.post(url_for(api_name +'.' + function_name) ,
+                                data = json.dumps(text_input), content_type="application/json")
+    with open('data/' + data_folder + '/' + function_name + '_output.json', 'w', encoding = 'utf-8') as file:
+        json.dumps(response.data,file)
+    with open('data/' + data_folder + '/' + function_name + '_output.json', 'r', encoding = 'utf-8') as file:
+        output = json.load(file)
+    
+    self.assertEqual(response.json,output)
+
 class CheckUserFunctionModule(SettingBase):
     @pytest.mark.order1
     def test_query_user_profile(self):
@@ -26,10 +38,13 @@ class CheckUserFunctionModule(SettingBase):
     def test_query_user_skill(self):
         with open('data/user-function-module/query_user_skill_input.json', 'r', encoding = 'utf-8') as file:
             text_input = json.load(file)
-        with open('data/user-function-module/query_user_skill_output.json', 'r', encoding = 'utf-8') as file:
-            output = json.load(file)
         response = self.client.post(url_for('user_api.query_user_skill') ,
                                     data = json.dumps(text_input), content_type="application/json")
+        with open('data/user-function-module/query_user_skill_output.json', 'w', encoding = 'utf-8') as file:
+            output = json.dumps(response.json,file)
+        with open('data/user-function-module/query_user_skill_output.json', 'r', encoding = 'utf-8') as file:
+            output = json.load(file)
+        
         self.assertEqual(response.json,output)
     @pytest.mark.order3
     def test_update_user_profile(self):
@@ -78,13 +93,13 @@ class CheckUserFunctionModule(SettingBase):
         self.assertEqual(response.json,output)
     @pytest.mark.order8
     def test_query_inner_post_list(self):
-        post_testing(self,'post_api','user-function-module','query_inner_post_list')
+        write_testing(self,'post_api','user-function-module','query_inner_post_list')
     @pytest.mark.order9
     def test_query_inner_post_list_by_title(self):
-        post_testing(self,'post_api','user-function-module','query_inner_post_list_by_title')
+        write_testing(self,'post_api','user-function-module','query_inner_post_list_by_title')
     @pytest.mark.order10
     def test_query_inner_post_list_by_tag(self):
-        post_testing(self,'post_api','user-function-module','query_inner_post_list_by_tag')
+        write_testing(self,'post_api','user-function-module','query_inner_post_list_by_tag')
     @pytest.mark.order11
     def test_query_inner_post(self):
         post_testing(self,'post_api','user-function-module','query_inner_post')
