@@ -150,12 +150,13 @@ def update_answer(data_dict):
                                             'answers.$.edit':data_dict['edit']}})
 
 def remove_answer(data_dict):
-    tags = _db.FAQ_DATA_COLLECTION.find_one({'_id':data_dict['faq_id']})
+    tags = _db.FAQ_DATA_COLLECTION.find_one({'_id':data_dict['faq_id']})['tags']
     _db.FAQ_DATA_COLLECTION.update_one({'_id':data_dict['faq_id']},
                                   {'$pull':{'answers':{'answer_id':data_dict['answer_id']}}})
     # 扣掉tag count
-    for tag in tags:
-        _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter': -1.5}})
+    if len(tags) > 0:
+        for tag in tags:
+            _db.TAG_COLLECTION.update_one({'_id':tag['tag_id']},{'$inc':{'usage_counter': -1.5}})
     
 # 查看單篇FAQ
 def query_faq_post(faq_id):

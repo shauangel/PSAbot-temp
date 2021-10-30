@@ -111,7 +111,7 @@ def insert_faq_post():
         faq_data.insert_faq(faq_dict,'inner_faq')
     except Exception as e :
         faq_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
-    return jsonify(faq_dict)
+    return jsonify({"message":"更新成功"})
     
 
 
@@ -173,7 +173,7 @@ def insert_faq_answer():
         faq_data.insert_answer(answer_dict)
     except Exception as e :
         answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
-    return jsonify(answer_dict)
+    return jsonify({"message":"更新成功"})
 # 編輯單個answer
 @faq_api.route('/update_faq_answer', methods=['POST'])
 def update_faq_answer():
@@ -191,20 +191,20 @@ def update_faq_answer():
         faq_data.update_answer(answer_dict)
     except Exception as e :
         answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
-    return jsonify(answer_dict)
+    return jsonify({"message":"更新成功"})
 # 刪除單個answer
 @faq_api.route('/delete_faq_answer', methods=['POST'])
 def delete_faq_answer():
     data = request.get_json()
-    # try: 
-    answer_dict = {
-        'faq_id':data['faq_id'],
-        'answer_id':data['answer_id']
-    }
-    faq_data.remove_answer(answer_dict)
-    # except Exception as e :
-    #     answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
-    return jsonify(answer_dict)
+    try: 
+        answer_dict = {
+            'faq_id':data['faq_id'],
+            'answer_id':data['answer_id']
+        }
+        faq_data.remove_answer(answer_dict)
+    except Exception as e :
+        answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
+    return jsonify({"message":"更新成功"})
 # 編輯單篇FAQ
 @faq_api.route('/update_faq_post', methods=['POST'])
 def update_faq_post():
@@ -221,7 +221,7 @@ def update_faq_post():
         faq_data.update_faq(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
-    return jsonify(data)
+    return jsonify({"message":"更新成功"})
 
 # 刪除單篇FAQ
 @faq_api.route('delete_faq_post', methods=['POST'])
@@ -231,7 +231,7 @@ def delete_faq_post():
         faq_data.remove_faq(data['_id'])
     except Exception as e :
         data = {"error" : e.__class__.__name__ + " : " +e.args[0]}
-    return jsonify(data)
+    return jsonify({"message":"更新成功"})
 
 
 UPLOAD_FOLDER = "/home/bach/PSAbot-vm/static/images/user_img"
@@ -268,7 +268,7 @@ def import_faq_post():
             new_data = process_import_data(data_list)
             # 刪除檔案
             os.remove(json_url)
-            return jsonify({'message':new_data})
+            return jsonify({"message":"更新成功"})
         else:
             flash('Please upload a .json file.')
             return jsonify({'message':'Invalid file type.'})
