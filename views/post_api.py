@@ -71,7 +71,7 @@ def insert_inner_post():
         inner_post.insert_post(data)
     except Exception as e :
         data = {"error" : e.__class__.__name__ + ":" +e.args[0]}
-    return jsonify(data)
+    return jsonify({"message":"更新成功"})
 
 # 編輯內部貼文
 @post_api.route('/update_inner_post', methods=['POST'])
@@ -114,7 +114,7 @@ def update_inner_post():
         inner_post.update_post(post_dict)
     except Exception as e :
         post_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
-    return jsonify(post_dict)
+    return jsonify({"message":"更新成功"})
 
 # 依貼文_id查看貼文
 @post_api.route('/query_inner_post', methods=['POST'])
@@ -147,7 +147,7 @@ def insert_inner_post_response():
         inner_post.insert_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}
-    return jsonify(response_dict)
+    return jsonify({"message":"更新成功"})
 
 # 編輯貼文回覆
 @post_api.route('/update_inner_post_response',methods=['POST'])
@@ -167,7 +167,7 @@ def update_inner_post_response():
         inner_post.update_response(response_dict)
     except Exception as e :
         response_dict = {"error" : e.__class__.__name__ + ":" +e.args[0]}  
-    return jsonify(response_dict)
+    return jsonify({"message":"更新成功"})
 
 # 刪除貼文回覆
 @post_api.route('/delete_inner_post_response',methods=['POST'])

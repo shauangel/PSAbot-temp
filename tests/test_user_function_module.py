@@ -79,28 +79,39 @@ class CheckUserFunctionModule(SettingBase):
     @pytest.mark.order8
     def test_query_inner_post_list(self):
         post_testing(self,'post_api','user-function-module','query_inner_post_list')
-    # @pytest.mark.order9
-    # def test_query_inner_post_list_by_title(self):
-    # @pytest.mark.order10
-    # def test_query_inner_post_list_by_tag(self):
-    # @pytest.mark.order11
-    # def test_query_inner_post(self):
-    # @pytest.mark.order12
-    # def test_insert_inner_post(self):
-    # @pytest.mark.order13
-    # def test_update_inner_post(self):
-    # @pytest.mark.order14
-    # def test_insert_inner_post_response (self):
-    # @pytest.mark.order15
-    # def test_update_inner_post_response(self):
-    # @pytest.mark.order16
-    # def test_like_inner_post(self):
-    # @pytest.mark.order17
-    # def test_dislike_inner_post(self):
-    # @pytest.mark.order18
-    # def test_like_faq_post(self):
-    # @pytest.mark.order19
-    # def test_dislike_faq_post(self):
+    @pytest.mark.order9
+    def test_query_inner_post_list_by_title(self):
+        post_testing(self,'post_api','user-function-module','query_inner_post_list_by_title')
+    @pytest.mark.order10
+    def test_query_inner_post_list_by_tag(self):
+        post_testing(self,'post_api','user-function-module','query_inner_post_list_by_tag')
+    @pytest.mark.order11
+    def test_query_inner_post(self):
+        post_testing(self,'post_api','user-function-module','query_inner_post')
+    @pytest.mark.order12
+    def test_insert_inner_post(self):
+        post_testing(self,'post_api','user-function-module','insert_inner_post')
+    @pytest.mark.order13
+    def test_update_inner_post(self):
+        post_testing(self,'post_api','user-function-module','update_inner_post')
+    @pytest.mark.order14
+    def test_insert_inner_post_response(self):
+        post_testing(self,'post_api','user-function-module','insert_inner_post_response')
+    @pytest.mark.order15
+    def test_update_inner_post_response(self):
+        post_testing(self,'post_api','user-function-module','update_inner_post_response')
+    @pytest.mark.order16
+    def test_like_inner_post(self):
+        post_testing(self,'post_api','user-function-module','like_inner_post')
+    @pytest.mark.order17
+    def test_dislike_inner_post(self):
+        post_testing(self,'post_api','user-function-module','dislike_inner_post')
+    @pytest.mark.order18
+    def test_like_faq_post(self):
+        post_testing(self,'faq_api','user-function-module','like_faq_post')
+    @pytest.mark.order19
+    def test_dislike_faq_post(self):
+        post_testing(self,'faq_api','user-function-module','dislike_faq_post')
     # @pytest.mark.order20
     # def test_save_user_img(self):
     # @pytest.mark.order21

@@ -1,7 +1,3 @@
-// HTTP - POST
-// URL: https://soselab.asuscomm.com:55002/api/dislike_inner_post
-// @post_api.dislike_inner_post
-
 {
     "post_id" : "000002",
     "response_id" : "",

@@ -1,7 +1,3 @@
-// HTTP - POST
-// URL: https://soselab.asuscomm.com:55002/api/dislike_faq_post
-// @faq_api.dislike_faq_post
-
 {
     "answer_id" : "",
     "faq_id" : "000080",
