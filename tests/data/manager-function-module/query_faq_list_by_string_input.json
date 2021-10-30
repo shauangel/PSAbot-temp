@@ -1,10 +1,6 @@
-// HTTP - POST
-// URL: https://soselab.asuscomm.com:55002/api/query_faq_list_by_string
-// @faq_api.query_faq_list_by_string
-
 {
-    "search_string":"Python",
-    "page_size": 5,
-    "page_number": 1,
-    "option": "score"
+  "search_string": "Python",
+  "page_size": 5,
+  "page_number": 1,
+  "option": "score"
 }

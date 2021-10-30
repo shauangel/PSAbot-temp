@@ -1,11 +1,7 @@
-// HTTP - POST
-// URL: https://soselab.asuscomm.com:55002/api/update_faq_answer
-// @faq_api.update_faq_answer
-
 {
-    "faq_id":"000094",
-    "answer_id":"000001",
-    "content":"編輯answer",
-    "edit":"編輯answer",
-    "vote":0
+  "faq_id": "000094",
+  "answer_id": "000001",
+  "content": "編輯answer",
+  "edit": "編輯answer",
+  "vote": 0
 }

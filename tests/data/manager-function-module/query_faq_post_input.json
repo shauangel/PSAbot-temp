@@ -1,7 +1,3 @@
-// HTTP - POST
-// URL: https://soselab.asuscomm.com:55002/api/query_faq_post
-// @faq_api.query_faq_post
-
 {
-    "_id":"000045"
+  "_id": "000045"
 }

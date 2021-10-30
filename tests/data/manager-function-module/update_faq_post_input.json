@@ -1,24 +1,17 @@
-// HTTP - POST
-// URL: https://soselab.asuscomm.com:55002/api/update_faq_post
-// @faq_api.update_faq_post
-
-{   
-    "link": "https://stackoverflow.com/", 
-    "_id" : "000094",        
-    "question": 
-    {  
-        "title": "編輯FAQ",    
-        "content":"內容",
-        "edit": "內容",
-        "vote" : 3
-    },
-    "answers": 
-    [{"content": "回覆","edit": "回覆", "vote" : 2}],    
-    "tags": 
-    [
-        {
-            "tag_id": "000000",
-            "tag_name": "Python"
-        }
-    ]
+{
+  "link": "https://stackoverflow.com/",
+  "_id": "000094",
+  "question": {
+    "title": "編輯FAQ",
+    "content": "內容",
+    "edit": "內容",
+    "vote": 3
+  },
+  "answers": [{ "content": "回覆", "edit": "回覆", "vote": 2 }],
+  "tags": [
+    {
+      "tag_id": "000000",
+      "tag_name": "Python"
+    }
+  ]
 }
