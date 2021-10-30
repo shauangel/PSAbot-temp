@@ -1,0 +1,12 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/update_inner_post_response
+// @post_api.update_inner_post_response
+
+{
+    "post_id": "000079",
+    "_id": "000004",
+    "replier_id": "4168365173258689",
+    "replier_name":"無敵小飛機",
+    "response" : "把分號去掉",
+    "edit": "把分號去掉"
+}

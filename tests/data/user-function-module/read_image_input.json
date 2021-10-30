@@ -1,0 +1,6 @@
+// HTTP - GET
+// URL: https://soselab.asuscomm.com:55002/api/read_image?user_id=116287698501129823679
+
+{
+    "user_id" : "116287698501129823679"
+}

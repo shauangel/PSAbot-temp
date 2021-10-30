@@ -1,0 +1,9 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/like_faq_post
+// @faq_api.like_faq_post
+
+{
+    "answer_id" : "",
+    "faq_id" : "000080",
+    "user" : "116287698501129823679"
+}

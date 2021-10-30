@@ -1,0 +1,16 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/query_inner_post_list_by_tag
+// @post_api. query_inner_post_list_by_tag
+
+{
+    "tag":
+    [
+        { 
+             "tag_id": "00000",
+             "tag_name": "Python"
+        }
+    ],
+    "page_size":5,
+    "page_number":1,
+    "option": "view_count"
+}

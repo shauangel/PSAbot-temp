@@ -1,0 +1,19 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/insert_inner_post
+// @post_api.insert_inner_post
+
+{
+    "asker_id" : "116287698501129823679",
+    "asker_name" : "可愛的大眼仔",
+    "edit" : "為什麼print不出來？\n\n```[python]\nprint(\"test\");```",
+    "incognito" : false,
+    "question" : "為什麼print不出來？\n\n<pre><code class=\"python\">print(\"test\");</code></pre>",
+    "tag" : [
+        {
+            "tag_id" : "00000",
+            "tag_name" : "Python"
+        }
+    ],
+    "time" : "2021-10-30T06:12:48.702",
+    "title" : "how to print?"
+}

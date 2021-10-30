@@ -1,0 +1,10 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/like_inner_post
+// @post_api.like_inner_post
+
+{
+    "post_id" : "000002",
+    "response_id" : "",
+    "target_user" : "4257031614316957",
+    "user" : "116287698501129823679"
+}

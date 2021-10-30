@@ -1,0 +1,15 @@
+{
+    "_id": "116287698501129823679",
+    "tag": [
+        {
+            "interested_score": 1,
+            "skill_name": "Python",
+            "tag_id": "00000"
+        },
+        {
+            "interested_score": 1,
+            "skill_name": "Flask",
+            "tag_id": "00022"
+        }
+    ]
+}

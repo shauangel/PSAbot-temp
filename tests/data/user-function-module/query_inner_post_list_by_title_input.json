@@ -1,0 +1,10 @@
+// HTTP - POST
+// URL: https://soselab.asuscomm.com:55002/api/query_inner_post_list_by_title
+// @post_api.query_inner_post_list_by_title
+
+{
+    "title":"How to send a pandas dataframe",
+    "page_size":5,
+    "page_number":1,
+    "option": "view_count"
+}

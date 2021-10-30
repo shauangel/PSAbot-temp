@@ -1,0 +1,32 @@
+[
+    {
+        "interested_score": 1,
+        "score": 46,
+        "skill_name": "Python",
+        "tag_id": "00000"
+    },
+    {
+        "interested_score": 0,
+        "score": 11,
+        "skill_name": "Web Crawling / Data Mining",
+        "tag_id": "00001"
+    },
+    {
+        "interested_score": 0,
+        "score": 10,
+        "skill_name": "Web frameworks",
+        "tag_id": "00002"
+    },
+    {
+        "interested_score": 0,
+        "score": 1,
+        "skill_name": "Selenium",
+        "tag_id": "00011"
+    },
+    {
+        "interested_score": 1,
+        "score": 2,
+        "skill_name": "Flask",
+        "tag_id": "00022"
+    }
+]
