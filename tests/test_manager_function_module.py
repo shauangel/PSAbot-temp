@@ -44,10 +44,10 @@ class CheckManagerFunctionModule(SettingBase):
         post_testing(self,'faq_api','manager-function-module','query_faq_list')
     @pytest.mark.order7
     def test_query_faq_list_by_string(self):
-        post_testing(self,'faq_api','manager-function-module','query_faq_list_by_string')
+        write_testing(self,'faq_api','manager-function-module','query_faq_list_by_string')
     @pytest.mark.order8
     def test_query_faq_list_by_tag(self):
-        post_testing(self,'faq_api','manager-function-module','query_faq_list_by_tag')
+        write_testing(self,'faq_api','manager-function-module','query_faq_list_by_tag')
     @pytest.mark.order9
     def test_insert_faq_post(self):
         post_testing(self,'faq_api','manager-function-module','insert_faq_post')
