@@ -78,7 +78,7 @@ class CheckUserFunctionModule(SettingBase):
         self.assertEqual(response.json,output)
     @pytest.mark.order8
     def test_query_inner_post_list(self):
-        post_testing(self,'user_api','user-function-module','query_inner_post_list')
+        post_testing(self,'post_api','user-function-module','query_inner_post_list')
     # @pytest.mark.order9
     # def test_query_inner_post_list_by_title(self):
     # @pytest.mark.order10
