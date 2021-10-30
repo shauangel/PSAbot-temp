@@ -1,0 +1,19 @@
+// 共同討論
+
+1. discussion_recommand_user 
+2. query_chat // id: 000004
+3. query_chat_list
+4. check_discussion_is_full
+5. check_member_is_incognito
+6. query_chat_tag
+7. change_chat_state
+
+8. create_psabot_chat
+9. insert_psabot_message
+
+// 10~12為socket，其餘皆為HTTP-POST
+10. create_room // id: 000015
+11. join_room ！！沒有輸出！！
+12. send_message ！！一定會錯，因為輸出有時間！！
+
+13. remove_chat

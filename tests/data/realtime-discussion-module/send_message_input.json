@@ -1,0 +1,9 @@
+// socket
+// 'send_message'
+
+{
+    "_id" : "000015",
+    "user_id" : "116287698501129823679",
+    "type" : "string",
+    "content" : "發送訊息測試"
+}

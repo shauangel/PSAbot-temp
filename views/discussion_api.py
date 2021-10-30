@@ -124,7 +124,7 @@ def query_chat_list():
 def remove_chat():
     data = request.get_json()
     chat_data.remove_chat(data)
-    return jsonify(data)
+    return jsonify({"message":"更新成功"})
 
 # 取得聊天室tag
 @discussion_api.route('/query_chat_tag', methods=['POST'])

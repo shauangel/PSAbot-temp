@@ -1,0 +1,128 @@
+{
+    "_id": "000004",
+    "chat_logs": [
+        {
+            "content": "等待回答者加入...",
+            "time": "Fri, 15 Oct 2021 10:55:00 GMT",
+            "type": "string",
+            "user_id": "PSAbot"
+        },
+        {
+            "content": "本次共同討論的問題是「 類別定義」，可以開始討論了。討論結束後請發問者輸入「結束討論」完成本次討論。",
+            "time": "Fri, 15 Oct 2021 10:56:43 GMT",
+            "type": "string",
+            "user_id": "PSAbot"
+        },
+        {
+            "content": "類別就是class",
+            "time": "Fri, 15 Oct 2021 10:57:49 GMT",
+            "type": "string",
+            "user_id": "4168365173258689"
+        },
+        {
+            "content": "可以再說多一點嗎...？",
+            "time": "Fri, 15 Oct 2021 10:58:35 GMT",
+            "type": "string",
+            "user_id": "116287698501129823679"
+        },
+        {
+            "content": "在一個class裡面可以定義多個屬性＆方法～",
+            "time": "Fri, 15 Oct 2021 10:58:59 GMT",
+            "type": "string",
+            "user_id": "4168365173258689"
+        },
+        {
+            "content": "誒... 還是不太懂",
+            "time": "Fri, 15 Oct 2021 10:59:08 GMT",
+            "type": "string",
+            "user_id": "116287698501129823679"
+        },
+        {
+            "content": "不然問問看PSAbot～",
+            "time": "Fri, 15 Oct 2021 10:59:21 GMT",
+            "type": "string",
+            "user_id": "4168365173258689"
+        },
+        {
+            "content": "PSAbot 什麼是class？",
+            "time": "Fri, 15 Oct 2021 10:59:32 GMT",
+            "type": "string",
+            "user_id": "4168365173258689"
+        },
+        {
+            "content": "類是通過執行 class 語句創建的某種對象的類型。創建實例對象時，用 Class 對象作為模板，實例對象既包含了數據（屬性），又包含了數據類型特有的代碼（方法）。",
+            "time": "Fri, 15 Oct 2021 10:59:32 GMT",
+            "type": "string",
+            "user_id": "PSAbot"
+        },
+        {
+            "content": "好像有點懂了～",
+            "time": "Fri, 15 Oct 2021 11:00:27 GMT",
+            "type": "string",
+            "user_id": "116287698501129823679"
+        },
+        {
+            "content": "謝謝啦～",
+            "time": "Fri, 15 Oct 2021 11:00:32 GMT",
+            "type": "string",
+            "user_id": "116287698501129823679"
+        },
+        {
+            "content": "結束討論",
+            "time": "Fri, 15 Oct 2021 11:00:37 GMT",
+            "type": "string",
+            "user_id": "4168365173258689"
+        },
+        {
+            "content": "結束討論",
+            "time": "Fri, 15 Oct 2021 11:00:44 GMT",
+            "type": "string",
+            "user_id": "116287698501129823679"
+        },
+        {
+            "content": "請為「回答者」這次的回答評分（滿意/不滿意）。",
+            "time": "Fri, 15 Oct 2021 11:00:44 GMT",
+            "type": "string",
+            "user_id": "PSAbot"
+        },
+        {
+            "content": "滿意",
+            "time": "Fri, 15 Oct 2021 11:00:48 GMT",
+            "type": "string",
+            "user_id": "116287698501129823679"
+        },
+        {
+            "content": "請問你願意回報此問題嗎？（僅限提問者回覆）",
+            "time": "Fri, 15 Oct 2021 11:00:49 GMT",
+            "type": "string",
+            "user_id": "PSAbot"
+        },
+        {
+            "content": "願意",
+            "time": "Fri, 15 Oct 2021 11:00:53 GMT",
+            "type": "string",
+            "user_id": "116287698501129823679"
+        }
+    ],
+    "enabled": false,
+    "end_flag": true,
+    "keywords": [],
+    "members": [
+        {
+            "incognito": false,
+            "user_id": "116287698501129823679"
+        },
+        {
+            "incognito": false,
+            "user_id": "4168365173258689"
+        }
+    ],
+    "question": "類別定義",
+    "tags": [
+        {
+            "tag_id": "00000",
+            "tag_name": "Python"
+        }
+    ],
+    "time": "Fri, 15 Oct 2021 10:55:00 GMT"
+}
