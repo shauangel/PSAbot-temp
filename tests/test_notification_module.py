@@ -8,8 +8,11 @@ class CheckNotificationModule(SettingBase):
     def test_check_notification_content(self):
         response = self.client.get(url_for('notification_api.check_notification_content') + 
                                    "?user_id=116287698501129823679&page=0",follow_redirects=True)
+        with open('data/notification-module/check_notification_content_output.json', 'w', encoding = 'utf-8') as file:
+            json.dump(response.json,file)
         with open('data/notification-module/check_notification_content_output.json', 'r', encoding = 'utf-8') as file:
             output = json.load(file)
+            
         self.assertEqual(response.json,output)
         
     @pytest.mark.order2
