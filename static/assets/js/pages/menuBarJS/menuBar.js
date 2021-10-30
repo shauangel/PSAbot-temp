@@ -1185,7 +1185,9 @@ function save() {
         let form = new FormData();
         if (document.getElementById("headshotBtn").files[0] != null) {
             form.append("img", document.getElementById("headshotBtn").files[0], userImgName);
-
+            
+            console.log("儲存照片form: ");
+            console.log(form);
             var myURL = head_url + "save_user_img";
 
             fetch(myURL, {
