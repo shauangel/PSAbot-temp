@@ -196,14 +196,14 @@ def update_faq_answer():
 @faq_api.route('/delete_faq_answer', methods=['POST'])
 def delete_faq_answer():
     data = request.get_json()
-    try: 
-        answer_dict = {
-            'faq_id':data['faq_id'],
-            'answer_id':data['answer_id']
-        }
-        faq_data.remove_answer(answer_dict)
-    except Exception as e :
-        answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
+    # try: 
+    answer_dict = {
+        'faq_id':data['faq_id'],
+        'answer_id':data['answer_id']
+    }
+    faq_data.remove_answer(answer_dict)
+    # except Exception as e :
+    #     answer_dict = {"error" : e.__class__.__name__ + " : " +e.args[0]}
     return jsonify(answer_dict)
 # 編輯單篇FAQ
 @faq_api.route('/update_faq_post', methods=['POST'])

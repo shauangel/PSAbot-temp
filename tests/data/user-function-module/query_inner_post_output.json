@@ -1,1 +1,79 @@
-{"_id": "000001", "answer": [{"_id": "000001", "edit": "Using Vim\n```[c]\nvim /path/to/chromedriver\n```\nAfter running the line above, you'll probably see a bunch of gibberish. Do the following:\n1. Replace all instances of cdc_ with dog_ by typing :%s/cdc_/dog_/g.\n2. To save the changes and quit, type :wq! and press return.", "incognito": true, "replier_id": "4257031614316957", "replier_name": "\u8b1d\u5b9b\u84c9", "response": "Using Vim\n<pre><code class=\"c\">\nvim /path/to/chromedriver\n</code></pre>\nAfter running the line above, you'll probably see a bunch of gibberish. Do the following:\n1. Replace all instances of cdc_ with dog_ by typing :%s/cdc_/dog_/g.\n2. To save the changes and quit, type :wq! and press return.", "score": [{"score": 1, "user_id": "869492797303368"}, {"score": 1, "user_id": null}], "time": "Tue, 10 Aug 2021 19:55:54 GMT"}, {"_id": "000002", "edit": "Using Vim\n\n```[python]\nvim /path/to/chromedriver\n```", "incognito": false, "replier_id": "116287698501129823679", "replier_name": "\u6148\u6148cihcih", "response": "Using Vim\n\n<pre><code class=\"python\">vim /path/to/chromedriver</code></pre>", "score": [], "time": "Fri, 22 Oct 2021 12:38:53 GMT"}], "asker_id": "869492797303368", "asker_name": "Angel", "edit": "I've been testing out Selenium with Chromedriver and I noticed that some pages can detect that you're using Selenium even though there's no automation at all. Even when I'm just browsing manually just using Chrome through Selenium and Xephyr I often get a page saying that suspicious activity was detected. I've checked my user agent, and my browser fingerprint, and they are all exactly identical to the normal Chrome browser.\n\nWhen I browse to these sites in normal Chrome everything works fine, but the moment I use Selenium I'm detected.\n\nIn theory, chromedriver and Chrome should look literally exactly the same to any webserver, but somehow they can detect it.\n\nIf you want some testcode try out this:\n```[python]\nfrom pyvirtualdisplay import Display\nfrom selenium import webdriver\n\ndisplay = Display(visible=1, size=(1600, 902))\ndisplay.start()\nchrome_options = webdriver.ChromeOptions()\nchrome_options.add_argument('--disable-extensions')\nchrome_options.add_argument('--profile-directory=Default')\nchrome_options.add_argument(\"--incognito\")\nchrome_options.add_argument(\"--disable-plugins-discovery\");\nchrome_options.add_argument(\"--start-maximized\")\ndriver = webdriver.Chrome(chrome_options=chrome_options)\ndriver.delete_all_cookies()\ndriver.set_window_size(800,800)\ndriver.set_window_position(0,0)\nprint 'arguments done'\ndriver.get('http://stubhub.com')\n```\nIf you browse around stubhub you'll get redirected and 'blocked' within one or two requests. I've been investigating this and I can't figure out how they can tell that a user is using Selenium.\n\nHow do they do it?", "incognito": false, "keyword": ["test", "selenium", "chromedriver", "notice", "page", "detect", "use", "automation", "browse", "chrome", "xephyr", "suspicious", "activity", "check", "user", "agent", "browser", "fingerprint", "identical", "normal", "browser.when", "site", "work", "moment", "theory", "look", "webserver", "it.if", "want", "testcode", "try"], "question": "I've been testing out Selenium with Chromedriver and I noticed that some pages can detect that you're using Selenium even though there's no automation at all. Even when I'm just browsing manually just using Chrome through Selenium and Xephyr I often get a page saying that suspicious activity was detected. I've checked my user agent, and my browser fingerprint, and they are all exactly identical to the normal Chrome browser.\n\nWhen I browse to these sites in normal Chrome everything works fine, but the moment I use Selenium I'm detected.\n\nIn theory, chromedriver and Chrome should look literally exactly the same to any webserver, but somehow they can detect it.\n\nIf you want some testcode try out this:\n<pre><code class=\"python\">from pyvirtualdisplay import Display\nfrom selenium import webdriver\n\ndisplay = Display(visible=1, size=(1600, 902))\ndisplay.start()\nchrome_options = webdriver.ChromeOptions()\nchrome_options.add_argument('--disable-extensions')\nchrome_options.add_argument('--profile-directory=Default')\nchrome_options.add_argument(\"--incognito\")\nchrome_options.add_argument(\"--disable-plugins-discovery\");\nchrome_options.add_argument(\"--start-maximized\")\ndriver = webdriver.Chrome(chrome_options=chrome_options)\ndriver.delete_all_cookies()\ndriver.set_window_size(800,800)\ndriver.set_window_position(0,0)\nprint 'arguments done'\ndriver.get('http://stubhub.com')</code></pre>", "score": [{"score": 1, "user_id": "869492797303368"}, {"score": 1, "user_id": "4257031614316957"}, {"score": 1, "user_id": null}], "tag": [{"tag_id": "00000", "tag_name": "Python"}, {"tag_id": "00001", "tag_name": "Web Crawling / Data Mining"}, {"tag_id": "00011", "tag_name": "Selenium"}], "time": "Tue, 10 Aug 2021 11:49:30 GMT", "title": "Can a website detect when you are using Selenium with chromedriver?", "view_count": 169}
+{
+  "_id": "000001",
+  "answer": [
+    {
+      "_id": "000001",
+      "edit": "Using Vim\n```[c]\nvim /path/to/chromedriver\n```\nAfter running the line above, you'll probably see a bunch of gibberish. Do the following:\n1. Replace all instances of cdc_ with dog_ by typing :%s/cdc_/dog_/g.\n2. To save the changes and quit, type :wq! and press return.",
+      "incognito": true,
+      "replier_id": "4257031614316957",
+      "replier_name": "\u8b1d\u5b9b\u84c9",
+      "response": "Using Vim\n<pre><code class=\"c\">\nvim /path/to/chromedriver\n</code></pre>\nAfter running the line above, you'll probably see a bunch of gibberish. Do the following:\n1. Replace all instances of cdc_ with dog_ by typing :%s/cdc_/dog_/g.\n2. To save the changes and quit, type :wq! and press return.",
+      "score": [
+        { "score": 1, "user_id": "869492797303368" },
+        { "score": 1, "user_id": null }
+      ],
+      "time": "Tue, 10 Aug 2021 19:55:54 GMT"
+    },
+    {
+      "_id": "000002",
+      "edit": "Using Vim\n\n```[python]\nvim /path/to/chromedriver\n```",
+      "incognito": false,
+      "replier_id": "116287698501129823679",
+      "replier_name": "\u6148\u6148cihcih",
+      "response": "Using Vim\n\n<pre><code class=\"python\">vim /path/to/chromedriver</code></pre>",
+      "score": [],
+      "time": "Fri, 22 Oct 2021 12:38:53 GMT"
+    }
+  ],
+  "asker_id": "869492797303368",
+  "asker_name": "Angel",
+  "edit": "I've been testing out Selenium with Chromedriver and I noticed that some pages can detect that you're using Selenium even though there's no automation at all. Even when I'm just browsing manually just using Chrome through Selenium and Xephyr I often get a page saying that suspicious activity was detected. I've checked my user agent, and my browser fingerprint, and they are all exactly identical to the normal Chrome browser.\n\nWhen I browse to these sites in normal Chrome everything works fine, but the moment I use Selenium I'm detected.\n\nIn theory, chromedriver and Chrome should look literally exactly the same to any webserver, but somehow they can detect it.\n\nIf you want some testcode try out this:\n```[python]\nfrom pyvirtualdisplay import Display\nfrom selenium import webdriver\n\ndisplay = Display(visible=1, size=(1600, 902))\ndisplay.start()\nchrome_options = webdriver.ChromeOptions()\nchrome_options.add_argument('--disable-extensions')\nchrome_options.add_argument('--profile-directory=Default')\nchrome_options.add_argument(\"--incognito\")\nchrome_options.add_argument(\"--disable-plugins-discovery\");\nchrome_options.add_argument(\"--start-maximized\")\ndriver = webdriver.Chrome(chrome_options=chrome_options)\ndriver.delete_all_cookies()\ndriver.set_window_size(800,800)\ndriver.set_window_position(0,0)\nprint 'arguments done'\ndriver.get('http://stubhub.com')\n```\nIf you browse around stubhub you'll get redirected and 'blocked' within one or two requests. I've been investigating this and I can't figure out how they can tell that a user is using Selenium.\n\nHow do they do it?",
+  "incognito": false,
+  "keyword": [
+    "test",
+    "selenium",
+    "chromedriver",
+    "notice",
+    "page",
+    "detect",
+    "use",
+    "automation",
+    "browse",
+    "chrome",
+    "xephyr",
+    "suspicious",
+    "activity",
+    "check",
+    "user",
+    "agent",
+    "browser",
+    "fingerprint",
+    "identical",
+    "normal",
+    "browser.when",
+    "site",
+    "work",
+    "moment",
+    "theory",
+    "look",
+    "webserver",
+    "it.if",
+    "want",
+    "testcode",
+    "try"
+  ],
+  "question": "I've been testing out Selenium with Chromedriver and I noticed that some pages can detect that you're using Selenium even though there's no automation at all. Even when I'm just browsing manually just using Chrome through Selenium and Xephyr I often get a page saying that suspicious activity was detected. I've checked my user agent, and my browser fingerprint, and they are all exactly identical to the normal Chrome browser.\n\nWhen I browse to these sites in normal Chrome everything works fine, but the moment I use Selenium I'm detected.\n\nIn theory, chromedriver and Chrome should look literally exactly the same to any webserver, but somehow they can detect it.\n\nIf you want some testcode try out this:\n<pre><code class=\"python\">from pyvirtualdisplay import Display\nfrom selenium import webdriver\n\ndisplay = Display(visible=1, size=(1600, 902))\ndisplay.start()\nchrome_options = webdriver.ChromeOptions()\nchrome_options.add_argument('--disable-extensions')\nchrome_options.add_argument('--profile-directory=Default')\nchrome_options.add_argument(\"--incognito\")\nchrome_options.add_argument(\"--disable-plugins-discovery\");\nchrome_options.add_argument(\"--start-maximized\")\ndriver = webdriver.Chrome(chrome_options=chrome_options)\ndriver.delete_all_cookies()\ndriver.set_window_size(800,800)\ndriver.set_window_position(0,0)\nprint 'arguments done'\ndriver.get('http://stubhub.com')</code></pre>",
+  "score": [
+    { "score": 1, "user_id": "869492797303368" },
+    { "score": 1, "user_id": "4257031614316957" },
+    { "score": 1, "user_id": null }
+  ],
+  "tag": [
+    { "tag_id": "00000", "tag_name": "Python" },
+    { "tag_id": "00001", "tag_name": "Web Crawling / Data Mining" },
+    { "tag_id": "00011", "tag_name": "Selenium" }
+  ],
+  "time": "Tue, 10 Aug 2021 11:49:30 GMT",
+  "title": "Can a website detect when you are using Selenium with chromedriver?",
+  "view_count": 169
+}
