@@ -21,9 +21,9 @@ from .OuterSearch import outerSearch
 ##摘要
 from . import StackData
 
-head_url = 'http://soselab.asuscomm.com:55001/api/'
+#head_url = 'http://soselab.asuscomm.com:55001/api/'
 #head_url='http://localhost:55001/api/'
-#head_url='https://soselab.asuscomm.com:55002/api/'
+head_url='https://soselab.asuscomm.com:55002/api/'
 
 class ask_return_and_reward(Action):
     def name(self) -> Text:
