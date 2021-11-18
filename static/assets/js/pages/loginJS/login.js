@@ -63,7 +63,8 @@ function checkLoginState() {
               localStorage.setItem("sessionID", response_data['_id']);
               localStorage.setItem("role", "facebook_user");
               localStorage.setItem("first_login", response_data['first_login']);
-              window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+                window.location.href = 'http://soselab.asuscomm.com:55001/site/PSAbot';
+              //window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
               //慈 END
             },
             error: function (xhr, status, error) {
@@ -121,7 +122,8 @@ function userChanged(googleUser) {
         localStorage.setItem("role", "google_user");
         localStorage.setItem("first_login", response_data['first_login']);
         //慈 START
-        window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+        //window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+          window.location.href = 'http://soselab.asuscomm.com:55001/site/PSAbot';
         //慈 END
         console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.')
       },
@@ -156,7 +158,8 @@ function managerLogin() {
             localStorage.setItem("sessionID", response_data['_id']);
             localStorage.setItem("role", response_data['role']);
             console.log('user_id :' + localStorage.getItem('sessionID') + ' ,role: ' + localStorage.getItem('role') + ' has logged in.');
-            window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+            //window.location.href = 'https://soselab.asuscomm.com:55002/site/PSAbot';
+            window.location.href = 'http://soselab.asuscomm.com:55001/site/PSAbot';
         }
     },
     error: function (xhr, status, error) {
@@ -170,6 +173,7 @@ function managerLogin() {
 
 /* ================ 訪客 START ================= */
 function visitor(){
-    window.location.href = "https://soselab.asuscomm.com:55002/site/PSAbot";
+    window.location.href = "http://soselab.asuscomm.com:55001/site/PSAbot";
+    //window.location.href = "https://soselab.asuscomm.com:55002/site/PSAbot";
 }
 /* ================ 訪客 END ================= */
