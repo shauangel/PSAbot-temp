@@ -204,11 +204,6 @@ function user(string) {
     if(needDiscussQuestion){
         discussQuestion = string;
     }
-//    if(string=="願意"){
-//        // 讓使用者選聊天記錄
-//        getHistoryReason = "checkbox";
-//        discussionHistory();
-//    }
 }
 
 function send_message() {
