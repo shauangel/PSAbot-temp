@@ -348,7 +348,6 @@ p {
 .card .card-header+.card-block,
 .card .card-header+.card-block-big {
     padding-top: 0;
-    overflow: scroll;
 }
 
 .card .card-header h5 {
