@@ -111,8 +111,6 @@ function check_member_is_incognito(roomId, userId){
     var data = {room_id: roomId, user_id: userId};
 
     var myURL = head_url + "check_member_is_incognito";
-    console.log("check_member_is_incognito的input: ");
-    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",

@@ -535,7 +535,7 @@ function openChatroom(roomId, question){
     else{ // 抓共同討論的紀錄
         var tempTitle = "共同討論 - " + question;
         // 處理輸入框是否匿名 START
-        var data = {"_id":sessionId};
+        var data = {"_id":roomId};
         $.ajax({
             url: myURL,
             type: "POST",
@@ -2134,11 +2134,9 @@ function discussionPostContent(data, indexVal, roomId){
         var temp = userIds.indexOf(data[i].user_id);
         if(temp == -1){ //代表還沒拿到照片
             if(data[i].user_id!="PSAbot" && check_member_is_incognito(roomId, data[i].user_id)){
-                console.log("是匿名");
                 userImgs[userImgs.length] = "../static/images/discussionImg.png";
             }
             else{
-                console.log("不是匿名");
                 userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
             }
             
@@ -2192,16 +2190,12 @@ function postDiscussion(){
     //var receivedData = localStorage.getItem("chatLogs");
     var receivedData = chatLogs;
     //receivedData = JSON.parse(receivedData);
-    console.log("共同討論拿到的全部資料: ");
-    console.log(receivedData);
     // 準備po文的資料 START
     var askerId = receivedData.members[0].user_id;
     var askerName = idReturnName(askerId);
     var title = receivedData.question;
     var question;
     var tag = receivedData.tags;
-    console.log("tag的型態: ");
-    console.log(tag);
     var time = receivedData.time;
     var roomId = localStorage.getItem("chatingRoomId");
     // 準備po文的資料 END
@@ -2213,8 +2207,6 @@ function postDiscussion(){
     question = indexVal;
     
     var data = {asker_id: askerId, asker_name: askerName, title: title, question: question, edit: question, tag: tag, time: time, incognito: false, is_discuss: true, room_id: roomId};
-    console.log("送出的po文資料為: ");
-    console.log(data);
     var myURL = head_url + "insert_inner_post";
     $.ajax({
         url: myURL,
