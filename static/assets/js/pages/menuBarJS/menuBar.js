@@ -525,7 +525,7 @@ function openChatroom(roomId, question){
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
-        var tempTitle = "共同討論" + question;
+        var tempTitle = "共同討論 - " + question;
         document.getElementById("chatroomTitle").innerHTML = tempTitle;
         localStorage.setItem("chatingRoomId", roomId);
         document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
