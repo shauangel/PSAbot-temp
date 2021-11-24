@@ -495,7 +495,7 @@ function rank(id) {//全部的排行
 // outerSearch END
 
 // 點選聊天室列表，打開其他聊天室
-function openChatroom(roomId){
+function openChatroom(roomId, question){
     document.getElementById("history_message").innerHTML = "";
     var sessionId = localStorage.getItem("sessionID");
     if(roomId==sessionId){ // 抓PSAbot的紀錄
@@ -525,7 +525,8 @@ function openChatroom(roomId){
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
-        document.getElementById("chatroomTitle").innerHTML = "共同討論";
+        var tempTitle = "共同討論" + question;
+        document.getElementById("chatroomTitle").innerHTML = tempTitle;
         localStorage.setItem("chatingRoomId", roomId);
         document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
         var userId = localStorage.getItem("sessionID");
@@ -1917,6 +1918,8 @@ function addToChatingList(discussionRoomId, discussionQuestion){
     var chatingListContent = document.getElementById("chatingList").innerHTML;
     chatingListContent += '<h3 class="card-title accordion-title" onclick="openChatroom(\'';
     chatingListContent += discussionRoomId;
+    chatingListContent += '\',\'';
+    chatingListContent += discussionQuestion;
     chatingListContent += '\')">';
         chatingListContent += '<a class="accordion-msg" href="#">';
             
