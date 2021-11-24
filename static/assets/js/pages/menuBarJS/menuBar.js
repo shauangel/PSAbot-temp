@@ -544,7 +544,9 @@ function openChatroom(roomId, question){
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             success: function (response) {
+                console.log("共同討論結束？: "+response.end_flag);
                 if(response.end_flag){
+                    console.log("有進來");
                     // 處理下方的輸入框等 START
                     var textArea = document.getElementById("message");
                     textArea.disabled = true;
