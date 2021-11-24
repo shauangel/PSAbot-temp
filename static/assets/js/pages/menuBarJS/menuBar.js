@@ -2128,7 +2128,7 @@ function discussionPostContent(data, indexVal, roomId){
         console.log(check_member_is_incognito(roomId, data[i].user_id));
         console.log(typeof check_member_is_incognito(roomId, data[i].user_id) );
         if(temp == -1){ //代表還沒拿到照片
-            if(data[i].user_id!="PSAbot" && check_member_is_incognito(roomId, data[i].user_id)=="true"){
+            if(data[i].user_id!="PSAbot" && check_member_is_incognito(roomId, data[i].user_id)){
                 console.log("是匿名");
                 userImgs[userImgs.length] = "../static/images/discussionImg.png";
             }
