@@ -498,8 +498,8 @@ function rank(id) {//全部的排行
 function openChatroom(roomId, question){
     document.getElementById("history_message").innerHTML = "";
     var sessionId = localStorage.getItem("sessionID");
+    var myURL = head_url + "query_chat";
     if(roomId==sessionId){ // 抓PSAbot的紀錄
-        var myURL = head_url + "query_chat";
         var data = {"_id":sessionId};
         $.ajax({
             url: myURL,
@@ -521,11 +521,44 @@ function openChatroom(roomId, question){
             error: function (response) {
             }
         });
+        // 處理下方的輸入框等 START
+        var textArea = document.getElementById("message");
+        textArea.disabled = false;
+
+        var sendBtn = document.getElementById("sendButton");
+        sendBtn.disabled = false;
+        sendBtn.setAttribute("onclick", "send_message()");
+        // 處理下方的輸入框等 END
         document.getElementById("chatroomTitle").innerHTML = "PSAbot";
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
     else{ // 抓共同討論的紀錄
         var tempTitle = "共同討論 - " + question;
+        // 處理輸入框是否匿名 START
+        var data = {"_id":sessionId};
+        $.ajax({
+            url: myURL,
+            type: "POST",
+            data: JSON.stringify(data),
+            async: false,
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if(response.end_flag){
+                    // 處理下方的輸入框等 START
+                    var textArea = document.getElementById("message");
+                    textArea.disabled = true;
+                    textArea.setAttribute("placeholder", "本次共同討論已結束");
+
+                    var sendBtn = document.getElementById("sendButton");
+                    sendBtn.disabled = true;
+                    // 處理下方的輸入框等 END
+                }
+            },
+            error: function (response) {
+            }
+        });
+        // 處理輸入框是否匿名 END
         document.getElementById("chatroomTitle").innerHTML = tempTitle;
         localStorage.setItem("chatingRoomId", roomId);
         document.getElementById("chatingImg").src = "../static/images/discussionImg.png";
