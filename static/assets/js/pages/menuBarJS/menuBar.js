@@ -2119,11 +2119,15 @@ function discussionPostContent(data, indexVal, roomId){
         console.log(data);
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
+        console.log("照片在: "+temp);
         if(temp == -1){ //代表還沒拿到照片
             if(data[i].user_id!="PSAbot" && check_member_is_incognito(roomId, data[i].user_id)){
+                console.log("是匿名");
+                console.log(typeof(check_member_is_incognito(roomId, data[i].user_id)));
                 userImgs[userImgs.length] = "../static/images/discussionImg.png";
             }
             else{
+                console.log("不是匿名");
                 userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
             }
             
