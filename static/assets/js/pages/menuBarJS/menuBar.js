@@ -1738,10 +1738,6 @@ function received_message(){
                     // 別人沒匿名
                     ImgYou = getChatroomUserImg(response.user_id);
                 }
-                console.log("比對的部分: ");
-                console.log(check_member_is_incognito(response._id, response.user_id)==true);
-                console.log(check_member_is_incognito(response._id, response.user_id)=="true");
-                console.log(typeof check_member_is_incognito(response._id, response.user_id));
                 bot(response.content);
             }
             else if(response._id == userSessionId){
@@ -1778,32 +1774,6 @@ function check_discussion_is_full(roomId){
         }
     });
     return full;
-}
-
-// 共同討論某人是否匿名
-// API -> check_member_is_incognito
-function check_member_is_incognito(roomId, userId){
-    var incognito;
-    var data = {room_id: roomId, user_id: userId};
-
-    var myURL = head_url + "check_member_is_incognito";
-    console.log("HTTP POST - check_member_is_incognito的URL: "+myURL);
-    console.log("check_member_is_incognito的input: ");
-    console.log(data);
-    $.ajax({
-        url: myURL,
-        type: "POST",
-        data: JSON.stringify(data),
-        async: false,
-        dataType: "json",
-        contentType: 'application/json; charset=utf-8',
-        success: function(response){
-            console.log("check_member_is_incognito的output: ");
-            console.log(response);
-            incognito = response; 
-        }
-    });
-    return incognito;
 }
 
 // 找出匹配的人選
@@ -2120,13 +2090,8 @@ function discussionPostContent(data, indexVal, roomId){
     var i;
     for(var j=0; j<indexVal.length; j++){
         i = indexVal[j];
-        console.log("處理歷史紀錄: ");
-        console.log(data);
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
-        console.log("照片在: "+temp);
-        console.log(check_member_is_incognito(roomId, data[i].user_id));
-        console.log(typeof check_member_is_incognito(roomId, data[i].user_id) );
         if(temp == -1){ //代表還沒拿到照片
             if(data[i].user_id!="PSAbot" && check_member_is_incognito(roomId, data[i].user_id)){
                 console.log("是匿名");
@@ -2204,11 +2169,6 @@ function postDiscussion(){
     var indexVal = new Array();
     $('input[name="chatHistory"]:checkbox:checked').each(function(i) {
         indexVal[i] = this.value;
-//        console.log("index為: ");
-//        console.log(this.value);
-//        
-//        console.log("內容為: ");
-//        console.log(receivedData.chat_logs[this.value].content);
     });
     question = indexVal;
     

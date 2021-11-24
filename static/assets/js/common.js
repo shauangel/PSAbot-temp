@@ -103,3 +103,26 @@ function getChatroomUserImg(userId){
     }
     return imgSrc;
 }
+
+// 共同討論某人是否匿名
+// API -> check_member_is_incognito
+function check_member_is_incognito(roomId, userId){
+    var incognito;
+    var data = {room_id: roomId, user_id: userId};
+
+    var myURL = head_url + "check_member_is_incognito";
+    console.log("check_member_is_incognito的input: ");
+    console.log(data);
+    $.ajax({
+        url: myURL,
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            incognito = response; 
+        }
+    });
+    return incognito;
+}
