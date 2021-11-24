@@ -546,7 +546,7 @@ function openChatroom(roomId){
 }
 
 function deleteChatLogConfirm(){
-    $("#deleteChatLog").show();
+    $("#deleteChatLog").modal('show');
 }
 
 //function getChatroomUserImg(userId){
