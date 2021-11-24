@@ -2124,7 +2124,7 @@ function discussionPostContent(data, indexVal, roomId){
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
         console.log("照片在: "+temp);
-        console.log(typeof(check_member_is_incognito(roomId, data[i].user_id)));
+        console.log(typeof check_member_is_incognito(roomId, data[i].user_id) );
         if(temp == -1){ //代表還沒拿到照片
             if(data[i].user_id!="PSAbot" && check_member_is_incognito(roomId, data[i].user_id)=="true"){
                 console.log("是匿名");
