@@ -2115,7 +2115,7 @@ function discussionPostContent(data, indexVal){
     for(var j=0; j<indexVal.length; j++){
         i = indexVal[j];
         console.log("處理歷史紀錄: ");
-        console.log(indexVal);
+        console.log(data);
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
         if(temp == -1){ //代表還沒拿到照片
