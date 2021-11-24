@@ -2114,9 +2114,11 @@ function discussionPostContent(data, indexVal){
     var i;
     for(var j=0; j<indexVal.length; j++){
         i = indexVal[j];
+        console.log("處理歷史紀錄: ");
+        console.log(indexVal);
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
-        if(temp == -1){ //代表還拿到照片
+        if(temp == -1){ //代表還沒拿到照片
             userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
             img = userImgs[userImgs.length-1];
         }
