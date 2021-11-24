@@ -2120,7 +2120,7 @@ function discussionPostContent(data, indexVal, roomId){
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
         if(temp == -1){ //代表還沒拿到照片
-            if(check_member_is_incognito(roomId, data[i].user_id)){
+            if(data[i].user_id!="PSAbot" && check_member_is_incognito(roomId, data[i].user_id)){
                 userImgs[userImgs.length] = "../static/images/discussionImg.png";
             }
             else{
