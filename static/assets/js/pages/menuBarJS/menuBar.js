@@ -499,6 +499,7 @@ function openChatroom(roomId, question){
     document.getElementById("history_message").innerHTML = "";
     var sessionId = localStorage.getItem("sessionID");
     var myURL = head_url + "query_chat";
+    console.log("roomId: "+roomId);
     if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
         var data = {"_id":sessionId};
         $.ajax({
