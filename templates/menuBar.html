@@ -286,9 +286,7 @@
                                                     PSAbot
                                                 </div>
                                                 
-                                                <button style="float: right;" onclick="removeChat()">
-                                                    刪除聊天記錄
-                                                </button>
+                                                <button type="button" class="btn btn-light" style="float: right;" onclick="deleteChatLogConfirm()">刪除聊天記錄</button>
 
                                             </div>
                                             <!-- 聊天室的header END -->
@@ -473,6 +471,28 @@
     </div>
 </div>
 <!-- 加入共同討論 之 是否匿名 END -->
+    
+<!-- 刪除聊天記錄確認 START -->
+<div class="modal fade" id="deleteChatLog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            確定要刪除聊天記錄？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="removeChat()">是</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">否</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 刪除聊天記錄確認 END -->
 
     <!-- Warning Section Starts -->
     <!-- Older IE warning message -->

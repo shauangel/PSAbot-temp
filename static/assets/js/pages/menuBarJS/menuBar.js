@@ -497,7 +497,6 @@ function rank(id) {//全部的排行
 // 點選聊天室列表，打開其他聊天室
 function openChatroom(roomId){
     document.getElementById("history_message").innerHTML = "";
-    console.log("去拿聊天的歷史紀錄");
     var sessionId = localStorage.getItem("sessionID");
     if(roomId==sessionId){ // 抓PSAbot的紀錄
         var myURL = head_url + "query_chat";
@@ -544,6 +543,10 @@ function openChatroom(roomId){
     if(!$("#chatroom").is(':visible')){ //沒打開 -> false
        open_close();
     }
+}
+
+function deleteChatLogConfirm(){
+    $("#deleteChatLog").show();
 }
 
 //function getChatroomUserImg(userId){
@@ -2080,7 +2083,6 @@ function idReturnName(userId){
 
 // 處理要po文的字串 ＆＆ 重建歷史紀錄
 function discussionPostContent(data, indexVal, roomId){
-    console.log("處理的房間是"+roomId);
     var history = document.getElementById("history_message");
     var content = "", img = "";
     
