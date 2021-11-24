@@ -500,7 +500,7 @@ function openChatroom(roomId, question){
     var sessionId = localStorage.getItem("sessionID");
     var myURL = head_url + "query_chat";
     console.log("roomId: "+roomId);
-    if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
+    if(roomId==sessionId){ // 抓PSAbot的紀錄
         var data = {"_id":sessionId};
         $.ajax({
             url: myURL,
