@@ -1795,9 +1795,8 @@ function check_member_is_incognito(roomId, userId){
         contentType: 'application/json; charset=utf-8',
         success: function(response){
             console.log("check_member_is_incognito的output: ");
-            console.log(incognito);
-            incognito = response;
-            return incognito;
+            console.log(response);
+            return response;
         }
     });
 }
