@@ -517,7 +517,7 @@ function openChatroom(roomId){
                 for(var i=0; i<response.chat_logs.length; i++){
                     indexVal.push(i);
                 }
-                discussionPostContent(response.chat_logs, indexVal);
+                discussionPostContent(response.chat_logs, indexVal, roomId);
             },
             error: function (response) {
             }
@@ -1686,7 +1686,7 @@ function received_message(){
                 for(var i=0; i<response.chat_logs.length; i++){
                     indexVal.push(i);
                 }
-                discussionPostContent(response.chat_logs, indexVal);
+                discussionPostContent(response.chat_logs, indexVal, response._id);
             }
             // 要跟灣龍討論
             //--- 單純顯示 END ---//
@@ -2104,7 +2104,8 @@ function idReturnName(userId){
 }
 
 // 處理要po文的字串 ＆＆ 重建歷史紀錄
-function discussionPostContent(data, indexVal){
+function discussionPostContent(data, indexVal, roomId){
+    console.log("處理的房間是"+roomId);
     var history = document.getElementById("history_message");
     var content = "", img = "";
     
@@ -2119,7 +2120,13 @@ function discussionPostContent(data, indexVal){
         // 先去處理照片的部分 START
         var temp = userIds.indexOf(data[i].user_id);
         if(temp == -1){ //代表還沒拿到照片
-            userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
+            if(check_member_is_incognito(roomId, data[i].user_id)){
+                userImgs[userImgs.length] = "../static/images/discussionImg.png";
+            }
+            else{
+                userImgs[userImgs.length] = getChatroomUserImg(data[i].user_id);
+            }
+            
             img = userImgs[userImgs.length-1];
         }
         else{
