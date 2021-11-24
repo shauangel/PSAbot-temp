@@ -1741,7 +1741,7 @@ function received_message(){
                 console.log("比對的部分: ");
                 console.log(check_member_is_incognito(response._id, response.user_id)==true);
                 console.log(check_member_is_incognito(response._id, response.user_id)=="true");
-                console.log(typeof(check_member_is_incognito(response._id, response.user_id)));
+                console.log(typeof check_member_is_incognito(response._id, response.user_id));
                 bot(response.content);
             }
             else if(response._id == userSessionId){
