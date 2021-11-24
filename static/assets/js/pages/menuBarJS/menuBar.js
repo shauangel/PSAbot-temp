@@ -525,6 +525,7 @@ function openChatroom(roomId, question){
         // 處理下方的輸入框等 START
         var textArea = document.getElementById("message");
         textArea.disabled = false;
+        textArea.setAttribute("placeholder", "");
 
         var sendBtn = document.getElementById("sendButton");
         sendBtn.disabled = false;
