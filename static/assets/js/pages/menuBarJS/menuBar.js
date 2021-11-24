@@ -499,7 +499,7 @@ function openChatroom(roomId, question){
     document.getElementById("history_message").innerHTML = "";
     var sessionId = localStorage.getItem("sessionID");
     var myURL = head_url + "query_chat";
-    if(roomId==sessionId){ // 抓PSAbot的紀錄
+    if(roomId=="PSAbot"){ // 抓PSAbot的紀錄
         var data = {"_id":sessionId};
         $.ajax({
             url: myURL,
@@ -529,6 +529,7 @@ function openChatroom(roomId, question){
         sendBtn.disabled = false;
         sendBtn.setAttribute("onclick", "send_message()");
         // 處理下方的輸入框等 END
+        localStorage.setItem("chatingRoomId", sessionId);
         document.getElementById("chatroomTitle").innerHTML = "PSAbot";
         document.getElementById("chatingImg").src = "../static/images/iconSmall.png";
     }
