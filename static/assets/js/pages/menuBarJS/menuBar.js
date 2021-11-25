@@ -27,18 +27,18 @@ function bot(string) {
     // 共同討論完，要重啟rasa
     
     if(string=="請稍等，立即為你詢問其他使用者。"){
-        insert_psabot_message(string);
+        insert_psabot_message(string, "PSAbot");
         createDiscussRoom();
         //setTimeout(welcomeAPI, 5000);//等一下再呼叫
     }
     if(string!=undefined && string.slice(0, 4)=="接收到了"){
-        insert_psabot_message(string);
+        insert_psabot_message(string, "PSAbot");
         needDiscussQuestion = true;
     }
     
     if(string==undefined){
         bot("出現了點問題，請稍後再試～");
-        insert_psabot_message("出現了點問題，請稍後再試～");
+        insert_psabot_message("出現了點問題，請稍後再試～", "PSAbot");
         welcomeAPI();
     }
     else if(string=="return_discussion"){
@@ -199,6 +199,7 @@ function user(string) {
     var sessionId = localStorage.getItem("sessionID");
     
     if(chatingRoomId == sessionId){ // PSAbot
+        insert_psabot_message(string, sessionId);
         bot("正在輸入訊息...");
     }
     if(needDiscussQuestion){
@@ -241,7 +242,7 @@ function sendMessageAPI(message){
             }
         });
         
-        insert_psabot_message(message);
+        insert_psabot_message(message, "PSAbot");
     }
     else{ // 共同討論
         var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
@@ -256,10 +257,9 @@ function sendMessageAPI(message){
 }
 
 // API -> insert_psabot_message
-function insert_psabot_message(message){
-    var sessionId = localStorage.getItem("sessionID");
+function insert_psabot_message(message, who){
     var myURL = head_url + "insert_psabot_message";
-    var data = {user_id:sessionId, type:"string", content:message};
+    var data = {user_id:who, type:"string", content:message};
     $.ajax({
         url: myURL,
         type: "POST",
