@@ -107,6 +107,9 @@ function getChatroomUserImg(userId){
 // 共同討論某人是否匿名
 // API -> check_member_is_incognito
 function check_member_is_incognito(roomId, userId){
+    if(userId == "PSAbot")
+        return false;
+    
     var incognito;
     var data = {room_id: roomId, user_id: userId};
 
