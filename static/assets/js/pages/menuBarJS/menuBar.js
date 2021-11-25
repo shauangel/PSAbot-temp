@@ -113,6 +113,9 @@ function bot(string) {
         }
         content += '>';
         content += string;
+        
+        // 新增對話至聊天記錄
+        insert_psabot_message(string, "PSAbot");
 
         //    content += '<span class="msg_time">8:40 AM</span>';
         content += '</div>';
