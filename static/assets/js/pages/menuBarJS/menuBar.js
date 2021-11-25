@@ -71,6 +71,9 @@ function bot(string) {
     //----- 處理選標籤 END -----//
     
     else{
+        // 新增對話至聊天記錄
+        insert_psabot_message(string, "PSAbot");
+        
         keyWords = {};
         if (needToClearBotMessage) {
             var obj = document.getElementById("willBeClear");
@@ -114,9 +117,6 @@ function bot(string) {
         content += '>';
         content += string;
         
-        // 新增對話至聊天記錄
-        insert_psabot_message(string, "PSAbot");
-
         //    content += '<span class="msg_time">8:40 AM</span>';
         content += '</div>';
         content += '</div>';
@@ -262,7 +262,9 @@ function sendMessageAPI(message){
 // API -> insert_psabot_message
 function insert_psabot_message(message, who){
     var myURL = head_url + "insert_psabot_message";
-    var data = {user_id:who, type:"string", content:message};
+    var data = {user_id: who, type:"string", content: message};
+    console.log("insert_psabot_message的輸入: ");
+    console.log(data);
     $.ajax({
         url: myURL,
         type: "POST",
