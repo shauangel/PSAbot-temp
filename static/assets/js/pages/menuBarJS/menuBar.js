@@ -230,8 +230,6 @@ function sendMessageAPI(message){
                 console.log("error");
             }
         });
-        
-        //insert_psabot_message(message, "PSAbot");
     }
     else{ // 共同討論
         var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
