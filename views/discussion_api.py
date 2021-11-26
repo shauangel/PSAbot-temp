@@ -75,6 +75,7 @@ def insert_psabot_message():
     data = request.get_json()
     chat_dict = {
         'user_id':data['user_id'],
+        'is_bot':data['is_bot'],
         'time':datetime.now().replace(microsecond=0),
         'type':data['type'],
         'content':data['content']

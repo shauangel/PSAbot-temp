@@ -83,7 +83,13 @@ def insert_psabot_chat(chat_dict):
 
 # 新增機器人聊天室訊息
 def insert_psabot_message(chat_dict):
-    _db.CHAT_DATA_COLLECTION.update_one({'psabot_room_id':chat_dict['user_id']},
-                                         {'$push':
-                                          {'chat_logs':
-                                           {'user_id':chat_dict['user_id'],'time':chat_dict['time'],'type':chat_dict['type'],'content':chat_dict['content']}}})
+    if not chat_dict['is_bot']:
+        _db.CHAT_DATA_COLLECTION.update_one({'psabot_room_id':chat_dict['user_id']},
+                                             {'$push':
+                                              {'chat_logs':
+                                               {'user_id':chat_dict['user_id'],'time':chat_dict['time'],'type':chat_dict['type'],'content':chat_dict['content']}}})
+    else :
+        _db.CHAT_DATA_COLLECTION.update_one({'psabot_room_id':chat_dict['user_id']},
+                                             {'$push':
+                                              {'chat_logs':
+                                               {'user_id':'PSAbot','time':chat_dict['time'],'type':chat_dict['type'],'content':chat_dict['content']}}})
