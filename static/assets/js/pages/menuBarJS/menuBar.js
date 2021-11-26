@@ -71,9 +71,6 @@ function bot(string) {
     //----- 處理選標籤 END -----//
     
     else{
-        // 新增對話至聊天記錄
-        insert_psabot_message(string, "PSAbot");
-        
         keyWords = {};
         if (needToClearBotMessage) {
             var obj = document.getElementById("willBeClear");
@@ -93,15 +90,12 @@ function bot(string) {
             needToClearBotMessage = true;
             content += 'id="willBeClear" ';
         }
+        else{
+            // 新增對話至聊天記錄
+            insert_psabot_message(string, "PSAbot");
+        }
         content += 'class="d-flex justify-content-start mb-4">';
         
-        // 加上checkbox START
-//        content += '<label>';
-//        content += '<input type="checkbox" name="chatHistory" value="';
-//        content += string;
-//        content += '" checked>';
-//        content += '</label>';
-        // 加上checkbox END
         console.log("用照片");
         content += '<div class="img_cont_msg">';
         content += '<img src="';
