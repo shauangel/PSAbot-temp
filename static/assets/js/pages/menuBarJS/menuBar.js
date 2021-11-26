@@ -168,14 +168,6 @@ function user(string) {
     var content = history.innerHTML;
     //d-flex justify-content-end mb-4
     content += '<div class="d-flex justify-content-end mb-4">';
-    // 加上checkbox START
-//    content += '<label>';
-//    content += '<input type="checkbox" name="chatHistory" value="';
-//    content += string;
-//    content += '" checked>';
-//    content += '</label>';
-    // 加上checkbox END
-    
     content += '<div class="msg_cotainer_send">';
     content += string;
     //    content += '<span class="msg_time">8:40 AM</span>';
@@ -239,7 +231,7 @@ function sendMessageAPI(message){
             }
         });
         
-        insert_psabot_message(message, "PSAbot");
+        //insert_psabot_message(message, "PSAbot");
     }
     else{ // 共同討論
         var data = {_id: chatingRoomId, user_id: sessionId, type: "string", content: message};
