@@ -262,7 +262,12 @@ function sendMessageAPI(message){
 // API -> insert_psabot_message
 function insert_psabot_message(message, who){
     var myURL = head_url + "insert_psabot_message";
-    var data = {user_id: who, type:"string", content: message};
+    var isBot = false;
+    if(who=="PSAbot"){
+        isBot = true;
+    }
+    var userId = localStorage.getItem("sessionID");
+    var data = {user_id: userId, is_bot: isBot, type:"string", content: message};
     console.log("insert_psabot_message的輸入: ");
     console.log(data);
     $.ajax({
