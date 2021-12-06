@@ -134,7 +134,7 @@ function bot(string) {
             }
         }, 1000);
         if(string.slice(0, 2)=="希望"){ //結束要call welcomeAPI
-            setTimeout(welcomeAPI, 5000);//等一下再呼叫
+            setTimeout(welcomeAPI, 1000);//等一下再呼叫
         }
 
         // 處理關鍵字 START
