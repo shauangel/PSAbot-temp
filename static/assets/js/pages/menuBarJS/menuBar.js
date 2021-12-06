@@ -41,9 +41,6 @@ function bot(string) {
         insert_psabot_message("出現了點問題，請稍後再試～", "PSAbot");
         welcomeAPI();
     }
-    else if(string.slice(0, 2)=="希望"){ //結束要call welcomeAPI
-        setTimeout(welcomeAPI, 5000);//等一下再呼叫
-    }
     else if(string=="return_discussion"){
         // 讓使用者選聊天記錄
         getHistoryReason = "checkbox";
@@ -114,13 +111,11 @@ function bot(string) {
         content += '>';
         content += string;
         
-        //    content += '<span class="msg_time">8:40 AM</span>';
         content += '</div>';
         content += '</div>';
 
         history.innerHTML = content;
         history.scrollTop = history.scrollHeight;
-        // 
         setInterval(function () {
             if (document.getElementById("willBeClearString") != null) {
                 var botStringTemp = document.getElementById("willBeClearString").innerHTML;
@@ -138,7 +133,9 @@ function bot(string) {
                 document.getElementById("willBeClearString").innerHTML = botStringTemp;
             }
         }, 1000);
-        //
+        if(string.slice(0, 2)=="希望"){ //結束要call welcomeAPI
+            setTimeout(welcomeAPI, 5000);//等一下再呼叫
+        }
 
         // 處理關鍵字 START
         var temp = document.getElementById("keywords");
@@ -159,8 +156,6 @@ function bot(string) {
 
                 keyWords[i] = tempName;
             }
-            console.log("keywords: ");
-            console.log(keyWords);
         }
         // 處理關鍵字 END
     }
