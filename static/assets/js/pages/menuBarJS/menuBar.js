@@ -41,6 +41,9 @@ function bot(string) {
         insert_psabot_message("出現了點問題，請稍後再試～", "PSAbot");
         welcomeAPI();
     }
+    else if(string(0, 2)=="希望"){ //結束要call welcomeAPI
+        setTimeout(welcomeAPI, 5000);//等一下再呼叫
+    }
     else if(string=="return_discussion"){
         // 讓使用者選聊天記錄
         getHistoryReason = "checkbox";
