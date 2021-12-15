@@ -16,6 +16,7 @@ class TextAnalyze:
     
     STOPWORDS = list(STOP_WORDS)               ##停用詞: 可忽略的詞，沒有賦予上下文句意義的詞
     POS_TAG = ['PROPN', 'ADJ', 'NOUN', 'VERB'] ##欲留下的詞類
+    WHITE_LIST = ['pandas']
     
     def __init__(self):
         return
@@ -41,7 +42,7 @@ class TextAnalyze:
         lemma = []
         for token in pure_word:
             if token.pos_ in self.POS_TAG:
-                if token.lemma_  == "-PRON-":
+                if token.lemma_  == "-PRON-" or token.text in self.WHITE_LIST:
                     lemma.append(token.text)
                 else:
                     lemma.append(token.lemma_)
