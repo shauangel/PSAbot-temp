@@ -1,5 +1,5 @@
 host="0.0.0.0",#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# coding= utf-8
 """
 Created on Mon Mar 15 16:44:08 2021
 
