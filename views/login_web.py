@@ -6,3 +6,4 @@ login_web = Blueprint("login_web", __name__)
 @login_web.route("/login", methods=["GET", "POST"])
 def login():
     return render_template('login.html')
+
