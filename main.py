@@ -59,6 +59,20 @@ def check_associated_tag():
         associated_tag_id=tag.add_new_associated_tag(i)
         tag.add_child_associated(i, associated_tag_id)
 
+def test_wsgi_app():
+	# scheduler=APScheduler()
+    app = create_app()
+    # scheduler.init_app(app)
+    # scheduler.start()
+    app.run(host='0.0.0.0',port=55001,debug=True)
+    #app.run(host='0.0.0.0', port=55001)    
+    #"192.168.111.128",port=55001
+    
+    """ 每個月一號的0:00檢查是否新增 associated tag """
+    schedule.every().day.at("02:00").do(check_associated_tag)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 if __name__ == "__main__":
     # scheduler=APScheduler()
