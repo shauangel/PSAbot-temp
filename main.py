@@ -59,7 +59,7 @@ def check_associated_tag():
         associated_tag_id=tag.add_new_associated_tag(i)
         tag.add_child_associated(i, associated_tag_id)
 
-def test_wsgi_app():
+def test_wsgi_app(environ, start_response):
 	# scheduler=APScheduler()
     app = create_app()
     # scheduler.init_app(app)
