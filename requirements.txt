@@ -140,9 +140,9 @@ soupsieve==2.2.1
 spacy==2.2.4
 spacy-langdetect==0.1.2
 spacy-legacy==3.0.8
-spacy-pkuseg==0.0.28
+spacy-pkuseg
 SQLAlchemy==1.3.24
-srsly==1.0.5
+srsly
 StackAPI==0.2.0
 tabulate==0.8.9
 tensorboard==2.5.0
