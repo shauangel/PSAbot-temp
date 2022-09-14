@@ -23,6 +23,9 @@ import schedule
 import time
 from models import inner_post, tag
 
+###test wsgi server
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 
 def create_app():
     app = Flask(__name__)
@@ -67,6 +70,7 @@ def test_wsgi_app(environ, start_response):
     app.run(host='0.0.0.0',port=55001,debug=True)
     #app.run(host='0.0.0.0', port=55001)    
     #"192.168.111.128",port=55001
+	app.wsgi_app = ProxyFix(app.wsgi_app)
     
     """ 每個月一號的0:00檢查是否新增 associated tag """
     schedule.every().day.at("02:00").do(check_associated_tag)
