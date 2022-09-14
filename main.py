@@ -70,8 +70,8 @@ def test_wsgi_app(environ, start_response):
     #####app.run(host='0.0.0.0',port=55001,debug=True) 
     #"192.168.111.128",port=55001
     app.wsgi_app = ProxyFix(app.wsgi_app)
-	app.run()   
-	
+	app.run()
+
     """ 每個月一號的0:00檢查是否新增 associated tag """
     schedule.every().day.at("02:00").do(check_associated_tag)
     while True:
