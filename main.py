@@ -67,7 +67,7 @@ def test_wsgi_app(environ, start_response):
     app = create_app()
     # scheduler.init_app(app)
     # scheduler.start()
-    app.run(host='0.0.0.0',port=55001,debug=True)
+    #####app.run(host='0.0.0.0',port=55001,debug=True)
     #app.run(host='0.0.0.0', port=55001)    
     #"192.168.111.128",port=55001
     app.wsgi_app = ProxyFix(app.wsgi_app)
