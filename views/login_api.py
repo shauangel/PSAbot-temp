@@ -15,7 +15,7 @@ GOOGLE_OAUTH2_CLIENT_ID = '417777300686-b6isl0oe0orcju7p5u0cpdeo07hja9qs.apps.go
 
 @login_api.route('/test', methods=['GET'])
 def test():
-	return "<h1>Hello</h1>"
+	return jsonify({"test" : "hi"})
 
 
 @login_api.route('/google_sign_in', methods=['POST'])

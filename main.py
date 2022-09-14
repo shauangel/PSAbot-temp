@@ -36,12 +36,12 @@ def create_app():
     # security setup
 
     # Security(app, models.user.USER_DATASTORE,login_form=models.user.ExtendedLoginForm)
-    ''' --- login manager ---- '''
-    login_manager = PSAbotLoginManager(app)
-    @login_manager.user_loader
-    def user_loader(user_id):  
-        user_now = UserModel(user_id)   
-        return user_now
+    #''' --- login manager ---- '''
+    #login_manager = PSAbotLoginManager(app)
+    #@login_manager.user_loader
+    #def user_loader(user_id):  
+    #    user_now = UserModel(user_id)   
+    #    return user_now
     # register app
     register_blueprint(app)
     # socket io
