@@ -23,16 +23,21 @@ from .notification_api import notification_api
 from .outersearch_cache_api import outersearch_cache_api
 from .discussion_api import discussion_api
 
-blueprint_prefix = [(exchange_api, "/api"), (exchange_web, "/site"),
-                    (rasa_api, "/api"), (base_flow_web, "/site"),
+blueprint_prefix = [
+                    (exchange_api, "/api"), 
+                    (rasa_api, "/api"), 
                     (base_flow_rasa_api, "/api"), (tag_api, "/api"),
-                    (login_api, "/api"),(login_web, "/site"),
+                    (login_api, "/api"),
                     (user_api,"/api"),
                     (post_api,"/api"),
                     (faq_api,"/api"),
                     (notification_api, "/api"),
                     (outersearch_cache_api, "/api"),
-                    (discussion_api, "/api")]
+                    (discussion_api, "/api"),
+                    (exchange_web, "/site"),
+                    (base_flow_web, "/site"),
+                    (login_web, "/site"),
+                    ]
 
 def register_blueprint(app):
     for blueprint, prefix in blueprint_prefix:
