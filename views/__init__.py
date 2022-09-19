@@ -36,7 +36,7 @@ blueprint_prefix = [
                     (discussion_api, "/api"),
                     (exchange_web, "/site"),
                     (base_flow_web, "/site"),
-                    (login_web, "/site"),
+                    (login_web, "/site")
                     ]
 
 def register_blueprint(app):
